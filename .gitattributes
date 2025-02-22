@@ -1,0 +1,7 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=crlf
+
+/**/postinst* text eol=crlf
+
+# paths that don't start with / are treated relative to the .gitattributes folder
+relative/path/*.txt text eol=crlf
