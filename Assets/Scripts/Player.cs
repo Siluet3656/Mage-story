@@ -5,6 +5,14 @@ using System.Linq;
 
 public class Player : MonoBehaviour
 {
+    public enum SpellType
+    {
+        Fireball,
+        Zap,
+        frost_whirlwind,
+        Spike
+    }
+
     [SerializeField] private float Speed = 0;
     private Rigidbody2D rb;
     private Vector2 Movement;
@@ -136,6 +144,26 @@ public class Player : MonoBehaviour
         { 
             currentTarget.ResetTarget();
             currentTarget = null;
+        }
+    }
+
+    public void CastSpell(SpellType spellType)
+    {
+        switch (spellType)
+        {
+            case SpellType.Fireball:
+                //HP.TakeDamage(10);
+                break;
+            case SpellType.Zap:
+                //HP.TakeDamage(5);
+                //enemy.Slow(2.0f);
+                break;
+            case SpellType.frost_whirlwind:
+                //enemy.Heal(15);
+                break;
+            case SpellType.Spike:
+                //enemy.ApplyPoison(5, 3);
+                break;
         }
     }
 }
