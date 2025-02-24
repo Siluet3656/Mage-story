@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,13 @@ public class Player : MonoBehaviour
         Spike
     }
 
+    [SerializeField] private Image CastBar = null;
+    private bool isCasting = false;
+    private float Progress = 0f;
+
+    [SerializeField] private float FireballCastTime = 0f;
+    [SerializeField] private int FireballDamage = 0;
+
     [SerializeField] private float Speed = 0;
     private Rigidbody2D rb;
     private Vector2 Movement;
@@ -22,6 +30,7 @@ public class Player : MonoBehaviour
     private KeyCode Cast1Key = KeyCode.Alpha1;
     [SerializeField] private float interactionRange  = 0;
     private Enemy currentTarget = null;
+    private Enemy TargetCastingTo = null;
     private List<Enemy> EnemiesInRange = new List<Enemy>();
     private int currentIndex = 0;
 
@@ -57,7 +66,20 @@ public class Player : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                currentTarget.gameObject.GetComponent<HP>().TakeDamage(100);
+                TargetCastingTo = currentTarget;
+                CastSpell(SpellType.Fireball);
+            }
+        }
+        if (isCasting)
+        {
+            if (Progress <= 1f)
+            {
+                Progress += 1f / FireballCastTime * Time.deltaTime;
+                CastBar.fillAmount = Progress;
+            }
+            else
+            {
+                CastBar.fillAmount = 1f;
             }
         }
     }
@@ -152,7 +174,10 @@ public class Player : MonoBehaviour
         switch (spellType)
         {
             case SpellType.Fireball:
-                //HP.TakeDamage(10);
+                if (!isCasting)
+                {
+                    StartCoroutine("FireballCast");
+                }
                 break;
             case SpellType.Zap:
                 //HP.TakeDamage(5);
@@ -165,5 +190,19 @@ public class Player : MonoBehaviour
                 //enemy.ApplyPoison(5, 3);
                 break;
         }
+    }
+
+    private IEnumerator FireballCast()
+    {
+        isCasting = true;
+        yield return new WaitForSeconds(FireballCastTime);
+        if (TargetCastingTo != null)
+        {
+            TargetCastingTo.gameObject.GetComponent<HP>().TakeDamage(FireballDamage);
+        }
+        TargetCastingTo = null;
+        isCasting = false;
+        Progress = 0f;
+        CastBar.fillAmount = Progress;
     }
 }
