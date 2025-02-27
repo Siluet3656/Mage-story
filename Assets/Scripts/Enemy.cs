@@ -7,18 +7,26 @@ public class Enemy : MonoBehaviour
     private Color OriginalColor;
     private Color TargetedColor;
 
-    void Start()
+    private void Start()
     {
         OriginalColor = sr.color;
         TargetedColor = new Color(1, 0, 0, OriginalColor[3]);
     }
 
-    void Update()
+    private void OnDestroy() 
     {
-
+        var SpellsToClear = FindObjectsOfType<Spell>();
+        Enemy nullenemy = null;
+        for (var i = 0; i < SpellsToClear.Length; i++)
+        {
+            if(SpellsToClear[i].GetTarget().name == this.name)
+            {
+                SpellsToClear[i].SetTarget(nullenemy);
+            }
+        }
     }
 
-    public void Target ()
+    public void Target()
     {
         isTargeted = true;
         sr.color = TargetedColor;

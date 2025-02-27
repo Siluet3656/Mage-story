@@ -15,12 +15,20 @@ public class Player : MonoBehaviour
     }
     [Header("Spell")]
     [SerializeField] private Image CastBar = null;
+    [SerializeField] private Image RemainderBar = null;
+    [SerializeField] private Image[] FireShards = null;
+    [Space]
+    [SerializeField] private float FS_RefreshTime = 0f;
     [SerializeField] private float FireballCastTime = 0f;
     [SerializeField] private GameObject FireBallPrefab = null;
+    private const int MaxRemainderAmount = 100;
+    private const int MaxFSAmount = 3;
     private bool isCasting = false;
-    private float Progress = 0f;
+    private float CastProgress = 0f;
+    private float[] FS_RefreshProgress = new float[MaxFSAmount];
     private KeyCode InterruptCastKey = KeyCode.X;
-
+    private int RemainderAmount = 0;
+    private int FSAmount = 0;
 
     [Header("Movement")]
     [SerializeField] private float MaxSpeed = 0;
@@ -42,6 +50,13 @@ public class Player : MonoBehaviour
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        FSAmount = MaxFSAmount;
+
+        for (var frp = 0; frp < MaxFSAmount; frp++)
+        {
+            FS_RefreshProgress[frp] = 1f;
+        }
     }
 
     private void Update() {
@@ -85,10 +100,10 @@ public class Player : MonoBehaviour
         if (isCasting)
         {
             Speed = MaxSpeed/SlowFactor;
-            if (Progress <= 1f)
+            if (CastProgress <= 1f)
             {
-                Progress += 1f / FireballCastTime * Time.deltaTime;
-                CastBar.fillAmount = Progress;
+                CastProgress += 1f / FireballCastTime * Time.deltaTime;
+                CastBar.fillAmount = CastProgress;
             }
             else
             {
@@ -98,6 +113,19 @@ public class Player : MonoBehaviour
         else
         {
             Speed = MaxSpeed;
+        }
+
+        RemainderBar.fillAmount = (float)RemainderAmount/MaxRemainderAmount;
+
+        int j = 0;
+        foreach (Image shard in FireShards)
+        {
+            if (FS_RefreshProgress[j] <= 1f)
+            {
+                FS_RefreshProgress[j] += 1f / FS_RefreshTime * Time.deltaTime;
+                shard.fillAmount = FS_RefreshProgress[j];
+            }
+            j++;
         }
     }
 
@@ -195,7 +223,10 @@ public class Player : MonoBehaviour
             case SpellType.Fireball:
                 if (!isCasting)
                 {
-                    StartCoroutine("FireballCast");
+                    if (FSAmount > 0)
+                    {
+                        StartCoroutine("FireballCast");
+                    }
                 }
                 break;
             case SpellType.Zap:
@@ -220,15 +251,62 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(FireBallPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
+            UseFS();
         }
         CastStop();
     }
 
-    private void CastStop ()
+    private void CastStop()
     {
-         TargetCastingTo = null;
+        TargetCastingTo = null;
         isCasting = false;
-        Progress = 0f;
-        CastBar.fillAmount = Progress;
+        CastProgress = 0f;
+        CastBar.fillAmount = CastProgress;
+    }
+
+    private void GainRemainder(int amount)
+    {
+        if (RemainderAmount < MaxRemainderAmount)
+        {
+            RemainderAmount += amount;
+            if (RemainderAmount > MaxRemainderAmount)
+            {
+                RemainderAmount = MaxRemainderAmount;
+            }
+        }
+    }
+
+    private void UseFS()
+    {
+        if(FSAmount > 0)
+        {
+            FSAmount--;
+            GainRemainder(20);
+            StartCoroutine("FS_Refreshing");
+        }
+    }
+
+    private IEnumerator FS_Refreshing()
+    {
+        int k = 0;
+        foreach (Image shard in FireShards)
+        {
+            if (FS_RefreshProgress[k] >= 1f)
+            {
+                FS_RefreshProgress[k] = 0f;
+                break;
+            }
+            Debug.Log(FS_RefreshProgress[k]);
+            k++;
+        }
+        yield return new WaitForSeconds(FS_RefreshTime);
+        if(FSAmount < MaxFSAmount)
+        {
+            FSAmount++;
+            if (FSAmount > MaxFSAmount)
+            {
+                FSAmount = MaxFSAmount;
+            }
+        }
     }
 }

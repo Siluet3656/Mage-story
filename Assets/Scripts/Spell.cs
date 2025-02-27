@@ -6,8 +6,12 @@ public class Spell : MonoBehaviour
 {
     [SerializeField] private float SpellSpeed = 0;
     [SerializeField] private int FireballDamage = 0;
+    [SerializeField] private GameObject FB_blastPrefub = null;
     private Rigidbody2D spellrb = null;
     private Enemy Target = null;
+    private float distanceToTarget = 0;
+    Vector2 direction = new Vector2(0,0);
+    float angle = 0;
 
     private float MinimumDist = 0.3f;
 
@@ -16,24 +20,31 @@ public class Spell : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        Vector2 direction = Target.transform.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        spellrb.velocity = direction.normalized * SpellSpeed;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        float distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-
-        if (distanceToTarget < MinimumDist)
+        if (Target == null)
         {
-            DoDamage();
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+            if (distanceToTarget < MinimumDist)
+            {
+                Blast();
+            }
+
+            direction = Target.transform.position - transform.position;
+            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            spellrb.velocity = direction.normalized * SpellSpeed;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
 
-    private void DoDamage()
+    private void Blast()
     {
         if(Target != null)
         {
-            Target.gameObject.GetComponent<HP>().TakeDamage(FireballDamage);
+            Instantiate(FB_blastPrefub, transform.position, Quaternion.identity).GetComponent<FB_blast>().SetDamage(FireballDamage);
             Destroy(this.gameObject);
         }
     }
@@ -41,5 +52,10 @@ public class Spell : MonoBehaviour
     public void SetTarget (Enemy Target)
     {
         this.Target = Target;
+    }
+
+    public Enemy GetTarget()
+    {
+        return this.Target;
     }
 }
