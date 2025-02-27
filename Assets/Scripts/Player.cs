@@ -13,22 +13,27 @@ public class Player : MonoBehaviour
         frost_whirlwind,
         Spike
     }
-
+    [Header("Spell")]
     [SerializeField] private Image CastBar = null;
+    [SerializeField] private float FireballCastTime = 0f;
+    [SerializeField] private GameObject FireBallPrefab = null;
     private bool isCasting = false;
     private float Progress = 0f;
+    private KeyCode InterruptCastKey = KeyCode.X;
 
-    [SerializeField] private float FireballCastTime = 0f;
-    [SerializeField] private int FireballDamage = 0;
 
-    [SerializeField] private float Speed = 0;
+    [Header("Movement")]
+    [SerializeField] private float MaxSpeed = 0;
+    [SerializeField] private float SlowFactor = 0;
+    private float Speed = 0;
     private Rigidbody2D rb;
     private Vector2 Movement;
     private Animator anim;
 
+    [Header("Target system")]
+    [SerializeField] private float interactionRange  = 0;
     private KeyCode TargetingKey = KeyCode.Tab;
     private KeyCode Cast1Key = KeyCode.Alpha1;
-    [SerializeField] private float interactionRange  = 0;
     private Enemy currentTarget = null;
     private Enemy TargetCastingTo = null;
     private List<Enemy> EnemiesInRange = new List<Enemy>();
@@ -52,14 +57,15 @@ public class Player : MonoBehaviour
             TrySelectTarget();
         }
 
-        if (currentTarget != null)
-        {
-            CheckTargetDistance();
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             HandleMouseClick();
+        }
+
+        if (Input.GetKeyDown(InterruptCastKey))
+        {
+            StopCoroutine("FireballCast");
+            CastStop();
         }
 
         if (Input.GetKeyDown(Cast1Key))
@@ -70,8 +76,15 @@ public class Player : MonoBehaviour
                 CastSpell(SpellType.Fireball);
             }
         }
+
+        if (currentTarget != null)
+        {
+            CheckTargetDistance();
+        }
+
         if (isCasting)
         {
+            Speed = MaxSpeed/SlowFactor;
             if (Progress <= 1f)
             {
                 Progress += 1f / FireballCastTime * Time.deltaTime;
@@ -81,6 +94,10 @@ public class Player : MonoBehaviour
             {
                 CastBar.fillAmount = 1f;
             }
+        }
+        else
+        {
+            Speed = MaxSpeed;
         }
     }
 
@@ -136,6 +153,8 @@ public class Player : MonoBehaviour
             if (distanceToTarget > interactionRange)
             {
                 ClearTarget();
+                StopCoroutine("FireballCast");
+                CastStop();
             }
     }
 
@@ -194,13 +213,20 @@ public class Player : MonoBehaviour
 
     private IEnumerator FireballCast()
     {
+        Spell spell;
         isCasting = true;
         yield return new WaitForSeconds(FireballCastTime);
         if (TargetCastingTo != null)
         {
-            TargetCastingTo.gameObject.GetComponent<HP>().TakeDamage(FireballDamage);
+            spell = Instantiate(FireBallPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(TargetCastingTo);
         }
-        TargetCastingTo = null;
+        CastStop();
+    }
+
+    private void CastStop ()
+    {
+         TargetCastingTo = null;
         isCasting = false;
         Progress = 0f;
         CastBar.fillAmount = Progress;
