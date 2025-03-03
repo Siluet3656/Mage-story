@@ -6,29 +6,32 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public enum SpellType
-    {
-        Fireball,
-        Zap,
-        frost_whirlwind,
-        Spike
-    }
     [Header("Spell")]
     [SerializeField] private Image CastBar = null;
     [SerializeField] private Image RemainderBar = null;
     [SerializeField] private Image[] FireShards = null;
+    [SerializeField] private Image[] FrostShards = null;
     [Space]
     [SerializeField] private float FS_RefreshTime = 0f;
     [SerializeField] private float FireballCastTime = 0f;
     [SerializeField] private GameObject FireBallPrefab = null;
+    [Space]
+    [SerializeField] private float FrS_RefreshTime = 0f;
+    [SerializeField] private float frost_whirlwindCastTime = 0f;
+    [SerializeField] private GameObject frost_whirlwindPrefab = null;
+    private KeyCode Cast1Key = KeyCode.Alpha1;
+    private KeyCode Cast2Key = KeyCode.Alpha2;
+    private KeyCode InterruptCastKey = KeyCode.X;
     private const int MaxRemainderAmount = 100;
     private const int MaxFSAmount = 3;
+    private const int MaxFrSAmount = 3;
     private bool isCasting = false;
     private float CastProgress = 0f;
     private float[] FS_RefreshProgress = new float[MaxFSAmount];
-    private KeyCode InterruptCastKey = KeyCode.X;
+    private float[] FrS_RefreshProgress = new float[MaxFrSAmount];
     private int RemainderAmount = 0;
     private int FSAmount = 0;
+    private int FrSAmount = 0;
 
     [Header("Movement")]
     [SerializeField] private float MaxSpeed = 0;
@@ -41,7 +44,6 @@ public class Player : MonoBehaviour
     [Header("Target system")]
     [SerializeField] private float interactionRange  = 0;
     private KeyCode TargetingKey = KeyCode.Tab;
-    private KeyCode Cast1Key = KeyCode.Alpha1;
     private Enemy currentTarget = null;
     private Enemy TargetCastingTo = null;
     private List<Enemy> EnemiesInRange = new List<Enemy>();
@@ -52,10 +54,12 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         FSAmount = MaxFSAmount;
+        FrSAmount = MaxFrSAmount;
 
         for (var frp = 0; frp < MaxFSAmount; frp++)
         {
             FS_RefreshProgress[frp] = 1f;
+            FrS_RefreshProgress[frp] = 1f;
         }
     }
 
@@ -92,6 +96,15 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(Cast2Key))
+        {
+            if (currentTarget != null)
+            {
+                TargetCastingTo = currentTarget;
+                CastSpell(SpellType.frost_whirlwind);
+            }
+        }
+
         if (currentTarget != null)
         {
             CheckTargetDistance();
@@ -124,6 +137,16 @@ public class Player : MonoBehaviour
             {
                 FS_RefreshProgress[j] += 1f / FS_RefreshTime * Time.deltaTime;
                 shard.fillAmount = FS_RefreshProgress[j];
+            }
+            j++;
+        }
+        j = 0;
+        foreach (Image shard in FrostShards)
+        {
+            if (FrS_RefreshProgress[j] <= 1f)
+            {
+                FrS_RefreshProgress[j] += 1f / FrS_RefreshTime * Time.deltaTime;
+                shard.fillAmount = FrS_RefreshProgress[j];
             }
             j++;
         }
@@ -177,7 +200,7 @@ public class Player : MonoBehaviour
 
     private void CheckTargetDistance()
     {
-        float distanceToTarget = Vector2.Distance(transform.position, currentTarget.transform.position);
+        float distanceToTarget = Vector2.Distance(this.transform.position, currentTarget.transform.position);
             if (distanceToTarget > interactionRange)
             {
                 ClearTarget();
@@ -234,7 +257,13 @@ public class Player : MonoBehaviour
                 //enemy.Slow(2.0f);
                 break;
             case SpellType.frost_whirlwind:
-                //enemy.Heal(15);
+                if (!isCasting)
+                {
+                    if (FrSAmount > 0)
+                    {
+                        StartCoroutine("frost_whirlwindCast");
+                    }
+                }
                 break;
             case SpellType.Spike:
                 //enemy.ApplyPoison(5, 3);
@@ -252,6 +281,20 @@ public class Player : MonoBehaviour
             spell = Instantiate(FireBallPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
             UseFS();
+        }
+        CastStop();
+    }
+
+    private IEnumerator frost_whirlwindCast()
+    {
+        Spell spell;
+        isCasting = true;
+        yield return new WaitForSeconds(frost_whirlwindCastTime);
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(frost_whirlwindPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(TargetCastingTo);
+            UseFrS();
         }
         CastStop();
     }
@@ -286,6 +329,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void UseFrS()
+    {
+        if(FrSAmount > 0)
+        {
+            FrSAmount--;
+            GainRemainder(20);
+            StartCoroutine("FrS_Refreshing");
+        }
+    }
+
     private IEnumerator FS_Refreshing()
     {
         int k = 0;
@@ -307,5 +360,28 @@ public class Player : MonoBehaviour
                 FSAmount = MaxFSAmount;
             }
         }
+    }
+
+    private IEnumerator FrS_Refreshing()
+    {
+        int k = 0;
+        foreach (Image shard in FrostShards)
+        {
+            if (FrS_RefreshProgress[k] >= 1f)
+            {
+                FrS_RefreshProgress[k] = 0f;
+                break;
+            }
+            k++;
+        }
+        yield return new WaitForSeconds(FrS_RefreshTime);
+        if(FrSAmount < MaxFrSAmount)
+        {
+            FrSAmount++;
+            if (FrSAmount > MaxFrSAmount)
+            {
+                FrSAmount = MaxFrSAmount;
+            }
+        }        
     }
 }

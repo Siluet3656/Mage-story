@@ -1,17 +1,58 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]private Vector2[] PatrolPoints;
+    [SerializeField]private Transform[] PatrolPoints;
     [SerializeField]private SpriteRenderer TargetedSR = null;
+    [SerializeField]private float MaxSpeed = 0;
+    [SerializeField]private float MinWaitingTime = 0;
+    [SerializeField]private float MaxWaitingTime = 10;
+    private Rigidbody2D rb;
     private Color OriginalColor;
     private Color TargetedColor;
     private bool isTargeted = false;
+    private bool isPatrolling = false;
+    private float Speed = 0;
+    private Vector2 Movement;
+    private int CurrentPointToMove = -1;
+    private float PointMinDist = 0.2f;
+    private float distanceToTarget = 0;
+    private float WaitingTime = 0;
 
     private void Start()
     {
         OriginalColor = TargetedSR.color;
         TargetedColor = new Color(1, 0, 0, OriginalColor[3]);
+        if (PatrolPoints.Length != 0)
+        {
+            rb = GetComponent<Rigidbody2D>();
+            Speed = MaxSpeed;
+            PickNextPoint();
+        }
+    }
+
+    private void Update() 
+    {
+        if (isPatrolling)
+        {
+            distanceToTarget = Vector2.Distance(this.transform.position, PatrolPoints[CurrentPointToMove].position);
+            if (distanceToTarget < PointMinDist)
+            {
+                PickNextPoint();
+            }
+            this.Movement = PatrolPoints[CurrentPointToMove].position - this.transform.position;
+            this.Movement = this.Movement.normalized;
+        }
+    }
+
+    private void FixedUpdate() 
+    {
+        if (isPatrolling)
+        {
+            this.rb.MovePosition(this.rb.position + this.Movement * Speed * Time.fixedDeltaTime);
+        }
     }
 
     private void OnDestroy() 
@@ -25,6 +66,24 @@ public class Enemy : MonoBehaviour
                 SpellsToClear[i].SetTarget(nullenemy);
             }
         }
+    }
+    
+    private void PickNextPoint()
+    {
+        isPatrolling = false;
+        WaitingTime = Random.Range(MinWaitingTime,MaxWaitingTime);
+        StartCoroutine("WaitAtPoint");
+    }
+
+    private IEnumerator WaitAtPoint()
+    {
+        yield return new WaitForSeconds(WaitingTime);
+        CurrentPointToMove++;
+        if (CurrentPointToMove >= PatrolPoints.Length)
+        {
+            CurrentPointToMove = 0;
+        }
+        isPatrolling = true;
     }
 
     public void Target()
@@ -42,5 +101,15 @@ public class Enemy : MonoBehaviour
     public bool CheckTargetStatus()
     {
         return this.isTargeted;
+    }
+
+    public void SetSpeed(float Speed)
+    {
+        this.Speed = Speed;
+    }
+
+    public float GetSpeed()
+    {
+        return Speed;
     }
 }
