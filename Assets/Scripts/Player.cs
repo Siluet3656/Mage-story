@@ -296,7 +296,6 @@ public class Player : MonoBehaviour
                 FS_RefreshProgress[k] = 0f;
                 break;
             }
-            Debug.Log(FS_RefreshProgress[k]);
             k++;
         }
         yield return new WaitForSeconds(FS_RefreshTime);

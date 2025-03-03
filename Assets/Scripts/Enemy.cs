@@ -2,14 +2,15 @@
 
 public class Enemy : MonoBehaviour
 {
-    private bool isTargeted = false;
-    [SerializeField]private SpriteRenderer sr = null;
+    [SerializeField]private Vector2[] PatrolPoints;
+    [SerializeField]private SpriteRenderer TargetedSR = null;
     private Color OriginalColor;
     private Color TargetedColor;
+    private bool isTargeted = false;
 
     private void Start()
     {
-        OriginalColor = sr.color;
+        OriginalColor = TargetedSR.color;
         TargetedColor = new Color(1, 0, 0, OriginalColor[3]);
     }
 
@@ -29,13 +30,13 @@ public class Enemy : MonoBehaviour
     public void Target()
     {
         isTargeted = true;
-        sr.color = TargetedColor;
+        TargetedSR.color = TargetedColor;
     }
 
     public void ResetTarget()
     {
         isTargeted = false;
-        sr.color = OriginalColor;
+        TargetedSR.color = OriginalColor;
     }
 
     public bool CheckTargetStatus()

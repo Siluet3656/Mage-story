@@ -33,7 +33,6 @@ public class HP : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Объект уничтожен: " + gameObject.name);
         Destroy(gameObject);
     }
 }
