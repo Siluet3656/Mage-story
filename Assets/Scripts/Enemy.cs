@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]private Transform[] PatrolPoints;
     [SerializeField]private SpriteRenderer TargetedSR = null;
-    [SerializeField]private float MaxSpeed = 0;
+    [SerializeField]private SpeedType MaxSpeed;
     [SerializeField]private float MinWaitingTime = 0;
     [SerializeField]private float MaxWaitingTime = 10;
     private Rigidbody2D rb;
@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
         if (PatrolPoints.Length != 0)
         {
             rb = GetComponent<Rigidbody2D>();
-            Speed = MaxSpeed;
+            Speed = (int)MaxSpeed;
             PickNextPoint();
         }
     }
@@ -108,8 +108,8 @@ public class Enemy : MonoBehaviour
         this.Speed = Speed;
     }
 
-    public float GetSpeed()
+    public SpeedType GetSpeed()
     {
-        return Speed;
+        return MaxSpeed;
     }
 }

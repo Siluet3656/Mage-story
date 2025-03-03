@@ -34,8 +34,8 @@ public class Player : MonoBehaviour
     private int FrSAmount = 0;
 
     [Header("Movement")]
-    [SerializeField] private float MaxSpeed = 0;
-    [SerializeField] private float SlowFactor = 0;
+    [SerializeField] private SpeedType MaxSpeed;
+    //[SerializeField] private float SlowFactor = 0;
     private float Speed = 0;
     private Rigidbody2D rb;
     private Vector2 Movement;
@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
 
         if (isCasting)
         {
-            Speed = MaxSpeed/SlowFactor;
+            Speed = (int)SpeedType.Slow;
             if (CastProgress <= 1f)
             {
                 CastProgress += 1f / FireballCastTime * Time.deltaTime;
@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Speed = MaxSpeed;
+            Speed = (int)MaxSpeed;
         }
 
         RemainderBar.fillAmount = (float)RemainderAmount/MaxRemainderAmount;

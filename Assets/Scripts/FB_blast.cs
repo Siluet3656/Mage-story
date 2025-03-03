@@ -9,14 +9,14 @@ public class FB_blast : MonoBehaviour
     private int Damage = 0;
 
     private void Start() {
-        transform.localScale = new Vector3(Radius,Radius,1);
+        transform.localScale = new Vector3(Radius*2,Radius*2,1);
 
         Enemy[] enemies = FindObjectsOfType<Enemy>();
 
         foreach (Enemy enemy in enemies)
         {
             float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <= Radius/10)
+            if (distanceToEnemy <= Radius)
             {
                 enemy.gameObject.GetComponent<HP>().TakeDamage(Damage);
             }
