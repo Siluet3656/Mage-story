@@ -2324,7 +2324,7 @@ MonoBehaviour:
   - {fileID: 1771618708}
   - {fileID: 2070904631}
   TargetedSR: {fileID: 1102370645}
-  MaxSpeed: 6
+  speedType: 0
   MinWaitingTime: 1
   MaxWaitingTime: 4
 --- !u!4 &910594243
@@ -2468,7 +2468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35f13a5f767fa494bbb742e3af82d3c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlowDuration: 0
+  slowDuration: 3
 --- !u!1 &936719686
 GameObject:
   m_ObjectHideFlags: 0
@@ -3149,7 +3149,7 @@ MonoBehaviour:
   FrS_RefreshTime: 10
   frost_whirlwindCastTime: 0.5
   frost_whirlwindPrefab: {fileID: 5689801273313810728, guid: ea59410bb318b284a8de8f5e1a329e4c, type: 3}
-  MaxSpeed: 6
+  speedType: 1
   interactionRange: 10
 --- !u!4 &1418598206
 Transform:

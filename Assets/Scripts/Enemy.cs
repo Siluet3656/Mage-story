@@ -1,12 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField]private Transform[] PatrolPoints;
     [SerializeField]private SpriteRenderer TargetedSR = null;
-    [SerializeField]private SpeedType MaxSpeed;
+    [SerializeField]private SpeedType speedType;
     [SerializeField]private float MinWaitingTime = 0;
     [SerializeField]private float MaxWaitingTime = 10;
     private Rigidbody2D rb;
@@ -28,7 +27,7 @@ public class Enemy : MonoBehaviour
         if (PatrolPoints.Length != 0)
         {
             rb = GetComponent<Rigidbody2D>();
-            Speed = (int)MaxSpeed;
+            Speed = SpeedTypeData.GetDataByID(speedType);
             PickNextPoint();
         }
     }
@@ -103,13 +102,13 @@ public class Enemy : MonoBehaviour
         return this.isTargeted;
     }
 
-    public void SetSpeed(float Speed)
+    public void SetSpeed(float speed)
     {
-        this.Speed = Speed;
+        this.Speed = speed;
     }
 
     public SpeedType GetSpeed()
     {
-        return MaxSpeed;
+        return this.speedType;
     }
 }
