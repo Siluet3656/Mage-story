@@ -1,16 +1,24 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Debuff : MonoBehaviour
 {
     [Header("Duration")]
-    [SerializeField] private int SlowDuration = 0;
+    [SerializeField] private int slowDuration = 0;
 
+    private bool isSlowed = false;
    public void DebuffTarget(DebuffType dtype, Enemy dtarget)
    {
         switch (dtype)
         {
             case DebuffType.Slow:
-                dtarget.SetSpeed((int)dtarget.GetSpeed()/2);
+                if (!isSlowed)
+                {
+                    dtarget.SetSpeed(SpeedTypeData.GetDataByID(dtarget.GetSpeed() - 1));
+                    isSlowed = true;
+                    StartCoroutine(RemoveDebuffFromTarget(DebuffType.Slow, dtarget));
+                }
+
                 break; 
         }
    }
@@ -25,12 +33,14 @@ public class Debuff : MonoBehaviour
         }
    }
 
-   public void RemoveDebuffFromTarget(DebuffType dtype, Enemy dtarget)
+   public IEnumerator RemoveDebuffFromTarget(DebuffType dtype, Enemy dtarget)
    {
         switch (dtype)
         {
             case DebuffType.Slow:
-                
+                yield return new WaitForSeconds(slowDuration);
+                isSlowed = false;
+                dtarget.SetSpeed(SpeedTypeData.GetDataByID(dtarget.GetSpeed()));
                 break; 
         }
    }
