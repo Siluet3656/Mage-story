@@ -54,7 +54,17 @@ public class Spell : MonoBehaviour
                 transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 break;
             case SpellType.Spike:
-                //enemy.ApplyPoison(5, 3);
+                distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                if (distanceToTarget < MinimumDist)
+                {
+                    Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, Target);
+                    Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                    Destroy(this.gameObject);
+                }
+                direction = Target.transform.position - transform.position;
+                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                spellrb.velocity = direction.normalized * SpellSpeed;
+                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 break;
         }
     }

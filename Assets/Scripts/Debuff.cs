@@ -1,13 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Debuff : MonoBehaviour
 {
-    [Header("Duration")]
+    [Header("Debuffs")]
     [SerializeField] private int slowDuration = 0;
+    [Space]
+    [SerializeField] private int poisonDuration = 0;
+    [SerializeField] private int poisonDamage = 0;
+    [SerializeField] private int amountOfTicks = 0;
 
     private bool isSlowed = false;
-   public void DebuffTarget(DebuffType dtype, Enemy dtarget)
+    private bool isPoisoned = false;
+
+    private float poisonTickRatio;
+
+    private void Start()
+    {
+        poisonTickRatio = (float)poisonDuration / (float)amountOfTicks;
+    }
+
+    public void DebuffTarget(DebuffType dtype, Enemy dtarget)
    {
         switch (dtype)
         {
@@ -18,8 +32,14 @@ public class Debuff : MonoBehaviour
                     isSlowed = true;
                     StartCoroutine(RemoveDebuffFromTarget(DebuffType.Slow, dtarget));
                 }
-
                 break; 
+            case DebuffType.Poison:
+                if (!isPoisoned)
+                {
+                    isPoisoned = true;
+                    StartCoroutine(RemoveDebuffFromTarget(DebuffType.Poison, dtarget));
+                }
+                break;
         }
    }
 
@@ -33,7 +53,7 @@ public class Debuff : MonoBehaviour
         }
    }
 
-   public IEnumerator RemoveDebuffFromTarget(DebuffType dtype, Enemy dtarget)
+   private IEnumerator RemoveDebuffFromTarget(DebuffType dtype, Enemy dtarget)
    {
         switch (dtype)
         {
@@ -42,10 +62,18 @@ public class Debuff : MonoBehaviour
                 isSlowed = false;
                 dtarget.SetSpeed(SpeedTypeData.GetDataByID(dtarget.GetSpeed()));
                 break; 
+            case DebuffType.Poison:
+                for (int i = 0; i < amountOfTicks; i++)
+                {
+                    yield return new WaitForSeconds(poisonTickRatio);
+                    dtarget.gameObject.GetComponent<HP>().TakeDamage(poisonDamage);
+                }
+                isPoisoned = false;
+                break;
         }
    }
 
-   public void RemoveDebuffFromTarget(DebuffType dtype, Player dtarget)
+   private void RemoveDebuffFromTarget(DebuffType dtype, Player dtarget)
    {
         switch (dtype)
         {

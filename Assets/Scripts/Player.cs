@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Image RemainderBar = null;
     [SerializeField] private Image[] FireShards = null;
     [SerializeField] private Image[] FrostShards = null;
+    [SerializeField] private Image[] EarthShards = null;
     [Space]
     [SerializeField] private float FS_RefreshTime = 0f;
     [SerializeField] private float FireballCastTime = 0f;
@@ -19,19 +20,28 @@ public class Player : MonoBehaviour
     [SerializeField] private float FrS_RefreshTime = 0f;
     [SerializeField] private float frost_whirlwindCastTime = 0f;
     [SerializeField] private GameObject frost_whirlwindPrefab = null;
+    [Space]
+    [SerializeField] private float ES_RefreshTime = 0f;
+    [SerializeField] private float SpikeCastTime = 0f;
+    [SerializeField] private GameObject SpikePrefab = null;
     private KeyCode Cast1Key = KeyCode.Alpha1;
     private KeyCode Cast2Key = KeyCode.Alpha2;
+    private KeyCode Cast3Key = KeyCode.Alpha3;
+    private KeyCode Cast4Key = KeyCode.Alpha4;
     private KeyCode InterruptCastKey = KeyCode.X;
     private const int MaxRemainderAmount = 100;
     private const int MaxFSAmount = 3;
     private const int MaxFrSAmount = 3;
+    private const int MaxESAmount = 3;
     private bool isCasting = false;
     private float CastProgress = 0f;
     private float[] FS_RefreshProgress = new float[MaxFSAmount];
     private float[] FrS_RefreshProgress = new float[MaxFrSAmount];
+    private float[] ES_RefreshProgress = new float[MaxFrSAmount];
     private int RemainderAmount = 0;
     private int FSAmount = 0;
     private int FrSAmount = 0;
+    private int ESAmount = 0;
 
     [Header("Movement")]
     [SerializeField] private SpeedType speedType;
@@ -54,11 +64,13 @@ public class Player : MonoBehaviour
 
         FSAmount = MaxFSAmount;
         FrSAmount = MaxFrSAmount;
+        ESAmount = MaxESAmount;
 
         for (var frp = 0; frp < MaxFSAmount; frp++)
         {
             FS_RefreshProgress[frp] = 1f;
             FrS_RefreshProgress[frp] = 1f;
+            ES_RefreshProgress[frp] = 1f;
         }
     }
 
@@ -101,6 +113,15 @@ public class Player : MonoBehaviour
             {
                 TargetCastingTo = currentTarget;
                 CastSpell(SpellType.frost_whirlwind);
+            }
+        }
+        
+        if (Input.GetKeyDown(Cast3Key))
+        {
+            if (currentTarget != null)
+            {
+                TargetCastingTo = currentTarget;
+                CastSpell(SpellType.Spike);
             }
         }
 
@@ -146,6 +167,16 @@ public class Player : MonoBehaviour
             {
                 FrS_RefreshProgress[j] += 1f / FrS_RefreshTime * Time.deltaTime;
                 shard.fillAmount = FrS_RefreshProgress[j];
+            }
+            j++;
+        }
+        j = 0;
+        foreach (Image shard in EarthShards)
+        {
+            if (ES_RefreshProgress[j] <= 1f)
+            {
+                ES_RefreshProgress[j] += 1f / ES_RefreshTime * Time.deltaTime;
+                shard.fillAmount = ES_RefreshProgress[j];
             }
             j++;
         }
@@ -247,6 +278,7 @@ public class Player : MonoBehaviour
                 {
                     if (FSAmount > 0)
                     {
+                        CastBar.color = new Color(1,0.2f,0.2f);
                         StartCoroutine("FireballCast");
                     }
                 }
@@ -260,12 +292,20 @@ public class Player : MonoBehaviour
                 {
                     if (FrSAmount > 0)
                     {
+                        CastBar.color = new Color(0.2f,0.2f,1);
                         StartCoroutine("frost_whirlwindCast");
                     }
                 }
                 break;
             case SpellType.Spike:
-                //enemy.ApplyPoison(5, 3);
+                if (!isCasting)
+                {
+                    if (ESAmount > 0)
+                    {
+                        CastBar.color = new Color(0.2f,1,0.2f);
+                        StartCoroutine("SpikeCast");
+                    }
+                }
                 break;
         }
     }
@@ -294,6 +334,20 @@ public class Player : MonoBehaviour
             spell = Instantiate(frost_whirlwindPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
             UseFrS();
+        }
+        CastStop();
+    }
+    
+    private IEnumerator SpikeCast()
+    {
+        Spell spell;
+        isCasting = true;
+        yield return new WaitForSeconds(SpikeCastTime);
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(SpikePrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(TargetCastingTo);
+            UseES();
         }
         CastStop();
     }
@@ -335,6 +389,16 @@ public class Player : MonoBehaviour
             FrSAmount--;
             GainRemainder(20);
             StartCoroutine("FrS_Refreshing");
+        }
+    }
+    
+    private void UseES()
+    {
+        if(ESAmount > 0)
+        {
+            ESAmount--;
+            GainRemainder(20);
+            StartCoroutine("ES_Refreshing");
         }
     }
 
@@ -382,5 +446,28 @@ public class Player : MonoBehaviour
                 FrSAmount = MaxFrSAmount;
             }
         }        
+    }
+    
+    private IEnumerator ES_Refreshing()
+    {
+        int k = 0;
+        foreach (Image shard in EarthShards)
+        {
+            if (ES_RefreshProgress[k] >= 1f)
+            {
+                ES_RefreshProgress[k] = 0f;
+                break;
+            }
+            k++;
+        }
+        yield return new WaitForSeconds(ES_RefreshTime);
+        if(ESAmount < MaxESAmount)
+        {
+            ESAmount++;
+            if (ESAmount > MaxESAmount)
+            {
+                ESAmount = MaxESAmount;
+            }
+        }
     }
 }
