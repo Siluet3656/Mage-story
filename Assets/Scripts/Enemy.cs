@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     private float PointMinDist = 0.2f;
     private float distanceToTarget = 0;
     private float WaitingTime = 0;
-
+    
     private void Start()
     {
         OriginalColor = TargetedSR.color;
@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
     {
         if (isPatrolling)
         {
-            this.rb.MovePosition(this.rb.position + this.Movement * Speed * Time.fixedDeltaTime);
+            this.rb.MovePosition(this.rb.position + this.Movement * (Speed * Time.fixedDeltaTime));
         }
     }
 
