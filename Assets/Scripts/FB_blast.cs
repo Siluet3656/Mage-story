@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class FB_blast : MonoBehaviour
 {
-    [SerializeField] private int Radius = 0;
+    [SerializeField] private RangeType rangeType;
     [SerializeField] private float BlastingTime = 0f;
     private int Damage = 0;
+    private float radius = 0;
 
     private void Start() {
-        transform.localScale = new Vector3(Radius*2,Radius*2,1);
+        radius = RangeTypeData.GetDataByID(rangeType);
+        transform.localScale = new Vector3(radius*2,radius*2,1);
 
         Enemy[] enemies = FindObjectsOfType<Enemy>();
-
         foreach (Enemy enemy in enemies)
         {
             float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <= Radius)
+            if (distanceToEnemy <= radius)
             {
                 enemy.gameObject.GetComponent<HP>().TakeDamage(Damage);
             }
