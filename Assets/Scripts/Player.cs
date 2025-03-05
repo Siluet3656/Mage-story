@@ -12,18 +12,22 @@ public class Player : MonoBehaviour
     [SerializeField] private Image[] FireShards = null;
     [SerializeField] private Image[] FrostShards = null;
     [SerializeField] private Image[] EarthShards = null;
-    [Space]
     [SerializeField] private float FS_RefreshTime = 0f;
+    [SerializeField] private float FrS_RefreshTime = 0f;
+    [SerializeField] private float ES_RefreshTime = 0f;
+    [Space]
     [SerializeField] private float FireballCastTime = 0f;
     [SerializeField] private GameObject FireBallPrefab = null;
     [Space]
-    [SerializeField] private float FrS_RefreshTime = 0f;
     [SerializeField] private float frost_whirlwindCastTime = 0f;
     [SerializeField] private GameObject frost_whirlwindPrefab = null;
     [Space]
-    [SerializeField] private float ES_RefreshTime = 0f;
     [SerializeField] private float SpikeCastTime = 0f;
     [SerializeField] private GameObject SpikePrefab = null;
+    [Space] 
+    [SerializeField] private int ZapCost = 0;
+    [SerializeField] private GameObject ZapPrefub = null;
+    
     private KeyCode Cast1Key = KeyCode.Alpha1;
     private KeyCode Cast2Key = KeyCode.Alpha2;
     private KeyCode Cast3Key = KeyCode.Alpha3;
@@ -35,6 +39,7 @@ public class Player : MonoBehaviour
     private const int MaxESAmount = 3;
     private bool isCasting = false;
     private float CastProgress = 0f;
+    private float CurrentCastCastTime = 0f;
     private float[] FS_RefreshProgress = new float[MaxFSAmount];
     private float[] FrS_RefreshProgress = new float[MaxFrSAmount];
     private float[] ES_RefreshProgress = new float[MaxFrSAmount];
@@ -81,7 +86,12 @@ public class Player : MonoBehaviour
 
         anim.SetFloat("MoveX", Movement.x);
         anim.SetFloat("MoveY",  Movement.y);
-
+        
+        if (currentTarget != null)
+        {
+            CheckTargetDistance();
+        }
+        
         if (Input.GetKeyDown(TargetingKey))
         {
             TrySelectTarget();
@@ -94,7 +104,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(InterruptCastKey))
         {
-            StopCoroutine("FireballCast");
+            StopAllCasts();
             CastStop();
         }
 
@@ -124,10 +134,14 @@ public class Player : MonoBehaviour
                 CastSpell(SpellType.Spike);
             }
         }
-
-        if (currentTarget != null)
+        
+        if (Input.GetKeyDown(Cast4Key))
         {
-            CheckTargetDistance();
+            if (currentTarget != null)
+            {
+                TargetCastingTo = currentTarget;
+                CastSpell(SpellType.Zap);
+            }
         }
 
         if (isCasting)
@@ -135,7 +149,7 @@ public class Player : MonoBehaviour
             Speed = SpeedTypeData.GetDataByID(speedType - 1);
             if (CastProgress <= 1f)
             {
-                CastProgress += 1f / FireballCastTime * Time.deltaTime;
+                CastProgress += 1f / CurrentCastCastTime * Time.deltaTime;
                 CastBar.fillAmount = CastProgress;
             }
             else
@@ -184,7 +198,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        this.rb.MovePosition(this.rb.position + this.Movement * Speed * Time.fixedDeltaTime);
+        this.rb.MovePosition(this.rb.position + this.Movement * (Speed * Time.fixedDeltaTime));
     }
 
     private void TrySelectTarget()
@@ -234,7 +248,7 @@ public class Player : MonoBehaviour
             if (distanceToTarget > interactionRange)
             {
                 ClearTarget();
-                StopCoroutine("FireballCast");
+                StopAllCasts();
                 CastStop();
             }
     }
@@ -268,6 +282,22 @@ public class Player : MonoBehaviour
             currentTarget = null;
         }
     }
+    
+    private void CastStop()
+    {
+        TargetCastingTo = null;
+        isCasting = false;
+        CastProgress = 0f;
+        CastBar.fillAmount = CastProgress;
+    }
+    
+    private void StopAllCasts()
+    {
+        StopCoroutine("FireballCast");
+        StopCoroutine("frost_whirlwindCast");
+        StopCoroutine("SpikeCast");
+        CastStop();
+    }
 
     public void CastSpell(SpellType spellType)
     {
@@ -278,20 +308,27 @@ public class Player : MonoBehaviour
                 {
                     if (FSAmount > 0)
                     {
+                        CurrentCastCastTime = FireballCastTime;
                         CastBar.color = new Color(1,0.2f,0.2f);
                         StartCoroutine("FireballCast");
                     }
                 }
                 break;
             case SpellType.Zap:
-                //HP.TakeDamage(5);
-                //enemy.Slow(2.0f);
+                if (!isCasting)
+                {
+                    if (RemainderAmount >= ZapCost)
+                    {
+                        ZapCast();
+                    }
+                }
                 break;
             case SpellType.frost_whirlwind:
                 if (!isCasting)
                 {
                     if (FrSAmount > 0)
                     {
+                        CurrentCastCastTime = frost_whirlwindCastTime;
                         CastBar.color = new Color(0.2f,0.2f,1);
                         StartCoroutine("frost_whirlwindCast");
                     }
@@ -302,6 +339,7 @@ public class Player : MonoBehaviour
                 {
                     if (ESAmount > 0)
                     {
+                        CurrentCastCastTime = SpikeCastTime;
                         CastBar.color = new Color(0.2f,1,0.2f);
                         StartCoroutine("SpikeCast");
                     }
@@ -352,12 +390,19 @@ public class Player : MonoBehaviour
         CastStop();
     }
 
-    private void CastStop()
+    private void ZapCast()
     {
-        TargetCastingTo = null;
-        isCasting = false;
-        CastProgress = 0f;
-        CastBar.fillAmount = CastProgress;
+        Spell spell;
+        isCasting = true;
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(ZapPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.GetComponent<LineRenderer>().SetPosition(0,this.transform.position);
+            spell.GetComponent<LineRenderer>().SetPosition(1,TargetCastingTo.transform.position);
+            spell.SetTarget(TargetCastingTo);
+            RemainderAmount -= ZapCost;
+        }
+        CastStop();
     }
 
     private void GainRemainder(int amount)

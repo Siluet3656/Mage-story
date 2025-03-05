@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Debuff : MonoBehaviour
 {
+    [Header("Panel")] 
+    [SerializeField] private StatusPanel statusPanel;
+    
     [Header("Debuffs")]
     [SerializeField] private int slowDuration = 0;
     [Space]
@@ -30,6 +33,7 @@ public class Debuff : MonoBehaviour
                 {
                     dtarget.SetSpeed(SpeedTypeData.GetDataByID(dtarget.GetSpeed() - 1));
                     isSlowed = true;
+                    statusPanel.AddStatus(DebuffType.Slow);
                     StartCoroutine(RemoveDebuffFromTarget(DebuffType.Slow, dtarget));
                 }
                 break; 
@@ -37,6 +41,7 @@ public class Debuff : MonoBehaviour
                 if (!isPoisoned)
                 {
                     isPoisoned = true;
+                    statusPanel.AddStatus(DebuffType.Poison);
                     StartCoroutine(RemoveDebuffFromTarget(DebuffType.Poison, dtarget));
                 }
                 break;
@@ -59,8 +64,9 @@ public class Debuff : MonoBehaviour
         {
             case DebuffType.Slow:
                 yield return new WaitForSeconds(slowDuration);
-                isSlowed = false;
                 dtarget.SetSpeed(SpeedTypeData.GetDataByID(dtarget.GetSpeed()));
+                isSlowed = false;
+                statusPanel.RemoveStatus(DebuffType.Slow);
                 break; 
             case DebuffType.Poison:
                 for (int i = 0; i < amountOfTicks; i++)
@@ -69,6 +75,7 @@ public class Debuff : MonoBehaviour
                     dtarget.gameObject.GetComponent<HP>().TakeDamage(poisonDamage);
                 }
                 isPoisoned = false;
+                statusPanel.RemoveStatus(DebuffType.Poison);
                 break;
         }
    }
