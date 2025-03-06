@@ -3,7 +3,8 @@ public enum RangeType
     {
         Small,
         Medium,
-        Large
+        Large,
+        Giant
     }
 
 public class RangeTypeData : MonoBehaviour
@@ -13,6 +14,7 @@ public class RangeTypeData : MonoBehaviour
         const float small = 2;
         const float medium = 4;
         const float large = 8;
+        const float giant = 12;
         switch (id)
         {
             case RangeType.Small:
@@ -23,6 +25,9 @@ public class RangeTypeData : MonoBehaviour
                 break;
             case RangeType.Large:
                 return large;
+                break;
+            case RangeType.Giant:
+                return giant;
                 break;
         }
         return 0;

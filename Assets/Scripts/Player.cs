@@ -52,13 +52,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Image BlinkRefreshBar;
     [SerializeField] private float BlinkDist = 0f;
     [SerializeField] private float blinkCD = 0f;
+    private RaycastHit2D blinkRCH;
     private KeyCode BlinkKey = KeyCode.Space;
     private bool isBlinked = false;
     private float BlinkRefreshProgress = 0f;
     private float Speed = 0;
     private Rigidbody2D rb;
-    private Vector2 Movement;
     private Animator anim;
+    private Vector2 Movement;
 
     [Header("Target system")]
     [SerializeField] private float interactionRange  = 0;
@@ -577,7 +578,25 @@ public class Player : MonoBehaviour
     {
         if (!isBlinked)
         {
-            this.rb.position += this.Movement * BlinkDist;
+            blinkRCH = Physics2D.Raycast(this.transform.position, this.Movement);
+            if (blinkRCH.collider != null)
+            {
+                if (blinkRCH.collider.CompareTag("Wall"))
+                {
+                    if (blinkRCH.distance < BlinkDist)
+                    {
+                        this.rb.position += this.Movement * blinkRCH.distance;
+                    }
+                    else
+                    {
+                        this.rb.position += this.Movement * BlinkDist;
+                    }
+                }
+            }
+            else
+            {
+                this.rb.position += this.Movement * BlinkDist;
+            }
             BlinkRefreshBar.fillAmount = 0f;
             StartCoroutine("BlinkRefresh");   
         }
