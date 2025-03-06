@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
     [Space] 
     [SerializeField] private int ZapCost = 0;
     [SerializeField] private GameObject ZapPrefub = null;
-    
     private KeyCode Cast1Key = KeyCode.Alpha1;
     private KeyCode Cast2Key = KeyCode.Alpha2;
     private KeyCode Cast3Key = KeyCode.Alpha3;
@@ -48,8 +47,14 @@ public class Player : MonoBehaviour
     private int FrSAmount = 0;
     private int ESAmount = 0;
 
-    [Header("Movement")]
+    [Header("Movement")] 
     [SerializeField] private SpeedType speedType;
+    [SerializeField] private Image BlinkRefreshBar;
+    [SerializeField] private float BlinkDist = 0f;
+    [SerializeField] private float blinkCD = 0f;
+    private KeyCode BlinkKey = KeyCode.Space;
+    private bool isBlinked = false;
+    private float BlinkRefreshProgress = 0f;
     private float Speed = 0;
     private Rigidbody2D rb;
     private Vector2 Movement;
@@ -77,6 +82,8 @@ public class Player : MonoBehaviour
             FrS_RefreshProgress[frp] = 1f;
             ES_RefreshProgress[frp] = 1f;
         }
+
+        BlinkRefreshBar.fillAmount = 1f;
     }
 
     private void Update() {
@@ -90,6 +97,21 @@ public class Player : MonoBehaviour
         if (currentTarget != null)
         {
             CheckTargetDistance();
+        }
+        else
+        {
+            if (isCasting)
+            {
+                CheckTargetCastingToDistance();
+            }
+        }
+
+        if (Input.GetKeyDown(BlinkKey))
+        {
+            if (Movement.magnitude != 0f)
+            {
+                Blink();
+            }
         }
         
         if (Input.GetKeyDown(TargetingKey))
@@ -112,8 +134,11 @@ public class Player : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                TargetCastingTo = currentTarget;
-                CastSpell(SpellType.Fireball);
+                if (!isCasting)
+                {
+                    TargetCastingTo = currentTarget;
+                    CastSpell(SpellType.Fireball);
+                }
             }
         }
 
@@ -121,8 +146,11 @@ public class Player : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                TargetCastingTo = currentTarget;
-                CastSpell(SpellType.frost_whirlwind);
+                if (!isCasting)
+                {
+                    TargetCastingTo = currentTarget;
+                    CastSpell(SpellType.frost_whirlwind);
+                }
             }
         }
         
@@ -130,8 +158,11 @@ public class Player : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                TargetCastingTo = currentTarget;
-                CastSpell(SpellType.Spike);
+                if (!isCasting)
+                {
+                    TargetCastingTo = currentTarget;
+                    CastSpell(SpellType.Spike);
+                }
             }
         }
         
@@ -139,8 +170,11 @@ public class Player : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                TargetCastingTo = currentTarget;
-                CastSpell(SpellType.Zap);
+                if (!isCasting)
+                {
+                    TargetCastingTo = currentTarget;
+                    CastSpell(SpellType.Zap);
+                }
             }
         }
 
@@ -193,6 +227,19 @@ public class Player : MonoBehaviour
                 shard.fillAmount = ES_RefreshProgress[j];
             }
             j++;
+        }
+        
+        if (isBlinked)
+        {
+            if (BlinkRefreshProgress <= 1f)
+            {
+                BlinkRefreshProgress += 1f / blinkCD * Time.deltaTime;
+                BlinkRefreshBar.fillAmount = BlinkRefreshProgress;
+            }
+            else
+            {
+                BlinkRefreshBar.fillAmount = 1f;
+            }
         }
     }
 
@@ -251,6 +298,16 @@ public class Player : MonoBehaviour
                 StopAllCasts();
                 CastStop();
             }
+    }
+
+    private void CheckTargetCastingToDistance()
+    {
+        float distanceToTarget = Vector2.Distance(this.transform.position, TargetCastingTo.transform.position);
+        if (distanceToTarget > interactionRange)
+        {
+            StopAllCasts();
+            CastStop();
+        }
     }
 
     private void HandleMouseClick()
@@ -514,5 +571,23 @@ public class Player : MonoBehaviour
                 ESAmount = MaxESAmount;
             }
         }
+    }
+
+    private void Blink()
+    {
+        if (!isBlinked)
+        {
+            this.rb.position += this.Movement * BlinkDist;
+            BlinkRefreshBar.fillAmount = 0f;
+            StartCoroutine("BlinkRefresh");   
+        }
+    }
+
+    private IEnumerator BlinkRefresh()
+    {
+        isBlinked = true;
+        yield return new WaitForSeconds(blinkCD);
+        BlinkRefreshProgress = 0f;
+        isBlinked = false;
     }
 }
