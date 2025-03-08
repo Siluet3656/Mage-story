@@ -9,11 +9,11 @@ public enum SpeedType
 
 public class SpeedTypeData : MonoBehaviour
 {
+    const float slow = 2;
+    const float medium = 6;
+    const float fast = 10;
     public static float GetDataByID(SpeedType id)
     {
-        const float slow = 2;
-        const float medium = 6;
-        const float fast = 10;
         switch (id)
         {
             case SpeedType.Slow:

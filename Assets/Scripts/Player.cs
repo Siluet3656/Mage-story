@@ -12,18 +12,21 @@ public class Player : MonoBehaviour
     [SerializeField] private Image[] FireShards = null;
     [SerializeField] private Image[] FrostShards = null;
     [SerializeField] private Image[] EarthShards = null;
-    [Space]
     [SerializeField] private float FS_RefreshTime = 0f;
+    [SerializeField] private float FrS_RefreshTime = 0f;
+    [SerializeField] private float ES_RefreshTime = 0f;
+    [Space]
     [SerializeField] private float FireballCastTime = 0f;
     [SerializeField] private GameObject FireBallPrefab = null;
     [Space]
-    [SerializeField] private float FrS_RefreshTime = 0f;
     [SerializeField] private float frost_whirlwindCastTime = 0f;
     [SerializeField] private GameObject frost_whirlwindPrefab = null;
     [Space]
-    [SerializeField] private float ES_RefreshTime = 0f;
     [SerializeField] private float SpikeCastTime = 0f;
     [SerializeField] private GameObject SpikePrefab = null;
+    [Space] 
+    [SerializeField] private int ZapCost = 0;
+    [SerializeField] private GameObject ZapPrefub = null;
     private KeyCode Cast1Key = KeyCode.Alpha1;
     private KeyCode Cast2Key = KeyCode.Alpha2;
     private KeyCode Cast3Key = KeyCode.Alpha3;
@@ -35,6 +38,7 @@ public class Player : MonoBehaviour
     private const int MaxESAmount = 3;
     private bool isCasting = false;
     private float CastProgress = 0f;
+    private float CurrentCastCastTime = 0f;
     private float[] FS_RefreshProgress = new float[MaxFSAmount];
     private float[] FrS_RefreshProgress = new float[MaxFrSAmount];
     private float[] ES_RefreshProgress = new float[MaxFrSAmount];
@@ -43,12 +47,19 @@ public class Player : MonoBehaviour
     private int FrSAmount = 0;
     private int ESAmount = 0;
 
-    [Header("Movement")]
+    [Header("Movement")] 
     [SerializeField] private SpeedType speedType;
+    [SerializeField] private Image BlinkRefreshBar;
+    [SerializeField] private float BlinkDist = 0f;
+    [SerializeField] private float blinkCD = 0f;
+    private RaycastHit2D blinkRCH;
+    private KeyCode BlinkKey = KeyCode.Space;
+    private bool isBlinked = false;
+    private float BlinkRefreshProgress = 0f;
     private float Speed = 0;
     private Rigidbody2D rb;
-    private Vector2 Movement;
     private Animator anim;
+    private Vector2 Movement;
 
     [Header("Target system")]
     [SerializeField] private float interactionRange  = 0;
@@ -72,6 +83,8 @@ public class Player : MonoBehaviour
             FrS_RefreshProgress[frp] = 1f;
             ES_RefreshProgress[frp] = 1f;
         }
+
+        BlinkRefreshBar.fillAmount = 1f;
     }
 
     private void Update() {
@@ -81,7 +94,27 @@ public class Player : MonoBehaviour
 
         anim.SetFloat("MoveX", Movement.x);
         anim.SetFloat("MoveY",  Movement.y);
+        
+        if (currentTarget != null)
+        {
+            CheckTargetDistance();
+        }
+        else
+        {
+            if (isCasting)
+            {
+                CheckTargetCastingToDistance();
+            }
+        }
 
+        if (Input.GetKeyDown(BlinkKey))
+        {
+            if (Movement.magnitude != 0f)
+            {
+                Blink();
+            }
+        }
+        
         if (Input.GetKeyDown(TargetingKey))
         {
             TrySelectTarget();
@@ -92,42 +125,52 @@ public class Player : MonoBehaviour
             HandleMouseClick();
         }
 
-        if (Input.GetKeyDown(InterruptCastKey))
+        if (isCasting)
         {
-            StopCoroutine("FireballCast");
-            CastStop();
+            if (Input.GetKeyDown(InterruptCastKey))
+            {
+                StopAllCasts();
+                CastStop();
+            }
         }
-
-        if (Input.GetKeyDown(Cast1Key))
+        else
         {
             if (currentTarget != null)
             {
                 TargetCastingTo = currentTarget;
-                CastSpell(SpellType.Fireball);
-            }
-        }
+                
+                if (Input.GetKeyDown(Cast1Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Fireball);
+                    }
+                }
 
-        if (Input.GetKeyDown(Cast2Key))
-        {
-            if (currentTarget != null)
-            {
-                TargetCastingTo = currentTarget;
-                CastSpell(SpellType.frost_whirlwind);
-            }
-        }
+                if (Input.GetKeyDown(Cast2Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Frost_whirlwind);
+                    }
+                }
         
-        if (Input.GetKeyDown(Cast3Key))
-        {
-            if (currentTarget != null)
-            {
-                TargetCastingTo = currentTarget;
-                CastSpell(SpellType.Spike);
+                if (Input.GetKeyDown(Cast3Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Spike);
+                    }
+                }
+        
+                if (Input.GetKeyDown(Cast4Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Zap);
+                    }
+                }
             }
-        }
-
-        if (currentTarget != null)
-        {
-            CheckTargetDistance();
         }
 
         if (isCasting)
@@ -135,7 +178,7 @@ public class Player : MonoBehaviour
             Speed = SpeedTypeData.GetDataByID(speedType - 1);
             if (CastProgress <= 1f)
             {
-                CastProgress += 1f / FireballCastTime * Time.deltaTime;
+                CastProgress += 1f / CurrentCastCastTime * Time.deltaTime;
                 CastBar.fillAmount = CastProgress;
             }
             else
@@ -180,11 +223,24 @@ public class Player : MonoBehaviour
             }
             j++;
         }
+        
+        if (isBlinked)
+        {
+            if (BlinkRefreshProgress <= 1f)
+            {
+                BlinkRefreshProgress += 1f / blinkCD * Time.deltaTime;
+                BlinkRefreshBar.fillAmount = BlinkRefreshProgress;
+            }
+            else
+            {
+                BlinkRefreshBar.fillAmount = 1f;
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        this.rb.MovePosition(this.rb.position + this.Movement * Speed * Time.fixedDeltaTime);
+        this.rb.MovePosition(this.rb.position + this.Movement * (Speed * Time.fixedDeltaTime));
     }
 
     private void TrySelectTarget()
@@ -234,9 +290,19 @@ public class Player : MonoBehaviour
             if (distanceToTarget > interactionRange)
             {
                 ClearTarget();
-                StopCoroutine("FireballCast");
+                StopAllCasts();
                 CastStop();
             }
+    }
+
+    private void CheckTargetCastingToDistance()
+    {
+        float distanceToTarget = Vector2.Distance(this.transform.position, TargetCastingTo.transform.position);
+        if (distanceToTarget > interactionRange)
+        {
+            StopAllCasts();
+            CastStop();
+        }
     }
 
     private void HandleMouseClick()
@@ -260,13 +326,29 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ClearTarget()
+    public void ClearTarget()
     {
         if (currentTarget != null)
         { 
             currentTarget.ResetTarget();
             currentTarget = null;
         }
+    }
+    
+    private void CastStop()
+    {
+        TargetCastingTo = null;
+        isCasting = false;
+        CastProgress = 0f;
+        CastBar.fillAmount = CastProgress;
+    }
+    
+    public void StopAllCasts()
+    {
+        StopCoroutine("FireballCast");
+        StopCoroutine("frost_whirlwindCast");
+        StopCoroutine("SpikeCast");
+        CastStop();
     }
 
     public void CastSpell(SpellType spellType)
@@ -278,20 +360,27 @@ public class Player : MonoBehaviour
                 {
                     if (FSAmount > 0)
                     {
+                        CurrentCastCastTime = FireballCastTime;
                         CastBar.color = new Color(1,0.2f,0.2f);
                         StartCoroutine("FireballCast");
                     }
                 }
                 break;
             case SpellType.Zap:
-                //HP.TakeDamage(5);
-                //enemy.Slow(2.0f);
+                if (!isCasting)
+                {
+                    if (RemainderAmount >= ZapCost)
+                    {
+                        ZapCast();
+                    }
+                }
                 break;
-            case SpellType.frost_whirlwind:
+            case SpellType.Frost_whirlwind:
                 if (!isCasting)
                 {
                     if (FrSAmount > 0)
                     {
+                        CurrentCastCastTime = frost_whirlwindCastTime;
                         CastBar.color = new Color(0.2f,0.2f,1);
                         StartCoroutine("frost_whirlwindCast");
                     }
@@ -302,6 +391,7 @@ public class Player : MonoBehaviour
                 {
                     if (ESAmount > 0)
                     {
+                        CurrentCastCastTime = SpikeCastTime;
                         CastBar.color = new Color(0.2f,1,0.2f);
                         StartCoroutine("SpikeCast");
                     }
@@ -352,12 +442,19 @@ public class Player : MonoBehaviour
         CastStop();
     }
 
-    private void CastStop()
+    private void ZapCast()
     {
-        TargetCastingTo = null;
-        isCasting = false;
-        CastProgress = 0f;
-        CastBar.fillAmount = CastProgress;
+        Spell spell;
+        isCasting = true;
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(ZapPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.GetComponent<LineRenderer>().SetPosition(0,this.transform.position);
+            spell.GetComponent<LineRenderer>().SetPosition(1,TargetCastingTo.transform.position);
+            spell.SetTarget(TargetCastingTo);
+            RemainderAmount -= ZapCost;
+        }
+        CastStop();
     }
 
     private void GainRemainder(int amount)
@@ -469,5 +566,45 @@ public class Player : MonoBehaviour
                 ESAmount = MaxESAmount;
             }
         }
+    }
+
+    private void Blink()
+    {
+        if (!isBlinked)
+        {
+            blinkRCH = Physics2D.Raycast(this.transform.position, this.Movement);
+            if (blinkRCH.collider != null)
+            {
+                if (blinkRCH.collider.CompareTag("Wall"))
+                {
+                    if (blinkRCH.distance < BlinkDist)
+                    {
+                        this.rb.position += this.Movement * blinkRCH.distance;
+                    }
+                    else
+                    {
+                        this.rb.position += this.Movement * BlinkDist;
+                    }
+                }
+                else
+                {
+                    this.rb.position += this.Movement * BlinkDist;
+                }
+            }
+            else
+            {
+                this.rb.position += this.Movement * BlinkDist;
+            }
+            BlinkRefreshBar.fillAmount = 0f;
+            StartCoroutine("BlinkRefresh");   
+        }
+    }
+
+    private IEnumerator BlinkRefresh()
+    {
+        isBlinked = true;
+        yield return new WaitForSeconds(blinkCD);
+        BlinkRefreshProgress = 0f;
+        isBlinked = false;
     }
 }
