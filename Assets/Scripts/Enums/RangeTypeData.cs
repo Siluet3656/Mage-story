@@ -9,12 +9,12 @@ public enum RangeType
 
 public class RangeTypeData : MonoBehaviour
 {
+    const float small = 2;
+    const float medium = 4;
+    const float large = 8;
+    const float giant = 12;
     public static float GetDataByID(RangeType id)
     {
-        const float small = 2;
-        const float medium = 4;
-        const float large = 8;
-        const float giant = 12;
         switch (id)
         {
             case RangeType.Small:

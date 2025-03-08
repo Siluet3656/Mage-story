@@ -125,56 +125,50 @@ public class Player : MonoBehaviour
             HandleMouseClick();
         }
 
-        if (Input.GetKeyDown(InterruptCastKey))
+        if (isCasting)
         {
-            StopAllCasts();
-            CastStop();
+            if (Input.GetKeyDown(InterruptCastKey))
+            {
+                StopAllCasts();
+                CastStop();
+            }
         }
+        else
+        {
+            if (currentTarget != null)
+            {
+                TargetCastingTo = currentTarget;
+                
+                if (Input.GetKeyDown(Cast1Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Fireball);
+                    }
+                }
 
-        if (Input.GetKeyDown(Cast1Key))
-        {
-            if (currentTarget != null)
-            {
-                if (!isCasting)
+                if (Input.GetKeyDown(Cast2Key))
                 {
-                    TargetCastingTo = currentTarget;
-                    CastSpell(SpellType.Fireball);
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Frost_whirlwind);
+                    }
                 }
-            }
-        }
-
-        if (Input.GetKeyDown(Cast2Key))
-        {
-            if (currentTarget != null)
-            {
-                if (!isCasting)
-                {
-                    TargetCastingTo = currentTarget;
-                    CastSpell(SpellType.frost_whirlwind);
-                }
-            }
-        }
         
-        if (Input.GetKeyDown(Cast3Key))
-        {
-            if (currentTarget != null)
-            {
-                if (!isCasting)
+                if (Input.GetKeyDown(Cast3Key))
                 {
-                    TargetCastingTo = currentTarget;
-                    CastSpell(SpellType.Spike);
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Spike);
+                    }
                 }
-            }
-        }
         
-        if (Input.GetKeyDown(Cast4Key))
-        {
-            if (currentTarget != null)
-            {
-                if (!isCasting)
+                if (Input.GetKeyDown(Cast4Key))
                 {
-                    TargetCastingTo = currentTarget;
-                    CastSpell(SpellType.Zap);
+                    if (currentTarget != null)
+                    {
+                        CastSpell(SpellType.Zap);
+                    }
                 }
             }
         }
@@ -332,7 +326,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ClearTarget()
+    public void ClearTarget()
     {
         if (currentTarget != null)
         { 
@@ -349,7 +343,7 @@ public class Player : MonoBehaviour
         CastBar.fillAmount = CastProgress;
     }
     
-    private void StopAllCasts()
+    public void StopAllCasts()
     {
         StopCoroutine("FireballCast");
         StopCoroutine("frost_whirlwindCast");
@@ -381,7 +375,7 @@ public class Player : MonoBehaviour
                     }
                 }
                 break;
-            case SpellType.frost_whirlwind:
+            case SpellType.Frost_whirlwind:
                 if (!isCasting)
                 {
                     if (FrSAmount > 0)
@@ -591,6 +585,10 @@ public class Player : MonoBehaviour
                     {
                         this.rb.position += this.Movement * BlinkDist;
                     }
+                }
+                else
+                {
+                    this.rb.position += this.Movement * BlinkDist;
                 }
             }
             else

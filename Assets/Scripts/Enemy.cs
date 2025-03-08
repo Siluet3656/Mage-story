@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
     private void OnDestroy() 
     {
         var SpellsToClear = FindObjectsOfType<Spell>();
+        var PalyerToClear = FindObjectsOfType<Player>();
         Enemy nullenemy = null;
         for (var i = 0; i < SpellsToClear.Length; i++)
         {
@@ -64,6 +65,11 @@ public class Enemy : MonoBehaviour
             {
                 SpellsToClear[i].SetTarget(nullenemy);
             }
+        }
+        for (var i = 0; i < SpellsToClear.Length; i++)
+        {
+                PalyerToClear[i].ClearTarget();
+                PalyerToClear[i].StopAllCasts();
         }
     }
     

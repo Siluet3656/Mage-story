@@ -27,49 +27,52 @@ public class Spell : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        switch (spellType)
+        else
         {
-            case SpellType.Fireball:
-                distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                if (distanceToTarget < MinimumDist)
-                {
-                    Blast();
-                }
-                direction = Target.transform.position - transform.position;
-                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                spellrb.velocity = direction.normalized * SpellSpeed;
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                break;
-            case SpellType.Zap:
-                this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
-                StartCoroutine("InstantSpellAnimation");
-                break;
-            case SpellType.frost_whirlwind:
-                distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                if (distanceToTarget < MinimumDist)
-                {
-                    Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, Target);
-                    Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
-                    Destroy(this.gameObject);
-                }
-                direction = Target.transform.position - transform.position;
-                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                spellrb.velocity = direction.normalized * SpellSpeed;
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                break;
-            case SpellType.Spike:
-                distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                if (distanceToTarget < MinimumDist)
-                {
-                    Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, Target);
-                    Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
-                    Destroy(this.gameObject);
-                }
-                direction = Target.transform.position - transform.position;
-                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                spellrb.velocity = direction.normalized * SpellSpeed;
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                break;
+            switch (spellType)
+            {
+                case SpellType.Fireball:
+                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                    if (distanceToTarget < MinimumDist)
+                    {
+                        Blast();
+                    }
+                    direction = Target.transform.position - transform.position;
+                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    break;
+                case SpellType.Zap:
+                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
+                    StartCoroutine("InstantSpellAnimation");
+                    break;
+                case SpellType.Frost_whirlwind:
+                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                    if (distanceToTarget < MinimumDist)
+                    {
+                        Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, Target);
+                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        Destroy(this.gameObject);
+                    }
+                    direction = Target.transform.position - transform.position;
+                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    break;
+                case SpellType.Spike:
+                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                    if (distanceToTarget < MinimumDist)
+                    {
+                        Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, Target);
+                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        Destroy(this.gameObject);
+                    }
+                    direction = Target.transform.position - transform.position;
+                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    break;
+            }
         }
     }
 
