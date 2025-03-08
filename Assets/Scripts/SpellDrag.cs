@@ -5,11 +5,14 @@ using UnityEngine.UI;
 public class SpellDrag : MonoBehaviour
 {
     [SerializeField] private SpellTypeData data;
-    private float offset;
-    private float hzcho = 100;
-    private float screenX = Screen.width;
-    private float screenY = Screen.height;
-    
+    private Vector2 offset = new Vector2(0.5f,-0.5f);
+    private Camera cam;
+
+    private void Start()
+    {
+        cam = Camera.main;
+    }
+
     public void TakeSpell(SpellType type)
     {
         GetComponent<Image>().sprite = data.GetDataByID(type);
@@ -17,6 +20,10 @@ public class SpellDrag : MonoBehaviour
 
     private void Update()
     {
-        transform.position = Input.mousePosition;
+        Vector3 point = cam.ScreenToWorldPoint(Input.mousePosition);
+        point.x += offset.x;
+        point.y += offset.y;
+        point.z += 1f;
+        transform.position = point;
     }
 }
