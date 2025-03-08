@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     [Header("Spell")]
     [SerializeField] private Image CastBar = null;
+    [SerializeField] private SpellBarButton[] spellBarCells;
     [SerializeField] private Image RemainderBar = null;
     [SerializeField] private Image[] FireShards = null;
     [SerializeField] private Image[] FrostShards = null;
@@ -31,6 +32,9 @@ public class Player : MonoBehaviour
     private KeyCode Cast2Key = KeyCode.Alpha2;
     private KeyCode Cast3Key = KeyCode.Alpha3;
     private KeyCode Cast4Key = KeyCode.Alpha4;
+    private KeyCode Cast5Key = KeyCode.Alpha5;
+    private KeyCode Cast6Key = KeyCode.Alpha6;
+    private KeyCode Cast7Key = KeyCode.Alpha7;
     private KeyCode InterruptCastKey = KeyCode.X;
     private const int MaxRemainderAmount = 100;
     private const int MaxFSAmount = 3;
@@ -143,7 +147,7 @@ public class Player : MonoBehaviour
                 {
                     if (currentTarget != null)
                     {
-                        CastSpell(SpellType.Fireball);
+                        CastSpell(spellBarCells[0].GetSpellType());
                     }
                 }
 
@@ -151,7 +155,7 @@ public class Player : MonoBehaviour
                 {
                     if (currentTarget != null)
                     {
-                        CastSpell(SpellType.Frost_whirlwind);
+                        CastSpell(spellBarCells[1].GetSpellType());
                     }
                 }
         
@@ -159,7 +163,7 @@ public class Player : MonoBehaviour
                 {
                     if (currentTarget != null)
                     {
-                        CastSpell(SpellType.Spike);
+                        CastSpell(spellBarCells[2].GetSpellType());
                     }
                 }
         
@@ -167,7 +171,31 @@ public class Player : MonoBehaviour
                 {
                     if (currentTarget != null)
                     {
-                        CastSpell(SpellType.Zap);
+                        CastSpell(spellBarCells[3].GetSpellType());
+                    }
+                }
+                
+                if (Input.GetKeyDown(Cast5Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(spellBarCells[4].GetSpellType());
+                    }
+                }
+                
+                if (Input.GetKeyDown(Cast6Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(spellBarCells[5].GetSpellType());
+                    }
+                }
+                
+                if (Input.GetKeyDown(Cast7Key))
+                {
+                    if (currentTarget != null)
+                    {
+                        CastSpell(spellBarCells[6].GetSpellType());
                     }
                 }
             }

@@ -2,6 +2,7 @@
 
 public enum SpellType
     {
+        NoSpell,
         Fireball,
         Zap,
         Frost_whirlwind,

@@ -96,10 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68cf7d9e571f58489f866dcd544b4ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpellSpeed: 20
+  spellType: 4
   SpellDamage: 50
+  SpellSpeed: 20
   FB_blastPrefub: {fileID: 0}
-  spellType: 3
 --- !u!50 &4177225706221646430
 Rigidbody2D:
   serializedVersion: 4
