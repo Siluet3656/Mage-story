@@ -117,4 +117,16 @@ public class Enemy : MonoBehaviour
     {
         return this.speedType;
     }
+
+    public void ShufflePoints()
+    {
+        for (int i = PatrolPoints.Length - 1; i >= 1; i--)
+        {
+            int j = Random.Range(0,i - 1);
+            // обменять значения data[j] и data[i]
+            var temp = PatrolPoints[j];
+            PatrolPoints[j] = PatrolPoints[i];
+            PatrolPoints[i] = temp;
+        }
+    }
 }
