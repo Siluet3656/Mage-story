@@ -6,7 +6,7 @@ public class FB_blast : MonoBehaviour
 {
     [SerializeField] private RangeType rangeType;
     [SerializeField] private float BlastingTime = 0f;
-    private int Damage = 0;
+    private float Damage = 0;
     private float radius = 0;
 
     private void Start() {
@@ -26,7 +26,7 @@ public class FB_blast : MonoBehaviour
         StartCoroutine("Blasting");
     }
 
-    public void SetDamage(int Damage)
+    public void SetDamage(float Damage)
     {
         this.Damage = Damage;
     }

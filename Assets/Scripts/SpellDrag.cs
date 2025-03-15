@@ -40,7 +40,7 @@ public class SpellDrag : MonoBehaviour
     public void TakeSpell(SpellType type)
     {
         draggingSpell = type;
-        GetComponent<Image>().sprite = data.GetDataByID(type);
+        GetComponent<Image>().sprite = data.GetDataByType(type).Icon;
         this.GetComponent<Image>().color = new Color(1,1,1,1);
         corner.SetActive(true);
         isDragging = true;

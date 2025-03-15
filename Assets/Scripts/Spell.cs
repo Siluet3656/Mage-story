@@ -1,25 +1,26 @@
 ﻿using System.Collections;
 using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody2D))]
 public class Spell : MonoBehaviour
 {
+    [SerializeField] private SpellTypeData data;
     [SerializeField] private SpellType spellType;
-    [Space]
-    [SerializeField] private int SpellDamage = 0;
     [SerializeField] private float SpellSpeed = 0;
     [SerializeField] private GameObject FB_blastPrefub = null;
     
     private Rigidbody2D spellrb = null;
     private Enemy Target = null;
     private float distanceToTarget = 0;
-    Vector2 direction = new Vector2(0,0);
-    float angle = 0;
+    private Vector2 direction = new Vector2(0,0);
+    private float angle = 0;
+    private float SpellDamage;
 
     private float MinimumDist = 0.2f;
     private float InstantSpellsDuration = 0.2f;
 
     private void Start() {
         spellrb = GetComponent<Rigidbody2D>();
+        SpellDamage = data.GetDataByType(spellType).Damage;
     }
 
     private void FixedUpdate() {

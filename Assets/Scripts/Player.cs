@@ -3,31 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
     [Header("Spell")]
+    [SerializeField] private SpellTypeData data;
     [SerializeField] private Image CastBar = null;
-    [SerializeField] private SpellBarButton[] spellBarCells;
     [SerializeField] private Image RemainderBar = null;
+    [SerializeField] private SpellBarButton[] spellBarCells;
     [SerializeField] private Image[] FireShards = null;
     [SerializeField] private Image[] FrostShards = null;
     [SerializeField] private Image[] EarthShards = null;
     [SerializeField] private float FS_RefreshTime = 0f;
     [SerializeField] private float FrS_RefreshTime = 0f;
     [SerializeField] private float ES_RefreshTime = 0f;
-    [Space]
-    [SerializeField] private float FireballCastTime = 0f;
-    [SerializeField] private GameObject FireBallPrefab = null;
-    [Space]
-    [SerializeField] private float frost_whirlwindCastTime = 0f;
-    [SerializeField] private GameObject frost_whirlwindPrefab = null;
-    [Space]
-    [SerializeField] private float SpikeCastTime = 0f;
-    [SerializeField] private GameObject SpikePrefab = null;
-    [Space] 
-    [SerializeField] private int ZapCost = 0;
-    [SerializeField] private GameObject ZapPrefub = null;
+    
+    private GameObject FireBallPrefab;
+    private GameObject ZapPrefub;
+    private GameObject frost_whirlwindPrefab;
+    private GameObject SpikePrefab;
+    
+    private float FireballCastTime;
+    private float frost_whirlwindCastTime;
+    private float SpikeCastTime;
+
+    private Vector3Int fireballCost;
+    private Vector3Int frost_whirlwindCost;
+    private Vector3Int SpikeCost;
+    private float ZapCost;
+    
     private KeyCode Cast1Key = KeyCode.Alpha1;
     private KeyCode Cast2Key = KeyCode.Alpha2;
     private KeyCode Cast3Key = KeyCode.Alpha3;
@@ -36,17 +43,19 @@ public class Player : MonoBehaviour
     private KeyCode Cast6Key = KeyCode.Alpha6;
     private KeyCode Cast7Key = KeyCode.Alpha7;
     private KeyCode InterruptCastKey = KeyCode.X;
+    
     private const int MaxRemainderAmount = 100;
     private const int MaxFSAmount = 3;
     private const int MaxFrSAmount = 3;
     private const int MaxESAmount = 3;
+    
     private bool isCasting = false;
     private float CastProgress = 0f;
     private float CurrentCastCastTime = 0f;
     private float[] FS_RefreshProgress = new float[MaxFSAmount];
     private float[] FrS_RefreshProgress = new float[MaxFrSAmount];
     private float[] ES_RefreshProgress = new float[MaxFrSAmount];
-    private int RemainderAmount = 0;
+    private float RemainderAmount = 0;
     private int FSAmount = 0;
     private int FrSAmount = 0;
     private int ESAmount = 0;
@@ -80,6 +89,20 @@ public class Player : MonoBehaviour
         FSAmount = MaxFSAmount;
         FrSAmount = MaxFrSAmount;
         ESAmount = MaxESAmount;
+        
+        FireBallPrefab = data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
+        frost_whirlwindPrefab = data.GetDataByType(SpellType.Frost_whirlwind).PrefubOfSpell;
+        SpikePrefab = data.GetDataByType(SpellType.Spike).PrefubOfSpell;
+        ZapPrefub = data.GetDataByType(SpellType.Zap).PrefubOfSpell;
+        
+        FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
+        frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
+        SpikeCastTime = data.GetDataByType(SpellType.Spike).CastTime;
+        
+        fireballCost = data.GetDataByType(SpellType.Fireball).ShardsCost;
+        frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
+        SpikeCost = data.GetDataByType(SpellType.Spike).ShardsCost;
+        ZapCost = data.GetDataByType(SpellType.Zap).ReminderCost;
 
         for (var frp = 0; frp < MaxFSAmount; frp++)
         {
@@ -437,7 +460,7 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(FireBallPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
-            UseFS();
+            UseShards(fireballCost);
         }
         CastStop();
     }
@@ -451,7 +474,7 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(frost_whirlwindPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
-            UseFrS();
+            UseShards(frost_whirlwindCost);
         }
         CastStop();
     }
@@ -465,7 +488,7 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(SpikePrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
-            UseES();
+            UseShards(SpikeCost);
         }
         CastStop();
     }
@@ -497,33 +520,48 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void UseFS()
+    private void UseShards(Vector3Int shards)
     {
-        if(FSAmount > 0)
+        UseFS(shards.x);
+        UseFrS(shards.y);
+        UseES(shards.z);
+    }
+    private void UseFS(int amount)
+    {
+        if (amount > 0)
         {
-            FSAmount--;
-            GainRemainder(20);
-            StartCoroutine("FS_Refreshing");
+            if(FSAmount > 0)
+            {
+                FSAmount -= amount;
+                GainRemainder(20);
+                StartCoroutine("FS_Refreshing");
+            }
         }
     }
 
-    private void UseFrS()
+    private void UseFrS(int amount)
     {
-        if(FrSAmount > 0)
+        if (amount > 0)
         {
-            FrSAmount--;
-            GainRemainder(20);
-            StartCoroutine("FrS_Refreshing");
+            if (FrSAmount > 0)
+            {
+                FrSAmount -= amount;
+                GainRemainder(20);
+                StartCoroutine("FrS_Refreshing");
+            }
         }
     }
     
-    private void UseES()
+    private void UseES(int amount)
     {
-        if(ESAmount > 0)
+        if (amount > 0)
         {
-            ESAmount--;
-            GainRemainder(20);
-            StartCoroutine("ES_Refreshing");
+            if (ESAmount > 0)
+            {
+                ESAmount -= amount;
+                GainRemainder(20);
+                StartCoroutine("ES_Refreshing");
+            }
         }
     }
 
