@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -9,6 +10,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
+    private PlayerInputActions playerInputActions;
+    
     [Header("Spell")]
     [SerializeField] private SpellTypeData data;
     [SerializeField] private Image CastBar = null;
@@ -35,15 +38,6 @@ public class Player : MonoBehaviour
     private Vector3Int SpikeCost;
     private float ZapCost;
     
-    private KeyCode Cast1Key = KeyCode.Alpha1;
-    private KeyCode Cast2Key = KeyCode.Alpha2;
-    private KeyCode Cast3Key = KeyCode.Alpha3;
-    private KeyCode Cast4Key = KeyCode.Alpha4;
-    private KeyCode Cast5Key = KeyCode.Alpha5;
-    private KeyCode Cast6Key = KeyCode.Alpha6;
-    private KeyCode Cast7Key = KeyCode.Alpha7;
-    private KeyCode InterruptCastKey = KeyCode.X;
-    
     private const int MaxRemainderAmount = 100;
     private const int MaxFSAmount = 3;
     private const int MaxFrSAmount = 3;
@@ -66,7 +60,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float BlinkDist = 0f;
     [SerializeField] private float blinkCD = 0f;
     private RaycastHit2D blinkRCH;
-    private KeyCode BlinkKey = KeyCode.Space;
     private bool isBlinked = false;
     private float BlinkRefreshProgress = 0f;
     private float Speed = 0;
@@ -76,11 +69,26 @@ public class Player : MonoBehaviour
 
     [Header("Target system")]
     [SerializeField] private float interactionRange  = 0;
-    private KeyCode TargetingKey = KeyCode.Tab;
     private Enemy currentTarget = null;
     private Enemy TargetCastingTo = null;
     private List<Enemy> EnemiesInRange = new List<Enemy>();
     private int currentIndex = 0;
+
+    private void Awake()
+    {
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Blink.performed += Blink;
+    }
+
+    private void OnEnable()
+    {
+        playerInputActions.Player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerInputActions.Player.Disable();
+    }
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -114,10 +122,9 @@ public class Player : MonoBehaviour
         BlinkRefreshBar.fillAmount = 1f;
     }
 
-    private void Update() {
-        this.Movement.x = Input.GetAxisRaw("Horizontal");
-        this.Movement.y = Input.GetAxisRaw("Vertical");
-        this.Movement = this.Movement.normalized;
+    private void Update()
+    {
+        Movement = playerInputActions.Player.Movement.ReadValue<Vector2>();
 
         anim.SetFloat("MoveX", Movement.x);
         anim.SetFloat("MoveY",  Movement.y);
@@ -128,19 +135,9 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (isCasting)
-            {
-                CheckTargetCastingToDistance();
-            }
+            CheckTargetCastingToDistance();
         }
-
-        if (Input.GetKeyDown(BlinkKey))
-        {
-            if (Movement.magnitude != 0f)
-            {
-                Blink();
-            }
-        }
+/*
         
         if (Input.GetKeyDown(TargetingKey))
         {
@@ -223,7 +220,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
-
+*/
         if (isCasting)
         {
             Speed = SpeedTypeData.GetDataByID(speedType - 1);
@@ -342,17 +339,18 @@ public class Player : MonoBehaviour
             {
                 ClearTarget();
                 StopAllCasts();
-                CastStop();
             }
     }
 
     private void CheckTargetCastingToDistance()
     {
-        float distanceToTarget = Vector2.Distance(this.transform.position, TargetCastingTo.transform.position);
-        if (distanceToTarget > interactionRange)
+        if (isCasting)
         {
-            StopAllCasts();
-            CastStop();
+            float distanceToTarget = Vector2.Distance(this.transform.position, TargetCastingTo.transform.position);
+            if (distanceToTarget > interactionRange)
+            {
+                StopAllCasts();
+            }
         }
     }
 
@@ -634,18 +632,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Blink()
+    private void Blink(InputAction.CallbackContext context)
     {
-        if (!isBlinked)
+        if (Movement.magnitude != 0f)
         {
-            blinkRCH = Physics2D.Raycast(this.transform.position, this.Movement);
-            if (blinkRCH.collider != null)
+            if (!isBlinked)
             {
-                if (blinkRCH.collider.CompareTag("Wall"))
+                blinkRCH = Physics2D.Raycast(this.transform.position, this.Movement);
+                if (blinkRCH.collider != null)
                 {
-                    if (blinkRCH.distance < BlinkDist)
+                    if (blinkRCH.collider.CompareTag("Wall"))
                     {
-                        this.rb.position += this.Movement * blinkRCH.distance;
+                        if (blinkRCH.distance < BlinkDist)
+                        {
+                            this.rb.position += this.Movement * blinkRCH.distance;
+                        }
+                        else
+                        {
+                            this.rb.position += this.Movement * BlinkDist;
+                        }
                     }
                     else
                     {
@@ -656,13 +661,9 @@ public class Player : MonoBehaviour
                 {
                     this.rb.position += this.Movement * BlinkDist;
                 }
+                BlinkRefreshBar.fillAmount = 0f;
+                StartCoroutine("BlinkRefresh");   
             }
-            else
-            {
-                this.rb.position += this.Movement * BlinkDist;
-            }
-            BlinkRefreshBar.fillAmount = 0f;
-            StartCoroutine("BlinkRefresh");   
         }
     }
 
