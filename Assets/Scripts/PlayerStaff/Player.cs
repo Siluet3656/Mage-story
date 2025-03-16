@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -53,6 +52,10 @@ public class Player : MonoBehaviour
     private int FSAmount = 0;
     private int FrSAmount = 0;
     private int ESAmount = 0;
+    
+    private Color FireballCastBarColor = new Color(1,0.3f,0.1f);
+    private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
+    private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
 
     [Header("Movement")] 
     [SerializeField] private SpeedType speedType;
@@ -77,17 +80,29 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Blink.performed += Blink;
+        playerInputActions.Player.Blink.started += Blink;
+        playerInputActions.Player.FastTarget.started += TrySelectTarget;
+        playerInputActions.Player.CastInterrupt.started += InterruptCast;
+        playerInputActions.Player.Castbar1.started += SpellBarButtonCast;
+        playerInputActions.Player.Castbar2.started += SpellBarButtonCast;
+        playerInputActions.Player.Castbar3.started += SpellBarButtonCast;
+        playerInputActions.Player.Castbar4.started += SpellBarButtonCast;
+        playerInputActions.Player.Castbar5.started += SpellBarButtonCast;
+        playerInputActions.Player.Castbar6.started += SpellBarButtonCast;
+        playerInputActions.Player.Castbar7.started += SpellBarButtonCast;
+        playerInputActions.UI.LBM.started += HandleMouseClick;
     }
 
     private void OnEnable()
     {
         playerInputActions.Player.Enable();
+        playerInputActions.UI.Enable();
     }
 
     private void OnDisable()
     {
         playerInputActions.Player.Disable();
+        playerInputActions.UI.Disable();
     }
 
     private void Start() {
@@ -97,6 +112,15 @@ public class Player : MonoBehaviour
         FSAmount = MaxFSAmount;
         FrSAmount = MaxFrSAmount;
         ESAmount = MaxESAmount;
+        
+        for (var frp = 0; frp < MaxFSAmount; frp++)
+        {
+            FS_RefreshProgress[frp] = 1f;
+            FrS_RefreshProgress[frp] = 1f;
+            ES_RefreshProgress[frp] = 1f;
+        }
+        
+        BlinkRefreshBar.fillAmount = 1f;
         
         FireBallPrefab = data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
         frost_whirlwindPrefab = data.GetDataByType(SpellType.Frost_whirlwind).PrefubOfSpell;
@@ -111,15 +135,6 @@ public class Player : MonoBehaviour
         frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
         SpikeCost = data.GetDataByType(SpellType.Spike).ShardsCost;
         ZapCost = data.GetDataByType(SpellType.Zap).ReminderCost;
-
-        for (var frp = 0; frp < MaxFSAmount; frp++)
-        {
-            FS_RefreshProgress[frp] = 1f;
-            FrS_RefreshProgress[frp] = 1f;
-            ES_RefreshProgress[frp] = 1f;
-        }
-
-        BlinkRefreshBar.fillAmount = 1f;
     }
 
     private void Update()
@@ -129,98 +144,8 @@ public class Player : MonoBehaviour
         anim.SetFloat("MoveX", Movement.x);
         anim.SetFloat("MoveY",  Movement.y);
         
-        if (currentTarget != null)
-        {
-            CheckTargetDistance();
-        }
-        else
-        {
-            CheckTargetCastingToDistance();
-        }
-/*
-        
-        if (Input.GetKeyDown(TargetingKey))
-        {
-            TrySelectTarget();
-        }
+        RemainderBar.fillAmount = RemainderAmount/MaxRemainderAmount;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            HandleMouseClick();
-        }
-
-        if (isCasting)
-        {
-            if (Input.GetKeyDown(InterruptCastKey))
-            {
-                StopAllCasts();
-                CastStop();
-            }
-        }
-        else
-        {
-            if (currentTarget != null)
-            {
-                TargetCastingTo = currentTarget;
-                
-                if (Input.GetKeyDown(Cast1Key))
-                {
-                    if (currentTarget != null)
-                    {
-                        CastSpell(spellBarCells[0].GetSpellType());
-                    }
-                }
-
-                if (Input.GetKeyDown(Cast2Key))
-                {
-                    if (currentTarget != null)
-                    {
-                        CastSpell(spellBarCells[1].GetSpellType());
-                    }
-                }
-        
-                if (Input.GetKeyDown(Cast3Key))
-                {
-                    if (currentTarget != null)
-                    {
-                        CastSpell(spellBarCells[2].GetSpellType());
-                    }
-                }
-        
-                if (Input.GetKeyDown(Cast4Key))
-                {
-                    if (currentTarget != null)
-                    {
-                        CastSpell(spellBarCells[3].GetSpellType());
-                    }
-                }
-                
-                if (Input.GetKeyDown(Cast5Key))
-                {
-                    if (currentTarget != null)
-                    {
-                        CastSpell(spellBarCells[4].GetSpellType());
-                    }
-                }
-                
-                if (Input.GetKeyDown(Cast6Key))
-                {
-                    if (currentTarget != null)
-                    {
-                        CastSpell(spellBarCells[5].GetSpellType());
-                    }
-                }
-                
-                if (Input.GetKeyDown(Cast7Key))
-                {
-                    if (currentTarget != null)
-                    {
-                        CastSpell(spellBarCells[6].GetSpellType());
-                    }
-                }
-            }
-        }
-*/
         if (isCasting)
         {
             Speed = SpeedTypeData.GetDataByID(speedType - 1);
@@ -233,13 +158,13 @@ public class Player : MonoBehaviour
             {
                 CastBar.fillAmount = 1f;
             }
+            Debug.Log(CastProgress);
         }
         else
         {
             Speed = SpeedTypeData.GetDataByID(speedType);
         }
-
-        RemainderBar.fillAmount = (float)RemainderAmount/MaxRemainderAmount;
+        
 
         int j = 0;
         foreach (Image shard in FireShards)
@@ -272,6 +197,15 @@ public class Player : MonoBehaviour
             j++;
         }
         
+        if (currentTarget != null)
+        {
+            CheckTargetDistance();
+        }
+        else
+        {
+            CheckTargetCastingToDistance();
+        }
+        
         if (isBlinked)
         {
             if (BlinkRefreshProgress <= 1f)
@@ -291,7 +225,7 @@ public class Player : MonoBehaviour
         this.rb.MovePosition(this.rb.position + this.Movement * (Speed * Time.fixedDeltaTime));
     }
 
-    private void TrySelectTarget()
+    private void TrySelectTarget(InputAction.CallbackContext context)
     {
         Enemy[] enemies = FindObjectsOfType<Enemy>();
         EnemiesInRange.Clear();
@@ -354,9 +288,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void HandleMouseClick()
+    private void HandleMouseClick(InputAction.CallbackContext context)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(playerInputActions.UI.MousePosition.ReadValue<Vector2>());
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
         if (hit.collider != null)
@@ -391,6 +325,15 @@ public class Player : MonoBehaviour
         CastProgress = 0f;
         CastBar.fillAmount = CastProgress;
     }
+
+    private void InterruptCast(InputAction.CallbackContext context)
+    {
+        if (isCasting)
+        {
+            StopAllCasts();
+        }
+    }
+    
     
     public void StopAllCasts()
     {
@@ -405,47 +348,74 @@ public class Player : MonoBehaviour
         switch (spellType)
         {
             case SpellType.Fireball:
-                if (!isCasting)
+                if ((FSAmount >= fireballCost.x) && (FrSAmount >= fireballCost.y) && (ESAmount >= fireballCost.z))
                 {
-                    if (FSAmount > 0)
-                    {
-                        CurrentCastCastTime = FireballCastTime;
-                        CastBar.color = new Color(1,0.2f,0.2f);
-                        StartCoroutine("FireballCast");
-                    }
-                }
-                break;
-            case SpellType.Zap:
-                if (!isCasting)
-                {
-                    if (RemainderAmount >= ZapCost)
-                    {
-                        ZapCast();
-                    }
+                    CurrentCastCastTime = FireballCastTime;
+                    CastBar.color = FireballCastBarColor;
+                    StartCoroutine("FireballCast");
                 }
                 break;
             case SpellType.Frost_whirlwind:
-                if (!isCasting)
+                if ((FSAmount >= fireballCost.x) && (FrSAmount >= fireballCost.y) && (ESAmount >= fireballCost.z))
                 {
-                    if (FrSAmount > 0)
-                    {
-                        CurrentCastCastTime = frost_whirlwindCastTime;
-                        CastBar.color = new Color(0.2f,0.2f,1);
-                        StartCoroutine("frost_whirlwindCast");
-                    }
+                    CurrentCastCastTime = frost_whirlwindCastTime;
+                    CastBar.color = FrostWhirlwindCastBarColor;
+                    StartCoroutine("frost_whirlwindCast");
                 }
                 break;
             case SpellType.Spike:
-                if (!isCasting)
-                {
-                    if (ESAmount > 0)
-                    {
-                        CurrentCastCastTime = SpikeCastTime;
-                        CastBar.color = new Color(0.2f,1,0.2f);
-                        StartCoroutine("SpikeCast");
-                    }
+                if ((FSAmount >= fireballCost.x) && (FrSAmount >= fireballCost.y) && (ESAmount >= fireballCost.z)) 
+                { 
+                    CurrentCastCastTime = SpikeCastTime; 
+                    CastBar.color = SpikeCastBarColor; 
+                    StartCoroutine("SpikeCast");
                 }
                 break;
+            case SpellType.Zap:
+                if (RemainderAmount >= ZapCost) 
+                { 
+                    ZapCast();
+                }
+                break;
+        }
+    }
+
+    private void SpellBarButtonCast(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (!isCasting)
+            {
+                if (currentTarget != null)
+                {
+                    TargetCastingTo = currentTarget;
+                
+                    switch (context.action.name)
+                    {
+                        case "Castbar1":
+                            CastSpell(spellBarCells[0].GetSpellType());
+                            break;
+                        case "Castbar2":
+                            CastSpell(spellBarCells[1].GetSpellType());
+                            break;
+                        case "Castbar3":
+                            CastSpell(spellBarCells[2].GetSpellType());
+                            break;
+                        case "Castbar4":
+                            CastSpell(spellBarCells[3].GetSpellType());
+                            break;
+                        case "Castbar5":
+                            CastSpell(spellBarCells[4].GetSpellType());
+                            break;
+                        case "Castbar6":
+                            CastSpell(spellBarCells[5].GetSpellType());
+                            break;
+                        case "Castbar7":
+                            CastSpell(spellBarCells[6].GetSpellType());
+                            break;
+                    }
+                }
+            }
         }
     }
 
@@ -531,8 +501,11 @@ public class Player : MonoBehaviour
             if(FSAmount > 0)
             {
                 FSAmount -= amount;
-                GainRemainder(20);
-                StartCoroutine("FS_Refreshing");
+                GainRemainder(20 * amount);
+                for (int i = 0; i < amount; i++)
+                {
+                    StartCoroutine("FS_Refreshing");
+                }
             }
         }
     }
@@ -544,8 +517,11 @@ public class Player : MonoBehaviour
             if (FrSAmount > 0)
             {
                 FrSAmount -= amount;
-                GainRemainder(20);
-                StartCoroutine("FrS_Refreshing");
+                GainRemainder(20 * amount);
+                for (int i = 0; i < amount; i++)
+                {
+                    StartCoroutine("FrS_Refreshing");
+                }
             }
         }
     }
@@ -557,8 +533,11 @@ public class Player : MonoBehaviour
             if (ESAmount > 0)
             {
                 ESAmount -= amount;
-                GainRemainder(20);
-                StartCoroutine("ES_Refreshing");
+                GainRemainder(20 * amount);
+                for (int i = 0; i < amount; i++)
+                {
+                    StartCoroutine("ES_Refreshing");
+                }
             }
         }
     }
@@ -638,24 +617,12 @@ public class Player : MonoBehaviour
         {
             if (!isBlinked)
             {
-                blinkRCH = Physics2D.Raycast(this.transform.position, this.Movement);
+                float raycastOffet = 0.5f;
+                LayerMask mask = LayerMask.GetMask("Walls");
+                blinkRCH = Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y - raycastOffet), this.Movement, BlinkDist, mask);
                 if (blinkRCH.collider != null)
                 {
-                    if (blinkRCH.collider.CompareTag("Wall"))
-                    {
-                        if (blinkRCH.distance < BlinkDist)
-                        {
-                            this.rb.position += this.Movement * blinkRCH.distance;
-                        }
-                        else
-                        {
-                            this.rb.position += this.Movement * BlinkDist;
-                        }
-                    }
-                    else
-                    {
-                        this.rb.position += this.Movement * BlinkDist;
-                    }
+                    this.rb.position += this.Movement * blinkRCH.distance;
                 }
                 else
                 {

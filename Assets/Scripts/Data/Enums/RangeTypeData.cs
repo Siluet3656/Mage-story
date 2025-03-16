@@ -19,16 +19,12 @@ public class RangeTypeData : MonoBehaviour
         {
             case RangeType.Small:
                 return small;
-                break;
             case RangeType.Medium:
                 return medium;
-                break;
             case RangeType.Large:
                 return large;
-                break;
             case RangeType.Giant:
                 return giant;
-                break;
         }
         return 0;
     }

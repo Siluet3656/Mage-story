@@ -18,13 +18,10 @@ public class SpeedTypeData : MonoBehaviour
         {
             case SpeedType.Slow:
                 return slow;
-                break;
             case SpeedType.Medium:
                 return medium;
-                break;
             case SpeedType.Fast:
                 return fast;
-                break;
         }
         return 0;
     }

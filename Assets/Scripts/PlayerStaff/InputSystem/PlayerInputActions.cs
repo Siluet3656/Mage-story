@@ -105,14 +105,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""MousePosition"",
-                    ""type"": ""Value"",
-                    ""id"": ""01d66735-800a-40f8-b491-4c9d9548ca8e"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -412,17 +404,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""FastTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""aa60202c-8024-49c3-b10b-347b7cfbb23f"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardALT"",
-                    ""action"": ""MousePosition"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -437,6 +418,30 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""9796cd40-8537-4092-ae58-9d8cc96846c3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LBM"",
+                    ""type"": ""Button"",
+                    ""id"": ""f307f5df-fc51-4ccb-956a-143357949088"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""RBM"",
+                    ""type"": ""Button"",
+                    ""id"": ""f13bca49-3213-4bb2-acc2-153cb72219ee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -448,6 +453,39 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""OpenSpellBook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d571ab6-083b-48a2-98a9-89bc55e134ff"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardALT"",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06419a91-3465-45d4-bc80-6bd9d4e756a9"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardALT"",
+                    ""action"": ""LBM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0406669-0229-4215-8c4d-9b2c6f408496"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""RBM"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -502,10 +540,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_CastInterrupt = m_Player.FindAction("CastInterrupt ", throwIfNotFound: true);
         m_Player_Blink = m_Player.FindAction("Blink", throwIfNotFound: true);
         m_Player_FastTarget = m_Player.FindAction("FastTarget", throwIfNotFound: true);
-        m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_OpenSpellBook = m_UI.FindAction("OpenSpellBook", throwIfNotFound: true);
+        m_UI_MousePosition = m_UI.FindAction("MousePosition", throwIfNotFound: true);
+        m_UI_LBM = m_UI.FindAction("LBM", throwIfNotFound: true);
+        m_UI_RBM = m_UI.FindAction("RBM", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -566,7 +606,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_CastInterrupt;
     private readonly InputAction m_Player_Blink;
     private readonly InputAction m_Player_FastTarget;
-    private readonly InputAction m_Player_MousePosition;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -582,7 +621,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @CastInterrupt => m_Wrapper.m_Player_CastInterrupt;
         public InputAction @Blink => m_Wrapper.m_Player_Blink;
         public InputAction @FastTarget => m_Wrapper.m_Player_FastTarget;
-        public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -625,9 +663,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @FastTarget.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFastTarget;
                 @FastTarget.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFastTarget;
                 @FastTarget.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFastTarget;
-                @MousePosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePosition;
-                @MousePosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePosition;
-                @MousePosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePosition;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -665,9 +700,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @FastTarget.started += instance.OnFastTarget;
                 @FastTarget.performed += instance.OnFastTarget;
                 @FastTarget.canceled += instance.OnFastTarget;
-                @MousePosition.started += instance.OnMousePosition;
-                @MousePosition.performed += instance.OnMousePosition;
-                @MousePosition.canceled += instance.OnMousePosition;
             }
         }
     }
@@ -677,11 +709,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_OpenSpellBook;
+    private readonly InputAction m_UI_MousePosition;
+    private readonly InputAction m_UI_LBM;
+    private readonly InputAction m_UI_RBM;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
         public UIActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @OpenSpellBook => m_Wrapper.m_UI_OpenSpellBook;
+        public InputAction @MousePosition => m_Wrapper.m_UI_MousePosition;
+        public InputAction @LBM => m_Wrapper.m_UI_LBM;
+        public InputAction @RBM => m_Wrapper.m_UI_RBM;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -694,6 +732,15 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @OpenSpellBook.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenSpellBook;
                 @OpenSpellBook.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenSpellBook;
                 @OpenSpellBook.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenSpellBook;
+                @MousePosition.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
+                @MousePosition.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
+                @MousePosition.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
+                @LBM.started -= m_Wrapper.m_UIActionsCallbackInterface.OnLBM;
+                @LBM.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnLBM;
+                @LBM.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnLBM;
+                @RBM.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRBM;
+                @RBM.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRBM;
+                @RBM.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRBM;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -701,6 +748,15 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @OpenSpellBook.started += instance.OnOpenSpellBook;
                 @OpenSpellBook.performed += instance.OnOpenSpellBook;
                 @OpenSpellBook.canceled += instance.OnOpenSpellBook;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
+                @LBM.started += instance.OnLBM;
+                @LBM.performed += instance.OnLBM;
+                @LBM.canceled += instance.OnLBM;
+                @RBM.started += instance.OnRBM;
+                @RBM.performed += instance.OnRBM;
+                @RBM.canceled += instance.OnRBM;
             }
         }
     }
@@ -736,10 +792,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnCastInterrupt(InputAction.CallbackContext context);
         void OnBlink(InputAction.CallbackContext context);
         void OnFastTarget(InputAction.CallbackContext context);
-        void OnMousePosition(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
         void OnOpenSpellBook(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
+        void OnLBM(InputAction.CallbackContext context);
+        void OnRBM(InputAction.CallbackContext context);
     }
 }

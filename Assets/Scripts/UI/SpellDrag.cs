@@ -1,17 +1,34 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class SpellDrag : MonoBehaviour
 {
     [SerializeField] private SpellTypeData data;
     [SerializeField] private GameObject corner;
+    private PlayerInputActions playerInputActions;
     private SpellType draggingSpell;
     private Vector2 offset = new Vector2(0.5f,-0.5f);
     private Camera cam;
     private bool isDragging = false;
     private float waitabit;
+
+    private void Awake()
+    {
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.UI.LBM.performed += TryToDropASpell;
+    }
+
+    private void OnEnable()
+    {
+        playerInputActions.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerInputActions.Disable();
+    }
 
     private void Start()
     {
@@ -21,21 +38,13 @@ public class SpellDrag : MonoBehaviour
     {
         if (isDragging)
         {
-            Vector3 point = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 point = cam.ScreenToWorldPoint(playerInputActions.UI.MousePosition.ReadValue<Vector2>());
             point.x += offset.x;
             point.y += offset.y;
             point.z += 1f;
             transform.position = point;
         }
-
-        if (isDragging)
-        {
-            waitabit = Time.fixedDeltaTime * 15;
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                StartCoroutine("WaitaBit");
-            }
-        }
+        waitabit = Time.fixedDeltaTime * 15;
     }
     public void TakeSpell(SpellType type)
     {
@@ -60,6 +69,14 @@ public class SpellDrag : MonoBehaviour
         Cursor.visible = true;
     }
 
+    private void TryToDropASpell(InputAction.CallbackContext context)
+    {
+        if (isDragging)
+        {
+            StartCoroutine(WaitaBit());
+        }
+    }
+    
     private IEnumerator WaitaBit()
     {
         yield return new WaitForSeconds(waitabit);
