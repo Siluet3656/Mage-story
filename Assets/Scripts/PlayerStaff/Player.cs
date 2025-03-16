@@ -19,15 +19,18 @@ public class Player : MonoBehaviour
     [SerializeField] private Image[] FireShards = null;
     [SerializeField] private Image[] FrostShards = null;
     [SerializeField] private Image[] EarthShards = null;
+    [SerializeField] private Image[] GCD_barz;
+    [Space]
     [SerializeField] private float FS_RefreshTime = 0f;
     [SerializeField] private float FrS_RefreshTime = 0f;
     [SerializeField] private float ES_RefreshTime = 0f;
-    
+    [SerializeField] private float GCD;
+
     private GameObject FireBallPrefab;
     private GameObject ZapPrefub;
     private GameObject frost_whirlwindPrefab;
     private GameObject SpikePrefab;
-    
+
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
     private float SpikeCastTime;
@@ -48,6 +51,7 @@ public class Player : MonoBehaviour
     private float[] FS_RefreshProgress = new float[MaxFSAmount];
     private float[] FrS_RefreshProgress = new float[MaxFrSAmount];
     private float[] ES_RefreshProgress = new float[MaxFrSAmount];
+    private float GCDprogress = 0f;
     private float RemainderAmount = 0;
     private int FSAmount = 0;
     private int FrSAmount = 0;
@@ -60,6 +64,7 @@ public class Player : MonoBehaviour
     [Header("Movement")] 
     [SerializeField] private SpeedType speedType;
     [SerializeField] private Image BlinkRefreshBar;
+    [Space]
     [SerializeField] private float BlinkDist = 0f;
     [SerializeField] private float blinkCD = 0f;
     private RaycastHit2D blinkRCH;
@@ -121,7 +126,13 @@ public class Player : MonoBehaviour
         }
         
         BlinkRefreshBar.fillAmount = 1f;
-        
+
+        GCDprogress = 0f;
+        foreach (var bar in GCD_barz)
+        {
+            bar.fillAmount = GCDprogress;
+        }
+
         FireBallPrefab = data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
         frost_whirlwindPrefab = data.GetDataByType(SpellType.Frost_whirlwind).PrefubOfSpell;
         SpikePrefab = data.GetDataByType(SpellType.Spike).PrefubOfSpell;
@@ -195,6 +206,19 @@ public class Player : MonoBehaviour
                 shard.fillAmount = ES_RefreshProgress[j];
             }
             j++;
+        }
+        
+        if (GCDprogress >= 0)
+        {
+            GCDprogress -= 1f / GCD * Time.deltaTime;
+        }
+        else
+        {
+            GCDprogress = 0;
+        }
+        foreach (Image bar in GCD_barz)
+        {
+            bar.fillAmount = GCDprogress;
         }
         
         if (currentTarget != null)
@@ -356,7 +380,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case SpellType.Frost_whirlwind:
-                if ((FSAmount >= fireballCost.x) && (FrSAmount >= fireballCost.y) && (ESAmount >= fireballCost.z))
+                if ((FSAmount >= frost_whirlwindCost.x) && (FrSAmount >= frost_whirlwindCost.y) && (ESAmount >= frost_whirlwindCost.z))
                 {
                     CurrentCastCastTime = frost_whirlwindCastTime;
                     CastBar.color = FrostWhirlwindCastBarColor;
@@ -364,7 +388,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case SpellType.Spike:
-                if ((FSAmount >= fireballCost.x) && (FrSAmount >= fireballCost.y) && (ESAmount >= fireballCost.z)) 
+                if ((FSAmount >= SpikeCost.x) && (FrSAmount >= SpikeCost.y) && (ESAmount >= SpikeCost.z)) 
                 { 
                     CurrentCastCastTime = SpikeCastTime; 
                     CastBar.color = SpikeCastBarColor; 
@@ -386,33 +410,36 @@ public class Player : MonoBehaviour
         {
             if (!isCasting)
             {
-                if (currentTarget != null)
+                if (GCDprogress <= 0)
                 {
-                    TargetCastingTo = currentTarget;
-                
-                    switch (context.action.name)
+                    if (currentTarget != null)
                     {
-                        case "Castbar1":
-                            CastSpell(spellBarCells[0].GetSpellType());
-                            break;
-                        case "Castbar2":
-                            CastSpell(spellBarCells[1].GetSpellType());
-                            break;
-                        case "Castbar3":
-                            CastSpell(spellBarCells[2].GetSpellType());
-                            break;
-                        case "Castbar4":
-                            CastSpell(spellBarCells[3].GetSpellType());
-                            break;
-                        case "Castbar5":
-                            CastSpell(spellBarCells[4].GetSpellType());
-                            break;
-                        case "Castbar6":
-                            CastSpell(spellBarCells[5].GetSpellType());
-                            break;
-                        case "Castbar7":
-                            CastSpell(spellBarCells[6].GetSpellType());
-                            break;
+                        TargetCastingTo = currentTarget;
+                
+                        switch (context.action.name)
+                        {
+                            case "Castbar1":
+                                CastSpell(spellBarCells[0].GetSpellType());
+                                break;
+                            case "Castbar2":
+                                CastSpell(spellBarCells[1].GetSpellType());
+                                break;
+                            case "Castbar3":
+                                CastSpell(spellBarCells[2].GetSpellType());
+                                break;
+                            case "Castbar4":
+                                CastSpell(spellBarCells[3].GetSpellType());
+                                break;
+                            case "Castbar5":
+                                CastSpell(spellBarCells[4].GetSpellType());
+                                break;
+                            case "Castbar6":
+                                CastSpell(spellBarCells[5].GetSpellType());
+                                break;
+                            case "Castbar7":
+                                CastSpell(spellBarCells[6].GetSpellType());
+                                break;
+                        }
                     }
                 }
             }
@@ -423,6 +450,7 @@ public class Player : MonoBehaviour
     {
         Spell spell;
         isCasting = true;
+        GCDstart();
         yield return new WaitForSeconds(FireballCastTime);
         if (TargetCastingTo != null)
         {
@@ -437,6 +465,7 @@ public class Player : MonoBehaviour
     {
         Spell spell;
         isCasting = true;
+        GCDstart();
         yield return new WaitForSeconds(frost_whirlwindCastTime);
         if (TargetCastingTo != null)
         {
@@ -451,6 +480,7 @@ public class Player : MonoBehaviour
     {
         Spell spell;
         isCasting = true;
+        GCDstart();
         yield return new WaitForSeconds(SpikeCastTime);
         if (TargetCastingTo != null)
         {
@@ -473,6 +503,7 @@ public class Player : MonoBehaviour
             spell.SetTarget(TargetCastingTo);
             RemainderAmount -= ZapCost;
         }
+        GCDstart();
         CastStop();
     }
 
@@ -640,5 +671,23 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(blinkCD);
         BlinkRefreshProgress = 0f;
         isBlinked = false;
+    }
+
+    private void GCDstart()
+    {
+        GCDprogress = 1f;
+        foreach (var bar in GCD_barz)
+        {
+            bar.fillAmount = GCDprogress;
+        }
+    }
+
+    private void GCDstop()
+    {
+        GCDprogress = 0f;
+        foreach (var bar in GCD_barz)
+        {
+            bar.fillAmount = GCDprogress;
+        }
     }
 }
