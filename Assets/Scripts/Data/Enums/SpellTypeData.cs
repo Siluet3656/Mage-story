@@ -6,7 +6,8 @@ public enum SpellType
         Fireball,
         Zap,
         Frost_whirlwind,
-        Spike
+        Spike,
+        Boom
     }
 
 public class SpellTypeData : MonoBehaviour
@@ -39,6 +40,12 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private float zapDamage;
     [SerializeField] private float zapCD;
     [SerializeField] private float zapCost;
+    [Header("Boom")]
+    [SerializeField] private Sprite boomIcon;
+    [SerializeField] private GameObject boomPrefab;
+    [SerializeField] private float boomDamage;
+    [SerializeField] private float boomCD;
+    [SerializeField] private Vector3Int boomCost;
     
     public SpellData GetDataByType(SpellType type)
     {
@@ -46,16 +53,14 @@ public class SpellTypeData : MonoBehaviour
         {
             case SpellType.Fireball:
                 return new SpellData(fireballIcon,fireballPrefab,firaballDamage,firaballCD,fireballCastTime,firaballCost);
-                break;
             case SpellType.Frost_whirlwind:
                 return new SpellData(frost_whirlwindIcon,frost_whirlwindPrefab,frost_whirlwindDamage,frost_whirlwindCD,frost_whirlwindCastTime,frost_whirlwindCost);
-                break;
             case SpellType.Spike:
                 return new SpellData(spikeIcon,spikePrefab,spikeDamage,spikeCD,spikeCastTime,spikeCost);
-                break;
             case SpellType.Zap:
                 return new SpellData(zapIcon,zapPrefab,zapDamage,zapCD,0,zapCost);
-                break;
+            case SpellType.Boom:
+                return new SpellData(boomIcon,boomPrefab,boomDamage,boomCD,0,boomCost);
         }
         return new SpellData(basic,new GameObject("Null"),0,0,0,0);
     }

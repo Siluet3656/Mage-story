@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
     private GameObject ZapPrefub;
     private GameObject frost_whirlwindPrefab;
     private GameObject SpikePrefab;
+    private GameObject BoomPrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
@@ -38,7 +40,9 @@ public class Player : MonoBehaviour
     private Vector3Int fireballCost;
     private Vector3Int frost_whirlwindCost;
     private Vector3Int SpikeCost;
+    private Vector3Int BoomCost;
     private float ZapCost;
+    
     
     private const int MaxRemainderAmount = 100;
     private const int MaxFSAmount = 3;
@@ -137,6 +141,7 @@ public class Player : MonoBehaviour
         frost_whirlwindPrefab = data.GetDataByType(SpellType.Frost_whirlwind).PrefubOfSpell;
         SpikePrefab = data.GetDataByType(SpellType.Spike).PrefubOfSpell;
         ZapPrefub = data.GetDataByType(SpellType.Zap).PrefubOfSpell;
+        BoomPrefub = data.GetDataByType(SpellType.Boom).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
@@ -146,6 +151,7 @@ public class Player : MonoBehaviour
         frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
         SpikeCost = data.GetDataByType(SpellType.Spike).ShardsCost;
         ZapCost = data.GetDataByType(SpellType.Zap).ReminderCost;
+        BoomCost = data.GetDataByType(SpellType.Boom).ShardsCost;
     }
 
     private void Update()
@@ -373,33 +379,51 @@ public class Player : MonoBehaviour
         switch (spellType)
         {
             case SpellType.Fireball:
-                if ((FSAmount >= fireballCost.x) && (FrSAmount >= fireballCost.y) && (ESAmount >= fireballCost.z))
+                if (isEnoughShards(fireballCost))
                 {
-                    CurrentCastCastTime = FireballCastTime;
-                    CastBar.color = FireballCastBarColor;
-                    StartCoroutine("FireballCast");
+                    if (currentTarget != null)
+                    {
+                        CurrentCastCastTime = FireballCastTime;
+                        CastBar.color = FireballCastBarColor;
+                        StartCoroutine("FireballCast");
+                    }
                 }
                 break;
             case SpellType.Frost_whirlwind:
-                if ((FSAmount >= frost_whirlwindCost.x) && (FrSAmount >= frost_whirlwindCost.y) && (ESAmount >= frost_whirlwindCost.z))
+                if (isEnoughShards(fireballCost))
                 {
-                    CurrentCastCastTime = frost_whirlwindCastTime;
-                    CastBar.color = FrostWhirlwindCastBarColor;
-                    StartCoroutine("frost_whirlwindCast");
+                    if (currentTarget != null)
+                    {
+                        CurrentCastCastTime = frost_whirlwindCastTime;
+                        CastBar.color = FrostWhirlwindCastBarColor;
+                        StartCoroutine("frost_whirlwindCast");
+                    }
                 }
                 break;
             case SpellType.Spike:
-                if ((FSAmount >= SpikeCost.x) && (FrSAmount >= SpikeCost.y) && (ESAmount >= SpikeCost.z)) 
-                { 
-                    CurrentCastCastTime = SpikeCastTime; 
-                    CastBar.color = SpikeCastBarColor; 
-                    StartCoroutine("SpikeCast");
+                if (isEnoughShards(SpikeCost)) 
+                {
+                    if (currentTarget != null)
+                    {
+                        CurrentCastCastTime = SpikeCastTime;
+                        CastBar.color = SpikeCastBarColor;
+                        StartCoroutine("SpikeCast");
+                    }
                 }
                 break;
             case SpellType.Zap:
                 if (RemainderAmount >= ZapCost) 
-                { 
-                    ZapCast();
+                {
+                    if (currentTarget != null)
+                    {
+                        ZapCast();
+                    }
+                }
+                break;
+            case SpellType.Boom:
+                if (isEnoughShards(BoomCost))
+                {
+                    BoomCast();
                 }
                 break;
         }
@@ -413,34 +437,31 @@ public class Player : MonoBehaviour
             {
                 if (GCDprogress <= 0)
                 {
-                    if (currentTarget != null)
-                    {
-                        TargetCastingTo = currentTarget;
+                    TargetCastingTo = currentTarget;
                 
-                        switch (context.action.name)
-                        {
-                            case "Castbar1":
-                                CastSpell(spellBarCells[0].GetSpellType());
-                                break;
-                            case "Castbar2":
-                                CastSpell(spellBarCells[1].GetSpellType());
-                                break;
-                            case "Castbar3":
-                                CastSpell(spellBarCells[2].GetSpellType());
-                                break;
-                            case "Castbar4":
-                                CastSpell(spellBarCells[3].GetSpellType());
-                                break;
-                            case "Castbar5":
-                                CastSpell(spellBarCells[4].GetSpellType());
-                                break;
-                            case "Castbar6":
-                                CastSpell(spellBarCells[5].GetSpellType());
-                                break;
-                            case "Castbar7":
-                                CastSpell(spellBarCells[6].GetSpellType());
-                                break;
-                        }
+                    switch (context.action.name)
+                    {
+                        case "Castbar1":
+                            CastSpell(spellBarCells[0].GetSpellType());
+                            break;
+                        case "Castbar2":
+                            CastSpell(spellBarCells[1].GetSpellType());
+                            break;
+                        case "Castbar3":
+                            CastSpell(spellBarCells[2].GetSpellType());
+                            break;
+                        case "Castbar4":
+                            CastSpell(spellBarCells[3].GetSpellType());
+                            break;
+                        case "Castbar5":
+                            CastSpell(spellBarCells[4].GetSpellType());
+                            break;
+                        case "Castbar6":
+                            CastSpell(spellBarCells[5].GetSpellType());
+                            break;
+                        case "Castbar7":
+                            CastSpell(spellBarCells[6].GetSpellType());
+                            break;
                     }
                 }
             }
@@ -504,6 +525,15 @@ public class Player : MonoBehaviour
             spell.SetTarget(TargetCastingTo);
             RemainderAmount -= ZapCost;
         }
+        GCDstart();
+        CastStop();
+    }
+
+    private void BoomCast()
+    {
+        isCasting = true;
+        Instantiate(BoomPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        UseShards(BoomCost);
         GCDstart();
         CastStop();
     }
@@ -692,5 +722,11 @@ public class Player : MonoBehaviour
         {
             bar.fillAmount = GCDprogress;
         }
+    }
+
+    private bool isEnoughShards(Vector3Int cost)
+    {
+        return (FSAmount >= cost.x) && (FrSAmount >= cost.y) &&
+               (ESAmount >= cost.z);
     }
 }

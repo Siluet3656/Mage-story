@@ -14,6 +14,7 @@ public class Spell : MonoBehaviour
     private Vector2 direction = new Vector2(0,0);
     private float angle = 0;
     private float SpellDamage;
+    private bool isCasted = false;
 
     private float MinimumDist = 0.2f;
     private float InstantSpellsDuration = 0.2f;
@@ -26,7 +27,14 @@ public class Spell : MonoBehaviour
     private void FixedUpdate() {
         if (Target == null)
         {
-            Destroy(this.gameObject);
+            if (spellType == SpellType.Boom)
+            {
+                Blast();
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
         else
         {
@@ -45,6 +53,11 @@ public class Spell : MonoBehaviour
                     break;
                 case SpellType.Zap:
                     this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
+                    if (!isCasted)
+                    {
+                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        isCasted = true;
+                    }
                     StartCoroutine("InstantSpellAnimation");
                     break;
                 case SpellType.Frost_whirlwind:
@@ -79,17 +92,13 @@ public class Spell : MonoBehaviour
 
     private void Blast()
     {
-        if(Target != null)
-        {
-            Instantiate(FB_blastPrefub, transform.position, Quaternion.identity).GetComponent<FB_blast>().SetDamage(this.SpellDamage);
-            Destroy(this.gameObject);
-        }
+        Instantiate(FB_blastPrefub, transform.position, Quaternion.identity).GetComponent<FB_blast>().SetDamage(this.SpellDamage);
+        Destroy(this.gameObject);
     }
 
     private IEnumerator InstantSpellAnimation()
     {
         yield return new WaitForSeconds(InstantSpellsDuration);
-        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
         Destroy(this.gameObject);
     }
 
