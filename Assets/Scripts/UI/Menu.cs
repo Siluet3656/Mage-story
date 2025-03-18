@@ -25,6 +25,6 @@ public class Menu : MonoBehaviour
     private void SwitchSpellBookState(InputAction.CallbackContext context)
     {
         spellbook.alpha = spellbook.alpha > 0 ? 0 : 1;
-        spellbook.blocksRaycasts = spellbook.blocksRaycasts == true? false : true;
+        spellbook.blocksRaycasts = spellbook.blocksRaycasts? false : true;
     }
 }
