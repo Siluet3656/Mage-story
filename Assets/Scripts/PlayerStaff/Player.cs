@@ -355,6 +355,7 @@ public class Player : MonoBehaviour
         if (isCasting)
         {
             StopAllCasts();
+            GCDstop();
         }
     }
     
@@ -648,12 +649,14 @@ public class Player : MonoBehaviour
         {
             if (!isBlinked)
             {
-                float raycastOffet = 0.5f;
+                float raycastOffet = 0.4f;
+                float distFactor = 0.8f;
                 LayerMask mask = LayerMask.GetMask("Walls");
                 blinkRCH = Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y - raycastOffet), this.Movement, BlinkDist, mask);
+                //Debug.DrawLine(new Vector3(transform.position.x,transform.position.y - raycastOffet, 0),new Vector3(transform.position.x + Movement.x * blinkRCH.distance * distFactor, transform.position.y + this.Movement.y * blinkRCH.distance * distFactor, 0), Color.red, 99f);
                 if (blinkRCH.collider != null)
                 {
-                    this.rb.position += this.Movement * blinkRCH.distance;
+                    this.rb.position += this.Movement * blinkRCH.distance * distFactor;
                 }
                 else
                 {
