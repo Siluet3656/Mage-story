@@ -32,15 +32,18 @@ public class Player : MonoBehaviour
     private GameObject frost_whirlwindPrefab;
     private GameObject SpikePrefab;
     private GameObject BoomPrefub;
+    private GameObject FirewallPrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
     private float SpikeCastTime;
+    private float FirewallCastTime;
 
     private Vector3Int fireballCost;
     private Vector3Int frost_whirlwindCost;
     private Vector3Int SpikeCost;
     private Vector3Int BoomCost;
+    private Vector3Int FirewallCost;
     private float ZapCost;
     
     
@@ -61,7 +64,8 @@ public class Player : MonoBehaviour
     private int FrSAmount = 0;
     private int ESAmount = 0;
     
-    private Color FireballCastBarColor = new Color(1,0.3f,0.1f);
+    private Color FireballCastBarColor = new Color(0.9f,0.1f,0.1f);
+    private Color FirewallCastBarColor = new Color(1f,0.3f,0.1f);
     private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
     private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
 
@@ -142,16 +146,19 @@ public class Player : MonoBehaviour
         SpikePrefab = data.GetDataByType(SpellType.Spike).PrefubOfSpell;
         ZapPrefub = data.GetDataByType(SpellType.Zap).PrefubOfSpell;
         BoomPrefub = data.GetDataByType(SpellType.Boom).PrefubOfSpell;
+        FirewallPrefub = data.GetDataByType(SpellType.Firewall).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
         SpikeCastTime = data.GetDataByType(SpellType.Spike).CastTime;
+        FirewallCastTime = data.GetDataByType(SpellType.Firewall).CastTime;
         
         fireballCost = data.GetDataByType(SpellType.Fireball).ShardsCost;
         frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
         SpikeCost = data.GetDataByType(SpellType.Spike).ShardsCost;
         ZapCost = data.GetDataByType(SpellType.Zap).ReminderCost;
         BoomCost = data.GetDataByType(SpellType.Boom).ShardsCost;
+        FirewallCost = data.GetDataByType(SpellType.Firewall).ShardsCost;
     }
 
     private void Update()
@@ -310,10 +317,13 @@ public class Player : MonoBehaviour
     {
         if (isCasting)
         {
-            float distanceToTarget = Vector2.Distance(this.transform.position, TargetCastingTo.transform.position);
-            if (distanceToTarget > interactionRange)
+            if (TargetCastingTo != null)
             {
-                StopAllCasts();
+                float distanceToTarget = Vector2.Distance(this.transform.position, TargetCastingTo.transform.position);
+                if (distanceToTarget > interactionRange)
+                {
+                    StopAllCasts();
+                }
             }
         }
     }
@@ -390,7 +400,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case SpellType.Frost_whirlwind:
-                if (isEnoughShards(fireballCost))
+                if (isEnoughShards(frost_whirlwindCost))
                 {
                     if (currentTarget != null)
                     {
@@ -424,6 +434,14 @@ public class Player : MonoBehaviour
                 if (isEnoughShards(BoomCost))
                 {
                     BoomCast();
+                }
+                break;
+            case SpellType.Firewall:
+                if (isEnoughShards(FirewallCost))
+                {
+                    CurrentCastCastTime = FirewallCastTime;
+                    CastBar.color = FirewallCastBarColor;
+                    StartCoroutine("FirewallCast");
                 }
                 break;
         }
@@ -535,6 +553,18 @@ public class Player : MonoBehaviour
         Instantiate(BoomPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
         UseShards(BoomCost);
         GCDstart();
+        CastStop();
+    }
+    
+    private IEnumerator FirewallCast()
+    {
+        isCasting = true;
+        GCDstart();
+        
+        yield return new WaitForSeconds(FirewallCastTime);
+        
+        Instantiate(FirewallPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        UseShards(FirewallCost);
         CastStop();
     }
 

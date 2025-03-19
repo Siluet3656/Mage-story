@@ -6,7 +6,7 @@ public class Spell : MonoBehaviour
     [SerializeField] private SpellTypeData data;
     [SerializeField] private SpellType spellType;
     [SerializeField] private float SpellSpeed = 0;
-    [SerializeField] private GameObject FB_blastPrefub = null;
+    [SerializeField] private GameObject Entity;
     
     private Rigidbody2D spellrb = null;
     private Enemy Target = null;
@@ -27,13 +27,17 @@ public class Spell : MonoBehaviour
     private void FixedUpdate() {
         if (Target == null)
         {
-            if (spellType == SpellType.Boom)
+            switch (spellType)
             {
-                Blast();
-            }
-            else
-            {
-                Destroy(this.gameObject);
+                case SpellType.Boom:
+                    PlaceEntity();
+                    break;
+                case SpellType.Firewall:
+                    PlaceEntity();
+                    break;
+                default:
+                    Destroy(this.gameObject);
+                    break;
             }
         }
         else
@@ -44,7 +48,7 @@ public class Spell : MonoBehaviour
                     distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
                     if (distanceToTarget < MinimumDist)
                     {
-                        Blast();
+                        PlaceEntity();
                     }
                     direction = Target.transform.position - transform.position;
                     angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -90,9 +94,19 @@ public class Spell : MonoBehaviour
         }
     }
 
-    private void Blast()
+    private void PlaceEntity()
     {
-        Instantiate(FB_blastPrefub, transform.position, Quaternion.identity).GetComponent<FB_blast>().SetDamage(this.SpellDamage);
+        GameObject inst = Instantiate(Entity, transform.position, Quaternion.identity);
+        FB_blast fbb = inst.GetComponent<FB_blast>();
+        Firewall fwl = inst.GetComponent<Firewall>();
+        if (fbb)
+        {
+            fbb.SetDamage(this.SpellDamage);
+        }
+        if (fwl)
+        {
+            fwl.SetDamage(this.SpellDamage);
+        }
         Destroy(this.gameObject);
     }
 

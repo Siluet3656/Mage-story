@@ -5,6 +5,7 @@ public class Spellbook : MonoBehaviour
     [SerializeField] private CanvasGroup frostSpellsPage;
     [SerializeField] private CanvasGroup earthSpellsPage;
     [SerializeField] private CanvasGroup noElementSpellsPage;
+    [SerializeField] private CanvasGroup arcanumsSpellsPage;
     
     public void OpenFireSpellsPage()
     {
@@ -19,6 +20,9 @@ public class Spellbook : MonoBehaviour
         
         noElementSpellsPage.alpha = 0;
         noElementSpellsPage.blocksRaycasts = false;
+        
+        arcanumsSpellsPage.alpha = 0;
+        arcanumsSpellsPage.blocksRaycasts = false;
     }
     
     public void OpenFrostSpellsPage()
@@ -34,6 +38,9 @@ public class Spellbook : MonoBehaviour
         
         noElementSpellsPage.alpha = 0;
         noElementSpellsPage.blocksRaycasts = false;
+        
+        arcanumsSpellsPage.alpha = 0;
+        arcanumsSpellsPage.blocksRaycasts = false;
     }
     
     public void OpenEarthSpellsPage()
@@ -49,6 +56,9 @@ public class Spellbook : MonoBehaviour
         
         noElementSpellsPage.alpha = 0;
         noElementSpellsPage.blocksRaycasts = false;
+        
+        arcanumsSpellsPage.alpha = 0;
+        arcanumsSpellsPage.blocksRaycasts = false;
     }
 
     public void OpenNoElementalSpellsPage()
@@ -64,5 +74,26 @@ public class Spellbook : MonoBehaviour
         
         noElementSpellsPage.alpha = 1;
         noElementSpellsPage.blocksRaycasts = true;
+        
+        arcanumsSpellsPage.alpha = 0;
+        arcanumsSpellsPage.blocksRaycasts = false;
+    }
+    
+    public void OpenArcanumSpellsPage()
+    {
+        fireSpellsPage.alpha = 0;
+        fireSpellsPage.blocksRaycasts = false;
+        
+        frostSpellsPage.alpha = 0;
+        frostSpellsPage.blocksRaycasts = false;
+            
+        earthSpellsPage.alpha = 0;
+        earthSpellsPage.blocksRaycasts = false;
+        
+        noElementSpellsPage.alpha = 0;
+        noElementSpellsPage.blocksRaycasts = false;
+        
+        arcanumsSpellsPage.alpha = 1;
+        arcanumsSpellsPage.blocksRaycasts = true;
     }
 }

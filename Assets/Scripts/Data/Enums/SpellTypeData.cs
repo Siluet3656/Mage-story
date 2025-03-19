@@ -7,7 +7,8 @@ public enum SpellType
         Zap,
         Frost_whirlwind,
         Spike,
-        Boom
+        Boom,
+        Firewall
     }
 
 public class SpellTypeData : MonoBehaviour
@@ -16,8 +17,8 @@ public class SpellTypeData : MonoBehaviour
     [Header("FIREBALL")]
     [SerializeField] private Sprite fireballIcon;
     [SerializeField] private GameObject fireballPrefab;
-    [SerializeField] private float firaballDamage;
-    [SerializeField] private float firaballCD;
+    [SerializeField] private float fireballDamage;
+    [SerializeField] private float fireballCD;
     [SerializeField] private float fireballCastTime;
     [SerializeField] private Vector3Int firaballCost;
     [Header("FROST_WHIRLWIND")]
@@ -46,13 +47,20 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private float boomDamage;
     [SerializeField] private float boomCD;
     [SerializeField] private Vector3Int boomCost;
+    [Header("Firewall")]
+    [SerializeField] private Sprite firewallIcon;
+    [SerializeField] private GameObject firewallPrefab;
+    [SerializeField] private float firewallDamage;
+    [SerializeField] private float firewallCD;
+    [SerializeField] private float firewallCastTime;
+    [SerializeField] private Vector3Int firewallCost;
     
     public SpellData GetDataByType(SpellType type)
     {
         switch (type)
         {
             case SpellType.Fireball:
-                return new SpellData(fireballIcon,fireballPrefab,firaballDamage,firaballCD,fireballCastTime,firaballCost);
+                return new SpellData(fireballIcon,fireballPrefab,fireballDamage,fireballCD,fireballCastTime,firaballCost);
             case SpellType.Frost_whirlwind:
                 return new SpellData(frost_whirlwindIcon,frost_whirlwindPrefab,frost_whirlwindDamage,frost_whirlwindCD,frost_whirlwindCastTime,frost_whirlwindCost);
             case SpellType.Spike:
@@ -61,6 +69,8 @@ public class SpellTypeData : MonoBehaviour
                 return new SpellData(zapIcon,zapPrefab,zapDamage,zapCD,0,zapCost);
             case SpellType.Boom:
                 return new SpellData(boomIcon,boomPrefab,boomDamage,boomCD,0,boomCost);
+            case SpellType.Firewall:
+                return new SpellData(firewallIcon,firewallPrefab,firewallDamage,firewallCD,firewallCastTime,firewallCost);
         }
         return new SpellData(basic,new GameObject("Null"),0,0,0,0);
     }

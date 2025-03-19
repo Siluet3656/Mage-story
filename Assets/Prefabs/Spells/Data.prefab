@@ -46,8 +46,8 @@ MonoBehaviour:
   basic: {fileID: 21300000, guid: 73c718453f4d235489e280c8edfad4e2, type: 3}
   fireballIcon: {fileID: 21300000, guid: 551fa5f754d6e614fb8f2f4e516a1ee7, type: 3}
   fireballPrefab: {fileID: 5689801273313810728, guid: 13f2c01626e53414da29d946a726282e, type: 3}
-  firaballDamage: 100
-  firaballCD: 0
+  fireballDamage: 0
+  fireballCD: 0
   fireballCastTime: 2
   firaballCost: {x: 1, y: 0, z: 0}
   frost_whirlwindIcon: {fileID: 21300000, guid: 625174ac95fcebb41a37dd1a005a674a, type: 3}
@@ -72,3 +72,9 @@ MonoBehaviour:
   boomDamage: 100
   boomCD: 0
   boomCost: {x: 1, y: 0, z: 0}
+  firewallIcon: {fileID: 21300000, guid: 6c844178d0cf06d4da0c28bb0a4f7a88, type: 3}
+  firewallPrefab: {fileID: 5689801273313810728, guid: 1aaefb8bad5c5c743b4282a808bda387, type: 3}
+  firewallDamage: 50
+  firewallCD: 0
+  firewallCastTime: 1
+  firewallCost: {x: 1, y: 0, z: 0}
