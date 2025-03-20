@@ -78,3 +78,9 @@ MonoBehaviour:
   firewallCD: 0
   firewallCastTime: 1
   firewallCost: {x: 1, y: 0, z: 0}
+  firespiritIcon: {fileID: 21300000, guid: d772bf227f382e54d86ad05e94bed0a6, type: 3}
+  firespiritPrefab: {fileID: 5689801273313810728, guid: acf93d59055ac83459acce9d490eb3f5, type: 3}
+  firespiritDamage: 500
+  firespiritCD: 0
+  firespiritCastTime: 3
+  firespiritCost: {x: 1, y: 0, z: 0}

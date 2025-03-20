@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,6 +28,8 @@ public class Spell : MonoBehaviour
     private bool _isDragging = true;
     private Camera cam;
 
+    private List<Enemy> _enemiesToFollow = new List<Enemy>();
+
     private void Awake()
     {
         if (spellType == SpellType.Firewall)
@@ -32,17 +37,26 @@ public class Spell : MonoBehaviour
             cam = Camera.main;
             _playerInputActions = new PlayerInputActions();
             _playerInputActions.UI.LBM.started += PlaceFirewall;
+            _playerInputActions.Player.CastInterrupt.started += CancelFirewallPlacing;
         }
     }
     
     private void OnEnable()
     {
-        _playerInputActions.UI.Enable();
+        if (spellType == SpellType.Firewall)
+        {
+            _playerInputActions.UI.Enable();
+            _playerInputActions.Player.Enable();
+        }
     }
 
     private void OnDisable()
     {
-        _playerInputActions.UI.Disable();
+        if (spellType == SpellType.Firewall)
+        {
+            _playerInputActions.UI.Disable();
+            _playerInputActions.Player.Disable();
+        }
     }
     
     private void Start() {
@@ -50,15 +64,80 @@ public class Spell : MonoBehaviour
         SpellDamage = data.GetDataByType(spellType).Damage;
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (spellType == SpellType.Firespirit)
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy)
+            {
+                _enemiesToFollow.Add(enemy);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (spellType == SpellType.Firespirit)
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy)
+            {
+                _enemiesToFollow.Remove(enemy);
+            }
+        }
+    }
+
     private void Update()
     {
-        if (spellType == SpellType.Firewall)
+        if (Target == null)
         {
-            if (_isDragging)
+            switch (spellType)
             {
-                Vector3 point = cam.ScreenToWorldPoint(_playerInputActions.UI.MousePosition.ReadValue<Vector2>());
-                point.z = 0f;
-                transform.position = point;
+                case SpellType.Firewall:
+                    if (_isDragging)
+                    {
+                        Vector3 point = cam.ScreenToWorldPoint(_playerInputActions.UI.MousePosition.ReadValue<Vector2>());
+                        point.z = 0f;
+                        transform.position = point;
+                    }
+                    break;
+                case SpellType.Firespirit:
+                    if (_enemiesToFollow.Count > 0)
+                    {
+                        float shortiestdistance = 9999999f;
+                        foreach (var enemy in _enemiesToFollow)
+                        {
+                            float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
+                            if (distanceToEnemy < shortiestdistance)
+                            {
+                                shortiestdistance = distanceToEnemy;
+                                Target = enemy;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    Destroy(this.gameObject);
+                    break;
+            }
+        }
+        else
+        {
+            switch (spellType)
+            {
+                case SpellType.Firespirit:
+                    float shortiestdistance = 9999999f;
+                    foreach (var enemy in _enemiesToFollow)
+                    {
+                        float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
+                        if (distanceToEnemy < shortiestdistance)
+                        {
+                            shortiestdistance = distanceToEnemy;
+                            Target = enemy;
+                        }
+                    }
+                    break;
             }
         }
     }
@@ -70,11 +149,6 @@ public class Spell : MonoBehaviour
             {
                 case SpellType.Boom:
                     PlaceEntity();
-                    break;
-                case SpellType.Firewall:
-                    break;
-                default:
-                    Destroy(this.gameObject);
                     break;
             }
         }
@@ -128,6 +202,15 @@ public class Spell : MonoBehaviour
                     spellrb.velocity = direction.normalized * SpellSpeed;
                     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                     break;
+                case SpellType.Firespirit:
+                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                    if (distanceToTarget < MinimumDist)
+                    {
+                        PlaceEntity();
+                    }
+                    direction = Target.transform.position - transform.position;
+                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    break;
             }
         }
     }
@@ -159,6 +242,11 @@ public class Spell : MonoBehaviour
         _isDragging = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1,1);
         PlaceEntity();
+    }
+
+    private void CancelFirewallPlacing(InputAction.CallbackContext context)
+    {
+        Destroy(this.gameObject);
     }
 
     public void SetTarget (Enemy Target)

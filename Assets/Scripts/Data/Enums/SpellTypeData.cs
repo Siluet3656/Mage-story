@@ -8,7 +8,8 @@ public enum SpellType
         Frost_whirlwind,
         Spike,
         Boom,
-        Firewall
+        Firewall,
+        Firespirit
     }
 
 public class SpellTypeData : MonoBehaviour
@@ -54,6 +55,13 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private float firewallCD;
     [SerializeField] private float firewallCastTime;
     [SerializeField] private Vector3Int firewallCost;
+    [Header("Firespirit")]
+    [SerializeField] private Sprite firespiritIcon;
+    [SerializeField] private GameObject firespiritPrefab;
+    [SerializeField] private float firespiritDamage;
+    [SerializeField] private float firespiritCD;
+    [SerializeField] private float firespiritCastTime;
+    [SerializeField] private Vector3Int firespiritCost;
     
     public SpellData GetDataByType(SpellType type)
     {
@@ -71,6 +79,8 @@ public class SpellTypeData : MonoBehaviour
                 return new SpellData(boomIcon,boomPrefab,boomDamage,boomCD,0,boomCost);
             case SpellType.Firewall:
                 return new SpellData(firewallIcon,firewallPrefab,firewallDamage,firewallCD,firewallCastTime,firewallCost);
+            case SpellType.Firespirit:
+                return new SpellData(firespiritIcon,firespiritPrefab,firespiritDamage,firespiritCD,firespiritCastTime,firespiritCost);
         }
         return new SpellData(basic,new GameObject("Null"),0,0,0,0);
     }

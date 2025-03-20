@@ -33,17 +33,20 @@ public class Player : MonoBehaviour
     private GameObject SpikePrefab;
     private GameObject BoomPrefub;
     private GameObject FirewallPrefub;
+    private GameObject FirespiritPrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
     private float SpikeCastTime;
     private float FirewallCastTime;
+    private float FirespiritCastTime;
 
     private Vector3Int fireballCost;
     private Vector3Int frost_whirlwindCost;
     private Vector3Int SpikeCost;
     private Vector3Int BoomCost;
     private Vector3Int FirewallCost;
+    private Vector3Int FirespiritCost;
     private float ZapCost;
     
     
@@ -66,6 +69,7 @@ public class Player : MonoBehaviour
     
     private Color FireballCastBarColor = new Color(0.9f,0.1f,0.1f);
     private Color FirewallCastBarColor = new Color(1f,0.3f,0.1f);
+    private Color FireSpiritCastBarColor = new Color(1f,0.7f,0.4f);
     private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
     private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
 
@@ -147,11 +151,13 @@ public class Player : MonoBehaviour
         ZapPrefub = data.GetDataByType(SpellType.Zap).PrefubOfSpell;
         BoomPrefub = data.GetDataByType(SpellType.Boom).PrefubOfSpell;
         FirewallPrefub = data.GetDataByType(SpellType.Firewall).PrefubOfSpell;
+        FirespiritPrefub = data.GetDataByType(SpellType.Firespirit).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
         SpikeCastTime = data.GetDataByType(SpellType.Spike).CastTime;
         FirewallCastTime = data.GetDataByType(SpellType.Firewall).CastTime;
+        FirespiritCastTime = data.GetDataByType(SpellType.Firespirit).CastTime;
         
         fireballCost = data.GetDataByType(SpellType.Fireball).ShardsCost;
         frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
@@ -159,6 +165,7 @@ public class Player : MonoBehaviour
         ZapCost = data.GetDataByType(SpellType.Zap).ReminderCost;
         BoomCost = data.GetDataByType(SpellType.Boom).ShardsCost;
         FirewallCost = data.GetDataByType(SpellType.Firewall).ShardsCost;
+        FirespiritCost = data.GetDataByType(SpellType.Firespirit).ShardsCost;
     }
 
     private void Update()
@@ -380,6 +387,8 @@ public class Player : MonoBehaviour
         StopCoroutine("FireballCast");
         StopCoroutine("frost_whirlwindCast");
         StopCoroutine("SpikeCast");
+        StopCoroutine("FirewallCast");
+        StopCoroutine("FireSpiritCast");
         CastStop();
     }
 
@@ -441,6 +450,14 @@ public class Player : MonoBehaviour
                     CurrentCastCastTime = FirewallCastTime;
                     CastBar.color = FirewallCastBarColor;
                     StartCoroutine("FirewallCast");
+                }
+                break;
+            case SpellType.Firespirit:
+                if (isEnoughShards(FirespiritCost))
+                {
+                    CurrentCastCastTime = FirespiritCastTime;
+                    CastBar.color = FireSpiritCastBarColor;
+                    StartCoroutine("FireSpiritCast");
                 }
                 break;
         }
@@ -564,6 +581,18 @@ public class Player : MonoBehaviour
         
         Instantiate(FirewallPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
         UseShards(FirewallCost);
+        CastStop();
+    }
+    
+    private IEnumerator FireSpiritCast()
+    {
+        isCasting = true;
+        GCDstart();
+        
+        yield return new WaitForSeconds(FirespiritCastTime);
+        
+        Instantiate(FirespiritPrefub, transform.position, Quaternion.identity);
+        UseShards(FirespiritCost);
         CastStop();
     }
 
