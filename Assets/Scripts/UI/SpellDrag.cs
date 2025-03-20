@@ -22,12 +22,12 @@ public class SpellDrag : MonoBehaviour
 
     private void OnEnable()
     {
-        playerInputActions.Enable();
+        playerInputActions.UI.Enable();
     }
 
     private void OnDisable()
     {
-        playerInputActions.Disable();
+        playerInputActions.UI.Disable();
     }
 
     private void Start()

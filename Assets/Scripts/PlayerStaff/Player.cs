@@ -182,7 +182,6 @@ public class Player : MonoBehaviour
             {
                 CastBar.fillAmount = 1f;
             }
-            Debug.Log(CastProgress);
         }
         else
         {
