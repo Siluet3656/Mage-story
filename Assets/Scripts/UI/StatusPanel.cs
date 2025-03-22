@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 
 public class StatusPanel : MonoBehaviour
@@ -6,6 +7,9 @@ public class StatusPanel : MonoBehaviour
    [Header("Debuffs")] 
    [SerializeField] private GameObject slowPF;
    [SerializeField] private GameObject poisonPF;
+
+   [Header("Buffs")] 
+   [SerializeField] private GameObject fireauraPF;
 
    private List<GameObject> Statuses = new List<GameObject>();
    private float defaultX = -3.5f;
@@ -29,6 +33,19 @@ public class StatusPanel : MonoBehaviour
       }
    }
 
+   public void AddStatus(BuffType type)
+   {
+      GameObject gm;
+      switch (type)
+      {
+         case BuffType.FireAura:
+            gm = Instantiate(fireauraPF, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(defaultX + offset * Statuses.Count, defaultY, 0);
+            Statuses.Add(gm);
+            break;
+      }
+   }
+
    public void RemoveStatus(DebuffType type)
    {
       GameObject gm;
@@ -41,6 +58,20 @@ public class StatusPanel : MonoBehaviour
             break;
          case DebuffType.Poison:
             gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.Poison);
+            Statuses.Remove(gm);
+            Destroy(gm);
+            break;
+      }
+      RefreshStatusesPositions();
+   }
+
+   public void RemoveStatus(BuffType type)
+   {
+      GameObject gm;
+      switch (type)
+      {
+         case BuffType.FireAura:
+            gm = Statuses.Find(o => o.GetComponent<Status>().bt == BuffType.FireAura);
             Statuses.Remove(gm);
             Destroy(gm);
             break;

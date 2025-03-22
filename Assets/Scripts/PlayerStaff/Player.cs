@@ -34,12 +34,17 @@ public class Player : MonoBehaviour
     private GameObject BoomPrefub;
     private GameObject FirewallPrefub;
     private GameObject FirespiritPrefub;
+    private GameObject FirelaserPrefub;
+    //private GameObject FireauraPrefub;
+    private GameObject FiremarkPrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
     private float SpikeCastTime;
     private float FirewallCastTime;
     private float FirespiritCastTime;
+    private float FirelaserCastTime;
+    private float FiremarkCastTime;
 
     private Vector3Int fireballCost;
     private Vector3Int frost_whirlwindCost;
@@ -47,6 +52,9 @@ public class Player : MonoBehaviour
     private Vector3Int BoomCost;
     private Vector3Int FirewallCost;
     private Vector3Int FirespiritCost;
+    private Vector3Int FirelaserCost;
+    private Vector3Int FireauraCost;
+    private Vector3Int FiremarkCost;
     private float ZapCost;
     
     
@@ -67,9 +75,11 @@ public class Player : MonoBehaviour
     private int FrSAmount = 0;
     private int ESAmount = 0;
     
-    private Color FireballCastBarColor = new Color(0.9f,0.1f,0.1f);
-    private Color FirewallCastBarColor = new Color(1f,0.3f,0.1f);
-    private Color FireSpiritCastBarColor = new Color(1f,0.7f,0.4f);
+    private Color FireballCastBarColor = new Color(0.8f,0.1f,0.1f);
+    private Color FirewallCastBarColor = new Color(1,0.3f,0.1f);
+    private Color FireSpiritCastBarColor = new Color(1,0.7f,0.4f);
+    private Color FirelaserCastBarColor = new Color(1,0f,0.2f);
+    private Color FireMarkCastBarColor = new Color(1,0.6f,0.1f);
     private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
     private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
 
@@ -145,6 +155,8 @@ public class Player : MonoBehaviour
             bar.fillAmount = GCDprogress;
         }
 
+        //SpellData data = this.data.GetDataByType(SpellType.Fireball);
+        
         FireBallPrefab = data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
         frost_whirlwindPrefab = data.GetDataByType(SpellType.Frost_whirlwind).PrefubOfSpell;
         SpikePrefab = data.GetDataByType(SpellType.Spike).PrefubOfSpell;
@@ -152,12 +164,16 @@ public class Player : MonoBehaviour
         BoomPrefub = data.GetDataByType(SpellType.Boom).PrefubOfSpell;
         FirewallPrefub = data.GetDataByType(SpellType.Firewall).PrefubOfSpell;
         FirespiritPrefub = data.GetDataByType(SpellType.Firespirit).PrefubOfSpell;
+        FirelaserPrefub = data.GetDataByType(SpellType.Firelaser).PrefubOfSpell;
+        FiremarkPrefub = data.GetDataByType(SpellType.Firemark).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
         SpikeCastTime = data.GetDataByType(SpellType.Spike).CastTime;
         FirewallCastTime = data.GetDataByType(SpellType.Firewall).CastTime;
         FirespiritCastTime = data.GetDataByType(SpellType.Firespirit).CastTime;
+        FirelaserCastTime = data.GetDataByType(SpellType.Firelaser).CastTime;
+        FiremarkCastTime = data.GetDataByType(SpellType.Firemark).CastTime;
         
         fireballCost = data.GetDataByType(SpellType.Fireball).ShardsCost;
         frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
@@ -166,6 +182,9 @@ public class Player : MonoBehaviour
         BoomCost = data.GetDataByType(SpellType.Boom).ShardsCost;
         FirewallCost = data.GetDataByType(SpellType.Firewall).ShardsCost;
         FirespiritCost = data.GetDataByType(SpellType.Firespirit).ShardsCost;
+        FirelaserCost = data.GetDataByType(SpellType.Firelaser).ShardsCost;
+        FireauraCost = data.GetDataByType(SpellType.Fireaura).ShardsCost;
+        FiremarkCost = data.GetDataByType(SpellType.Firemark).ShardsCost;
     }
 
     private void Update()
@@ -389,6 +408,8 @@ public class Player : MonoBehaviour
         StopCoroutine("SpikeCast");
         StopCoroutine("FirewallCast");
         StopCoroutine("FireSpiritCast");
+        StopCoroutine("FirelaserCast");
+        StopCoroutine("FireMarkCast");
         CastStop();
     }
 
@@ -458,6 +479,34 @@ public class Player : MonoBehaviour
                     CurrentCastCastTime = FirespiritCastTime;
                     CastBar.color = FireSpiritCastBarColor;
                     StartCoroutine("FireSpiritCast");
+                }
+                break; 
+            case SpellType.Firelaser:
+                if (isEnoughShards(FirelaserCost))
+                {
+                    if (currentTarget != null)
+                    {
+                        CurrentCastCastTime = FirelaserCastTime;
+                        CastBar.color = FirelaserCastBarColor;
+                        StartCoroutine("FirelaserCast");
+                    }
+                }
+                break;
+            case SpellType.Fireaura:
+                if (isEnoughShards(FireauraCost))
+                {
+                    FireAuraCast();
+                }
+                break;
+            case SpellType.Firemark:
+                if (isEnoughShards(FiremarkCost))
+                {
+                    if (currentTarget != null)
+                    {
+                        CurrentCastCastTime = FiremarkCastTime;
+                        CastBar.color = FireMarkCastBarColor;
+                        StartCoroutine("FireMarkCast");
+                    }
                 }
                 break;
         }
@@ -596,6 +645,51 @@ public class Player : MonoBehaviour
         CastStop();
     }
 
+    private IEnumerator FirelaserCast()
+    {
+        Spell spell;
+        isCasting = true;
+        GCDstart();
+        
+        yield return new WaitForSeconds(FirelaserCastTime);
+        
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(FirelaserPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.GetComponent<LineRenderer>().SetPosition(0, this.transform.position);
+            spell.GetComponent<LineRenderer>().SetPosition(1, TargetCastingTo.transform.position);
+            spell.SetTarget(TargetCastingTo);
+            UseShards(FirelaserCost);
+        }
+        CastStop();
+    }
+
+    private void FireAuraCast()
+    {
+        isCasting = true;
+        this.GetComponent<Buff>().GetBuff(BuffType.FireAura);
+        UseShards(FireauraCost);
+        GCDstart();
+        CastStop();
+    }
+
+    private IEnumerator FireMarkCast()
+    {
+        Spell spell;
+        isCasting = true;
+        GCDstart();
+        
+        yield return new WaitForSeconds(FiremarkCastTime);
+        
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(FiremarkPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(TargetCastingTo);
+            UseShards(FiremarkCost);
+        }
+        CastStop();
+    }
+    
     private void GainRemainder(int amount)
     {
         if (RemainderAmount < MaxRemainderAmount)

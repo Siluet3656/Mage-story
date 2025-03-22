@@ -9,7 +9,10 @@ public enum SpellType
         Spike,
         Boom,
         Firewall,
-        Firespirit
+        Firespirit,
+        Firelaser,
+        Fireaura,
+        Firemark
     }
 
 public class SpellTypeData : MonoBehaviour
@@ -42,26 +45,46 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private float zapDamage;
     [SerializeField] private float zapCD;
     [SerializeField] private float zapCost;
-    [Header("Boom")]
+    [Header("BOOM")]
     [SerializeField] private Sprite boomIcon;
     [SerializeField] private GameObject boomPrefab;
     [SerializeField] private float boomDamage;
     [SerializeField] private float boomCD;
     [SerializeField] private Vector3Int boomCost;
-    [Header("Firewall")]
+    [Header("FIREWALL")]
     [SerializeField] private Sprite firewallIcon;
     [SerializeField] private GameObject firewallPrefab;
     [SerializeField] private float firewallDamage;
     [SerializeField] private float firewallCD;
     [SerializeField] private float firewallCastTime;
     [SerializeField] private Vector3Int firewallCost;
-    [Header("Firespirit")]
+    [Header("FIRESPIRIT")]
     [SerializeField] private Sprite firespiritIcon;
     [SerializeField] private GameObject firespiritPrefab;
     [SerializeField] private float firespiritDamage;
     [SerializeField] private float firespiritCD;
     [SerializeField] private float firespiritCastTime;
     [SerializeField] private Vector3Int firespiritCost;
+    [Header("FIRELASER")]
+    [SerializeField] private Sprite firelaserIcon;
+    [SerializeField] private GameObject firelaserPrefab;
+    [SerializeField] private float firelaserDamage;
+    [SerializeField] private float firelaserCD;
+    [SerializeField] private float firelaserCastTime;
+    [SerializeField] private Vector3Int firelaserCost;
+    [Header("FIREAURA")]
+    [SerializeField] private Sprite fireauraIcon;
+    [SerializeField] private GameObject fireauraPrefab;
+    [SerializeField] private float fireauraDamage;
+    [SerializeField] private float fireauraCD;
+    [SerializeField] private Vector3Int fireauraCost;
+    [Header("FIREMARK")]
+    [SerializeField] private Sprite firemarkIcon;
+    [SerializeField] private GameObject firemarkPrefab;
+    [SerializeField] private float firemarkDamage;
+    [SerializeField] private float firemarkCD;
+    [SerializeField] private float firemarkCastTime;
+    [SerializeField] private Vector3Int firemarkCost;
     
     public SpellData GetDataByType(SpellType type)
     {
@@ -81,6 +104,12 @@ public class SpellTypeData : MonoBehaviour
                 return new SpellData(firewallIcon,firewallPrefab,firewallDamage,firewallCD,firewallCastTime,firewallCost);
             case SpellType.Firespirit:
                 return new SpellData(firespiritIcon,firespiritPrefab,firespiritDamage,firespiritCD,firespiritCastTime,firespiritCost);
+            case SpellType.Firelaser:
+                return new SpellData(firelaserIcon,firelaserPrefab,firelaserDamage,firelaserCD,firelaserCastTime,firelaserCost);
+            case SpellType.Fireaura:
+                return new SpellData(fireauraIcon,fireauraPrefab,fireauraDamage,fireauraCD,0,fireauraCost);
+            case SpellType.Firemark:
+                return new SpellData(firemarkIcon,firemarkPrefab,firemarkDamage,firemarkCD,firemarkCastTime,firemarkCost);
         }
         return new SpellData(basic,new GameObject("Null"),0,0,0,0);
     }

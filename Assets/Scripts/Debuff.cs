@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Debuff : MonoBehaviour
@@ -48,7 +47,7 @@ public class Debuff : MonoBehaviour
         }
    }
 
-   public void DebuffTarget(DebuffType dtype, Player dtarget)
+   public void GetDebuff(DebuffType dtype, Player dtarget)
    {
         switch (dtype)
         {

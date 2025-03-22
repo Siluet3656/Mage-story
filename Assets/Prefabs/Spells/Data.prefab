@@ -46,7 +46,7 @@ MonoBehaviour:
   basic: {fileID: 21300000, guid: 73c718453f4d235489e280c8edfad4e2, type: 3}
   fireballIcon: {fileID: 21300000, guid: 551fa5f754d6e614fb8f2f4e516a1ee7, type: 3}
   fireballPrefab: {fileID: 5689801273313810728, guid: 13f2c01626e53414da29d946a726282e, type: 3}
-  fireballDamage: 0
+  fireballDamage: 100
   fireballCD: 0
   fireballCastTime: 2
   firaballCost: {x: 1, y: 0, z: 0}
@@ -80,7 +80,24 @@ MonoBehaviour:
   firewallCost: {x: 1, y: 0, z: 0}
   firespiritIcon: {fileID: 21300000, guid: d772bf227f382e54d86ad05e94bed0a6, type: 3}
   firespiritPrefab: {fileID: 5689801273313810728, guid: acf93d59055ac83459acce9d490eb3f5, type: 3}
-  firespiritDamage: 500
+  firespiritDamage: 200
   firespiritCD: 0
   firespiritCastTime: 3
   firespiritCost: {x: 1, y: 0, z: 0}
+  firelaserIcon: {fileID: 21300000, guid: 64608719c8413d44db796ba70bbc7bc6, type: 3}
+  firelaserPrefab: {fileID: 1820270517383113431, guid: 6cd20fc03685c944bb6fd25c1971069b, type: 3}
+  firelaserDamage: 250
+  firelaserCD: 0
+  firelaserCastTime: 4
+  firelaserCost: {x: 1, y: 0, z: 0}
+  fireauraIcon: {fileID: 21300000, guid: e207d689e7004c0419b77ec53edf3564, type: 3}
+  fireauraPrefab: {fileID: 0}
+  fireauraDamage: 0
+  fireauraCD: 0
+  fireauraCost: {x: 1, y: 0, z: 0}
+  firemarkIcon: {fileID: 21300000, guid: a12700ddf15807e4792373537aa9658b, type: 3}
+  firemarkPrefab: {fileID: 5689801273313810728, guid: 0bc91fd89e4c05941bb45729381d8761, type: 3}
+  firemarkDamage: 150
+  firemarkCD: 0
+  firemarkCastTime: 0.5
+  firemarkCost: {x: 1, y: 0, z: 0}

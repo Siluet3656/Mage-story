@@ -117,6 +117,8 @@ public class Spell : MonoBehaviour
                         }
                     }
                     break;
+                case SpellType.Boom:
+                    break;
                 default:
                     Destroy(this.gameObject);
                     break;
@@ -137,6 +139,24 @@ public class Spell : MonoBehaviour
                             Target = enemy;
                         }
                     }
+                    break;
+                case SpellType.Zap:
+                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
+                    if (!isCasted)
+                    {
+                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        isCasted = true;
+                    }
+                    StartCoroutine("InstantSpellAnimation");
+                    break;
+                case SpellType.Firelaser:
+                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
+                    if (!isCasted)
+                    {
+                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        isCasted = true;
+                    }
+                    StartCoroutine("InstantSpellAnimation");
                     break;
             }
         }
@@ -166,15 +186,6 @@ public class Spell : MonoBehaviour
                     angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     spellrb.velocity = direction.normalized * SpellSpeed;
                     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                    break;
-                case SpellType.Zap:
-                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
-                    if (!isCasted)
-                    {
-                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
-                        isCasted = true;
-                    }
-                    StartCoroutine("InstantSpellAnimation");
                     break;
                 case SpellType.Frost_whirlwind:
                     distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
