@@ -1,5 +1,6 @@
 ﻿public enum DebuffType
     {
         Slow,
-        Poison
+        Poison,
+        FireMark
     }

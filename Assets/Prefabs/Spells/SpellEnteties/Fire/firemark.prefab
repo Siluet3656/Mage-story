@@ -47,8 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 70529017736747502, guid: cb58b9ff9fa1483408a3062a7bc711ba, type: 3}
   spellType: 10
-  SpellSpeed: 50
-  Entity: {fileID: 872843416596052933, guid: 1a13d027c17e2314b965404a3f5976c5, type: 3}
+  SpellSpeed: 30
+  Entity: {fileID: 0}
   defaultCritChance: 0.3
   defaultCritMultyply: 1.2
 --- !u!212 &7876000649650609732

@@ -97,7 +97,7 @@ MonoBehaviour:
   fireauraCost: {x: 1, y: 0, z: 0}
   firemarkIcon: {fileID: 21300000, guid: a12700ddf15807e4792373537aa9658b, type: 3}
   firemarkPrefab: {fileID: 5689801273313810728, guid: 0bc91fd89e4c05941bb45729381d8761, type: 3}
-  firemarkDamage: 0
+  firemarkDamage: 10
   firemarkCD: 0
-  firemarkCastTime: 0.5
+  firemarkCastTime: 0.2
   firemarkCost: {x: 1, y: 0, z: 0}

@@ -7,6 +7,7 @@ public class StatusPanel : MonoBehaviour
    [Header("Debuffs")] 
    [SerializeField] private GameObject slowPF;
    [SerializeField] private GameObject poisonPF;
+   [SerializeField] private GameObject firemarkPF;
 
    [Header("Buffs")] 
    [SerializeField] private GameObject fireauraPF;
@@ -31,6 +32,11 @@ public class StatusPanel : MonoBehaviour
             break;
          case DebuffType.Poison:
             gm = Instantiate(poisonPF, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(defaultX + offset * Statuses.Count, defaultY, 0);
+            Statuses.Add(gm);
+            break;
+         case DebuffType.FireMark:
+            gm = Instantiate(firemarkPF, this.gameObject.transform, false);
             gm.transform.localPosition = new Vector3(defaultX + offset * Statuses.Count, defaultY, 0);
             Statuses.Add(gm);
             break;
@@ -62,6 +68,11 @@ public class StatusPanel : MonoBehaviour
             break;
          case DebuffType.Poison:
             gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.Poison);
+            Statuses.Remove(gm);
+            Destroy(gm);
+            break;
+         case DebuffType.FireMark:
+            gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.FireMark);
             Statuses.Remove(gm);
             Destroy(gm);
             break;

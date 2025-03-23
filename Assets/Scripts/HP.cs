@@ -64,10 +64,11 @@ public class HP : MonoBehaviour
         
         float proc = Random.Range(0,100);
         bool isProced = (proc - chance * 100) < 0;
-        Debug.Log(multiply + " / " + chance);
+        //Debug.Log(multiply + " / " + chance);
         if (isProced)
         {
             TakeDamage(damage * multiply);
+            GetComponent<Debuff>().GotCrit();
         }
         else
         {

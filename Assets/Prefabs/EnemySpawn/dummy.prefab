@@ -138,8 +138,13 @@ MonoBehaviour:
   poisonDuration: 5
   poisonDamage: 10
   amountOfTicks: 15
-  critChance: 0.3
-  critMultyply: 1.2
+  critChancePoison: 0.1
+  critMultyplyPoison: 1.5
+  firemarkDuration: 10
+  fireMarkBlastPrefub: {fileID: 872843416596052933, guid: 04cd0408cc1340149b011fdcf2415989, type: 3}
+  fireMarkBlastDamage: 0
+  critChanceFireMark: 0.1
+  critMultyplyFireMark: 1.5
 --- !u!61 &6746311934899669599
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -377,6 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowPF: {fileID: 5001322819261538868, guid: e32e99d90cc059b4fb0e42320f8beb8c, type: 3}
   poisonPF: {fileID: 5001322819261538868, guid: 30878c2616473e3469ea49e030258d65, type: 3}
+  firemarkPF: {fileID: 5001322819261538868, guid: 322fcbd64ba1abf4bb7782369f3050cf, type: 3}
   fireauraPF: {fileID: 0}
 --- !u!1 &6746311935797336350
 GameObject:

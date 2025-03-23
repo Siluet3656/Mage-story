@@ -12,13 +12,21 @@ public class Debuff : MonoBehaviour
     [SerializeField] private int poisonDuration = 0;
     [SerializeField] private int poisonDamage = 0;
     [SerializeField] private int amountOfTicks = 0;
-    [SerializeField] private float critChance;
-    [SerializeField] private float critMultyply;
+    [SerializeField] private float critChancePoison;
+    [SerializeField] private float critMultyplyPoison;
+    [Space]
+    [SerializeField] private float firemarkDuration;
+    [SerializeField] private GameObject fireMarkBlastPrefub;
+    [SerializeField] private float fireMarkBlastDamage;
+    [SerializeField] private float critChanceFireMark;
+    [SerializeField] private float critMultyplyFireMark;
 
     private bool isSlowed = false;
     private bool isPoisoned = false;
+    private bool isFireMarked = false;
 
     private float poisonTickRatio;
+    private bool _gotcrit = false;
 
     private void Start()
     {
@@ -46,6 +54,15 @@ public class Debuff : MonoBehaviour
                     StartCoroutine(RemoveDebuffFromTarget(DebuffType.Poison, dtarget));
                 }
                 break;
+            case DebuffType.FireMark:
+                if (!isFireMarked)
+                {
+                    isFireMarked = true;
+                    statusPanel.AddStatus(DebuffType.FireMark);
+                    StartCoroutine(WaitForCrit(dtarget.transform.position));
+                    StartCoroutine(RemoveDebuffFromTarget(DebuffType.FireMark, dtarget));
+                }
+                break;
         }
    }
 
@@ -57,6 +74,11 @@ public class Debuff : MonoBehaviour
 
                 break;
         }
+   }
+
+   public void GotCrit()
+   {
+       _gotcrit = true;
    }
 
    private IEnumerator RemoveDebuffFromTarget(DebuffType dtype, Enemy dtarget)
@@ -73,10 +95,16 @@ public class Debuff : MonoBehaviour
                 for (int i = 0; i < amountOfTicks; i++)
                 {
                     yield return new WaitForSeconds(poisonTickRatio);
-                    dtarget.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(poisonDamage, critMultyply, critChance);
+                    dtarget.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(poisonDamage, critMultyplyPoison, critChancePoison);
                 }
                 isPoisoned = false;
                 statusPanel.RemoveStatus(DebuffType.Poison);
+                break;
+            case DebuffType.FireMark:
+                yield return new WaitForSeconds(firemarkDuration);
+                StopCoroutine(WaitForCrit(dtarget.transform.position));
+                isFireMarked = false;
+                statusPanel.RemoveStatus(DebuffType.FireMark);
                 break;
         }
    }
@@ -89,5 +117,15 @@ public class Debuff : MonoBehaviour
 
                 break;
         }
+   }
+
+   private IEnumerator WaitForCrit(Vector3 _blastPosition)
+   {
+       while (true)
+       {
+           yield return new WaitUntil(() => _gotcrit);
+           Instantiate(fireMarkBlastPrefub, _blastPosition, Quaternion.identity).GetComponent<FB_blast>().SetDamage(fireMarkBlastDamage, critMultyplyFireMark,critChanceFireMark);
+           _gotcrit = false;
+       }
    }
 }
