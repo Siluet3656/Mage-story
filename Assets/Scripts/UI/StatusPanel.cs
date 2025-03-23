@@ -15,6 +15,10 @@ public class StatusPanel : MonoBehaviour
    private float defaultX = -3.5f;
    private float defaultY = 0.65f;
    private float offset = 1.2f;
+   
+   private float defaultXbuffs = -9f;
+   private float defaultYbuffs = 2.4f;
+   private float offsebuffst = 2.8f;
    public void AddStatus(DebuffType type)
    {
       GameObject gm;
@@ -40,7 +44,7 @@ public class StatusPanel : MonoBehaviour
       {
          case BuffType.FireAura:
             gm = Instantiate(fireauraPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultX + offset * Statuses.Count, defaultY, 0);
+            gm.transform.localPosition = new Vector3(defaultXbuffs + offsebuffst * Statuses.Count, defaultYbuffs, 0);
             Statuses.Add(gm);
             break;
       }
@@ -76,7 +80,7 @@ public class StatusPanel : MonoBehaviour
             Destroy(gm);
             break;
       }
-      RefreshStatusesPositions();
+      RefreshStatusesPositionsBuffs();
    }
 
    private void RefreshStatusesPositions()
@@ -84,6 +88,14 @@ public class StatusPanel : MonoBehaviour
       foreach (var status in Statuses)
       {
          status.transform.localPosition = new Vector3(defaultX + offset * Statuses.IndexOf(status), defaultY, 0);
+      }
+   }
+   
+   private void RefreshStatusesPositionsBuffs()
+   {
+      foreach (var status in Statuses)
+      {
+         status.transform.localPosition = new Vector3(defaultXbuffs + offsebuffst * Statuses.IndexOf(status), defaultYbuffs, 0);
       }
    }
 }

@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 766683005172642888}
-  - component: {fileID: 7876000649650609732}
   - component: {fileID: 4174167277968440007}
+  - component: {fileID: 7876000649650609732}
   - component: {fileID: 4177225706221646430}
   m_Layer: 0
   m_Name: Fireball
@@ -33,6 +33,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4174167277968440007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689801273313810728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d68cf7d9e571f58489f866dcd544b4ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 70529017736747502, guid: cb58b9ff9fa1483408a3062a7bc711ba, type: 3}
+  spellType: 1
+  SpellSpeed: 20
+  Entity: {fileID: 872843416596052933, guid: 1a13d027c17e2314b965404a3f5976c5, type: 3}
+  defaultCritChance: 0.3
+  defaultCritMultyply: 1.2
 --- !u!212 &7876000649650609732
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -84,22 +102,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4174167277968440007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5689801273313810728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d68cf7d9e571f58489f866dcd544b4ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 70529017736747502, guid: cb58b9ff9fa1483408a3062a7bc711ba, type: 3}
-  spellType: 1
-  SpellSpeed: 20
-  Entity: {fileID: 872843416596052933, guid: 1a13d027c17e2314b965404a3f5976c5, type: 3}
 --- !u!50 &4177225706221646430
 Rigidbody2D:
   serializedVersion: 4

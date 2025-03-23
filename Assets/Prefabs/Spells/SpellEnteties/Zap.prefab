@@ -48,7 +48,9 @@ MonoBehaviour:
   data: {fileID: 70529017736747502, guid: cb58b9ff9fa1483408a3062a7bc711ba, type: 3}
   spellType: 2
   SpellSpeed: 0
-  FB_blastPrefub: {fileID: 0}
+  Entity: {fileID: 0}
+  defaultCritChance: 0.3
+  defaultCritMultyply: 1.2
 --- !u!120 &1820270517383113425
 LineRenderer:
   m_ObjectHideFlags: 0

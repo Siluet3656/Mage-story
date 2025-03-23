@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: -2381731457541922397}
   - component: {fileID: 5787631262622994317}
   - component: {fileID: 799739321664604419}
-  m_Layer: 0
-  m_Name: FirewallRadius
+  m_Layer: 2
+  m_Name: FirewallZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 872843416596052933}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

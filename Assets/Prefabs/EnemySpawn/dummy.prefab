@@ -50,16 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e199d5dd44d0b46af6e07773cd9f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PatrolPoints:
-  - {fileID: 6846496783656338022, guid: 4002c3bdcf5ba224c9cf3dcbfaebe208, type: 3}
-  - {fileID: 6846496783656338022, guid: c2a4284959723f044bda3daa17e9c8c3, type: 3}
-  - {fileID: 3382121372902043731, guid: 00049316a68e91a4ebbe733e71ed6a1c, type: 3}
-  - {fileID: 3382121372902043731, guid: 6733b0470a210044297f492075a88dfa, type: 3}
-  - {fileID: 372848680585531786, guid: cc6b9d43f83eb98419914cf67f7188bd, type: 3}
-  - {fileID: 372848680585531786, guid: 3fc85676ad344df49848c70f447b889f, type: 3}
-  - {fileID: 372848680585531786, guid: a4acefbfdecf6e54b9b53c8516703bbb, type: 3}
-  - {fileID: 7516235456082516903, guid: ecbcfd6be80c1c44cb331fa6fdf137f2, type: 3}
-  - {fileID: 7516235456082516903, guid: a81373122b988e040905ca510a736afd, type: 3}
+  PatrolPoints: []
   TargetedSR: {fileID: 6746311936119279055}
   speedType: 0
   MinWaitingTime: 2
@@ -127,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a506825b7bbb154ca29b40b93b313df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Max_HP: 1000
+  Max_HP: 10000
   HealthBar: {fileID: 6746311935797336348}
   Current_HP: 0
 --- !u!114 &6746311934899669586
@@ -147,6 +138,8 @@ MonoBehaviour:
   poisonDuration: 5
   poisonDamage: 10
   amountOfTicks: 15
+  critChance: 0.3
+  critMultyply: 1.2
 --- !u!61 &6746311934899669599
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -384,6 +377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowPF: {fileID: 5001322819261538868, guid: e32e99d90cc059b4fb0e42320f8beb8c, type: 3}
   poisonPF: {fileID: 5001322819261538868, guid: 30878c2616473e3469ea49e030258d65, type: 3}
+  fireauraPF: {fileID: 0}
 --- !u!1 &6746311935797336350
 GameObject:
   m_ObjectHideFlags: 0

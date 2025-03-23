@@ -12,6 +12,8 @@ public class Debuff : MonoBehaviour
     [SerializeField] private int poisonDuration = 0;
     [SerializeField] private int poisonDamage = 0;
     [SerializeField] private int amountOfTicks = 0;
+    [SerializeField] private float critChance;
+    [SerializeField] private float critMultyply;
 
     private bool isSlowed = false;
     private bool isPoisoned = false;
@@ -71,7 +73,7 @@ public class Debuff : MonoBehaviour
                 for (int i = 0; i < amountOfTicks; i++)
                 {
                     yield return new WaitForSeconds(poisonTickRatio);
-                    dtarget.gameObject.GetComponent<HP>().TakeDamage(poisonDamage);
+                    dtarget.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(poisonDamage, critMultyply, critChance);
                 }
                 isPoisoned = false;
                 statusPanel.RemoveStatus(DebuffType.Poison);

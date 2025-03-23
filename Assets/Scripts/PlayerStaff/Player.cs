@@ -35,7 +35,6 @@ public class Player : MonoBehaviour
     private GameObject FirewallPrefub;
     private GameObject FirespiritPrefub;
     private GameObject FirelaserPrefub;
-    //private GameObject FireauraPrefub;
     private GameObject FiremarkPrefub;
 
     private float FireballCastTime;
@@ -74,6 +73,16 @@ public class Player : MonoBehaviour
     private int FSAmount = 0;
     private int FrSAmount = 0;
     private int ESAmount = 0;
+    
+    private float fireCritMultAdjust = 1;
+    private float fireCritChanceAdjust = 1;
+    private float frostCritMultAdjust = 1;
+    private float frostCritChanceAdjust = 1;
+    private float earthCritMultAdjust = 1;
+    private float earthCritChanceAdjust = 1;
+    private float noelemCritMultAdjust = 1;
+    private float noelemCritChanceAdjust = 1;
+    
     
     private Color FireballCastBarColor = new Color(0.8f,0.1f,0.1f);
     private Color FirewallCastBarColor = new Color(1,0.3f,0.1f);
@@ -399,7 +408,30 @@ public class Player : MonoBehaviour
             GCDstop();
         }
     }
+
+    public void SetCritAdjustFire(float mult, float chance)
+    {
+        fireCritMultAdjust = mult;
+        fireCritChanceAdjust = chance;
+    }
     
+    public void SetCritAdjustFrost(float mult, float chance)
+    {
+        frostCritMultAdjust = mult;
+        frostCritChanceAdjust = chance;
+    }
+    
+    public void SetCritAdjustEarth(float mult, float chance)
+    {
+        earthCritMultAdjust = mult;
+        earthCritChanceAdjust = chance;
+    }
+    
+    public void SetCritAdjustNoelem(float mult, float chance)
+    {
+        noelemCritMultAdjust = mult;
+        noelemCritChanceAdjust = chance;
+    }
     
     public void StopAllCasts()
     {
@@ -561,6 +593,7 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(FireBallPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
             UseShards(fireballCost);
         }
         CastStop();
@@ -576,6 +609,7 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(frost_whirlwindPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
             UseShards(frost_whirlwindCost);
         }
         CastStop();
@@ -591,6 +625,7 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(SpikePrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(earthCritMultAdjust,earthCritChanceAdjust);
             UseShards(SpikeCost);
         }
         CastStop();
@@ -606,6 +641,7 @@ public class Player : MonoBehaviour
             spell.GetComponent<LineRenderer>().SetPosition(0,this.transform.position);
             spell.GetComponent<LineRenderer>().SetPosition(1,TargetCastingTo.transform.position);
             spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(noelemCritMultAdjust,noelemCritChanceAdjust);
             RemainderAmount -= ZapCost;
         }
         GCDstart();
@@ -614,8 +650,10 @@ public class Player : MonoBehaviour
 
     private void BoomCast()
     {
+        Spell spell;
         isCasting = true;
-        Instantiate(BoomPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell = Instantiate(BoomPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
         UseShards(BoomCost);
         GCDstart();
         CastStop();
@@ -623,24 +661,28 @@ public class Player : MonoBehaviour
     
     private IEnumerator FirewallCast()
     {
+        Spell spell;
         isCasting = true;
         GCDstart();
         
         yield return new WaitForSeconds(FirewallCastTime);
         
-        Instantiate(FirewallPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell = Instantiate(FirewallPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
         UseShards(FirewallCost);
         CastStop();
     }
     
     private IEnumerator FireSpiritCast()
     {
+        Spell spell;
         isCasting = true;
         GCDstart();
         
         yield return new WaitForSeconds(FirespiritCastTime);
         
-        Instantiate(FirespiritPrefub, transform.position, Quaternion.identity);
+        spell = Instantiate(FirespiritPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
         UseShards(FirespiritCost);
         CastStop();
     }
@@ -659,6 +701,7 @@ public class Player : MonoBehaviour
             spell.GetComponent<LineRenderer>().SetPosition(0, this.transform.position);
             spell.GetComponent<LineRenderer>().SetPosition(1, TargetCastingTo.transform.position);
             spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
             UseShards(FirelaserCost);
         }
         CastStop();
@@ -667,7 +710,7 @@ public class Player : MonoBehaviour
     private void FireAuraCast()
     {
         isCasting = true;
-        this.GetComponent<Buff>().GetBuff(BuffType.FireAura);
+        this.GetComponent<Buff>().GetBuff(BuffType.FireAura, this);
         UseShards(FireauraCost);
         GCDstart();
         CastStop();
@@ -685,6 +728,7 @@ public class Player : MonoBehaviour
         {
             spell = Instantiate(FiremarkPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
             UseShards(FiremarkCost);
         }
         CastStop();
@@ -708,6 +752,7 @@ public class Player : MonoBehaviour
         UseFrS(shards.y);
         UseES(shards.z);
     }
+    
     private void UseFS(int amount)
     {
         if (amount > 0)

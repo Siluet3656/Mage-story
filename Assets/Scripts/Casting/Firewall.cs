@@ -6,6 +6,8 @@ public class Firewall : MonoBehaviour
     [SerializeField] private float duration;
     private float _damage;
     private bool _isWaiting;
+    private float _critmultiply;
+    private float _critchance;
 
     private void Start()
     {
@@ -17,7 +19,7 @@ public class Firewall : MonoBehaviour
         HP hp = other.gameObject.GetComponent<HP>();
         if (hp != null)
         {
-            hp.StartTakingDamageEachSecond(_damage);
+            hp.StartTakingDamageEachSecond(_damage, _critmultiply, _critchance);
         }
     }
 
@@ -36,8 +38,10 @@ public class Firewall : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void SetDamage(float damage)
+    public void SetDamage(float damage, float multiply, float chance)
     {
-        _damage = damage;
+    _damage = damage;
+    _critmultiply = multiply;
+    _critchance = chance;
     }
 }

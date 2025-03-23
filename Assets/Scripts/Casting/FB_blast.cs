@@ -7,6 +7,8 @@ public class FB_blast : MonoBehaviour
     [SerializeField] private float BlastingTime = 0f;
     private float Damage = 0;
     private float radius = 0;
+    private float critMultyply;
+    private float critChance;
 
     private void Start() {
         radius = RangeTypeData.GetDataByID(rangeType);
@@ -18,16 +20,18 @@ public class FB_blast : MonoBehaviour
             float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
             if (distanceToEnemy <= radius)
             {
-                enemy.gameObject.GetComponent<HP>().TakeDamage(Damage);
+                enemy.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(Damage, critMultyply, critChance);
             }
         }
 
         StartCoroutine("Blasting");
     }
 
-    public void SetDamage(float Damage)
+    public void SetDamage(float Damage, float critMultiplly, float critChance)
     {
         this.Damage = Damage;
+        this.critMultyply = critMultiplly;
+        this.critChance = critChance;
     }
 
     private IEnumerator Blasting()

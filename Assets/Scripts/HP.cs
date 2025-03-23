@@ -10,6 +10,8 @@ public class HP : MonoBehaviour
     private bool _isTakingDamageEachSecond = false;
     private bool _isWaitingOneSecond = false;
     private float _tickingDamage;
+    private float _tickingCritChance;
+    private float _tickingCritMultiply;
 
     private void Start() {
         if (Max_HP > 0)
@@ -43,24 +45,42 @@ public class HP : MonoBehaviour
     {
         _isWaitingOneSecond = true;
         yield return new WaitForSeconds(1);
-        TakeDamage(_tickingDamage);
+        TryToTakeCriticalDamage(_tickingDamage, _tickingCritMultiply, _tickingCritChance);
         _isWaitingOneSecond = false;
         
     }
     
-    public void TakeDamage(float damage)
+    private void TakeDamage(float damage)
     {
-        Current_HP = Current_HP - damage;
+        Current_HP -= damage;
         if (Current_HP <= 0)
         {
             Die();
         }
     }
 
-    public void StartTakingDamageEachSecond(float damage)
+    public void TryToTakeCriticalDamage(float damage, float multiply, float chance)
+    {
+        
+        float proc = Random.Range(0,100);
+        bool isProced = (proc - chance * 100) < 0;
+        Debug.Log(multiply + " / " + chance);
+        if (isProced)
+        {
+            TakeDamage(damage * multiply);
+        }
+        else
+        {
+            TakeDamage(damage);
+        }
+    }
+
+    public void StartTakingDamageEachSecond(float damage, float multiply, float chance)
     {
         _isTakingDamageEachSecond = true;
         _tickingDamage = damage;
+        _tickingCritMultiply = multiply;
+        _tickingCritChance = chance;
     }
     
     public void StopTakingDamageEachSecond()

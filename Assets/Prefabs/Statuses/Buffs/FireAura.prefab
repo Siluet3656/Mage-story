@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5001322819261538866}
   - component: {fileID: -3041730732511890976}
   m_Layer: 5
-  m_Name: Slow
+  m_Name: FireAura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 1}
+  m_SizeDelta: {x: 2, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5001322819261538867
 CanvasRenderer:
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 307bb25cff5e0674a8b9f1d29e1dfbe5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6ab59b1ffecf57d48ab01c0522d6bd3c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -89,3 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dt: 0
+  bt: 0

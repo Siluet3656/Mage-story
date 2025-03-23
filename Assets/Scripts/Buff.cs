@@ -7,33 +7,35 @@ public class Buff : MonoBehaviour
     [SerializeField] private StatusPanel statusPanel;
     
     [Header("Buffs")]
-    [SerializeField] private int fireAuraduration;
+    [SerializeField] private int fireAuraDuration;
+    [SerializeField] private float fireAuraMultAdjust;
+    [SerializeField] private float fireAuraChanceAdjust;
     
     private bool isFireAuraApplied = false;
 
-    public void GetBuff(BuffType buff)
+    public void GetBuff(BuffType buff, Player player)
     {
         switch (buff)
         {
             case BuffType.FireAura:
                 if (!isFireAuraApplied)
                 {
-                    //Crit ampify +
+                    player.SetCritAdjustFire(fireAuraMultAdjust,fireAuraChanceAdjust);
                     isFireAuraApplied = true;
                     statusPanel.AddStatus(BuffType.FireAura);
-                    StartCoroutine(RemoveBuff(BuffType.FireAura));
+                    StartCoroutine(RemoveBuff(BuffType.FireAura, player));
                 }
                 break;
         }
     }
     
-    private IEnumerator RemoveBuff(BuffType type)
+    private IEnumerator RemoveBuff(BuffType type, Player player)
     {
         switch (type)
         {
             case BuffType.FireAura:
-                yield return new WaitForSeconds(fireAuraduration);
-                //Crit ampify -
+                yield return new WaitForSeconds(fireAuraDuration);
+                player.SetCritAdjustFire(1,1);
                 isFireAuraApplied = false;
                 statusPanel.RemoveStatus(BuffType.FireAura);
                 break;

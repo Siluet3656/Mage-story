@@ -49,6 +49,8 @@ MonoBehaviour:
   spellType: 8
   SpellSpeed: 0
   Entity: {fileID: 0}
+  defaultCritChance: 0.3
+  defaultCritMultyply: 1.2
 --- !u!120 &1820270517383113425
 LineRenderer:
   m_ObjectHideFlags: 0

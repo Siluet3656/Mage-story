@@ -12,6 +12,8 @@ public class Spell : MonoBehaviour
     [SerializeField] private SpellType spellType;
     [SerializeField] private float SpellSpeed = 0;
     [SerializeField] private GameObject Entity;
+    [SerializeField] private float defaultCritChance;
+    [SerializeField] private float defaultCritMultyply;
     
     private Rigidbody2D spellrb = null;
     private Enemy Target = null;
@@ -20,6 +22,8 @@ public class Spell : MonoBehaviour
     private float angle = 0;
     private float SpellDamage;
     private bool isCasted = false;
+    private float critChance;
+    private float critMultyply;
 
     private float MinimumDist = 0.2f;
     private float InstantSpellsDuration = 0.2f;
@@ -144,7 +148,7 @@ public class Spell : MonoBehaviour
                     this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
                     if (!isCasted)
                     {
-                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
                         isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
@@ -153,7 +157,7 @@ public class Spell : MonoBehaviour
                     this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
                     if (!isCasted)
                     {
-                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
                         isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
@@ -192,7 +196,7 @@ public class Spell : MonoBehaviour
                     if (distanceToTarget < MinimumDist)
                     {
                         Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, Target);
-                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
                         Destroy(this.gameObject);
                     }
                     direction = Target.transform.position - transform.position;
@@ -205,7 +209,7 @@ public class Spell : MonoBehaviour
                     if (distanceToTarget < MinimumDist)
                     {
                         Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, Target);
-                        Target.gameObject.GetComponent<HP>().TakeDamage(this.SpellDamage);
+                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
                         Destroy(this.gameObject);
                     }
                     direction = Target.transform.position - transform.position;
@@ -233,11 +237,11 @@ public class Spell : MonoBehaviour
         Firewall fwl = inst.GetComponent<Firewall>();
         if (fbb)
         {
-            fbb.SetDamage(this.SpellDamage);
+            fbb.SetDamage(this.SpellDamage, this.critMultyply,critChance);
         }
         if (fwl)
         {
-            fwl.SetDamage(this.SpellDamage);
+            fwl.SetDamage(this.SpellDamage, critMultyply, critChance);
         }
         Destroy(this.gameObject);
     }
@@ -268,5 +272,18 @@ public class Spell : MonoBehaviour
     public Enemy GetTarget()
     {
         return this.Target;
+    }
+
+    public void AdjustCrit(float multAdjust, float chanceAdjust)
+    {
+        ResetCritAdjust();
+        critMultyply = multAdjust * defaultCritMultyply;
+        critChance = chanceAdjust * defaultCritChance;
+    }
+
+    public void ResetCritAdjust()
+    {
+        critMultyply = defaultCritMultyply;
+        critChance = defaultCritChance;
     }
 }
