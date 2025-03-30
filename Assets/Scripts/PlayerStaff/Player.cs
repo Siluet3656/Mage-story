@@ -26,6 +26,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float ES_RefreshTime = 0f;
     [SerializeField] private float GCD;
 
+    private IEnumerator[] fireShardsRefreshRoutine = new IEnumerator[3];
+    private IEnumerator[] frostShardsRefreshRoutine = new IEnumerator[3];
+    private IEnumerator[] earthShardsRefreshRoutine = new IEnumerator[3];
+
+    private bool[] isfireShardsRefreshRoutineStarted = new bool[3];
+    private bool[] isfrostShardsRefreshRoutineStarted = new bool[3];
+    private bool[] isearthShardsRefreshRoutineStarted = new bool[3];
+
     private GameObject FireBallPrefab;
     private GameObject ZapPrefub;
     private GameObject frost_whirlwindPrefab;
@@ -72,6 +80,7 @@ public class Player : MonoBehaviour
     private int FSAmount = 0;
     private int FrSAmount = 0;
     private int ESAmount = 0;
+    private ShardType lastUsedShard;
     
     private float fireCritMultAdjust = 1;
     private float fireCritChanceAdjust = 1;
@@ -148,6 +157,30 @@ public class Player : MonoBehaviour
         FrSAmount = MaxFrSAmount;
         ESAmount = MaxESAmount;
         
+        isfireShardsRefreshRoutineStarted[0] = false;
+        isfireShardsRefreshRoutineStarted[1] = false;
+        isfireShardsRefreshRoutineStarted[2] = false;
+        
+        isfrostShardsRefreshRoutineStarted[0] = false;
+        isfrostShardsRefreshRoutineStarted[1] = false;
+        isfrostShardsRefreshRoutineStarted[2] = false;
+
+        isearthShardsRefreshRoutineStarted[0] = false;
+        isearthShardsRefreshRoutineStarted[1] = false;
+        isearthShardsRefreshRoutineStarted[2] = false;
+        
+        fireShardsRefreshRoutine[0] = FS_Refreshing(0);
+        fireShardsRefreshRoutine[1] = FS_Refreshing(1);
+        fireShardsRefreshRoutine[2] = FS_Refreshing(2);
+        
+        frostShardsRefreshRoutine[0] = FrS_Refreshing(0);
+        frostShardsRefreshRoutine[1] = FrS_Refreshing(1);
+        frostShardsRefreshRoutine[2] = FrS_Refreshing(2);
+        
+        earthShardsRefreshRoutine[0] = ES_Refreshing(0);
+        earthShardsRefreshRoutine[1] = ES_Refreshing(1);
+        earthShardsRefreshRoutine[2] = ES_Refreshing(2);
+        
         for (var frp = 0; frp < MaxFSAmount; frp++)
         {
             FS_RefreshProgress[frp] = 1f;
@@ -162,6 +195,8 @@ public class Player : MonoBehaviour
         {
             bar.fillAmount = GCDprogress;
         }
+
+        lastUsedShard = ShardType.None;
 
         //SpellData data = this.data.GetDataByType(SpellType.Fireball);
         
@@ -221,12 +256,11 @@ public class Player : MonoBehaviour
         {
             Speed = SpeedTypeData.GetDataByID(speedType);
         }
-        
 
         int j = 0;
         foreach (Image shard in FireShards)
         {
-            if (FS_RefreshProgress[j] <= 1f)
+            if (FS_RefreshProgress[j] < 1f)
             {
                 FS_RefreshProgress[j] += 1f / FS_RefreshTime * Time.deltaTime;
                 shard.fillAmount = FS_RefreshProgress[j];
@@ -236,7 +270,7 @@ public class Player : MonoBehaviour
         j = 0;
         foreach (Image shard in FrostShards)
         {
-            if (FrS_RefreshProgress[j] <= 1f)
+            if (FrS_RefreshProgress[j] < 1f)
             {
                 FrS_RefreshProgress[j] += 1f / FrS_RefreshTime * Time.deltaTime;
                 shard.fillAmount = FrS_RefreshProgress[j];
@@ -246,7 +280,7 @@ public class Player : MonoBehaviour
         j = 0;
         foreach (Image shard in EarthShards)
         {
-            if (ES_RefreshProgress[j] <= 1f)
+            if (ES_RefreshProgress[j] < 1f)
             {
                 ES_RefreshProgress[j] += 1f / ES_RefreshTime * Time.deltaTime;
                 shard.fillAmount = ES_RefreshProgress[j];
@@ -408,6 +442,37 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void ElementalInvocation()
+    {
+        /*switch (lastUsedShard)
+        {
+            case ShardType.FireShard:
+                GetFireShard();
+                StopCoroutine("FS_Refreshing");
+                break;
+            case ShardType.FrostShard:
+                /*Image Imagemin = FrostShards[0];
+                float min = 1f;
+                foreach (Image shard in FrostShards)
+                {
+                    if (shard.fillAmount < min)
+                    {
+                        min = shard.fillAmount;
+                        Imagemin = shard;
+                        break;
+                    }
+                }
+                Imagemin.fillAmount = 1f;
+                GetFrostShard();
+                StopCoroutine("FrS_Refreshing");
+                break;
+            case ShardType.EarthShard:
+                GetEarthShard();
+                StopCoroutine("ES_Refreshing");
+                break;
+        }*/
+    }
+
     public void SetCritAdjustFire(float mult, float chance)
     {
         fireCritMultAdjust = mult;
@@ -455,6 +520,7 @@ public class Player : MonoBehaviour
                     {
                         CurrentCastCastTime = FireballCastTime;
                         CastBar.color = FireballCastBarColor;
+                        lastUsedShard = ShardType.FireShard;
                         StartCoroutine("FireballCast");
                     }
                 }
@@ -759,10 +825,18 @@ public class Player : MonoBehaviour
             if(FSAmount > 0)
             {
                 FSAmount -= amount;
+                lastUsedShard = ShardType.FireShard;
                 GainRemainder(20 * amount);
                 for (int i = 0; i < amount; i++)
                 {
-                    StartCoroutine("FS_Refreshing");
+                    for (int j = 0; j < fireShardsRefreshRoutine.Length; j++)
+                    {
+                        if (isfireShardsRefreshRoutineStarted[j] == false)
+                        {
+                            StartCoroutine(fireShardsRefreshRoutine[j]);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -775,10 +849,18 @@ public class Player : MonoBehaviour
             if (FrSAmount > 0)
             {
                 FrSAmount -= amount;
+                lastUsedShard = ShardType.FrostShard;
                 GainRemainder(20 * amount);
                 for (int i = 0; i < amount; i++)
                 {
-                    StartCoroutine("FrS_Refreshing");
+                    for (int j = 0; j < frostShardsRefreshRoutine.Length; j++)
+                    {
+                        if (isfrostShardsRefreshRoutineStarted[j] == false)
+                        {
+                            StartCoroutine(frostShardsRefreshRoutine[j]);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -791,17 +873,27 @@ public class Player : MonoBehaviour
             if (ESAmount > 0)
             {
                 ESAmount -= amount;
+                lastUsedShard = ShardType.EarthShard;
                 GainRemainder(20 * amount);
                 for (int i = 0; i < amount; i++)
                 {
-                    StartCoroutine("ES_Refreshing");
+                    for (int j = 0; j < earthShardsRefreshRoutine.Length; j++)
+                    {
+                        if (isearthShardsRefreshRoutineStarted[j] == false)
+                        {
+                            StartCoroutine(earthShardsRefreshRoutine[j]);
+                            break;
+                        }
+                    }
                 }
             }
         }
     }
 
-    private IEnumerator FS_Refreshing()
+    private IEnumerator FS_Refreshing(int ID)
     {
+        isfireShardsRefreshRoutineStarted[ID] = true;
+        //Debug.Log("Started " + ID);
         int k = 0;
         foreach (Image shard in FireShards)
         {
@@ -812,19 +904,19 @@ public class Player : MonoBehaviour
             }
             k++;
         }
+        
         yield return new WaitForSeconds(FS_RefreshTime);
-        if(FSAmount < MaxFSAmount)
-        {
-            FSAmount++;
-            if (FSAmount > MaxFSAmount)
-            {
-                FSAmount = MaxFSAmount;
-            }
-        }
+        
+        GetFireShard();
+        fireShardsRefreshRoutine[ID] = FS_Refreshing(ID);
+        isfireShardsRefreshRoutineStarted[ID] = false;
+        //Debug.Log("Finished " + ID);
     }
 
-    private IEnumerator FrS_Refreshing()
+    private IEnumerator FrS_Refreshing(int ID)
     {
+        isfrostShardsRefreshRoutineStarted[ID] = true;
+        
         int k = 0;
         foreach (Image shard in FrostShards)
         {
@@ -835,19 +927,18 @@ public class Player : MonoBehaviour
             }
             k++;
         }
+        
         yield return new WaitForSeconds(FrS_RefreshTime);
-        if(FrSAmount < MaxFrSAmount)
-        {
-            FrSAmount++;
-            if (FrSAmount > MaxFrSAmount)
-            {
-                FrSAmount = MaxFrSAmount;
-            }
-        }        
+        
+        GetFrostShard();
+        frostShardsRefreshRoutine[ID] = FrS_Refreshing(ID);
+        isfrostShardsRefreshRoutineStarted[ID] = false;
     }
     
-    private IEnumerator ES_Refreshing()
+    private IEnumerator ES_Refreshing(int ID)
     {
+        isearthShardsRefreshRoutineStarted[ID] = true;
+        
         int k = 0;
         foreach (Image shard in EarthShards)
         {
@@ -858,7 +949,42 @@ public class Player : MonoBehaviour
             }
             k++;
         }
+        
         yield return new WaitForSeconds(ES_RefreshTime);
+        
+        GetEarthShard();
+        earthShardsRefreshRoutine[ID] = ES_Refreshing(ID);
+        isearthShardsRefreshRoutineStarted[ID] = false;
+    }
+
+    private void GetFireShard()
+    {
+        if(FSAmount < MaxFSAmount)
+        {
+            FSAmount++;
+            //Debug.Log("fire: " + FSAmount);
+            if (FSAmount > MaxFSAmount)
+            {
+                FSAmount = MaxFSAmount;
+            }
+        }
+    }
+
+    private void GetFrostShard()
+    {
+        if(FrSAmount < MaxFrSAmount)
+        {
+            FrSAmount++;
+            //Debug.Log("frost: " + FrSAmount);
+            if (FrSAmount > MaxFrSAmount)
+            {
+                FrSAmount = MaxFrSAmount;
+            }
+        }
+    }
+
+    private void GetEarthShard()
+    {
         if(ESAmount < MaxESAmount)
         {
             ESAmount++;

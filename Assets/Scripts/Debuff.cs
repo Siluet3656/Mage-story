@@ -127,6 +127,7 @@ public class Debuff : MonoBehaviour
            if (isFireMarked)
            {
                Instantiate(fireMarkBlastPrefub, _blastPosition, Quaternion.identity).GetComponent<FB_blast>().SetDamage(fireMarkBlastDamage, critMultyplyFireMark,critChanceFireMark);
+               FindObjectOfType<Player>().ElementalInvocation();
            }
            _gotcrit = false;
        }
