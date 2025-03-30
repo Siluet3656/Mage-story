@@ -102,7 +102,7 @@ public class Debuff : MonoBehaviour
                 break;
             case DebuffType.FireMark:
                 yield return new WaitForSeconds(firemarkDuration);
-                StopCoroutine(WaitForCrit(dtarget.transform.position));
+                StopCoroutine("WaitForCrit");
                 isFireMarked = false;
                 statusPanel.RemoveStatus(DebuffType.FireMark);
                 break;
@@ -124,7 +124,10 @@ public class Debuff : MonoBehaviour
        while (true)
        {
            yield return new WaitUntil(() => _gotcrit);
-           Instantiate(fireMarkBlastPrefub, _blastPosition, Quaternion.identity).GetComponent<FB_blast>().SetDamage(fireMarkBlastDamage, critMultyplyFireMark,critChanceFireMark);
+           if (isFireMarked)
+           {
+               Instantiate(fireMarkBlastPrefub, _blastPosition, Quaternion.identity).GetComponent<FB_blast>().SetDamage(fireMarkBlastDamage, critMultyplyFireMark,critChanceFireMark);
+           }
            _gotcrit = false;
        }
    }
