@@ -3,40 +3,51 @@ using UnityEngine;
 
 public class FB_blast : MonoBehaviour
 {
-    [SerializeField] private RangeType rangeType;
-    [SerializeField] private float BlastingTime = 0f;
-    private float Damage = 0;
-    private float radius = 0;
-    private float critMultyply;
-    private float critChance;
+    [SerializeField] private RangeType _rangeType;
+    [SerializeField] private float _blastingTime;
+    private float _damage;
+    private float _critmultiply;
+    private float _critchance;
 
-    private void Start() {
-        radius = RangeTypeData.GetDataByID(rangeType);
-        transform.localScale = new Vector3(radius*2,radius*2,1);
-
-        Enemy[] enemies = FindObjectsOfType<Enemy>();
-        foreach (Enemy enemy in enemies)
+    private void Start()
+    {
+        switch (_rangeType)
         {
-            float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <= radius)
-            {
-                enemy.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(Damage, critMultyply, critChance);
-            }
+            case RangeType.Small:
+                this.transform.localScale = new Vector3(0.5f,0.5f,1);
+                break;
+            case RangeType.Medium:
+                this.transform.localScale = new Vector3(1,1,1);
+                break;
+            case RangeType.Large:
+                this.transform.localScale = new Vector3(2,2,1);
+                break;
+            case RangeType.Giant:
+                this.transform.localScale = new Vector3(3,3,1);
+                break;
         }
-
         StartCoroutine("Blasting");
     }
-
-    public void SetDamage(float Damage, float critMultiplly, float critChance)
+    
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        this.Damage = Damage;
-        this.critMultyply = critMultiplly;
-        this.critChance = critChance;
+        HP hp = other.gameObject.GetComponent<HP>();
+        if (hp != null)
+        {
+            hp.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_damage, _critmultiply, _critchance);
+        }
     }
-
+    
     private IEnumerator Blasting()
     {
-        yield return new WaitForSeconds(BlastingTime);
+        yield return new WaitForSeconds(_blastingTime);
         Destroy(this.gameObject);
+    }
+    
+    public void SetDamage(float damage, float critMultiplly, float critChance)
+    {
+        _damage = damage;
+        _critmultiply = critMultiplly;
+        _critchance = critChance;
     }
 }
