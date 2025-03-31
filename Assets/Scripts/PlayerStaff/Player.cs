@@ -444,33 +444,60 @@ public class Player : MonoBehaviour
 
     public void ElementalInvocation()
     {
-        /*switch (lastUsedShard)
+        switch (lastUsedShard)
         {
             case ShardType.FireShard:
-                GetFireShard();
-                StopCoroutine("FS_Refreshing");
-                break;
-            case ShardType.FrostShard:
-                /*Image Imagemin = FrostShards[0];
-                float min = 1f;
-                foreach (Image shard in FrostShards)
+                for (int i = 0; i < fireShardsRefreshRoutine.Length; i++)
                 {
-                    if (shard.fillAmount < min)
+                    if(isfireShardsRefreshRoutineStarted[i])
                     {
-                        min = shard.fillAmount;
-                        Imagemin = shard;
+                        FireShards[i].fillAmount = 1f;
+                        FS_RefreshProgress[i] = 1f;
+                        
+                        StopCoroutine(fireShardsRefreshRoutine[i]);
+                        
+                        isfireShardsRefreshRoutineStarted[i] = false;
+                        fireShardsRefreshRoutine[i] = FS_Refreshing(i);
+                        GetFireShard();
                         break;
                     }
                 }
-                Imagemin.fillAmount = 1f;
-                GetFrostShard();
-                StopCoroutine("FrS_Refreshing");
+                break;
+            case ShardType.FrostShard:
+                for (int i = 0; i < frostShardsRefreshRoutine.Length; i++)
+                {
+                    if(isfrostShardsRefreshRoutineStarted[i])
+                    {
+                        FrostShards[i].fillAmount = 1f;
+                        FrS_RefreshProgress[i] = 1f;
+                        
+                        StopCoroutine(frostShardsRefreshRoutine[i]);
+                        
+                        isfrostShardsRefreshRoutineStarted[i] = false;
+                        frostShardsRefreshRoutine[i] = FrS_Refreshing(i);
+                        GetFrostShard();
+                        break;
+                    }
+                }
                 break;
             case ShardType.EarthShard:
-                GetEarthShard();
-                StopCoroutine("ES_Refreshing");
+                for (int i = 0; i < earthShardsRefreshRoutine.Length; i++)
+                {
+                    if(isearthShardsRefreshRoutineStarted[i])
+                    {
+                        EarthShards[i].fillAmount = 1f;
+                        ES_RefreshProgress[i] = 1f;
+                        
+                        StopCoroutine(earthShardsRefreshRoutine[i]);
+                        
+                        isearthShardsRefreshRoutineStarted[i] = false;
+                        earthShardsRefreshRoutine[i] = ES_Refreshing(i);
+                        GetEarthShard();
+                        break;
+                    }
+                }
                 break;
-        }*/
+        }
     }
 
     public void SetCritAdjustFire(float mult, float chance)
