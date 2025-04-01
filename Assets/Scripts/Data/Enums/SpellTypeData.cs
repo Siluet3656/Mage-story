@@ -12,7 +12,13 @@ public enum SpellType
         Firespirit,
         Firelaser,
         Fireaura,
-        Firemark
+        Firemark,
+        FlashFreeze,
+        StasisFreeze,
+        IcicleBarrage,
+        CryoLeach,
+        FrostAegis,
+        AvalancheCore
     }
 
 public class SpellTypeData : MonoBehaviour
@@ -25,7 +31,7 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private float fireballCD;
     [SerializeField] private float fireballCastTime;
     [SerializeField] private Vector3Int firaballCost;
-    [Header("FROST_WHIRLWIND")]
+    [Header("FROST WHIRLWIND")]
     [SerializeField] private Sprite frost_whirlwindIcon;
     [SerializeField] private GameObject frost_whirlwindPrefab;
     [SerializeField] private float frost_whirlwindDamage;
@@ -51,40 +57,78 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private float boomDamage;
     [SerializeField] private float boomCD;
     [SerializeField] private Vector3Int boomCost;
-    [Header("FIREWALL")]
+    [Header("FIRE WALL")]
     [SerializeField] private Sprite firewallIcon;
     [SerializeField] private GameObject firewallPrefab;
     [SerializeField] private float firewallDamage;
     [SerializeField] private float firewallCD;
     [SerializeField] private float firewallCastTime;
     [SerializeField] private Vector3Int firewallCost;
-    [Header("FIRESPIRIT")]
+    [Header("FIRE SPIRIT")]
     [SerializeField] private Sprite firespiritIcon;
     [SerializeField] private GameObject firespiritPrefab;
     [SerializeField] private float firespiritDamage;
     [SerializeField] private float firespiritCD;
     [SerializeField] private float firespiritCastTime;
     [SerializeField] private Vector3Int firespiritCost;
-    [Header("FIRELASER")]
+    [Header("FIRE LASER")]
     [SerializeField] private Sprite firelaserIcon;
     [SerializeField] private GameObject firelaserPrefab;
     [SerializeField] private float firelaserDamage;
     [SerializeField] private float firelaserCD;
     [SerializeField] private float firelaserCastTime;
     [SerializeField] private Vector3Int firelaserCost;
-    [Header("FIREAURA")]
+    [Header("FIRE AURA")]
     [SerializeField] private Sprite fireauraIcon;
     [SerializeField] private GameObject fireauraPrefab;
     [SerializeField] private float fireauraDamage;
     [SerializeField] private float fireauraCD;
     [SerializeField] private Vector3Int fireauraCost;
-    [Header("FIREMARK")]
+    [Header("FIRE MARK")]
     [SerializeField] private Sprite firemarkIcon;
     [SerializeField] private GameObject firemarkPrefab;
     [SerializeField] private float firemarkDamage;
     [SerializeField] private float firemarkCD;
     [SerializeField] private float firemarkCastTime;
     [SerializeField] private Vector3Int firemarkCost;
+    [Header("FLASH FREEZE")]
+    [SerializeField] private Sprite flashfreezeIcon;
+    [SerializeField] private GameObject flashfreezePrefab;
+    [SerializeField] private float flashfreezeDamage;
+    [SerializeField] private float flashfreezeCD;
+    [SerializeField] private Vector3Int flashfreezeCost;
+    [Header("STASIS FREEZE")]
+    [SerializeField] private Sprite stasisFreezeIcon;
+    [SerializeField] private GameObject stasisFreezePrefab;
+    [SerializeField] private float stasisFreezeDamage;
+    [SerializeField] private float stasisFreezeCD;
+    [SerializeField] private Vector3Int stasisFreezeCost;
+    [Header("ICECLE BARRAGE")]
+    [SerializeField] private Sprite icecleBarrageIcon;
+    [SerializeField] private GameObject icecleBarragePrefab;
+    [SerializeField] private float icecleBarrageDamage;
+    [SerializeField] private float icecleBarrageCD;
+    [SerializeField] private float icecleBarrageCastTime;
+    [SerializeField] private Vector3Int icecleBarrageCost;
+    [Header("CRYO-LCEACH")]
+    [SerializeField] private Sprite cryoleachIcon;
+    [SerializeField] private GameObject cryoleachPrefab;
+    [SerializeField] private float cryoleachDamage;
+    [SerializeField] private float cryoleachCD;
+    [SerializeField] private float cryoleachCost;
+    [Header("FROST AEGIS")]
+    [SerializeField] private Sprite frostaegisIcon;
+    [SerializeField] private GameObject frostaegisPrefab;
+    [SerializeField] private float frostaegisDamage;
+    [SerializeField] private float frostaegisCD;
+    [SerializeField] private Vector3Int frostaegisCost;
+    [Header("AVALANCHE CORE")]
+    [SerializeField] private Sprite avalancheCoreIcon;
+    [SerializeField] private GameObject avalancheCorePrefab;
+    [SerializeField] private float avalancheCoreDamage;
+    [SerializeField] private float avalancheCoreCD;
+    [SerializeField] private float avalancheCoreCastTime;
+    [SerializeField] private Vector3Int avalancheCoreCost;
     
     public SpellData GetDataByType(SpellType type)
     {
@@ -110,6 +154,18 @@ public class SpellTypeData : MonoBehaviour
                 return new SpellData(fireauraIcon,fireauraPrefab,fireauraDamage,fireauraCD,0,fireauraCost);
             case SpellType.Firemark:
                 return new SpellData(firemarkIcon,firemarkPrefab,firemarkDamage,firemarkCD,firemarkCastTime,firemarkCost);
+            case SpellType.FlashFreeze:
+                return new SpellData(flashfreezeIcon,flashfreezePrefab,flashfreezeDamage,flashfreezeCD,0,flashfreezeCost);
+            case SpellType.StasisFreeze:
+                return new SpellData(stasisFreezeIcon,stasisFreezePrefab,stasisFreezeDamage,stasisFreezeCD,0,stasisFreezeCost);
+            case SpellType.IcicleBarrage:
+                return new SpellData(icecleBarrageIcon,icecleBarragePrefab,icecleBarrageDamage,icecleBarrageCD,icecleBarrageCastTime,icecleBarrageCost);
+            case SpellType.CryoLeach:
+                return new SpellData(cryoleachIcon,cryoleachPrefab,cryoleachDamage,cryoleachCD,0,cryoleachCost);
+            case SpellType.FrostAegis:
+                return new SpellData(frostaegisIcon,frostaegisPrefab,frostaegisDamage,frostaegisCD,0,frostaegisCost);
+            case SpellType.AvalancheCore:
+                return new SpellData(avalancheCoreIcon,avalancheCorePrefab,avalancheCoreDamage,avalancheCoreCD,avalancheCoreCastTime,avalancheCoreCost);
         }
         return new SpellData(basic,new GameObject("Null"),0,0,0,0);
     }
