@@ -115,7 +115,7 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private GameObject cryoleachPrefab;
     [SerializeField] private float cryoleachDamage;
     [SerializeField] private float cryoleachCD;
-    [SerializeField] private float cryoleachCost;
+    [SerializeField] private Vector3Int cryoleachCost;
     [Header("FROST AEGIS")]
     [SerializeField] private Sprite frostaegisIcon;
     [SerializeField] private GameObject frostaegisPrefab;

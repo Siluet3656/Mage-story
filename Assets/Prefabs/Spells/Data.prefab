@@ -101,3 +101,35 @@ MonoBehaviour:
   firemarkCD: 0
   firemarkCastTime: 0.2
   firemarkCost: {x: 1, y: 0, z: 0}
+  flashfreezeIcon: {fileID: 21300000, guid: 39116e21a4b712c4cb9c1fc7f0f58440, type: 3}
+  flashfreezePrefab: {fileID: 0}
+  flashfreezeDamage: 0
+  flashfreezeCD: 0
+  flashfreezeCost: {x: 0, y: 1, z: 0}
+  stasisFreezeIcon: {fileID: 21300000, guid: a901df9eab049d54c84ff120537a75df, type: 3}
+  stasisFreezePrefab: {fileID: 0}
+  stasisFreezeDamage: 0
+  stasisFreezeCD: 0
+  stasisFreezeCost: {x: 0, y: 1, z: 0}
+  icecleBarrageIcon: {fileID: 21300000, guid: 908ca7bc544bad044a472cf3975cf56b, type: 3}
+  icecleBarragePrefab: {fileID: 0}
+  icecleBarrageDamage: 10
+  icecleBarrageCD: 0
+  icecleBarrageCastTime: 0.5
+  icecleBarrageCost: {x: 0, y: 1, z: 0}
+  cryoleachIcon: {fileID: 21300000, guid: 6a49f7c81b74fd34ab56efd17394f443, type: 3}
+  cryoleachPrefab: {fileID: 0}
+  cryoleachDamage: 0
+  cryoleachCD: 0
+  cryoleachCost: {x: 0, y: 1, z: 0}
+  frostaegisIcon: {fileID: 21300000, guid: 61a6d16a2137dbe4894acf245096bd96, type: 3}
+  frostaegisPrefab: {fileID: 0}
+  frostaegisDamage: 0
+  frostaegisCD: 0
+  frostaegisCost: {x: 0, y: 1, z: 0}
+  avalancheCoreIcon: {fileID: 21300000, guid: 73ed33ed7ee32f74b9800f905f72b846, type: 3}
+  avalancheCorePrefab: {fileID: 0}
+  avalancheCoreDamage: 800
+  avalancheCoreCD: 0
+  avalancheCoreCastTime: 3
+  avalancheCoreCost: {x: 0, y: 1, z: 0}
