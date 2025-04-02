@@ -137,7 +137,7 @@ public class Spell : MonoBehaviour
             switch (spellType)
             {
                 case SpellType.Firespirit:
-                    float shortiestdistance = 9999999f;
+                    float shortiestdistance = float.MaxValue;
                     foreach (var enemy in _enemiesToFollow)
                     {
                         float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
@@ -230,6 +230,18 @@ public class Spell : MonoBehaviour
                     if (distanceToTarget < MinimumDist)
                     {
                         Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.FireMark, Target);
+                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        Destroy(this.gameObject);
+                    }
+                    direction = Target.transform.position - transform.position;
+                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    break;
+                case SpellType.IcicleBarrage:
+                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                    if (distanceToTarget < MinimumDist)
+                    {
                         Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
                         Destroy(this.gameObject);
                     }

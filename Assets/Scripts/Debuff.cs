@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Debuff : MonoBehaviour
@@ -59,7 +60,7 @@ public class Debuff : MonoBehaviour
                 {
                     isFireMarked = true;
                     statusPanel.AddStatus(DebuffType.FireMark);
-                    StartCoroutine(WaitForCrit(dtarget.transform.position));
+                    StartCoroutine(WaitForCrit());
                     StartCoroutine(RemoveDebuffFromTarget(DebuffType.FireMark, dtarget));
                 }
                 break;
@@ -119,14 +120,14 @@ public class Debuff : MonoBehaviour
         }
    }
 
-   private IEnumerator WaitForCrit(Vector3 _blastPosition)
+   private IEnumerator WaitForCrit()
    {
        while (true)
        {
            yield return new WaitUntil(() => _gotcrit);
            if (isFireMarked)
            {
-               Instantiate(fireMarkBlastPrefub, _blastPosition, Quaternion.identity).GetComponent<FB_blast>().SetDamage(fireMarkBlastDamage, critMultyplyFireMark,critChanceFireMark);
+               Instantiate(fireMarkBlastPrefub, this.transform.position, Quaternion.identity).GetComponent<FB_blast>().SetDamage(fireMarkBlastDamage, critMultyplyFireMark,critChanceFireMark);
                FindObjectOfType<Player>().ElementalInvocation();
            }
            _gotcrit = false;

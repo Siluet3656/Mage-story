@@ -25,7 +25,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float FrS_RefreshTime = 0f;
     [SerializeField] private float ES_RefreshTime = 0f;
     [SerializeField] private float GCD;
-    [Space] [SerializeField] private GameObject iceTomb;
+    [Space] 
+    [SerializeField] private GameObject iceTomb;
+    [SerializeField] private int amountOfIcecles;
 
     private IEnumerator[] fireShardsRefreshRoutine = new IEnumerator[3];
     private IEnumerator[] frostShardsRefreshRoutine = new IEnumerator[3];
@@ -45,6 +47,7 @@ public class Player : MonoBehaviour
     private GameObject FirelaserPrefub;
     private GameObject FiremarkPrefub;
     private GameObject FlashFreezePrefub;
+    private GameObject IcecleBarragePrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
@@ -53,6 +56,7 @@ public class Player : MonoBehaviour
     private float FirespiritCastTime;
     private float FirelaserCastTime;
     private float FiremarkCastTime;
+    private float IcecleBarrageCastTime;
 
     private Vector3Int fireballCost;
     private Vector3Int frost_whirlwindCost;
@@ -65,6 +69,7 @@ public class Player : MonoBehaviour
     private Vector3Int FiremarkCost;
     private Vector3Int flashFreezeCost;
     private Vector3Int stasisFreezeCost;
+    private Vector3Int IcecleBarrageCost;
     private float ZapCost;
     
     
@@ -102,6 +107,7 @@ public class Player : MonoBehaviour
     private Color FirelaserCastBarColor = new Color(1,0f,0.2f);
     private Color FireMarkCastBarColor = new Color(1,0.6f,0.1f);
     private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
+    private Color IcecleBarrageCastBarColor = new Color(0f, 0.5f, 1f);
     private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
 
     private Buff playerBuffs;
@@ -222,6 +228,8 @@ public class Player : MonoBehaviour
         FirelaserPrefub = data.GetDataByType(SpellType.Firelaser).PrefubOfSpell;
         FiremarkPrefub = data.GetDataByType(SpellType.Firemark).PrefubOfSpell;
         FlashFreezePrefub = data.GetDataByType(SpellType.FlashFreeze).PrefubOfSpell;
+        IcecleBarragePrefub = data.GetDataByType(SpellType.IcicleBarrage).PrefubOfSpell;
+        
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
@@ -230,6 +238,7 @@ public class Player : MonoBehaviour
         FirespiritCastTime = data.GetDataByType(SpellType.Firespirit).CastTime;
         FirelaserCastTime = data.GetDataByType(SpellType.Firelaser).CastTime;
         FiremarkCastTime = data.GetDataByType(SpellType.Firemark).CastTime;
+        IcecleBarrageCastTime = data.GetDataByType(SpellType.IcicleBarrage).CastTime;
         
         fireballCost = data.GetDataByType(SpellType.Fireball).ShardsCost;
         frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
@@ -243,6 +252,7 @@ public class Player : MonoBehaviour
         FiremarkCost = data.GetDataByType(SpellType.Firemark).ShardsCost;
         flashFreezeCost = data.GetDataByType(SpellType.FlashFreeze).ShardsCost;
         stasisFreezeCost = data.GetDataByType(SpellType.StasisFreeze).ShardsCost;
+        IcecleBarrageCost = data.GetDataByType(SpellType.IcicleBarrage).ShardsCost;
 
     }
 
@@ -680,6 +690,17 @@ public class Player : MonoBehaviour
                     StasisFreezeCast();
                 }
                 break;
+            case SpellType.IcicleBarrage:
+                if (isEnoughShards(IcecleBarrageCost)) 
+                {
+                    if (currentTarget != null)
+                    {
+                        CurrentCastCastTime = IcecleBarrageCastTime;
+                        CastBar.color = IcecleBarrageCastBarColor;
+                        StartCoroutine("IcecleBarrageCast");
+                    }
+                }
+                break;
         }
     }
 
@@ -892,6 +913,29 @@ public class Player : MonoBehaviour
             spell.SetTarget(TargetCastingTo);
             spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
             UseShards(FiremarkCost);
+        }
+        CastStop();
+    }
+
+    private IEnumerator IcecleBarrageCast()
+    {
+        Spell spell;
+        isCasting = true;
+        GCDstart();
+        yield return new WaitForSeconds(IcecleBarrageCastTime);
+        if (TargetCastingTo != null)
+        {
+            UseShards(IcecleBarrageCost);
+            for (int i = 0; i < amountOfIcecles; i++)
+            {
+                Vector2 intstpos = transform.position;
+                intstpos.x += Random.Range(-0.3f, 0.3f);
+                intstpos.y += Random.Range(-0.3f, 0.3f);
+                spell = Instantiate(IcecleBarragePrefub, intstpos, Quaternion.identity).GetComponent<Spell>();
+                spell.SetTarget(TargetCastingTo);
+                spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
+                yield return new WaitForSeconds(0.05f);
+            }
         }
         CastStop();
     }

@@ -66,11 +66,8 @@ public class Enemy : MonoBehaviour
                 SpellsToClear[i].SetTarget(nullenemy);
             }
         }
-        for (var i = 0; i < SpellsToClear.Length; i++)
-        {
-                PalyerToClear[i].ClearTarget();
-                PalyerToClear[i].StopAllCasts();
-        }
+        PalyerToClear[0].ClearTarget();
+        PalyerToClear[0].StopAllCasts();
     }
     
     private void PickNextPoint()
