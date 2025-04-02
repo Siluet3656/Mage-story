@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
     private GameObject FiremarkPrefub;
     private GameObject FlashFreezePrefub;
     private GameObject IcecleBarragePrefub;
+    private GameObject CryoLeachPrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour
     private Vector3Int flashFreezeCost;
     private Vector3Int stasisFreezeCost;
     private Vector3Int IcecleBarrageCost;
+    private Vector3Int CryoLeachCost;
     private float ZapCost;
     
     
@@ -229,7 +231,7 @@ public class Player : MonoBehaviour
         FiremarkPrefub = data.GetDataByType(SpellType.Firemark).PrefubOfSpell;
         FlashFreezePrefub = data.GetDataByType(SpellType.FlashFreeze).PrefubOfSpell;
         IcecleBarragePrefub = data.GetDataByType(SpellType.IcicleBarrage).PrefubOfSpell;
-        
+        CryoLeachPrefub = data.GetDataByType(SpellType.CryoLeach).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
@@ -253,7 +255,7 @@ public class Player : MonoBehaviour
         flashFreezeCost = data.GetDataByType(SpellType.FlashFreeze).ShardsCost;
         stasisFreezeCost = data.GetDataByType(SpellType.StasisFreeze).ShardsCost;
         IcecleBarrageCost = data.GetDataByType(SpellType.IcicleBarrage).ShardsCost;
-
+        CryoLeachCost = data.GetDataByType(SpellType.CryoLeach).ShardsCost;
     }
 
     private void Update()
@@ -578,6 +580,7 @@ public class Player : MonoBehaviour
         StopCoroutine("FireSpiritCast");
         StopCoroutine("FirelaserCast");
         StopCoroutine("FireMarkCast");
+        StopCoroutine("IcecleBarrageCast");
         CastStop();
     }
 
@@ -698,6 +701,15 @@ public class Player : MonoBehaviour
                         CurrentCastCastTime = IcecleBarrageCastTime;
                         CastBar.color = IcecleBarrageCastBarColor;
                         StartCoroutine("IcecleBarrageCast");
+                    }
+                }
+                break;
+            case SpellType.CryoLeach:
+                if (isEnoughShards(CryoLeachCost)) 
+                {
+                    if (currentTarget != null)
+                    {
+                        CryoLeachCast();
                     }
                 }
                 break;
@@ -937,6 +949,23 @@ public class Player : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
         }
+        CastStop();
+    }
+
+    private void CryoLeachCast()
+    {
+        Spell spell;
+        isCasting = true;
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(CryoLeachPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.GetComponent<LineRenderer>().SetPosition(0,this.transform.position);
+            spell.GetComponent<LineRenderer>().SetPosition(1,TargetCastingTo.transform.position);
+            spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
+            UseShards(CryoLeachCost);
+        }
+        GCDstart();
         CastStop();
     }
     

@@ -46,6 +46,22 @@ public class Buff : MonoBehaviour
         }
     }
     
+    public void GetBuff(BuffType buff, Enemy enemy)
+    {
+        switch (buff)
+        {
+            case BuffType.StasisFreeze:
+                if (!isStasisFreezeApplied)
+                {
+                    //OnPlayerFreeze?.Invoke();
+                    isStasisFreezeApplied = true;
+                    statusPanel.AddStatus(BuffType.StasisFreeze);
+                    StartCoroutine(RemoveBuff(BuffType.StasisFreeze, enemy));
+                }
+                break;
+        }
+    }
+    
     private IEnumerator RemoveBuff(BuffType type, Player player)
     {
         switch (type)
@@ -59,6 +75,19 @@ public class Buff : MonoBehaviour
             case BuffType.StasisFreeze:
                 yield return new WaitForSeconds(stasysFreezeDuration);
                 OnPlayerUnFreeze?.Invoke();
+                isStasisFreezeApplied = false;
+                statusPanel.RemoveStatus(BuffType.StasisFreeze);
+                break;
+        }
+    }
+    
+    private IEnumerator RemoveBuff(BuffType type, Enemy enemy)
+    {
+        switch (type)
+        {
+            case BuffType.StasisFreeze:
+                yield return new WaitForSeconds(stasysFreezeDuration);
+                //OnPlayerUnFreeze?.Invoke();
                 isStasisFreezeApplied = false;
                 statusPanel.RemoveStatus(BuffType.StasisFreeze);
                 break;

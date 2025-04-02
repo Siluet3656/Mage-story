@@ -112,13 +112,13 @@ MonoBehaviour:
   stasisFreezeCD: 0
   stasisFreezeCost: {x: 0, y: 1, z: 0}
   icecleBarrageIcon: {fileID: 21300000, guid: 908ca7bc544bad044a472cf3975cf56b, type: 3}
-  icecleBarragePrefab: {fileID: 0}
-  icecleBarrageDamage: 10
+  icecleBarragePrefab: {fileID: 5689801273313810728, guid: a33bbdee0df861545bda6046a3c7cb4b, type: 3}
+  icecleBarrageDamage: 5
   icecleBarrageCD: 0
   icecleBarrageCastTime: 0.5
   icecleBarrageCost: {x: 0, y: 1, z: 0}
   cryoleachIcon: {fileID: 21300000, guid: 6a49f7c81b74fd34ab56efd17394f443, type: 3}
-  cryoleachPrefab: {fileID: 0}
+  cryoleachPrefab: {fileID: 1820270517383113431, guid: c7eedd00a5da4a644ad2996aaae42e2c, type: 3}
   cryoleachDamage: 0
   cryoleachCD: 0
   cryoleachCost: {x: 0, y: 1, z: 0}

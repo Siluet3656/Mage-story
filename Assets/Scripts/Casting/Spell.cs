@@ -166,6 +166,18 @@ public class Spell : MonoBehaviour
                     }
                     StartCoroutine("InstantSpellAnimation");
                     break;
+                case SpellType.CryoLeach:
+                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
+                    Player player = FindObjectOfType<Player>();
+                    if (!isCasted)
+                    {
+                        //Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        Target.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze,Target);
+                        player.ElementalInvocation();
+                        isCasted = true;
+                    }
+                    StartCoroutine("InstantSpellAnimation");
+                    break;
             }
         }
     }

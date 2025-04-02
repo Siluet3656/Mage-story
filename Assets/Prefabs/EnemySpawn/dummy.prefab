@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6746311934899669596}
   - component: {fileID: 6746311934899669586}
   - component: {fileID: 6746311934899669598}
+  - component: {fileID: 3781871321352403343}
   - component: {fileID: 6746311934899669599}
   - component: {fileID: 6746311934899669597}
   m_Layer: 0
@@ -154,6 +155,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3781871321352403343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6746311934899669595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a743c7a5b31bc4c4a90c7af40c290b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusPanel: {fileID: 6746311935500150677}
+  fireAuraDuration: 0
+  fireAuraMultAdjust: 0
+  fireAuraChanceAdjust: 0
+  stasysFreezeDuration: 3
 --- !u!61 &6746311934899669599
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -393,6 +411,7 @@ MonoBehaviour:
   poisonPF: {fileID: 5001322819261538868, guid: 30878c2616473e3469ea49e030258d65, type: 3}
   firemarkPF: {fileID: 5001322819261538868, guid: 322fcbd64ba1abf4bb7782369f3050cf, type: 3}
   fireauraPF: {fileID: 0}
+  icetombPF: {fileID: 0}
 --- !u!1 &6746311935797336350
 GameObject:
   m_ObjectHideFlags: 0
