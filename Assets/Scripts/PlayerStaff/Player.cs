@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
     private GameObject FirespiritPrefub;
     private GameObject FirelaserPrefub;
     private GameObject FiremarkPrefub;
+    private GameObject FlashFreezePrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
@@ -61,6 +62,7 @@ public class Player : MonoBehaviour
     private Vector3Int FirelaserCost;
     private Vector3Int FireauraCost;
     private Vector3Int FiremarkCost;
+    private Vector3Int flashFreezeCost;
     private float ZapCost;
     
     
@@ -209,6 +211,7 @@ public class Player : MonoBehaviour
         FirespiritPrefub = data.GetDataByType(SpellType.Firespirit).PrefubOfSpell;
         FirelaserPrefub = data.GetDataByType(SpellType.Firelaser).PrefubOfSpell;
         FiremarkPrefub = data.GetDataByType(SpellType.Firemark).PrefubOfSpell;
+        FlashFreezePrefub = data.GetDataByType(SpellType.FlashFreeze).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
@@ -228,6 +231,8 @@ public class Player : MonoBehaviour
         FirelaserCost = data.GetDataByType(SpellType.Firelaser).ShardsCost;
         FireauraCost = data.GetDataByType(SpellType.Fireaura).ShardsCost;
         FiremarkCost = data.GetDataByType(SpellType.Firemark).ShardsCost;
+        flashFreezeCost = data.GetDataByType(SpellType.FlashFreeze).ShardsCost;
+
     }
 
     private void Update()
@@ -633,6 +638,12 @@ public class Player : MonoBehaviour
                     }
                 }
                 break;
+            case SpellType.FlashFreeze:
+                if (isEnoughShards(flashFreezeCost))
+                {
+                    FlashFreezeCast();
+                }
+                break;
         }
     }
 
@@ -747,6 +758,17 @@ public class Player : MonoBehaviour
         spell = Instantiate(BoomPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
         spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
         UseShards(BoomCost);
+        GCDstart();
+        CastStop();
+    }
+
+    private void FlashFreezeCast()
+    {
+        Spell spell;
+        isCasting = true;
+        spell = Instantiate(FlashFreezePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
+        UseShards(flashFreezeCost);
         GCDstart();
         CastStop();
     }

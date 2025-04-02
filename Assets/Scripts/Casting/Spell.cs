@@ -122,6 +122,10 @@ public class Spell : MonoBehaviour
                     }
                     break;
                 case SpellType.Boom:
+                    PlaceEntity();
+                    break;
+                case SpellType.FlashFreeze:
+                    PlaceEntity();
                     break;
                 default:
                     Destroy(this.gameObject);
@@ -169,12 +173,7 @@ public class Spell : MonoBehaviour
     private void FixedUpdate() {
         if (Target == null)
         {
-            switch (spellType)
-            {
-                case SpellType.Boom:
-                    PlaceEntity();
-                    break;
-            }
+            
         }
         else
         {
@@ -248,13 +247,18 @@ public class Spell : MonoBehaviour
         GameObject inst = Instantiate(Entity, transform.position, Quaternion.identity);
         FB_blast fbb = inst.GetComponent<FB_blast>();
         Firewall fwl = inst.GetComponent<Firewall>();
+        Freeze frz = inst.GetComponent<Freeze>();
         if (fbb)
         {
-            fbb.SetDamage(this.SpellDamage, this.critMultyply,critChance);
+            fbb.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
         }
-        if (fwl)
+        else if (fwl)
         {
-            fwl.SetDamage(this.SpellDamage, critMultyply, critChance);
+            fwl.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
+        }
+        else if (frz)
+        {
+            frz.SetDamage(this.SpellDamage, critMultyply, critChance);
         }
         Destroy(this.gameObject);
     }

@@ -102,7 +102,7 @@ MonoBehaviour:
   firemarkCastTime: 0.2
   firemarkCost: {x: 1, y: 0, z: 0}
   flashfreezeIcon: {fileID: 21300000, guid: 39116e21a4b712c4cb9c1fc7f0f58440, type: 3}
-  flashfreezePrefab: {fileID: 0}
+  flashfreezePrefab: {fileID: 5689801273313810728, guid: 8f19ad181a8ee154cae6015cc793a1a5, type: 3}
   flashfreezeDamage: 0
   flashfreezeCD: 0
   flashfreezeCost: {x: 0, y: 1, z: 0}
