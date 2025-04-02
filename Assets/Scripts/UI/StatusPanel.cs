@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Common;
 using UnityEngine;
 
 public class StatusPanel : MonoBehaviour
@@ -11,6 +10,7 @@ public class StatusPanel : MonoBehaviour
 
    [Header("Buffs")] 
    [SerializeField] private GameObject fireauraPF;
+   [SerializeField] private GameObject icetombPF;
 
    private List<GameObject> Statuses = new List<GameObject>();
    private float defaultX = -3.5f;
@@ -53,6 +53,11 @@ public class StatusPanel : MonoBehaviour
             gm.transform.localPosition = new Vector3(defaultXbuffs + offsebuffst * Statuses.Count, defaultYbuffs, 0);
             Statuses.Add(gm);
             break;
+         case BuffType.StasisFreeze:
+            gm = Instantiate(icetombPF, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(defaultXbuffs + offsebuffst * Statuses.Count, defaultYbuffs, 0);
+            Statuses.Add(gm);
+            break;
       }
    }
 
@@ -87,6 +92,11 @@ public class StatusPanel : MonoBehaviour
       {
          case BuffType.FireAura:
             gm = Statuses.Find(o => o.GetComponent<Status>().bt == BuffType.FireAura);
+            Statuses.Remove(gm);
+            Destroy(gm);
+            break;
+         case BuffType.StasisFreeze:
+            gm = Statuses.Find(o => o.GetComponent<Status>().bt == BuffType.StasisFreeze);
             Statuses.Remove(gm);
             Destroy(gm);
             break;

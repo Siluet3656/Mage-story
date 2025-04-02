@@ -1,4 +1,5 @@
 ﻿public enum BuffType
     {
-        FireAura
+        FireAura,
+        StasisFreeze
     }

@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float FrS_RefreshTime = 0f;
     [SerializeField] private float ES_RefreshTime = 0f;
     [SerializeField] private float GCD;
+    [Space] [SerializeField] private GameObject iceTomb;
 
     private IEnumerator[] fireShardsRefreshRoutine = new IEnumerator[3];
     private IEnumerator[] frostShardsRefreshRoutine = new IEnumerator[3];
@@ -63,6 +64,7 @@ public class Player : MonoBehaviour
     private Vector3Int FireauraCost;
     private Vector3Int FiremarkCost;
     private Vector3Int flashFreezeCost;
+    private Vector3Int stasisFreezeCost;
     private float ZapCost;
     
     
@@ -102,6 +104,8 @@ public class Player : MonoBehaviour
     private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
     private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
 
+    private Buff playerBuffs;
+
     [Header("Movement")] 
     [SerializeField] private SpeedType speedType;
     [SerializeField] private Image BlinkRefreshBar;
@@ -115,6 +119,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private Vector2 Movement;
+    private bool _isAvailableToMove = true;
 
     [Header("Target system")]
     [SerializeField] private float interactionRange  = 0;
@@ -126,6 +131,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
+        playerBuffs = this.GetComponent<Buff>();
         playerInputActions.Player.Blink.started += Blink;
         playerInputActions.Player.FastTarget.started += TrySelectTarget;
         playerInputActions.Player.CastInterrupt.started += InterruptCast;
@@ -137,6 +143,10 @@ public class Player : MonoBehaviour
         playerInputActions.Player.Castbar6.started += SpellBarButtonCast;
         playerInputActions.Player.Castbar7.started += SpellBarButtonCast;
         playerInputActions.UI.LBM.started += HandleMouseClick;
+
+        playerBuffs.OnPlayerFreeze += FreezeMovement;
+        playerBuffs.OnPlayerUnFreeze += UnfreezeMovement;
+
     }
 
     private void OnEnable()
@@ -232,13 +242,21 @@ public class Player : MonoBehaviour
         FireauraCost = data.GetDataByType(SpellType.Fireaura).ShardsCost;
         FiremarkCost = data.GetDataByType(SpellType.Firemark).ShardsCost;
         flashFreezeCost = data.GetDataByType(SpellType.FlashFreeze).ShardsCost;
+        stasisFreezeCost = data.GetDataByType(SpellType.StasisFreeze).ShardsCost;
 
     }
 
     private void Update()
     {
-        Movement = playerInputActions.Player.Movement.ReadValue<Vector2>();
-
+        if (_isAvailableToMove)
+        {
+            Movement = playerInputActions.Player.Movement.ReadValue<Vector2>();
+        }
+        else
+        {
+            Movement = Vector2.zero;
+        }
+        
         anim.SetFloat("MoveX", Movement.x);
         anim.SetFloat("MoveY",  Movement.y);
         
@@ -528,6 +546,18 @@ public class Player : MonoBehaviour
         noelemCritMultAdjust = mult;
         noelemCritChanceAdjust = chance;
     }
+
+    public void FreezeMovement()
+    {
+        _isAvailableToMove = false;
+        iceTomb.SetActive(true);
+    }
+    
+    public void UnfreezeMovement()
+    {
+        _isAvailableToMove = true;
+        iceTomb.SetActive(false);
+    }
     
     public void StopAllCasts()
     {
@@ -644,6 +674,12 @@ public class Player : MonoBehaviour
                     FlashFreezeCast();
                 }
                 break;
+            case SpellType.StasisFreeze:
+                if (isEnoughShards(stasisFreezeCost))
+                {
+                    StasisFreezeCast();
+                }
+                break;
         }
     }
 
@@ -655,31 +691,34 @@ public class Player : MonoBehaviour
             {
                 if (GCDprogress <= 0)
                 {
-                    TargetCastingTo = currentTarget;
-                
-                    switch (context.action.name)
+                    if (_isAvailableToMove)
                     {
-                        case "Castbar1":
-                            CastSpell(spellBarCells[0].GetSpellType());
-                            break;
-                        case "Castbar2":
-                            CastSpell(spellBarCells[1].GetSpellType());
-                            break;
-                        case "Castbar3":
-                            CastSpell(spellBarCells[2].GetSpellType());
-                            break;
-                        case "Castbar4":
-                            CastSpell(spellBarCells[3].GetSpellType());
-                            break;
-                        case "Castbar5":
-                            CastSpell(spellBarCells[4].GetSpellType());
-                            break;
-                        case "Castbar6":
-                            CastSpell(spellBarCells[5].GetSpellType());
-                            break;
-                        case "Castbar7":
-                            CastSpell(spellBarCells[6].GetSpellType());
-                            break;
+                        TargetCastingTo = currentTarget;
+
+                        switch (context.action.name)
+                        {
+                            case "Castbar1":
+                                CastSpell(spellBarCells[0].GetSpellType());
+                                break;
+                            case "Castbar2":
+                                CastSpell(spellBarCells[1].GetSpellType());
+                                break;
+                            case "Castbar3":
+                                CastSpell(spellBarCells[2].GetSpellType());
+                                break;
+                            case "Castbar4":
+                                CastSpell(spellBarCells[3].GetSpellType());
+                                break;
+                            case "Castbar5":
+                                CastSpell(spellBarCells[4].GetSpellType());
+                                break;
+                            case "Castbar6":
+                                CastSpell(spellBarCells[5].GetSpellType());
+                                break;
+                            case "Castbar7":
+                                CastSpell(spellBarCells[6].GetSpellType());
+                                break;
+                        }
                     }
                 }
             }
@@ -769,6 +808,15 @@ public class Player : MonoBehaviour
         spell = Instantiate(FlashFreezePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
         spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
         UseShards(flashFreezeCost);
+        GCDstart();
+        CastStop();
+    }
+
+    private void StasisFreezeCast()
+    {
+        isCasting = true;
+        this.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze, this);
+        UseShards(stasisFreezeCost);
         GCDstart();
         CastStop();
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class HP : MonoBehaviour
 {
@@ -9,9 +10,22 @@ public class HP : MonoBehaviour
     [SerializeField] private float Current_HP = 0;
     private bool _isTakingDamageEachSecond = false;
     private bool _isWaitingOneSecond = false;
+    private bool _isInvulnerable = false;
     private float _tickingDamage;
     private float _tickingCritChance;
     private float _tickingCritMultiply;
+
+    private Buff playerBuffs;
+
+    private void Awake()
+    {
+        playerBuffs = this.GetComponent<Buff>();
+        if (playerBuffs)
+        {
+            playerBuffs.OnPlayerFreeze += GetInvulnerability;
+            playerBuffs.OnPlayerUnFreeze += RemoveInvulnerability;
+        }
+    }
 
     private void Start() {
         if (Max_HP > 0)
@@ -59,20 +73,32 @@ public class HP : MonoBehaviour
         }
     }
 
+    private void GetInvulnerability()
+    {
+        _isInvulnerable = true;
+    }
+    
+    private void RemoveInvulnerability()
+    {
+        _isInvulnerable = false;
+    }
+
     public void TryToTakeCriticalDamage(float damage, float multiply, float chance)
     {
-        
-        float proc = Random.Range(0,100);
-        bool isProced = (proc - chance * 100) < 0;
-        //Debug.Log(multiply + " / " + chance);
-        if (isProced)
+        if (_isInvulnerable == false)
         {
-            TakeDamage(damage * multiply);
-            GetComponent<Debuff>().GotCrit();
-        }
-        else
-        {
-            TakeDamage(damage);
+            float proc = Random.Range(0,100);
+            bool isProced = (proc - chance * 100) < 0;
+            //Debug.Log(multiply + " / " + chance);
+            if (isProced)
+            {
+                TakeDamage(damage * multiply);
+                GetComponent<Debuff>().GotCrit();
+            }
+            else
+            {
+                TakeDamage(damage);
+            }
         }
     }
 
