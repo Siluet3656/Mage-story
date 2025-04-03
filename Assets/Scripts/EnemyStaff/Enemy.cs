@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]private SpeedType speedType;
     [SerializeField]private float MinWaitingTime = 0;
     [SerializeField]private float MaxWaitingTime = 10;
+    [SerializeField]private GameObject iceTomb;
     private Rigidbody2D rb;
     private Color OriginalColor;
     private Color TargetedColor;
@@ -20,6 +23,17 @@ public class Enemy : MonoBehaviour
     private float distanceToTarget = 0;
     private float WaitingTime = 0;
     
+    private Buff enemyBuffs;
+    private bool _isAvailableToMove = true;
+
+    private void Awake()
+    {
+        enemyBuffs = this.GetComponent<Buff>();
+        
+        enemyBuffs.OnEnemyFreeze += FreezeMovement;
+        enemyBuffs.OnEnemyUnFreeze += UnfreezeMovement;
+    }
+
     private void Start()
     {
         OriginalColor = TargetedSR.color;
@@ -34,15 +48,22 @@ public class Enemy : MonoBehaviour
 
     private void Update() 
     {
-        if (isPatrolling)
+        if (_isAvailableToMove)
         {
-            distanceToTarget = Vector2.Distance(this.transform.position, PatrolPoints[CurrentPointToMove].position);
-            if (distanceToTarget < PointMinDist)
+            if (isPatrolling)
             {
-                PickNextPoint();
+                distanceToTarget = Vector2.Distance(this.transform.position, PatrolPoints[CurrentPointToMove].position);
+                if (distanceToTarget < PointMinDist)
+                {
+                    PickNextPoint();
+                }
+                this.Movement = PatrolPoints[CurrentPointToMove].position - this.transform.position;
+                this.Movement = this.Movement.normalized;
             }
-            this.Movement = PatrolPoints[CurrentPointToMove].position - this.transform.position;
-            this.Movement = this.Movement.normalized;
+        }
+        else
+        {
+            this.Movement = Vector2.zero;
         }
     }
 
@@ -89,6 +110,18 @@ public class Enemy : MonoBehaviour
             CurrentPointToMove = 0;
         }
         isPatrolling = true;
+    }
+
+    private void FreezeMovement()
+    {
+        _isAvailableToMove = false;
+        iceTomb.SetActive(true);
+    }
+    
+    private void UnfreezeMovement()
+    {
+        _isAvailableToMove = true;
+        iceTomb.SetActive(false);
     }
 
     public void Target()

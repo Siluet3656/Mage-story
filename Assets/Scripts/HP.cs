@@ -15,15 +15,17 @@ public class HP : MonoBehaviour
     private float _tickingCritChance;
     private float _tickingCritMultiply;
 
-    private Buff playerBuffs;
+    private Buff Buffs;
 
     private void Awake()
     {
-        playerBuffs = this.GetComponent<Buff>();
-        if (playerBuffs)
+        Buffs = this.GetComponent<Buff>();
+        if (Buffs)
         {
-            playerBuffs.OnPlayerFreeze += GetInvulnerability;
-            playerBuffs.OnPlayerUnFreeze += RemoveInvulnerability;
+            Buffs.OnPlayerFreeze += GetInvulnerability;
+            Buffs.OnPlayerUnFreeze += RemoveInvulnerability;
+            Buffs.OnEnemyFreeze += GetInvulnerability;
+            Buffs.OnEnemyUnFreeze += RemoveInvulnerability;
         }
     }
 

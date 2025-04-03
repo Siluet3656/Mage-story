@@ -173,7 +173,7 @@ public class Spell : MonoBehaviour
                     {
                         //Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
                         Target.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze,Target);
-                        player.ElementalInvocation();
+                        player.ElementalInvocation(2);
                         isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
