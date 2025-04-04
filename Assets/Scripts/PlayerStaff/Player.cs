@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
     private GameObject FlashFreezePrefub;
     private GameObject IcecleBarragePrefub;
     private GameObject CryoLeachPrefub;
+    private GameObject AvalancheCorePrefub;
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour
     private float FirelaserCastTime;
     private float FiremarkCastTime;
     private float IcecleBarrageCastTime;
+    private float AvalancheCoreCastTime;
 
     private Vector3Int fireballCost;
     private Vector3Int frost_whirlwindCost;
@@ -72,6 +74,8 @@ public class Player : MonoBehaviour
     private Vector3Int stasisFreezeCost;
     private Vector3Int IcecleBarrageCost;
     private Vector3Int CryoLeachCost;
+    private Vector3Int frostAegisCost;
+    private Vector3Int avalancheCoreCost;
     private float ZapCost;
     
     
@@ -233,6 +237,7 @@ public class Player : MonoBehaviour
         FlashFreezePrefub = data.GetDataByType(SpellType.FlashFreeze).PrefubOfSpell;
         IcecleBarragePrefub = data.GetDataByType(SpellType.IcicleBarrage).PrefubOfSpell;
         CryoLeachPrefub = data.GetDataByType(SpellType.CryoLeach).PrefubOfSpell;
+        AvalancheCorePrefub = data.GetDataByType(SpellType.AvalancheCore).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
@@ -242,6 +247,7 @@ public class Player : MonoBehaviour
         FirelaserCastTime = data.GetDataByType(SpellType.Firelaser).CastTime;
         FiremarkCastTime = data.GetDataByType(SpellType.Firemark).CastTime;
         IcecleBarrageCastTime = data.GetDataByType(SpellType.IcicleBarrage).CastTime;
+        AvalancheCoreCastTime = data.GetDataByType(SpellType.AvalancheCore).CastTime;
         
         fireballCost = data.GetDataByType(SpellType.Fireball).ShardsCost;
         frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
@@ -257,6 +263,8 @@ public class Player : MonoBehaviour
         stasisFreezeCost = data.GetDataByType(SpellType.StasisFreeze).ShardsCost;
         IcecleBarrageCost = data.GetDataByType(SpellType.IcicleBarrage).ShardsCost;
         CryoLeachCost = data.GetDataByType(SpellType.CryoLeach).ShardsCost;
+        frostAegisCost = data.GetDataByType(SpellType.FrostAegis).ShardsCost;
+        avalancheCoreCost = data.GetDataByType(SpellType.AvalancheCore).ShardsCost
     }
 
     private void Update()
@@ -731,6 +739,12 @@ public class Player : MonoBehaviour
                     }
                 }
                 break;
+            case SpellType.FrostAegis:
+                if (isEnoughShards(frostAegisCost))
+                {
+                    frostAegisCast();
+                }
+                break;
         }
     }
 
@@ -983,6 +997,15 @@ public class Player : MonoBehaviour
             spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
             UseShards(CryoLeachCost);
         }
+        GCDstart();
+        CastStop();
+    }
+
+    private void frostAegisCast()
+    {
+        isCasting = true;
+        this.GetComponent<HP>().GetOverHP(SpellType.FrostAegis);
+        UseShards(frostAegisCost);
         GCDstart();
         CastStop();
     }

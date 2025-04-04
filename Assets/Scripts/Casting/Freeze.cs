@@ -34,11 +34,11 @@ public class Freeze : MonoBehaviour
         HP hp = other.gameObject.GetComponent<HP>();
         Debuff dbf = other.gameObject.GetComponent<Debuff>();
         Enemy target = other.gameObject.GetComponent<Enemy>();
-        if (hp != null)
+        Debug.Log(hp & dbf & target);
+        if (hp & dbf & target)
         {
             hp.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_damage, _critmultiply, _critchance);
             dbf.DebuffTarget(DebuffType.Slow, target);
-            
         }
     }
     

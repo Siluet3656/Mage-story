@@ -1,13 +1,19 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class HP : MonoBehaviour
 {
-    [SerializeField] private int Max_HP = 0;
-    [SerializeField] private Image HealthBar = null;
-    [SerializeField] private float Current_HP = 0;
+    [FormerlySerializedAs("HealthBar")] [SerializeField] private Image healthBar = null;
+    [FormerlySerializedAs("OverHPBar")] [SerializeField] private Image overhpBar = null;
+    [Space]
+    [FormerlySerializedAs("Max_HP")] [SerializeField] private int maxHp = 0;
+    [FormerlySerializedAs("FrostAegisOverHPAmount")] [SerializeField] private float frostAegisOverHpAmount;
+    [Space]
+    [FormerlySerializedAs("Current_HP")] [SerializeField] private float currentHp = 0;
+    [FormerlySerializedAs("OverHP")] [SerializeField] private float overHp = 0;
     private bool _isTakingDamageEachSecond = false;
     private bool _isWaitingOneSecond = false;
     private bool _isInvulnerable = false;
@@ -30,18 +36,19 @@ public class HP : MonoBehaviour
     }
 
     private void Start() {
-        if (Max_HP > 0)
+        if (maxHp > 0)
         {
-            Current_HP = Max_HP;
+            currentHp = maxHp;
         }
         else
         {
-            Current_HP = 1;
+            currentHp = 1;
         }
     }
 
     private void Update() {
-        HealthBar.fillAmount = (float)Current_HP/Max_HP;
+        healthBar.fillAmount = (float)currentHp/maxHp;
+        overhpBar.fillAmount = (float)overHp/frostAegisOverHpAmount;
 
         if (_isTakingDamageEachSecond)
         {
@@ -68,10 +75,35 @@ public class HP : MonoBehaviour
     
     private void TakeDamage(float damage)
     {
-        Current_HP -= damage;
-        if (Current_HP <= 0)
+        if (overHp - damage > 0)
         {
-            Die();
+            overHp -= damage;
+        }
+        else if (overHp > 0)
+        {
+            damage -= overHp;
+            overHp = 0;
+            if (currentHp - damage > 0)
+            {
+                currentHp -= damage;
+            }
+            else
+            {
+                currentHp = 0;
+                Die();
+            }
+        }
+        else
+        {
+            if (currentHp - damage > 0)
+            {
+                currentHp -= damage;
+            }
+            else
+            {
+                currentHp = 0;
+                Die();
+            }
         }
     }
 
@@ -116,5 +148,15 @@ public class HP : MonoBehaviour
     {
         _isTakingDamageEachSecond = false;
         StopCoroutine(WaitOneSecondAndTakeDamage());
+    }
+
+    public void GetOverHP(SpellType source)
+    {
+        switch (source)
+        {
+            case SpellType.FrostAegis:
+                overHp = frostAegisOverHpAmount;
+                break;
+        }
     }
 }
