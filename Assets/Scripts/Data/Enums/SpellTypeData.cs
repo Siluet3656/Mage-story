@@ -18,7 +18,8 @@ public enum SpellType
         IcicleBarrage,
         CryoLeach,
         FrostAegis,
-        AvalancheCore
+        AvalancheCore,
+        AvalancheCoreChunk
     }
 
 public class SpellTypeData : MonoBehaviour

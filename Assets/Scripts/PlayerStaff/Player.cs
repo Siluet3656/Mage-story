@@ -115,6 +115,7 @@ public class Player : MonoBehaviour
     private Color FireMarkCastBarColor = new Color(1,0.6f,0.1f);
     private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
     private Color IcecleBarrageCastBarColor = new Color(0f, 0.5f, 1f);
+    private Color AvalancheCoreCastBarColor = new Color(0.2f, 0.2f, 1f);
     private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
 
     private Buff playerBuffs;
@@ -264,7 +265,7 @@ public class Player : MonoBehaviour
         IcecleBarrageCost = data.GetDataByType(SpellType.IcicleBarrage).ShardsCost;
         CryoLeachCost = data.GetDataByType(SpellType.CryoLeach).ShardsCost;
         frostAegisCost = data.GetDataByType(SpellType.FrostAegis).ShardsCost;
-        avalancheCoreCost = data.GetDataByType(SpellType.AvalancheCore).ShardsCost
+        avalancheCoreCost = data.GetDataByType(SpellType.AvalancheCore).ShardsCost;
     }
 
     private void Update()
@@ -608,6 +609,7 @@ public class Player : MonoBehaviour
         StopCoroutine("FirelaserCast");
         StopCoroutine("FireMarkCast");
         StopCoroutine("IcecleBarrageCast");
+        StopCoroutine("AvalancheCoreCast");
         CastStop();
     }
 
@@ -743,6 +745,17 @@ public class Player : MonoBehaviour
                 if (isEnoughShards(frostAegisCost))
                 {
                     frostAegisCast();
+                }
+                break;
+            case SpellType.AvalancheCore:
+                if (isEnoughShards(avalancheCoreCost))
+                {
+                    if (currentTarget != null)
+                    {
+                        CurrentCastCastTime = AvalancheCoreCastTime;
+                        CastBar.color = AvalancheCoreCastBarColor;
+                        StartCoroutine("AvalancheCoreCast");
+                    }
                 }
                 break;
         }
@@ -1007,6 +1020,24 @@ public class Player : MonoBehaviour
         this.GetComponent<HP>().GetOverHP(SpellType.FrostAegis);
         UseShards(frostAegisCost);
         GCDstart();
+        CastStop();
+    }
+
+    private IEnumerator AvalancheCoreCast()
+    {
+        Spell spell;
+        isCasting = true;
+        GCDstart();
+        
+        yield return new WaitForSeconds(AvalancheCoreCastTime);
+        
+        if (TargetCastingTo != null)
+        {
+            spell = Instantiate(AvalancheCorePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(TargetCastingTo);
+            spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
+            UseShards(avalancheCoreCost);
+        }
         CastStop();
     }
     

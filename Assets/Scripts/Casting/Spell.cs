@@ -24,6 +24,7 @@ public class Spell : MonoBehaviour
     private bool isCasted = false;
     private float critChance;
     private float critMultyply;
+    private float chunckdamage;
 
     private float MinimumDist = 0.3f;
     private float InstantSpellsDuration = 0.2f;
@@ -65,7 +66,14 @@ public class Spell : MonoBehaviour
     
     private void Start() {
         spellrb = GetComponent<Rigidbody2D>();
-        SpellDamage = data.GetDataByType(spellType).Damage;
+        if (spellType == SpellType.AvalancheCoreChunk)
+        {
+            SpellDamage = chunckdamage;
+        }
+        else
+        {
+            SpellDamage = data.GetDataByType(spellType).Damage;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -262,27 +270,57 @@ public class Spell : MonoBehaviour
                     spellrb.velocity = direction.normalized * SpellSpeed;
                     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                     break;
+                case SpellType.AvalancheCore:
+                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                    if (distanceToTarget < MinimumDist)
+                    {
+                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        PlaceEntity();
+                    }
+                    direction = Target.transform.position - transform.position;
+                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    break;
+                case SpellType.AvalancheCoreChunk:
+                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
+                    if (distanceToTarget < MinimumDist)
+                    {
+                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        Destroy(this.gameObject);
+                    }
+                    direction = Target.transform.position - transform.position;
+                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    break;
             }
         }
     }
 
     private void PlaceEntity()
     {
-        GameObject inst = Instantiate(Entity, transform.position, Quaternion.identity);
-        FB_blast fbb = inst.GetComponent<FB_blast>();
-        Firewall fwl = inst.GetComponent<Firewall>();
-        Freeze frz = inst.GetComponent<Freeze>();
-        if (fbb)
+        GameObject entity = Instantiate(Entity, transform.position, Quaternion.identity);
+        FB_blast fireballBlast = entity.GetComponent<FB_blast>();
+        Firewall firewall = entity.GetComponent<Firewall>();
+        Freeze freeze = entity.GetComponent<Freeze>();
+        AvalancheCoreChuncker avalancheCoreChuncker = entity.GetComponent<AvalancheCoreChuncker>();
+        if (fireballBlast)
         {
-            fbb.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
+            fireballBlast.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
         }
-        else if (fwl)
+        else if (firewall)
         {
-            fwl.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
+            firewall.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
         }
-        else if (frz)
+        else if (freeze)
         {
-            frz.SetDamage(this.SpellDamage, critMultyply, critChance);
+            freeze.SetDamage(this.SpellDamage, critMultyply, critChance);
+        }
+        else if (avalancheCoreChuncker)
+        {
+            avalancheCoreChuncker.SetDamage(this.SpellDamage, critMultyply, critChance);
+            avalancheCoreChuncker.SetOrigin(Target);
         }
         Destroy(this.gameObject);
     }
@@ -326,5 +364,13 @@ public class Spell : MonoBehaviour
     {
         critMultyply = defaultCritMultyply;
         critChance = defaultCritChance;
+    }
+
+    public void ChunkDamage(float damage)
+    {
+        if (damage > 0)
+        {
+            chunckdamage = damage;
+        }
     }
 }

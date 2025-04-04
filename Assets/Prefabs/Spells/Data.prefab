@@ -128,7 +128,7 @@ MonoBehaviour:
   frostaegisCD: 0
   frostaegisCost: {x: 0, y: 1, z: 0}
   avalancheCoreIcon: {fileID: 21300000, guid: 73ed33ed7ee32f74b9800f905f72b846, type: 3}
-  avalancheCorePrefab: {fileID: 0}
+  avalancheCorePrefab: {fileID: 5689801273313810728, guid: e27875c9ffe1b7d41b47fe1f420ed23b, type: 3}
   avalancheCoreDamage: 800
   avalancheCoreCD: 0
   avalancheCoreCastTime: 3
