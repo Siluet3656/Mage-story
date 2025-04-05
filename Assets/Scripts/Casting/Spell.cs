@@ -209,6 +209,7 @@ public class Spell : MonoBehaviour
                     angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     spellrb.velocity = direction.normalized * SpellSpeed;
                     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    //transform.Translate(direction * Time.fixedTime);
                     break;
                 case SpellType.Frost_whirlwind:
                     distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);

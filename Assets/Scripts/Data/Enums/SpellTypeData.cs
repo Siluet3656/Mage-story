@@ -19,7 +19,13 @@ public enum SpellType
         CryoLeach,
         FrostAegis,
         AvalancheCore,
-        AvalancheCoreChunk
+        AvalancheCoreChunk,
+        EarthShield,
+        DeathZone,
+        NaturePower,
+        Plague,
+        Flower,
+        NatureWraith
     }
 
 public class SpellTypeData : MonoBehaviour

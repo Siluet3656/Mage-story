@@ -458,6 +458,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""9037e43a-b377-4c27-9347-57183000c9f4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardALT"",
+                    ""action"": ""OpenSpellBook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""2d571ab6-083b-48a2-98a9-89bc55e134ff"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
