@@ -160,7 +160,7 @@ public class Player : MonoBehaviour
 
         playerBuffs.OnPlayerFreeze += FreezeMovement;
         playerBuffs.OnPlayerUnFreeze += UnfreezeMovement;
-
+        //Application.targetFrameRate = -1;
     }
 
     private void OnEnable()

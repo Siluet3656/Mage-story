@@ -133,3 +133,39 @@ MonoBehaviour:
   avalancheCoreCD: 0
   avalancheCoreCastTime: 3
   avalancheCoreCost: {x: 0, y: 1, z: 0}
+  earthShieldIcon: {fileID: 21300000, guid: 9b92b9c77a562e940a0df6df5883e927, type: 3}
+  earthShieldPrefab: {fileID: 0}
+  earthShieldDamage: 0
+  earthShieldCD: 0
+  earthShieldCastTime: 0
+  earthShieldCost: {x: 0, y: 0, z: 0}
+  deathZoneIcon: {fileID: 21300000, guid: 27cce4f3fe2c16348b9e9034de1cebff, type: 3}
+  deathZonePrefab: {fileID: 0}
+  deathZoneDamage: 0
+  deathZoneCD: 0
+  deathZoneCastTime: 0
+  deathZoneCost: {x: 0, y: 0, z: 0}
+  naturePowerIcon: {fileID: 21300000, guid: 66880507338073e43ae4e710b7931822, type: 3}
+  naturePowerPrefab: {fileID: 0}
+  naturePowerDamage: 0
+  naturePowerCD: 0
+  naturePowerCastTime: 0
+  naturePowerCost: {x: 0, y: 0, z: 0}
+  plagueIcon: {fileID: 21300000, guid: 77da1d768f3ba8c4d80d9b13d060a941, type: 3}
+  plaguePrefab: {fileID: 0}
+  plagueDamage: 0
+  plagueCD: 0
+  plagueCastTime: 0
+  plagueCost: {x: 0, y: 0, z: 0}
+  flowerIcon: {fileID: 21300000, guid: 72e77d0f2ee636e4daa0d8c25f4b980f, type: 3}
+  flowerPrefab: {fileID: 0}
+  flowerDamage: 0
+  flowerCD: 0
+  flowerCastTime: 0
+  flowerCost: {x: 0, y: 0, z: 0}
+  natureWraithIcon: {fileID: 21300000, guid: 618d01d3c5565604b8b6eb4c7ca9aac9, type: 3}
+  natureWraithPrefab: {fileID: 0}
+  natureWraithDamage: 0
+  natureWraithCD: 0
+  natureWraithCastTime: 0
+  natureWraithCost: {x: 0, y: 0, z: 0}

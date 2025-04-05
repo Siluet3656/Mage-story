@@ -136,6 +136,48 @@ public class SpellTypeData : MonoBehaviour
     [SerializeField] private float avalancheCoreCD;
     [SerializeField] private float avalancheCoreCastTime;
     [SerializeField] private Vector3Int avalancheCoreCost;
+    [Header("EARTH SHIELD")]
+    [SerializeField] private Sprite earthShieldIcon;
+    [SerializeField] private GameObject earthShieldPrefab;
+    [SerializeField] private float earthShieldDamage;
+    [SerializeField] private float earthShieldCD;
+    [SerializeField] private float earthShieldCastTime;
+    [SerializeField] private Vector3Int earthShieldCost;
+    [Header("DEATH ZONE")]
+    [SerializeField] private Sprite deathZoneIcon;
+    [SerializeField] private GameObject deathZonePrefab;
+    [SerializeField] private float deathZoneDamage;
+    [SerializeField] private float deathZoneCD;
+    [SerializeField] private float deathZoneCastTime;
+    [SerializeField] private Vector3Int deathZoneCost;
+    [Header("NATURE POWER")]
+    [SerializeField] private Sprite naturePowerIcon;
+    [SerializeField] private GameObject naturePowerPrefab;
+    [SerializeField] private float naturePowerDamage;
+    [SerializeField] private float naturePowerCD;
+    [SerializeField] private float naturePowerCastTime;
+    [SerializeField] private Vector3Int naturePowerCost;
+    [Header("PLAGUE")]
+    [SerializeField] private Sprite plagueIcon;
+    [SerializeField] private GameObject plaguePrefab;
+    [SerializeField] private float plagueDamage;
+    [SerializeField] private float plagueCD;
+    [SerializeField] private float plagueCastTime;
+    [SerializeField] private Vector3Int plagueCost;
+    [Header("FLOWER")]
+    [SerializeField] private Sprite flowerIcon;
+    [SerializeField] private GameObject flowerPrefab;
+    [SerializeField] private float flowerDamage;
+    [SerializeField] private float flowerCD;
+    [SerializeField] private float flowerCastTime;
+    [SerializeField] private Vector3Int flowerCost;
+    [Header("NATURE'S WRAITH")]
+    [SerializeField] private Sprite natureWraithIcon;
+    [SerializeField] private GameObject natureWraithPrefab;
+    [SerializeField] private float natureWraithDamage;
+    [SerializeField] private float natureWraithCD;
+    [SerializeField] private float natureWraithCastTime;
+    [SerializeField] private Vector3Int natureWraithCost;
     
     public SpellData GetDataByType(SpellType type)
     {
@@ -173,6 +215,18 @@ public class SpellTypeData : MonoBehaviour
                 return new SpellData(frostaegisIcon,frostaegisPrefab,frostaegisDamage,frostaegisCD,0,frostaegisCost);
             case SpellType.AvalancheCore:
                 return new SpellData(avalancheCoreIcon,avalancheCorePrefab,avalancheCoreDamage,avalancheCoreCD,avalancheCoreCastTime,avalancheCoreCost);
+            case SpellType.EarthShield:
+                return new SpellData(earthShieldIcon,earthShieldPrefab,earthShieldDamage,earthShieldCD,earthShieldCastTime,earthShieldCost);
+            case SpellType.DeathZone:
+                return new SpellData(deathZoneIcon,deathZonePrefab,deathZoneDamage,deathZoneCD,deathZoneCastTime,deathZoneCost);
+            case SpellType.NaturePower:
+                return new SpellData(naturePowerIcon,naturePowerPrefab,naturePowerDamage,naturePowerCD,naturePowerCastTime,naturePowerCost);
+            case SpellType.Plague:
+                return new SpellData(plagueIcon,plaguePrefab,plagueDamage,plagueCD,plagueCastTime,plagueCost);
+            case SpellType.Flower:
+                return new SpellData(flowerIcon,flowerPrefab,flowerDamage,flowerCD,flowerCastTime,flowerCost);
+            case SpellType.NatureWraith:
+                return new SpellData(natureWraithIcon,natureWraithPrefab,natureWraithDamage,natureWraithCD,natureWraithCastTime,natureWraithCost);
         }
         return new SpellData(basic,new GameObject("Null"),0,0,0,0);
     }

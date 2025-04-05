@@ -13,9 +13,12 @@ public class SpellButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (type != SpellType.NoSpell)
         {
-            _hand.TakeSpell(type);
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                _hand.TakeSpell(type);
+            }
         }
     }
 
