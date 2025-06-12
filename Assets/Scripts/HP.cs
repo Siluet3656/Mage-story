@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -6,14 +7,19 @@ using Random = UnityEngine.Random;
 
 public class HP : MonoBehaviour
 {
+    [Header("PRESET")]
     [FormerlySerializedAs("HealthBar")] [SerializeField] private Image healthBar = null;
     [FormerlySerializedAs("OverHPBar")] [SerializeField] private Image overhpBar = null;
+    [FormerlySerializedAs("MainShieldStackBar")] [SerializeField] private Image mainShieldStackBar = null;
+    [FormerlySerializedAs("ShieldStackBars")] [SerializeField] private Image [] shieldStackBars = null;
     [Space]
     [FormerlySerializedAs("Max_HP")] [SerializeField] private int maxHp = 0;
     [FormerlySerializedAs("FrostAegisOverHPAmount")] [SerializeField] private float frostAegisOverHpAmount;
-    [Space]
+    [FormerlySerializedAs("EarthShieldStacksAmount")] [SerializeField] private int earthShieldStacksAmount;
+    [Header("CURRENT STATE")]
     [FormerlySerializedAs("Current_HP")] [SerializeField] private float currentHp = 0;
     [FormerlySerializedAs("OverHP")] [SerializeField] private float overHp = 0;
+    [FormerlySerializedAs("ShieldStacks")] [SerializeField] private int shieldStacks = 0;
     private bool _isTakingDamageEachSecond = false;
     private bool _isWaitingOneSecond = false;
     private bool _isInvulnerable = false;
@@ -75,6 +81,12 @@ public class HP : MonoBehaviour
     
     private void TakeDamage(float damage)
     {
+        if (shieldStacks > 0)
+        {
+            RemoveOneShieldStack();
+            return;
+        }
+        
         if (overHp - damage > 0)
         {
             overHp -= damage;
@@ -117,6 +129,17 @@ public class HP : MonoBehaviour
         _isInvulnerable = false;
     }
 
+    private void RemoveOneShieldStack()
+    {
+        shieldStacks -= 1;
+        
+        shieldStackBars[shieldStacks].gameObject.SetActive(false);
+        if (shieldStacks <= 0)
+        {
+            mainShieldStackBar.gameObject.SetActive(false);
+        }
+    }
+
     public void TryToTakeCriticalDamage(float damage, float multiply, float chance)
     {
         if (_isInvulnerable == false)
@@ -156,6 +179,21 @@ public class HP : MonoBehaviour
         {
             case SpellType.FrostAegis:
                 overHp = frostAegisOverHpAmount;
+                break;
+        }
+    }
+
+    public void GetShieldStacks(SpellType source)
+    {
+        switch (source)
+        {
+            case SpellType.EarthShield:
+                shieldStacks = earthShieldStacksAmount;
+                mainShieldStackBar.gameObject.SetActive(true);
+                foreach (var shieldStack in shieldStackBars)
+                {
+                    shieldStack.gameObject.SetActive(true);
+                }
                 break;
         }
     }

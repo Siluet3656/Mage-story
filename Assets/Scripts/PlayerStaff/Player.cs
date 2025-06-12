@@ -50,6 +50,9 @@ public class Player : MonoBehaviour
     private GameObject IcecleBarragePrefub;
     private GameObject CryoLeachPrefub;
     private GameObject AvalancheCorePrefub;
+    //private GameObject FlowerPrefub;
+    //private GameObject DeathZonePrefub;
+    
 
     private float FireballCastTime;
     private float frost_whirlwindCastTime;
@@ -76,6 +79,7 @@ public class Player : MonoBehaviour
     private Vector3Int CryoLeachCost;
     private Vector3Int frostAegisCost;
     private Vector3Int avalancheCoreCost;
+    private Vector3Int earthShieldCost;
     private float ZapCost;
     
     
@@ -266,6 +270,7 @@ public class Player : MonoBehaviour
         CryoLeachCost = data.GetDataByType(SpellType.CryoLeach).ShardsCost;
         frostAegisCost = data.GetDataByType(SpellType.FrostAegis).ShardsCost;
         avalancheCoreCost = data.GetDataByType(SpellType.AvalancheCore).ShardsCost;
+        earthShieldCost = data.GetDataByType(SpellType.EarthShield).ShardsCost;
     }
 
     private void Update()
@@ -758,6 +763,12 @@ public class Player : MonoBehaviour
                     }
                 }
                 break;
+            case SpellType.EarthShield:
+                if (isEnoughShards(earthShieldCost))
+                {
+                    earthShieldCast();
+                }
+                break;
         }
     }
 
@@ -1038,6 +1049,15 @@ public class Player : MonoBehaviour
             spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
             UseShards(avalancheCoreCost);
         }
+        CastStop();
+    }
+
+    private void earthShieldCast()
+    {
+        isCasting = true;
+        this.GetComponent<HP>().GetShieldStacks(SpellType.EarthShield);
+        UseShards(earthShieldCost);
+        GCDstart();
         CastStop();
     }
     
