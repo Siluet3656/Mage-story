@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
         if (PatrolPoints.Length != 0)
         {
             rb = GetComponent<Rigidbody2D>();
-            Speed = SpeedTypeData.GetDataByID(speedType);
+            Speed = SpeedTypeData.GetDataByType(speedType);
             PickNextPoint();
         }
     }

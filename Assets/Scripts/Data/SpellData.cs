@@ -9,6 +9,7 @@ public class SpellData
     public float CastTime { private set; get; }
     public Vector3Int ShardsCost {private set; get; }
     public float ReminderCost {private set; get; }
+    public SpellType Type { private set; get; }
 
     public SpellData(Sprite icon,GameObject prefubOfSpell, float damage, float cd, float castTime ,Vector3Int shardsCostcost)
     {

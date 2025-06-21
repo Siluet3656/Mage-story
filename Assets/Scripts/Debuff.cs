@@ -41,7 +41,7 @@ public class Debuff : MonoBehaviour
             case DebuffType.Slow:
                 if (!isSlowed)
                 {
-                    dtarget.SetSpeed(SpeedTypeData.GetDataByID(dtarget.GetSpeed() - 1));
+                    dtarget.SetSpeed(SpeedTypeData.GetDataByType(dtarget.GetSpeed() - 1));
                     isSlowed = true;
                     statusPanel.AddStatus(DebuffType.Slow, dtarget);
                     StartCoroutine(RemoveDebuffFromTarget(DebuffType.Slow, dtarget));
@@ -88,7 +88,7 @@ public class Debuff : MonoBehaviour
         {
             case DebuffType.Slow:
                 yield return new WaitForSeconds(slowDuration);
-                dtarget.SetSpeed(SpeedTypeData.GetDataByID(dtarget.GetSpeed()));
+                dtarget.SetSpeed(SpeedTypeData.GetDataByType(dtarget.GetSpeed()));
                 isSlowed = false;
                 statusPanel.RemoveStatus(DebuffType.Slow, dtarget);
                 break; 

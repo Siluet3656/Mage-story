@@ -50,8 +50,8 @@ public class Player : MonoBehaviour
     private GameObject IcecleBarragePrefub;
     private GameObject CryoLeachPrefub;
     private GameObject AvalancheCorePrefub;
+    private GameObject DeathZonePrefub;
     //private GameObject FlowerPrefub;
-    //private GameObject DeathZonePrefub;
     
 
     private float FireballCastTime;
@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
     private Vector3Int frostAegisCost;
     private Vector3Int avalancheCoreCost;
     private Vector3Int earthShieldCost;
+    private Vector3Int deathZoneCost;
     private float ZapCost;
     
     
@@ -243,6 +244,7 @@ public class Player : MonoBehaviour
         IcecleBarragePrefub = data.GetDataByType(SpellType.IcicleBarrage).PrefubOfSpell;
         CryoLeachPrefub = data.GetDataByType(SpellType.CryoLeach).PrefubOfSpell;
         AvalancheCorePrefub = data.GetDataByType(SpellType.AvalancheCore).PrefubOfSpell;
+        DeathZonePrefub = data.GetDataByType(SpellType.DeathZone).PrefubOfSpell;
         
         FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
         frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
@@ -271,6 +273,7 @@ public class Player : MonoBehaviour
         frostAegisCost = data.GetDataByType(SpellType.FrostAegis).ShardsCost;
         avalancheCoreCost = data.GetDataByType(SpellType.AvalancheCore).ShardsCost;
         earthShieldCost = data.GetDataByType(SpellType.EarthShield).ShardsCost;
+        deathZoneCost = data.GetDataByType(SpellType.DeathZone).ShardsCost;
     }
 
     private void Update()
@@ -291,7 +294,7 @@ public class Player : MonoBehaviour
 
         if (isCasting)
         {
-            Speed = SpeedTypeData.GetDataByID(speedType - 1);
+            Speed = SpeedTypeData.GetDataByType(speedType - 1);
             if (CastProgress <= 1f)
             {
                 CastProgress += 1f / CurrentCastCastTime * Time.deltaTime;
@@ -304,7 +307,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Speed = SpeedTypeData.GetDataByID(speedType);
+            Speed = SpeedTypeData.GetDataByType(speedType);
         }
 
         int j = 0;
@@ -769,6 +772,12 @@ public class Player : MonoBehaviour
                     earthShieldCast();
                 }
                 break;
+            case SpellType.DeathZone:
+                if (isEnoughShards(deathZoneCost))
+                {
+                    deathZoneCast();
+                }
+                break;
         }
     }
 
@@ -1057,6 +1066,16 @@ public class Player : MonoBehaviour
         isCasting = true;
         this.GetComponent<HP>().GetShieldStacks(SpellType.EarthShield);
         UseShards(earthShieldCost);
+        GCDstart();
+        CastStop();
+    }
+
+    private void deathZoneCast()
+    {
+        isCasting = true;
+        
+        Instantiate(DeathZonePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        UseShards(deathZoneCost);
         GCDstart();
         CastStop();
     }

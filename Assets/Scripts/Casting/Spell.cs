@@ -1,54 +1,60 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Spell : MonoBehaviour
 {
-    [SerializeField] private SpellTypeData data;
-    [SerializeField] private SpellType spellType;
-    [SerializeField] private float SpellSpeed = 0;
-    [SerializeField] private GameObject Entity;
-    [SerializeField] private float defaultCritChance;
-    [SerializeField] private float defaultCritMultyply;
+    [SerializeField] private SpellTypeData _data;
+    [SerializeField] private SpellType _spellType;
+    [SerializeField] private float _spellSpeed = 0;
+    [SerializeField] private GameObject _entity;
+    [SerializeField] private float _defaultCritChance;
+    [SerializeField] private float _defaultCritMultyply;
     
-    private Rigidbody2D spellrb = null;
-    private Enemy Target = null;
-    private float distanceToTarget = 0;
-    private Vector2 direction = new Vector2(0,0);
-    private float angle = 0;
-    private float SpellDamage;
-    private bool isCasted = false;
-    private float critChance;
-    private float critMultyply;
-    private float chunckdamage;
+    private Rigidbody2D _spellrb = null;
+    private Enemy _target = null;
+    private float _distanceToTarget = 0;
+    private Vector2 _direction = new Vector2(0,0);
+    private float _angle = 0;
+    private float _spellDamage;
+    private bool _isCasted = false;
+    private float _critChance;
+    private float _critMultyply;
+    private float _chunckdamage;
 
-    private float MinimumDist = 0.3f;
-    private float InstantSpellsDuration = 0.2f;
+    private float _minimumDist = 0.3f;
+    private float _instantSpellsDuration = 0.2f;
     
     private PlayerInputActions _playerInputActions;
     private bool _isDragging = true;
-    private Camera cam;
+    private Camera _cam;
 
     private List<Enemy> _enemiesToFollow = new List<Enemy>();
 
     private void Awake()
     {
-        if (spellType == SpellType.Firewall)
+        _cam = Camera.main;
+        _playerInputActions = new PlayerInputActions();
+        _playerInputActions.Player.CastInterrupt.started += CancelPlacing;
+        
+        switch (_spellType)
         {
-            cam = Camera.main;
-            _playerInputActions = new PlayerInputActions();
-            _playerInputActions.UI.LBM.started += PlaceFirewall;
-            _playerInputActions.Player.CastInterrupt.started += CancelFirewallPlacing;
+            case SpellType.Firewall:
+                _playerInputActions.UI.LBM.started += PlaceFirewall;
+                break;
+            
+            case SpellType.DeathZone:
+                _playerInputActions.UI.LBM.started += PlaceDeathZone;
+                break;
         }
     }
     
     private void OnEnable()
     {
-        if (spellType == SpellType.Firewall)
+        if (_spellType == SpellType.Firewall)
         {
             _playerInputActions.UI.Enable();
             _playerInputActions.Player.Enable();
@@ -57,7 +63,7 @@ public class Spell : MonoBehaviour
 
     private void OnDisable()
     {
-        if (spellType == SpellType.Firewall)
+        if (_spellType == SpellType.Firewall)
         {
             _playerInputActions.UI.Disable();
             _playerInputActions.Player.Disable();
@@ -65,20 +71,20 @@ public class Spell : MonoBehaviour
     }
     
     private void Start() {
-        spellrb = GetComponent<Rigidbody2D>();
-        if (spellType == SpellType.AvalancheCoreChunk)
+        _spellrb = GetComponent<Rigidbody2D>();
+        if (_spellType == SpellType.AvalancheCoreChunk)
         {
-            SpellDamage = chunckdamage;
+            _spellDamage = _chunckdamage;
         }
         else
         {
-            SpellDamage = data.GetDataByType(spellType).Damage;
+            _spellDamage = _data.GetDataByType(_spellType).Damage;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (spellType == SpellType.Firespirit)
+        if (_spellType == SpellType.Firespirit)
         {
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy)
@@ -90,7 +96,7 @@ public class Spell : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (spellType == SpellType.Firespirit)
+        if (_spellType == SpellType.Firespirit)
         {
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy)
@@ -102,14 +108,14 @@ public class Spell : MonoBehaviour
 
     private void Update()
     {
-        if (Target == null)
+        if (_target == null)
         {
-            switch (spellType)
+            switch (_spellType)
             {
                 case SpellType.Firewall:
                     if (_isDragging)
                     {
-                        Vector3 point = cam.ScreenToWorldPoint(_playerInputActions.UI.MousePosition.ReadValue<Vector2>());
+                        Vector3 point = _cam.ScreenToWorldPoint(_playerInputActions.UI.MousePosition.ReadValue<Vector2>());
                         point.z = 0f;
                         transform.position = point;
                     }
@@ -124,7 +130,7 @@ public class Spell : MonoBehaviour
                             if (distanceToEnemy < shortiestdistance)
                             {
                                 shortiestdistance = distanceToEnemy;
-                                Target = enemy;
+                                _target = enemy;
                             }
                         }
                     }
@@ -142,7 +148,7 @@ public class Spell : MonoBehaviour
         }
         else
         {
-            switch (spellType)
+            switch (_spellType)
             {
                 case SpellType.Firespirit:
                     float shortiestdistance = float.MaxValue;
@@ -152,37 +158,37 @@ public class Spell : MonoBehaviour
                         if (distanceToEnemy < shortiestdistance)
                         {
                             shortiestdistance = distanceToEnemy;
-                            Target = enemy;
+                            _target = enemy;
                         }
                     }
                     break;
                 case SpellType.Zap:
-                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
-                    if (!isCasted)
+                    this.GetComponent<LineRenderer>().SetPosition(1,_target.transform.position);
+                    if (!_isCasted)
                     {
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
-                        isCasted = true;
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
                     break;
                 case SpellType.Firelaser:
-                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
-                    if (!isCasted)
+                    this.GetComponent<LineRenderer>().SetPosition(1,_target.transform.position);
+                    if (!_isCasted)
                     {
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
-                        isCasted = true;
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
                     break;
                 case SpellType.CryoLeach:
-                    this.GetComponent<LineRenderer>().SetPosition(1,Target.transform.position);
+                    this.GetComponent<LineRenderer>().SetPosition(1,_target.transform.position);
                     Player player = FindObjectOfType<Player>();
-                    if (!isCasted)
+                    if (!_isCasted)
                     {
                         //Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
-                        Target.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze,Target);
+                        _target.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze,_target);
                         player.ElementalInvocation(2);
-                        isCasted = true;
+                        _isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
                     break;
@@ -191,110 +197,110 @@ public class Spell : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (Target == null)
+        if (_target == null)
         {
             
         }
         else
         {
-            switch (spellType)
+            switch (_spellType)
             {
                 case SpellType.Fireball:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
                         PlaceEntity();
                     }
-                    direction = Target.transform.position - transform.position;
-                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    _direction = _target.transform.position - transform.position;
+                    _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
                     break;
                 //direction = direction.normalized * (SpellSpeed * Time.deltaTime);
                 //transform.Translate(direction, Space.World);
                 case SpellType.Frost_whirlwind:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
-                        Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, Target);
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, _target);
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
-                    direction = Target.transform.position - transform.position;
-                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    _direction = _target.transform.position - transform.position;
+                    _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
                     break;
                 case SpellType.Spike:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
-                        Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, Target);
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, _target);
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
-                    direction = Target.transform.position - transform.position;
-                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    _direction = _target.transform.position - transform.position;
+                    _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
                     break;
                 case SpellType.Firespirit:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
                         PlaceEntity();
                     }
-                    direction = Target.transform.position - transform.position;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
+                    _direction = _target.transform.position - transform.position;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
                     break;
                 case SpellType.Firemark:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
-                        Target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.FireMark, Target);
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.FireMark, _target);
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
-                    direction = Target.transform.position - transform.position;
-                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    _direction = _target.transform.position - transform.position;
+                    _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
                     break;
                 case SpellType.IcicleBarrage:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
-                    direction = Target.transform.position - transform.position;
-                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    _direction = _target.transform.position - transform.position;
+                    _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
                     break;
                 case SpellType.AvalancheCore:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         PlaceEntity();
                     }
-                    direction = Target.transform.position - transform.position;
-                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    _direction = _target.transform.position - transform.position;
+                    _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
                     break;
                 case SpellType.AvalancheCoreChunk:
-                    distanceToTarget = Vector2.Distance(transform.position, Target.transform.position);
-                    if (distanceToTarget < MinimumDist)
+                    _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
+                    if (_distanceToTarget < _minimumDist)
                     {
-                        Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
+                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
-                    direction = Target.transform.position - transform.position;
-                    angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    spellrb.velocity = direction.normalized * SpellSpeed;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    _direction = _target.transform.position - transform.position;
+                    _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+                    _spellrb.velocity = _direction.normalized * _spellSpeed;
+                    transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
                     break;
             }
         }
@@ -302,34 +308,34 @@ public class Spell : MonoBehaviour
 
     private void PlaceEntity()
     {
-        GameObject entity = Instantiate(Entity, transform.position, Quaternion.identity);
+        GameObject entity = Instantiate(_entity, transform.position, Quaternion.identity);
         FB_blast fireballBlast = entity.GetComponent<FB_blast>();
         Firewall firewall = entity.GetComponent<Firewall>();
         Freeze freeze = entity.GetComponent<Freeze>();
         AvalancheCoreChuncker avalancheCoreChuncker = entity.GetComponent<AvalancheCoreChuncker>();
         if (fireballBlast)
         {
-            fireballBlast.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
+            fireballBlast.SetDamage(this._spellDamage, this._critMultyply,this._critChance);
         }
         else if (firewall)
         {
-            firewall.SetDamage(this.SpellDamage, this.critMultyply,this.critChance);
+            firewall.SetDamage(this._spellDamage, this._critMultyply,this._critChance);
         }
         else if (freeze)
         {
-            freeze.SetDamage(this.SpellDamage, critMultyply, critChance);
+            freeze.SetDamage(this._spellDamage, _critMultyply, _critChance);
         }
         else if (avalancheCoreChuncker)
         {
-            avalancheCoreChuncker.SetDamage(this.SpellDamage, critMultyply, critChance);
-            avalancheCoreChuncker.SetOrigin(Target);
+            avalancheCoreChuncker.SetDamage(this._spellDamage, _critMultyply, _critChance);
+            avalancheCoreChuncker.SetOrigin(_target);
         }
         Destroy(this.gameObject);
     }
 
     private IEnumerator InstantSpellAnimation()
     {
-        yield return new WaitForSeconds(InstantSpellsDuration);
+        yield return new WaitForSeconds(_instantSpellsDuration);
         Destroy(this.gameObject);
     }
     
@@ -339,40 +345,45 @@ public class Spell : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1,1);
         PlaceEntity();
     }
+   
+    private void PlaceDeathZone(InputAction.CallbackContext context)
+    {
+        ///////////////////
+    }
 
-    private void CancelFirewallPlacing(InputAction.CallbackContext context)
+    private void CancelPlacing(InputAction.CallbackContext context)
     {
         Destroy(this.gameObject);
     }
 
-    public void SetTarget (Enemy Target)
+    public void SetTarget (Enemy target)
     {
-        this.Target = Target;
+        this._target = target;
     }
 
     public Enemy GetTarget()
     {
-        return this.Target;
+        return this._target;
     }
 
     public void AdjustCrit(float multAdjust, float chanceAdjust)
     {
         ResetCritAdjust();
-        critMultyply = multAdjust * defaultCritMultyply;
-        critChance = chanceAdjust * defaultCritChance;
+        _critMultyply = multAdjust * _defaultCritMultyply;
+        _critChance = chanceAdjust * _defaultCritChance;
     }
 
     public void ResetCritAdjust()
     {
-        critMultyply = defaultCritMultyply;
-        critChance = defaultCritChance;
+        _critMultyply = _defaultCritMultyply;
+        _critChance = _defaultCritChance;
     }
 
     public void ChunkDamage(float damage)
     {
         if (damage > 0)
         {
-            chunckdamage = damage;
+            _chunckdamage = damage;
         }
     }
 }

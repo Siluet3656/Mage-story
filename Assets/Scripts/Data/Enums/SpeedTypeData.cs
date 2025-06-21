@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 public enum SpeedType
     {
@@ -7,22 +7,17 @@ public enum SpeedType
         Fast
     }
 
-public class SpeedTypeData : MonoBehaviour
+public static class SpeedTypeData
 {
-    const float slow = 2;
-    const float medium = 6;
-    const float fast = 10;
-    public static float GetDataByID(SpeedType id)
+    private static readonly Dictionary<SpeedType, float> SpeedValues = new Dictionary<SpeedType, float>
     {
-        switch (id)
-        {
-            case SpeedType.Slow:
-                return slow;
-            case SpeedType.Medium:
-                return medium;
-            case SpeedType.Fast:
-                return fast;
-        }
-        return 0;
+        { SpeedType.Slow, 2f },
+        { SpeedType.Medium, 6f },
+        { SpeedType.Fast, 10f }
+    };
+
+    public static float GetDataByType(SpeedType id)
+    {
+        return SpeedValues.TryGetValue(id, out float speed) ? speed : 0f;
     }
 }
