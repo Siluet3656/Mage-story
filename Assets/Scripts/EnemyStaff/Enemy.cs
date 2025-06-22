@@ -1,47 +1,49 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using Data.Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Data;
+using UnityEngine.Serialization;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]private Transform[] PatrolPoints;
-    [SerializeField]private SpriteRenderer TargetedSR = null;
-    [SerializeField]private SpeedType speedType;
-    [SerializeField]private float MinWaitingTime = 0;
-    [SerializeField]private float MaxWaitingTime = 10;
-    [SerializeField]private GameObject iceTomb;
-    private Rigidbody2D rb;
-    private Color OriginalColor;
-    private Color TargetedColor;
-    private bool isTargeted = false;
-    private bool isPatrolling = false;
-    private float Speed = 0;
-    private Vector2 Movement;
-    private int CurrentPointToMove = -1;
-    private float PointMinDist = 0.2f;
-    private float distanceToTarget = 0;
-    private float WaitingTime = 0;
+    [FormerlySerializedAs("PatrolPoints")] [SerializeField]private Transform[] _patrolPoints;
+    [FormerlySerializedAs("TargetedSR")] [SerializeField]private SpriteRenderer _targetedSr = null;
+    [FormerlySerializedAs("speedType")] [SerializeField]private SpeedType _speedType;
+    [FormerlySerializedAs("MinWaitingTime")] [SerializeField]private float _minWaitingTime = 0;
+    [FormerlySerializedAs("MaxWaitingTime")] [SerializeField]private float _maxWaitingTime = 10;
+    [FormerlySerializedAs("iceTomb")] [SerializeField]private GameObject _iceTomb;
+    private Rigidbody2D _rb;
+    private Color _originalColor;
+    private Color _targetedColor;
+    private bool _isTargeted = false;
+    private bool _isPatrolling = false;
+    private float _speed = 0;
+    private Vector2 _movement;
+    private int _currentPointToMove = -1;
+    private float _pointMinDist = 0.2f;
+    private float _distanceToTarget = 0;
+    private float _waitingTime = 0;
     
-    private Buff enemyBuffs;
+    private Buff _enemyBuffs;
     private bool _isAvailableToMove = true;
 
     private void Awake()
     {
-        enemyBuffs = this.GetComponent<Buff>();
+        _enemyBuffs = this.GetComponent<Buff>();
         
-        enemyBuffs.OnEnemyFreeze += FreezeMovement;
-        enemyBuffs.OnEnemyUnFreeze += UnfreezeMovement;
+        _enemyBuffs.OnEnemyFreeze += FreezeMovement;
+        _enemyBuffs.OnEnemyUnFreeze += UnfreezeMovement;
     }
 
     private void Start()
     {
-        OriginalColor = TargetedSR.color;
-        TargetedColor = new Color(1, 0, 0, OriginalColor[3]);
-        if (PatrolPoints.Length != 0)
+        _originalColor = _targetedSr.color;
+        _targetedColor = new Color(1, 0, 0, _originalColor[3]);
+        if (_patrolPoints.Length != 0)
         {
-            rb = GetComponent<Rigidbody2D>();
-            Speed = SpeedTypeData.GetDataByType(speedType);
+            _rb = GetComponent<Rigidbody2D>();
+            _speed = SpeedData.GetDataByType(_speedType);
             PickNextPoint();
         }
     }
@@ -50,116 +52,116 @@ public class Enemy : MonoBehaviour
     {
         if (_isAvailableToMove)
         {
-            if (isPatrolling)
+            if (_isPatrolling)
             {
-                distanceToTarget = Vector2.Distance(this.transform.position, PatrolPoints[CurrentPointToMove].position);
-                if (distanceToTarget < PointMinDist)
+                _distanceToTarget = Vector2.Distance(this.transform.position, _patrolPoints[_currentPointToMove].position);
+                if (_distanceToTarget < _pointMinDist)
                 {
                     PickNextPoint();
                 }
-                this.Movement = PatrolPoints[CurrentPointToMove].position - this.transform.position;
-                this.Movement = this.Movement.normalized;
+                this._movement = _patrolPoints[_currentPointToMove].position - this.transform.position;
+                this._movement = this._movement.normalized;
             }
         }
         else
         {
-            this.Movement = Vector2.zero;
+            this._movement = Vector2.zero;
         }
     }
 
     private void FixedUpdate() 
     {
-        if (isPatrolling)
+        if (_isPatrolling)
         {
-            this.rb.MovePosition(this.rb.position + this.Movement * (Speed * Time.fixedDeltaTime));
+            this._rb.MovePosition(this._rb.position + this._movement * (_speed * Time.fixedDeltaTime));
         }
     }
 
     private void OnDestroy() 
     {
-        var SpellsToClear = FindObjectsOfType<Spell>();
-        var PalyerToClear = FindObjectOfType<Player>();
+        var spellsToClear = FindObjectsOfType<Spell>();
+        var palyerToClear = FindObjectOfType<Player>();
         Enemy nullenemy = null;
-        for (var i = 0; i < SpellsToClear.Length; i++)
+        for (var i = 0; i < spellsToClear.Length; i++)
         {
-            if(SpellsToClear[i].GetTarget().name == this.name)
+            if(spellsToClear[i].GetTarget().name == this.name)
             {
-                SpellsToClear[i].SetTarget(nullenemy);
+                spellsToClear[i].SetTarget(nullenemy);
             }
         }
-        if(PalyerToClear)
+        if(palyerToClear)
         {
-            PalyerToClear.ClearTarget();
-            PalyerToClear.StopAllCasts();
+            palyerToClear.ClearTarget();
+            palyerToClear.StopAllCasts();
         }
     }
     
     private void PickNextPoint()
     {
-        isPatrolling = false;
-        WaitingTime = Random.Range(MinWaitingTime,MaxWaitingTime);
+        _isPatrolling = false;
+        _waitingTime = Random.Range(_minWaitingTime,_maxWaitingTime);
         StartCoroutine("WaitAtPoint");
     }
 
     private IEnumerator WaitAtPoint()
     {
-        yield return new WaitForSeconds(WaitingTime);
-        CurrentPointToMove++;
-        if (CurrentPointToMove >= PatrolPoints.Length)
+        yield return new WaitForSeconds(_waitingTime);
+        _currentPointToMove++;
+        if (_currentPointToMove >= _patrolPoints.Length)
         {
-            CurrentPointToMove = 0;
+            _currentPointToMove = 0;
         }
-        isPatrolling = true;
+        _isPatrolling = true;
     }
 
     private void FreezeMovement()
     {
         _isAvailableToMove = false;
-        iceTomb.SetActive(true);
+        _iceTomb.SetActive(true);
     }
     
     private void UnfreezeMovement()
     {
         _isAvailableToMove = true;
-        iceTomb.SetActive(false);
+        _iceTomb.SetActive(false);
     }
 
     public void Target()
     {
-        isTargeted = true;
-        TargetedSR.color = TargetedColor;
+        _isTargeted = true;
+        _targetedSr.color = _targetedColor;
     }
 
     public void ResetTarget()
     {
-        isTargeted = false;
-        TargetedSR.color = OriginalColor;
+        _isTargeted = false;
+        _targetedSr.color = _originalColor;
     }
 
     public bool CheckTargetStatus()
     {
-        return this.isTargeted;
+        return this._isTargeted;
     }
 
     public void SetSpeed(float speed)
     {
-        this.Speed = speed;
+        this._speed = speed;
     }
 
     public SpeedType GetSpeed()
     {
-        return this.speedType;
+        return this._speedType;
     }
 
     public void ShufflePoints()
     {
-        for (int i = PatrolPoints.Length - 1; i >= 1; i--)
+        for (int i = _patrolPoints.Length - 1; i >= 1; i--)
         {
             int j = Random.Range(0,i - 1);
             // обменять значения data[j] и data[i]
-            var temp = PatrolPoints[j];
-            PatrolPoints[j] = PatrolPoints[i];
-            PatrolPoints[i] = temp;
+            var temp = _patrolPoints[j];
+            _patrolPoints[j] = _patrolPoints[i];
+            _patrolPoints[i] = temp;
         }
     }
 }

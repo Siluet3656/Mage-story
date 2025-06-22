@@ -1,7 +1,10 @@
-﻿public enum ShardType
+﻿namespace Data.Enums
 {
-    None,
-    FireShard,
-    FrostShard,
-    EarthShard
+    public enum ShardType
+    {
+        None,
+        FireShard,
+        FrostShard,
+        EarthShard
+    }
 }

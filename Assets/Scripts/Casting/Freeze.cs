@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Data.Enums;
 using UnityEngine;
 
 public class Freeze : MonoBehaviour
@@ -31,13 +32,13 @@ public class Freeze : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        HP hp = other.gameObject.GetComponent<HP>();
+        Hp hp = other.gameObject.GetComponent<Hp>();
         Debuff dbf = other.gameObject.GetComponent<Debuff>();
         Enemy target = other.gameObject.GetComponent<Enemy>();
         //Debug.Log(hp & dbf & target);
         if (hp & dbf & target)
         {
-            hp.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_damage, _critmultiply, _critchance);
+            hp.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_damage, _critmultiply, _critchance);
             dbf.DebuffTarget(DebuffType.Slow, target);
         }
     }

@@ -1,25 +1,29 @@
 ﻿using System.Collections;
 using System.Linq;
+using Data.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class HP : MonoBehaviour
+public class Hp : MonoBehaviour
 {
+    [FormerlySerializedAs("healthBar")]
     [Header("PRESET")]
-    [FormerlySerializedAs("HealthBar")] [SerializeField] private Image healthBar = null;
-    [FormerlySerializedAs("OverHPBar")] [SerializeField] private Image overhpBar = null;
-    [FormerlySerializedAs("MainShieldStackBar")] [SerializeField] private Image mainShieldStackBar = null;
-    [FormerlySerializedAs("ShieldStackBars")] [SerializeField] private Image [] shieldStackBars = null;
+    [FormerlySerializedAs("HealthBar")] [SerializeField] private Image _healthBar = null;
+    [FormerlySerializedAs("overhpBar")] [FormerlySerializedAs("OverHPBar")] [SerializeField] private Image _overhpBar = null;
+    [FormerlySerializedAs("mainShieldStackBar")] [FormerlySerializedAs("MainShieldStackBar")] [SerializeField] private Image _mainShieldStackBar = null;
+    [FormerlySerializedAs("shieldStackBars")] [FormerlySerializedAs("ShieldStackBars")] [SerializeField] private Image [] _shieldStackBars = null;
+    [FormerlySerializedAs("maxHp")]
     [Space]
-    [FormerlySerializedAs("Max_HP")] [SerializeField] private int maxHp = 0;
-    [FormerlySerializedAs("FrostAegisOverHPAmount")] [SerializeField] private float frostAegisOverHpAmount;
-    [FormerlySerializedAs("EarthShieldStacksAmount")] [SerializeField] private int earthShieldStacksAmount;
+    [FormerlySerializedAs("Max_HP")] [SerializeField] private int _maxHp = 0;
+    [FormerlySerializedAs("frostAegisOverHpAmount")] [FormerlySerializedAs("FrostAegisOverHPAmount")] [SerializeField] private float _frostAegisOverHpAmount;
+    [FormerlySerializedAs("earthShieldStacksAmount")] [FormerlySerializedAs("EarthShieldStacksAmount")] [SerializeField] private int _earthShieldStacksAmount;
+    [FormerlySerializedAs("currentHp")]
     [Header("CURRENT STATE")]
-    [FormerlySerializedAs("Current_HP")] [SerializeField] private float currentHp = 0;
-    [FormerlySerializedAs("OverHP")] [SerializeField] private float overHp = 0;
-    [FormerlySerializedAs("ShieldStacks")] [SerializeField] private int shieldStacks = 0;
+    [FormerlySerializedAs("Current_HP")] [SerializeField] private float _currentHp = 0;
+    [FormerlySerializedAs("overHp")] [FormerlySerializedAs("OverHP")] [SerializeField] private float _overHp = 0;
+    [FormerlySerializedAs("shieldStacks")] [FormerlySerializedAs("ShieldStacks")] [SerializeField] private int _shieldStacks = 0;
     private bool _isTakingDamageEachSecond = false;
     private bool _isWaitingOneSecond = false;
     private bool _isInvulnerable = false;
@@ -27,34 +31,34 @@ public class HP : MonoBehaviour
     private float _tickingCritChance;
     private float _tickingCritMultiply;
 
-    private Buff Buffs;
+    private Buff _buffs;
 
     private void Awake()
     {
-        Buffs = this.GetComponent<Buff>();
-        if (Buffs)
+        _buffs = this.GetComponent<Buff>();
+        if (_buffs)
         {
-            Buffs.OnPlayerFreeze += GetInvulnerability;
-            Buffs.OnPlayerUnFreeze += RemoveInvulnerability;
-            Buffs.OnEnemyFreeze += GetInvulnerability;
-            Buffs.OnEnemyUnFreeze += RemoveInvulnerability;
+            _buffs.OnPlayerFreeze += GetInvulnerability;
+            _buffs.OnPlayerUnFreeze += RemoveInvulnerability;
+            _buffs.OnEnemyFreeze += GetInvulnerability;
+            _buffs.OnEnemyUnFreeze += RemoveInvulnerability;
         }
     }
 
     private void Start() {
-        if (maxHp > 0)
+        if (_maxHp > 0)
         {
-            currentHp = maxHp;
+            _currentHp = _maxHp;
         }
         else
         {
-            currentHp = 1;
+            _currentHp = 1;
         }
     }
 
     private void Update() {
-        healthBar.fillAmount = (float)currentHp/maxHp;
-        overhpBar.fillAmount = (float)overHp/frostAegisOverHpAmount;
+        _healthBar.fillAmount = (float)_currentHp/_maxHp;
+        _overhpBar.fillAmount = (float)_overHp/_frostAegisOverHpAmount;
 
         if (_isTakingDamageEachSecond)
         {
@@ -81,39 +85,39 @@ public class HP : MonoBehaviour
     
     private void TakeDamage(float damage)
     {
-        if (shieldStacks > 0)
+        if (_shieldStacks > 0)
         {
             RemoveOneShieldStack();
             return;
         }
         
-        if (overHp - damage > 0)
+        if (_overHp - damage > 0)
         {
-            overHp -= damage;
+            _overHp -= damage;
         }
-        else if (overHp > 0)
+        else if (_overHp > 0)
         {
-            damage -= overHp;
-            overHp = 0;
-            if (currentHp - damage > 0)
+            damage -= _overHp;
+            _overHp = 0;
+            if (_currentHp - damage > 0)
             {
-                currentHp -= damage;
+                _currentHp -= damage;
             }
             else
             {
-                currentHp = 0;
+                _currentHp = 0;
                 Die();
             }
         }
         else
         {
-            if (currentHp - damage > 0)
+            if (_currentHp - damage > 0)
             {
-                currentHp -= damage;
+                _currentHp -= damage;
             }
             else
             {
-                currentHp = 0;
+                _currentHp = 0;
                 Die();
             }
         }
@@ -131,12 +135,12 @@ public class HP : MonoBehaviour
 
     private void RemoveOneShieldStack()
     {
-        shieldStacks -= 1;
+        _shieldStacks -= 1;
         
-        shieldStackBars[shieldStacks].gameObject.SetActive(false);
-        if (shieldStacks <= 0)
+        _shieldStackBars[_shieldStacks].gameObject.SetActive(false);
+        if (_shieldStacks <= 0)
         {
-            mainShieldStackBar.gameObject.SetActive(false);
+            _mainShieldStackBar.gameObject.SetActive(false);
         }
     }
 
@@ -173,12 +177,12 @@ public class HP : MonoBehaviour
         StopCoroutine(WaitOneSecondAndTakeDamage());
     }
 
-    public void GetOverHP(SpellType source)
+    public void GetOverHp(SpellType source)
     {
         switch (source)
         {
             case SpellType.FrostAegis:
-                overHp = frostAegisOverHpAmount;
+                _overHp = _frostAegisOverHpAmount;
                 break;
         }
     }
@@ -188,9 +192,9 @@ public class HP : MonoBehaviour
         switch (source)
         {
             case SpellType.EarthShield:
-                shieldStacks = earthShieldStacksAmount;
-                mainShieldStackBar.gameObject.SetActive(true);
-                foreach (var shieldStack in shieldStackBars)
+                _shieldStacks = _earthShieldStacksAmount;
+                _mainShieldStackBar.gameObject.SetActive(true);
+                foreach (var shieldStack in _shieldStackBars)
                 {
                     shieldStack.gameObject.SetActive(true);
                 }

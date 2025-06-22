@@ -1,44 +1,48 @@
 ﻿using System.Collections.Generic;
+using Data.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class StatusPanel : MonoBehaviour
 {
+   [FormerlySerializedAs("slowPF")]
    [Header("Debuffs")] 
-   [SerializeField] private GameObject slowPF;
-   [SerializeField] private GameObject poisonPF;
-   [SerializeField] private GameObject firemarkPF;
+   [SerializeField] private GameObject _slowPf;
+   [FormerlySerializedAs("poisonPF")] [SerializeField] private GameObject _poisonPf;
+   [FormerlySerializedAs("firemarkPF")] [SerializeField] private GameObject _firemarkPf;
 
+   [FormerlySerializedAs("fireauraPF")]
    [Header("Buffs")] 
-   [SerializeField] private GameObject fireauraPF;
-   [SerializeField] private GameObject icetombPF;
+   [SerializeField] private GameObject _fireauraPf;
+   [FormerlySerializedAs("icetombPF")] [SerializeField] private GameObject _icetombPf;
 
-   private List<GameObject> Statuses = new List<GameObject>();
-   private float defaultXenemy = -3.5f;
-   private float defaultYenemy = 0.65f;
-   private float offsetenemy = 1.2f;
+   private List<GameObject> _statuses = new List<GameObject>();
+   private float _defaultXenemy = -3.5f;
+   private float _defaultYenemy = 0.65f;
+   private float _offsetenemy = 1.2f;
    
-   private float defaultXplayer = -9f;
-   private float defaultYplayer = 2.4f;
-   private float offsetBuffsplayer = 2.8f;
+   private float _defaultXplayer = -9f;
+   private float _defaultYplayer = 2.4f;
+   private float _offsetBuffsplayer = 2.8f;
    public void AddStatus(DebuffType type, Player player)
    {
       GameObject gm;
       switch (type)
       {
          case DebuffType.Slow:
-            gm = Instantiate(slowPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXplayer + offsetBuffsplayer * Statuses.Count, defaultYplayer, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_slowPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
+            _statuses.Add(gm);
             break;
          case DebuffType.Poison:
-            gm = Instantiate(poisonPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXplayer + offsetBuffsplayer * Statuses.Count, defaultYplayer, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_poisonPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
+            _statuses.Add(gm);
             break;
          case DebuffType.FireMark:
-            gm = Instantiate(firemarkPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXplayer + offsetBuffsplayer * Statuses.Count, defaultYplayer, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_firemarkPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
+            _statuses.Add(gm);
             break;
       }
    }
@@ -49,14 +53,14 @@ public class StatusPanel : MonoBehaviour
       switch (type)
       {
          case BuffType.FireAura:
-            gm = Instantiate(fireauraPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXplayer + offsetBuffsplayer * Statuses.Count, defaultYplayer, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_fireauraPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
+            _statuses.Add(gm);
             break;
          case BuffType.StasisFreeze:
-            gm = Instantiate(icetombPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXplayer + offsetBuffsplayer * Statuses.Count, defaultYplayer, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_icetombPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
+            _statuses.Add(gm);
             break;
       }
    }
@@ -67,19 +71,19 @@ public class StatusPanel : MonoBehaviour
       switch (type)
       {
          case DebuffType.Slow:
-            gm = Instantiate(slowPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXenemy + offsetenemy * Statuses.Count, defaultYenemy, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_slowPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
+            _statuses.Add(gm);
             break;
          case DebuffType.Poison:
-            gm = Instantiate(poisonPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXenemy + offsetenemy * Statuses.Count, defaultYenemy, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_poisonPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
+            _statuses.Add(gm);
             break;
          case DebuffType.FireMark:
-            gm = Instantiate(firemarkPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXenemy + offsetenemy * Statuses.Count, defaultYenemy, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_firemarkPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
+            _statuses.Add(gm);
             break;
       }
    }
@@ -90,14 +94,14 @@ public class StatusPanel : MonoBehaviour
       switch (type)
       {
          case BuffType.FireAura:
-            gm = Instantiate(fireauraPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXenemy + offsetenemy * Statuses.Count, defaultYenemy, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_fireauraPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
+            _statuses.Add(gm);
             break;
          case BuffType.StasisFreeze:
-            gm = Instantiate(icetombPF, this.gameObject.transform, false);
-            gm.transform.localPosition = new Vector3(defaultXenemy + offsetenemy * Statuses.Count, defaultYenemy, 0);
-            Statuses.Add(gm);
+            gm = Instantiate(_icetombPf, this.gameObject.transform, false);
+            gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
+            _statuses.Add(gm);
             break;
       }
    }
@@ -108,18 +112,18 @@ public class StatusPanel : MonoBehaviour
       switch (type)
       {
          case DebuffType.Slow:
-            gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.Slow);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Slow);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
          case DebuffType.Poison:
-            gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.Poison);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Poison);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
          case DebuffType.FireMark:
-            gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.FireMark);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.FireMark);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
       }
@@ -132,13 +136,13 @@ public class StatusPanel : MonoBehaviour
       switch (type)
       {
          case BuffType.FireAura:
-            gm = Statuses.Find(o => o.GetComponent<Status>().bt == BuffType.FireAura);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.FireAura);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
          case BuffType.StasisFreeze:
-            gm = Statuses.Find(o => o.GetComponent<Status>().bt == BuffType.StasisFreeze);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.StasisFreeze);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
       }
@@ -151,18 +155,18 @@ public class StatusPanel : MonoBehaviour
       switch (type)
       {
          case DebuffType.Slow:
-            gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.Slow);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Slow);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
          case DebuffType.Poison:
-            gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.Poison);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Poison);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
          case DebuffType.FireMark:
-            gm = Statuses.Find(o => o.GetComponent<Status>().dt == DebuffType.FireMark);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.FireMark);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
       }
@@ -175,13 +179,13 @@ public class StatusPanel : MonoBehaviour
       switch (type)
       {
          case BuffType.FireAura:
-            gm = Statuses.Find(o => o.GetComponent<Status>().bt == BuffType.FireAura);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.FireAura);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
          case BuffType.StasisFreeze:
-            gm = Statuses.Find(o => o.GetComponent<Status>().bt == BuffType.StasisFreeze);
-            Statuses.Remove(gm);
+            gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.StasisFreeze);
+            _statuses.Remove(gm);
             Destroy(gm);
             break;
       }
@@ -190,17 +194,17 @@ public class StatusPanel : MonoBehaviour
 
    private void RefreshStatusesPositions(Player player)
    {
-      foreach (var status in Statuses)
+      foreach (var status in _statuses)
       {
-         status.transform.localPosition = new Vector3(defaultXplayer + offsetBuffsplayer * Statuses.IndexOf(status), defaultYplayer, 0);
+         status.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.IndexOf(status), _defaultYplayer, 0);
       }
    }
    
    private void RefreshStatusesPositions(Enemy enemy)
    {
-      foreach (var status in Statuses)
+      foreach (var status in _statuses)
       {
-         status.transform.localPosition = new Vector3(defaultXenemy + offsetenemy * Statuses.IndexOf(status), defaultYenemy, 0);
+         status.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.IndexOf(status), _defaultYenemy, 0);
       }
    }
 }

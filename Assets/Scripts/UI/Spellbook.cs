@@ -1,99 +1,101 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
+
 public class Spellbook : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup fireSpellsPage;
-    [SerializeField] private CanvasGroup frostSpellsPage;
-    [SerializeField] private CanvasGroup earthSpellsPage;
-    [SerializeField] private CanvasGroup noElementSpellsPage;
-    [SerializeField] private CanvasGroup arcanumsSpellsPage;
+    [FormerlySerializedAs("fireSpellsPage")] [SerializeField] private CanvasGroup _fireSpellsPage;
+    [FormerlySerializedAs("frostSpellsPage")] [SerializeField] private CanvasGroup _frostSpellsPage;
+    [FormerlySerializedAs("earthSpellsPage")] [SerializeField] private CanvasGroup _earthSpellsPage;
+    [FormerlySerializedAs("noElementSpellsPage")] [SerializeField] private CanvasGroup _noElementSpellsPage;
+    [FormerlySerializedAs("arcanumsSpellsPage")] [SerializeField] private CanvasGroup _arcanumsSpellsPage;
     
     public void OpenFireSpellsPage()
     {
-        fireSpellsPage.alpha = 1;
-        fireSpellsPage.blocksRaycasts = true;
+        _fireSpellsPage.alpha = 1;
+        _fireSpellsPage.blocksRaycasts = true;
         
-        frostSpellsPage.alpha = 0;
-        frostSpellsPage.blocksRaycasts = false;
+        _frostSpellsPage.alpha = 0;
+        _frostSpellsPage.blocksRaycasts = false;
             
-        earthSpellsPage.alpha = 0;
-        earthSpellsPage.blocksRaycasts = false;
+        _earthSpellsPage.alpha = 0;
+        _earthSpellsPage.blocksRaycasts = false;
         
-        noElementSpellsPage.alpha = 0;
-        noElementSpellsPage.blocksRaycasts = false;
+        _noElementSpellsPage.alpha = 0;
+        _noElementSpellsPage.blocksRaycasts = false;
         
-        arcanumsSpellsPage.alpha = 0;
-        arcanumsSpellsPage.blocksRaycasts = false;
+        _arcanumsSpellsPage.alpha = 0;
+        _arcanumsSpellsPage.blocksRaycasts = false;
     }
     
     public void OpenFrostSpellsPage()
     {
-        fireSpellsPage.alpha = 0;
-        fireSpellsPage.blocksRaycasts = false;
+        _fireSpellsPage.alpha = 0;
+        _fireSpellsPage.blocksRaycasts = false;
         
-        frostSpellsPage.alpha = 1;
-        frostSpellsPage.blocksRaycasts = true;
+        _frostSpellsPage.alpha = 1;
+        _frostSpellsPage.blocksRaycasts = true;
             
-        earthSpellsPage.alpha = 0;
-        earthSpellsPage.blocksRaycasts = false;
+        _earthSpellsPage.alpha = 0;
+        _earthSpellsPage.blocksRaycasts = false;
         
-        noElementSpellsPage.alpha = 0;
-        noElementSpellsPage.blocksRaycasts = false;
+        _noElementSpellsPage.alpha = 0;
+        _noElementSpellsPage.blocksRaycasts = false;
         
-        arcanumsSpellsPage.alpha = 0;
-        arcanumsSpellsPage.blocksRaycasts = false;
+        _arcanumsSpellsPage.alpha = 0;
+        _arcanumsSpellsPage.blocksRaycasts = false;
     }
     
     public void OpenEarthSpellsPage()
     {
-        fireSpellsPage.alpha = 0;
-        fireSpellsPage.blocksRaycasts = false;
+        _fireSpellsPage.alpha = 0;
+        _fireSpellsPage.blocksRaycasts = false;
         
-        frostSpellsPage.alpha = 0;
-        frostSpellsPage.blocksRaycasts = false;
+        _frostSpellsPage.alpha = 0;
+        _frostSpellsPage.blocksRaycasts = false;
             
-        earthSpellsPage.alpha = 1;
-        earthSpellsPage.blocksRaycasts = true;
+        _earthSpellsPage.alpha = 1;
+        _earthSpellsPage.blocksRaycasts = true;
         
-        noElementSpellsPage.alpha = 0;
-        noElementSpellsPage.blocksRaycasts = false;
+        _noElementSpellsPage.alpha = 0;
+        _noElementSpellsPage.blocksRaycasts = false;
         
-        arcanumsSpellsPage.alpha = 0;
-        arcanumsSpellsPage.blocksRaycasts = false;
+        _arcanumsSpellsPage.alpha = 0;
+        _arcanumsSpellsPage.blocksRaycasts = false;
     }
 
     public void OpenNoElementalSpellsPage()
     {
-        fireSpellsPage.alpha = 0;
-        fireSpellsPage.blocksRaycasts = false;
+        _fireSpellsPage.alpha = 0;
+        _fireSpellsPage.blocksRaycasts = false;
         
-        frostSpellsPage.alpha = 0;
-        frostSpellsPage.blocksRaycasts = false;
+        _frostSpellsPage.alpha = 0;
+        _frostSpellsPage.blocksRaycasts = false;
             
-        earthSpellsPage.alpha = 0;
-        earthSpellsPage.blocksRaycasts = false;
+        _earthSpellsPage.alpha = 0;
+        _earthSpellsPage.blocksRaycasts = false;
         
-        noElementSpellsPage.alpha = 1;
-        noElementSpellsPage.blocksRaycasts = true;
+        _noElementSpellsPage.alpha = 1;
+        _noElementSpellsPage.blocksRaycasts = true;
         
-        arcanumsSpellsPage.alpha = 0;
-        arcanumsSpellsPage.blocksRaycasts = false;
+        _arcanumsSpellsPage.alpha = 0;
+        _arcanumsSpellsPage.blocksRaycasts = false;
     }
     
     public void OpenArcanumSpellsPage()
     {
-        fireSpellsPage.alpha = 0;
-        fireSpellsPage.blocksRaycasts = false;
+        _fireSpellsPage.alpha = 0;
+        _fireSpellsPage.blocksRaycasts = false;
         
-        frostSpellsPage.alpha = 0;
-        frostSpellsPage.blocksRaycasts = false;
+        _frostSpellsPage.alpha = 0;
+        _frostSpellsPage.blocksRaycasts = false;
             
-        earthSpellsPage.alpha = 0;
-        earthSpellsPage.blocksRaycasts = false;
+        _earthSpellsPage.alpha = 0;
+        _earthSpellsPage.blocksRaycasts = false;
         
-        noElementSpellsPage.alpha = 0;
-        noElementSpellsPage.blocksRaycasts = false;
+        _noElementSpellsPage.alpha = 0;
+        _noElementSpellsPage.blocksRaycasts = false;
         
-        arcanumsSpellsPage.alpha = 1;
-        arcanumsSpellsPage.blocksRaycasts = true;
+        _arcanumsSpellsPage.alpha = 1;
+        _arcanumsSpellsPage.blocksRaycasts = true;
     }
 }

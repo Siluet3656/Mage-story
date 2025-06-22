@@ -2,359 +2,367 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Data.Enums;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
-    private PlayerInputActions playerInputActions;
+    private PlayerInputActions _playerInputActions;
     
+    [FormerlySerializedAs("data")]
     [Header("Spell")]
-    [SerializeField] private SpellTypeData data;
-    [SerializeField] private Image CastBar = null;
-    [SerializeField] private Image RemainderBar = null;
-    [SerializeField] private SpellBarButton[] spellBarCells;
-    [SerializeField] private Image[] FireShards = null;
-    [SerializeField] private Image[] FrostShards = null;
-    [SerializeField] private Image[] EarthShards = null;
-    [SerializeField] private Image[] GCD_barz;
+    [SerializeField] private SpellTypeData _data;
+    [FormerlySerializedAs("CastBar")] [SerializeField] private Image _castBar = null;
+    [FormerlySerializedAs("RemainderBar")] [SerializeField] private Image _remainderBar = null;
+    [FormerlySerializedAs("spellBarCells")] [SerializeField] private SpellBarButton[] _spellBarCells;
+    [FormerlySerializedAs("FireShards")] [SerializeField] private Image[] _fireShards = null;
+    [FormerlySerializedAs("FrostShards")] [SerializeField] private Image[] _frostShards = null;
+    [FormerlySerializedAs("EarthShards")] [SerializeField] private Image[] _earthShards = null;
+    [FormerlySerializedAs("GCD_barz")] [SerializeField] private Image[] _gcdBarz;
+    [FormerlySerializedAs("FS_RefreshTime")]
     [Space]
-    [SerializeField] private float FS_RefreshTime = 0f;
-    [SerializeField] private float FrS_RefreshTime = 0f;
-    [SerializeField] private float ES_RefreshTime = 0f;
-    [SerializeField] private float GCD;
+    [SerializeField] private float _fsRefreshTime = 0f;
+    [FormerlySerializedAs("FrS_RefreshTime")] [SerializeField] private float _frSRefreshTime = 0f;
+    [FormerlySerializedAs("ES_RefreshTime")] [SerializeField] private float _esRefreshTime = 0f;
+    [FormerlySerializedAs("GCD")] [SerializeField] private float _gcd;
+    [FormerlySerializedAs("iceTomb")]
     [Space] 
-    [SerializeField] private GameObject iceTomb;
-    [SerializeField] private int amountOfIcecles;
+    [SerializeField] private GameObject _iceTomb;
+    [FormerlySerializedAs("amountOfIcecles")] [SerializeField] private int _amountOfIcecles;
 
-    private IEnumerator[] fireShardsRefreshRoutine = new IEnumerator[3];
-    private IEnumerator[] frostShardsRefreshRoutine = new IEnumerator[3];
-    private IEnumerator[] earthShardsRefreshRoutine = new IEnumerator[3];
+    private IEnumerator[] _fireShardsRefreshRoutine = new IEnumerator[3];
+    private IEnumerator[] _frostShardsRefreshRoutine = new IEnumerator[3];
+    private IEnumerator[] _earthShardsRefreshRoutine = new IEnumerator[3];
 
-    private bool[] isfireShardsRefreshRoutineStarted = new bool[3];
-    private bool[] isfrostShardsRefreshRoutineStarted = new bool[3];
-    private bool[] isearthShardsRefreshRoutineStarted = new bool[3];
+    private bool[] _isfireShardsRefreshRoutineStarted = new bool[3];
+    private bool[] _isfrostShardsRefreshRoutineStarted = new bool[3];
+    private bool[] _isearthShardsRefreshRoutineStarted = new bool[3];
 
-    private GameObject FireBallPrefab;
-    private GameObject ZapPrefub;
-    private GameObject frost_whirlwindPrefab;
-    private GameObject SpikePrefab;
-    private GameObject BoomPrefub;
-    private GameObject FirewallPrefub;
-    private GameObject FirespiritPrefub;
-    private GameObject FirelaserPrefub;
-    private GameObject FiremarkPrefub;
-    private GameObject FlashFreezePrefub;
-    private GameObject IcecleBarragePrefub;
-    private GameObject CryoLeachPrefub;
-    private GameObject AvalancheCorePrefub;
-    private GameObject DeathZonePrefub;
+    private GameObject _fireBallPrefab;
+    private GameObject _zapPrefub;
+    private GameObject _frostWhirlwindPrefab;
+    private GameObject _spikePrefab;
+    private GameObject _boomPrefub;
+    private GameObject _firewallPrefub;
+    private GameObject _firespiritPrefub;
+    private GameObject _firelaserPrefub;
+    private GameObject _firemarkPrefub;
+    private GameObject _flashFreezePrefub;
+    private GameObject _icecleBarragePrefub;
+    private GameObject _cryoLeachPrefub;
+    private GameObject _avalancheCorePrefub;
+    private GameObject _deathZonePrefub;
     //private GameObject FlowerPrefub;
     
 
-    private float FireballCastTime;
-    private float frost_whirlwindCastTime;
-    private float SpikeCastTime;
-    private float FirewallCastTime;
-    private float FirespiritCastTime;
-    private float FirelaserCastTime;
-    private float FiremarkCastTime;
-    private float IcecleBarrageCastTime;
-    private float AvalancheCoreCastTime;
+    private float _fireballCastTime;
+    private float _frostWhirlwindCastTime;
+    private float _spikeCastTime;
+    private float _firewallCastTime;
+    private float _firespiritCastTime;
+    private float _firelaserCastTime;
+    private float _firemarkCastTime;
+    private float _icecleBarrageCastTime;
+    private float _avalancheCoreCastTime;
 
-    private Vector3Int fireballCost;
-    private Vector3Int frost_whirlwindCost;
-    private Vector3Int SpikeCost;
-    private Vector3Int BoomCost;
-    private Vector3Int FirewallCost;
-    private Vector3Int FirespiritCost;
-    private Vector3Int FirelaserCost;
-    private Vector3Int FireauraCost;
-    private Vector3Int FiremarkCost;
-    private Vector3Int flashFreezeCost;
-    private Vector3Int stasisFreezeCost;
-    private Vector3Int IcecleBarrageCost;
-    private Vector3Int CryoLeachCost;
-    private Vector3Int frostAegisCost;
-    private Vector3Int avalancheCoreCost;
-    private Vector3Int earthShieldCost;
-    private Vector3Int deathZoneCost;
-    private float ZapCost;
+    private Vector3Int _fireballCost;
+    private Vector3Int _frostWhirlwindCost;
+    private Vector3Int _spikeCost;
+    private Vector3Int _boomCost;
+    private Vector3Int _firewallCost;
+    private Vector3Int _firespiritCost;
+    private Vector3Int _firelaserCost;
+    private Vector3Int _fireauraCost;
+    private Vector3Int _firemarkCost;
+    private Vector3Int _flashFreezeCost;
+    private Vector3Int _stasisFreezeCost;
+    private Vector3Int _icecleBarrageCost;
+    private Vector3Int _cryoLeachCost;
+    private Vector3Int _frostAegisCost;
+    private Vector3Int _avalancheCoreCost;
+    private Vector3Int _earthShieldCost;
+    private Vector3Int _deathZoneCost;
+    private float _zapCost;
     
     
     private const int MaxRemainderAmount = 100;
-    private const int MaxFSAmount = 3;
+    private const int MaxFsAmount = 3;
     private const int MaxFrSAmount = 3;
     private const int MaxESAmount = 3;
     
-    private bool isCasting = false;
-    private float CastProgress = 0f;
-    private float CurrentCastCastTime = 0f;
-    private float[] FS_RefreshProgress = new float[MaxFSAmount];
-    private float[] FrS_RefreshProgress = new float[MaxFrSAmount];
-    private float[] ES_RefreshProgress = new float[MaxFrSAmount];
-    private float GCDprogress = 0f;
-    private float RemainderAmount = 0;
-    private int FSAmount = 0;
-    private int FrSAmount = 0;
-    private int ESAmount = 0;
-    private ShardType lastUsedShard = ShardType.None;
-    private ShardType previosShard = ShardType.None;
+    private bool _isCasting = false;
+    private float _castProgress = 0f;
+    private float _currentCastCastTime = 0f;
+    private float[] _fsRefreshProgress = new float[MaxFsAmount];
+    private float[] _frSRefreshProgress = new float[MaxFrSAmount];
+    private float[] _esRefreshProgress = new float[MaxFrSAmount];
+    private float _gcDprogress = 0f;
+    private float _remainderAmount = 0;
+    private int _fsAmount = 0;
+    private int _frSAmount = 0;
+    private int _esAmount = 0;
+    private ShardType _lastUsedShard = ShardType.None;
+    private ShardType _previosShard = ShardType.None;
     
-    private float fireCritMultAdjust = 1;
-    private float fireCritChanceAdjust = 1;
-    private float frostCritMultAdjust = 1;
-    private float frostCritChanceAdjust = 1;
-    private float earthCritMultAdjust = 1;
-    private float earthCritChanceAdjust = 1;
-    private float noelemCritMultAdjust = 1;
-    private float noelemCritChanceAdjust = 1;
+    private float _fireCritMultAdjust = 1;
+    private float _fireCritChanceAdjust = 1;
+    private float _frostCritMultAdjust = 1;
+    private float _frostCritChanceAdjust = 1;
+    private float _earthCritMultAdjust = 1;
+    private float _earthCritChanceAdjust = 1;
+    private float _noelemCritMultAdjust = 1;
+    private float _noelemCritChanceAdjust = 1;
     
     
-    private Color FireballCastBarColor = new Color(0.8f,0.1f,0.1f);
-    private Color FirewallCastBarColor = new Color(1,0.3f,0.1f);
-    private Color FireSpiritCastBarColor = new Color(1,0.7f,0.4f);
-    private Color FirelaserCastBarColor = new Color(1,0f,0.2f);
-    private Color FireMarkCastBarColor = new Color(1,0.6f,0.1f);
-    private Color FrostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
-    private Color IcecleBarrageCastBarColor = new Color(0f, 0.5f, 1f);
-    private Color AvalancheCoreCastBarColor = new Color(0.2f, 0.2f, 1f);
-    private Color SpikeCastBarColor = new Color(0.3f,1f,0.1f);
+    private Color _fireballCastBarColor = new Color(0.8f,0.1f,0.1f);
+    private Color _firewallCastBarColor = new Color(1,0.3f,0.1f);
+    private Color _fireSpiritCastBarColor = new Color(1,0.7f,0.4f);
+    private Color _firelaserCastBarColor = new Color(1,0f,0.2f);
+    private Color _fireMarkCastBarColor = new Color(1,0.6f,0.1f);
+    private Color _frostWhirlwindCastBarColor = new Color(0.1f,0.3f,1f);
+    private Color _icecleBarrageCastBarColor = new Color(0f, 0.5f, 1f);
+    private Color _avalancheCoreCastBarColor = new Color(0.2f, 0.2f, 1f);
+    private Color _spikeCastBarColor = new Color(0.3f,1f,0.1f);
 
-    private Buff playerBuffs;
+    private Buff _playerBuffs;
 
+    [FormerlySerializedAs("speedType")]
     [Header("Movement")] 
-    [SerializeField] private SpeedType speedType;
-    [SerializeField] private Image BlinkRefreshBar;
+    [SerializeField] private SpeedType _speedType;
+    [FormerlySerializedAs("BlinkRefreshBar")] [SerializeField] private Image _blinkRefreshBar;
+    [FormerlySerializedAs("BlinkDist")]
     [Space]
-    [SerializeField] private float BlinkDist = 0f;
-    [SerializeField] private float blinkCD = 0f;
-    private RaycastHit2D blinkRCH;
-    private bool isBlinked = false;
-    private float BlinkRefreshProgress = 0f;
-    private float Speed = 0;
-    private Rigidbody2D rb;
-    private Animator anim;
-    private Vector2 Movement;
+    [SerializeField] private float _blinkDist = 0f;
+    [FormerlySerializedAs("blinkCD")] [SerializeField] private float _blinkCd = 0f;
+    private RaycastHit2D _blinkRch;
+    private bool _isBlinked = false;
+    private float _blinkRefreshProgress = 0f;
+    private float _speed = 0;
+    private Rigidbody2D _rb;
+    private Animator _anim;
+    private Vector2 _movement;
     private bool _isAvailableToMove = true;
 
+    [FormerlySerializedAs("interactionRange")]
     [Header("Target system")]
-    [SerializeField] private float interactionRange  = 0;
-    private Enemy currentTarget = null;
-    private Enemy TargetCastingTo = null;
-    private List<Enemy> EnemiesInRange = new List<Enemy>();
-    private int currentIndex = 0;
+    [SerializeField] private float _interactionRange  = 0;
+    private Enemy _currentTarget = null;
+    private Enemy _targetCastingTo = null;
+    private List<Enemy> _enemiesInRange = new List<Enemy>();
+    private int _currentIndex = 0;
 
     private void Awake()
     {
-        playerInputActions = new PlayerInputActions();
-        playerBuffs = this.GetComponent<Buff>();
-        playerInputActions.Player.Blink.started += Blink;
-        playerInputActions.Player.FastTarget.started += TrySelectTarget;
-        playerInputActions.Player.CastInterrupt.started += InterruptCast;
-        playerInputActions.Player.Castbar1.started += SpellBarButtonCast;
-        playerInputActions.Player.Castbar2.started += SpellBarButtonCast;
-        playerInputActions.Player.Castbar3.started += SpellBarButtonCast;
-        playerInputActions.Player.Castbar4.started += SpellBarButtonCast;
-        playerInputActions.Player.Castbar5.started += SpellBarButtonCast;
-        playerInputActions.Player.Castbar6.started += SpellBarButtonCast;
-        playerInputActions.Player.Castbar7.started += SpellBarButtonCast;
-        playerInputActions.UI.LBM.started += HandleMouseClick;
+        _playerInputActions = new PlayerInputActions();
+        _playerBuffs = this.GetComponent<Buff>();
+        _playerInputActions.Player.Blink.started += Blink;
+        _playerInputActions.Player.FastTarget.started += TrySelectTarget;
+        _playerInputActions.Player.CastInterrupt.started += InterruptCast;
+        _playerInputActions.Player.Castbar1.started += SpellBarButtonCast;
+        _playerInputActions.Player.Castbar2.started += SpellBarButtonCast;
+        _playerInputActions.Player.Castbar3.started += SpellBarButtonCast;
+        _playerInputActions.Player.Castbar4.started += SpellBarButtonCast;
+        _playerInputActions.Player.Castbar5.started += SpellBarButtonCast;
+        _playerInputActions.Player.Castbar6.started += SpellBarButtonCast;
+        _playerInputActions.Player.Castbar7.started += SpellBarButtonCast;
+        _playerInputActions.UI.Lbm.started += HandleMouseClick;
 
-        playerBuffs.OnPlayerFreeze += FreezeMovement;
-        playerBuffs.OnPlayerUnFreeze += UnfreezeMovement;
+        _playerBuffs.OnPlayerFreeze += FreezeMovement;
+        _playerBuffs.OnPlayerUnFreeze += UnfreezeMovement;
         //Application.targetFrameRate = -1;
     }
 
     private void OnEnable()
     {
-        playerInputActions.Player.Enable();
-        playerInputActions.UI.Enable();
+        _playerInputActions.Player.Enable();
+        _playerInputActions.UI.Enable();
     }
 
     private void OnDisable()
     {
-        playerInputActions.Player.Disable();
-        playerInputActions.UI.Disable();
+        _playerInputActions.Player.Disable();
+        _playerInputActions.UI.Disable();
     }
 
     private void Start() {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
 
-        FSAmount = MaxFSAmount;
-        FrSAmount = MaxFrSAmount;
-        ESAmount = MaxESAmount;
+        _fsAmount = MaxFsAmount;
+        _frSAmount = MaxFrSAmount;
+        _esAmount = MaxESAmount;
         
-        isfireShardsRefreshRoutineStarted[0] = false;
-        isfireShardsRefreshRoutineStarted[1] = false;
-        isfireShardsRefreshRoutineStarted[2] = false;
+        _isfireShardsRefreshRoutineStarted[0] = false;
+        _isfireShardsRefreshRoutineStarted[1] = false;
+        _isfireShardsRefreshRoutineStarted[2] = false;
         
-        isfrostShardsRefreshRoutineStarted[0] = false;
-        isfrostShardsRefreshRoutineStarted[1] = false;
-        isfrostShardsRefreshRoutineStarted[2] = false;
+        _isfrostShardsRefreshRoutineStarted[0] = false;
+        _isfrostShardsRefreshRoutineStarted[1] = false;
+        _isfrostShardsRefreshRoutineStarted[2] = false;
 
-        isearthShardsRefreshRoutineStarted[0] = false;
-        isearthShardsRefreshRoutineStarted[1] = false;
-        isearthShardsRefreshRoutineStarted[2] = false;
+        _isearthShardsRefreshRoutineStarted[0] = false;
+        _isearthShardsRefreshRoutineStarted[1] = false;
+        _isearthShardsRefreshRoutineStarted[2] = false;
         
-        fireShardsRefreshRoutine[0] = FS_Refreshing(0);
-        fireShardsRefreshRoutine[1] = FS_Refreshing(1);
-        fireShardsRefreshRoutine[2] = FS_Refreshing(2);
+        _fireShardsRefreshRoutine[0] = FS_Refreshing(0);
+        _fireShardsRefreshRoutine[1] = FS_Refreshing(1);
+        _fireShardsRefreshRoutine[2] = FS_Refreshing(2);
         
-        frostShardsRefreshRoutine[0] = FrS_Refreshing(0);
-        frostShardsRefreshRoutine[1] = FrS_Refreshing(1);
-        frostShardsRefreshRoutine[2] = FrS_Refreshing(2);
+        _frostShardsRefreshRoutine[0] = FrS_Refreshing(0);
+        _frostShardsRefreshRoutine[1] = FrS_Refreshing(1);
+        _frostShardsRefreshRoutine[2] = FrS_Refreshing(2);
         
-        earthShardsRefreshRoutine[0] = ES_Refreshing(0);
-        earthShardsRefreshRoutine[1] = ES_Refreshing(1);
-        earthShardsRefreshRoutine[2] = ES_Refreshing(2);
+        _earthShardsRefreshRoutine[0] = ES_Refreshing(0);
+        _earthShardsRefreshRoutine[1] = ES_Refreshing(1);
+        _earthShardsRefreshRoutine[2] = ES_Refreshing(2);
         
-        for (var frp = 0; frp < MaxFSAmount; frp++)
+        for (var frp = 0; frp < MaxFsAmount; frp++)
         {
-            FS_RefreshProgress[frp] = 1f;
-            FrS_RefreshProgress[frp] = 1f;
-            ES_RefreshProgress[frp] = 1f;
+            _fsRefreshProgress[frp] = 1f;
+            _frSRefreshProgress[frp] = 1f;
+            _esRefreshProgress[frp] = 1f;
         }
         
-        BlinkRefreshBar.fillAmount = 1f;
+        _blinkRefreshBar.fillAmount = 1f;
 
-        GCDprogress = 0f;
-        foreach (var bar in GCD_barz)
+        _gcDprogress = 0f;
+        foreach (var bar in _gcdBarz)
         {
-            bar.fillAmount = GCDprogress;
+            bar.fillAmount = _gcDprogress;
         }
 
-        lastUsedShard = ShardType.None;
+        _lastUsedShard = ShardType.None;
 
         //SpellData data = this.data.GetDataByType(SpellType.Fireball);
         
-        FireBallPrefab = data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
-        frost_whirlwindPrefab = data.GetDataByType(SpellType.Frost_whirlwind).PrefubOfSpell;
-        SpikePrefab = data.GetDataByType(SpellType.Spike).PrefubOfSpell;
-        ZapPrefub = data.GetDataByType(SpellType.Zap).PrefubOfSpell;
-        BoomPrefub = data.GetDataByType(SpellType.Boom).PrefubOfSpell;
-        FirewallPrefub = data.GetDataByType(SpellType.Firewall).PrefubOfSpell;
-        FirespiritPrefub = data.GetDataByType(SpellType.Firespirit).PrefubOfSpell;
-        FirelaserPrefub = data.GetDataByType(SpellType.Firelaser).PrefubOfSpell;
-        FiremarkPrefub = data.GetDataByType(SpellType.Firemark).PrefubOfSpell;
-        FlashFreezePrefub = data.GetDataByType(SpellType.FlashFreeze).PrefubOfSpell;
-        IcecleBarragePrefub = data.GetDataByType(SpellType.IcicleBarrage).PrefubOfSpell;
-        CryoLeachPrefub = data.GetDataByType(SpellType.CryoLeach).PrefubOfSpell;
-        AvalancheCorePrefub = data.GetDataByType(SpellType.AvalancheCore).PrefubOfSpell;
-        DeathZonePrefub = data.GetDataByType(SpellType.DeathZone).PrefubOfSpell;
+        _fireBallPrefab = _data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
+        _frostWhirlwindPrefab = _data.GetDataByType(SpellType.FrostWhirlwind).PrefubOfSpell;
+        _spikePrefab = _data.GetDataByType(SpellType.Spike).PrefubOfSpell;
+        _zapPrefub = _data.GetDataByType(SpellType.Zap).PrefubOfSpell;
+        _boomPrefub = _data.GetDataByType(SpellType.Boom).PrefubOfSpell;
+        _firewallPrefub = _data.GetDataByType(SpellType.Firewall).PrefubOfSpell;
+        _firespiritPrefub = _data.GetDataByType(SpellType.Firespirit).PrefubOfSpell;
+        _firelaserPrefub = _data.GetDataByType(SpellType.Firelaser).PrefubOfSpell;
+        _firemarkPrefub = _data.GetDataByType(SpellType.Firemark).PrefubOfSpell;
+        _flashFreezePrefub = _data.GetDataByType(SpellType.FlashFreeze).PrefubOfSpell;
+        _icecleBarragePrefub = _data.GetDataByType(SpellType.IcicleBarrage).PrefubOfSpell;
+        _cryoLeachPrefub = _data.GetDataByType(SpellType.CryoLeach).PrefubOfSpell;
+        _avalancheCorePrefub = _data.GetDataByType(SpellType.AvalancheCore).PrefubOfSpell;
+        _deathZonePrefub = _data.GetDataByType(SpellType.DeathZone).PrefubOfSpell;
         
-        FireballCastTime = data.GetDataByType(SpellType.Fireball).CastTime;
-        frost_whirlwindCastTime = data.GetDataByType(SpellType.Frost_whirlwind).CastTime;
-        SpikeCastTime = data.GetDataByType(SpellType.Spike).CastTime;
-        FirewallCastTime = data.GetDataByType(SpellType.Firewall).CastTime;
-        FirespiritCastTime = data.GetDataByType(SpellType.Firespirit).CastTime;
-        FirelaserCastTime = data.GetDataByType(SpellType.Firelaser).CastTime;
-        FiremarkCastTime = data.GetDataByType(SpellType.Firemark).CastTime;
-        IcecleBarrageCastTime = data.GetDataByType(SpellType.IcicleBarrage).CastTime;
-        AvalancheCoreCastTime = data.GetDataByType(SpellType.AvalancheCore).CastTime;
+        _fireballCastTime = _data.GetDataByType(SpellType.Fireball).CastTime;
+        _frostWhirlwindCastTime = _data.GetDataByType(SpellType.FrostWhirlwind).CastTime;
+        _spikeCastTime = _data.GetDataByType(SpellType.Spike).CastTime;
+        _firewallCastTime = _data.GetDataByType(SpellType.Firewall).CastTime;
+        _firespiritCastTime = _data.GetDataByType(SpellType.Firespirit).CastTime;
+        _firelaserCastTime = _data.GetDataByType(SpellType.Firelaser).CastTime;
+        _firemarkCastTime = _data.GetDataByType(SpellType.Firemark).CastTime;
+        _icecleBarrageCastTime = _data.GetDataByType(SpellType.IcicleBarrage).CastTime;
+        _avalancheCoreCastTime = _data.GetDataByType(SpellType.AvalancheCore).CastTime;
         
-        fireballCost = data.GetDataByType(SpellType.Fireball).ShardsCost;
-        frost_whirlwindCost = data.GetDataByType(SpellType.Frost_whirlwind).ShardsCost;
-        SpikeCost = data.GetDataByType(SpellType.Spike).ShardsCost;
-        ZapCost = data.GetDataByType(SpellType.Zap).ReminderCost;
-        BoomCost = data.GetDataByType(SpellType.Boom).ShardsCost;
-        FirewallCost = data.GetDataByType(SpellType.Firewall).ShardsCost;
-        FirespiritCost = data.GetDataByType(SpellType.Firespirit).ShardsCost;
-        FirelaserCost = data.GetDataByType(SpellType.Firelaser).ShardsCost;
-        FireauraCost = data.GetDataByType(SpellType.Fireaura).ShardsCost;
-        FiremarkCost = data.GetDataByType(SpellType.Firemark).ShardsCost;
-        flashFreezeCost = data.GetDataByType(SpellType.FlashFreeze).ShardsCost;
-        stasisFreezeCost = data.GetDataByType(SpellType.StasisFreeze).ShardsCost;
-        IcecleBarrageCost = data.GetDataByType(SpellType.IcicleBarrage).ShardsCost;
-        CryoLeachCost = data.GetDataByType(SpellType.CryoLeach).ShardsCost;
-        frostAegisCost = data.GetDataByType(SpellType.FrostAegis).ShardsCost;
-        avalancheCoreCost = data.GetDataByType(SpellType.AvalancheCore).ShardsCost;
-        earthShieldCost = data.GetDataByType(SpellType.EarthShield).ShardsCost;
-        deathZoneCost = data.GetDataByType(SpellType.DeathZone).ShardsCost;
+        _fireballCost = _data.GetDataByType(SpellType.Fireball).ShardsCost;
+        _frostWhirlwindCost = _data.GetDataByType(SpellType.FrostWhirlwind).ShardsCost;
+        _spikeCost = _data.GetDataByType(SpellType.Spike).ShardsCost;
+        _zapCost = _data.GetDataByType(SpellType.Zap).ReminderCost;
+        _boomCost = _data.GetDataByType(SpellType.Boom).ShardsCost;
+        _firewallCost = _data.GetDataByType(SpellType.Firewall).ShardsCost;
+        _firespiritCost = _data.GetDataByType(SpellType.Firespirit).ShardsCost;
+        _firelaserCost = _data.GetDataByType(SpellType.Firelaser).ShardsCost;
+        _fireauraCost = _data.GetDataByType(SpellType.Fireaura).ShardsCost;
+        _firemarkCost = _data.GetDataByType(SpellType.Firemark).ShardsCost;
+        _flashFreezeCost = _data.GetDataByType(SpellType.FlashFreeze).ShardsCost;
+        _stasisFreezeCost = _data.GetDataByType(SpellType.StasisFreeze).ShardsCost;
+        _icecleBarrageCost = _data.GetDataByType(SpellType.IcicleBarrage).ShardsCost;
+        _cryoLeachCost = _data.GetDataByType(SpellType.CryoLeach).ShardsCost;
+        _frostAegisCost = _data.GetDataByType(SpellType.FrostAegis).ShardsCost;
+        _avalancheCoreCost = _data.GetDataByType(SpellType.AvalancheCore).ShardsCost;
+        _earthShieldCost = _data.GetDataByType(SpellType.EarthShield).ShardsCost;
+        _deathZoneCost = _data.GetDataByType(SpellType.DeathZone).ShardsCost;
     }
 
     private void Update()
     {
         if (_isAvailableToMove)
         {
-            Movement = playerInputActions.Player.Movement.ReadValue<Vector2>();
+            _movement = _playerInputActions.Player.Movement.ReadValue<Vector2>();
         }
         else
         {
-            Movement = Vector2.zero;
+            _movement = Vector2.zero;
         }
         
-        anim.SetFloat("MoveX", Movement.x);
-        anim.SetFloat("MoveY",  Movement.y);
+        _anim.SetFloat("MoveX", _movement.x);
+        _anim.SetFloat("MoveY",  _movement.y);
         
-        RemainderBar.fillAmount = RemainderAmount/MaxRemainderAmount;
+        _remainderBar.fillAmount = _remainderAmount/MaxRemainderAmount;
 
-        if (isCasting)
+        if (_isCasting)
         {
-            Speed = SpeedTypeData.GetDataByType(speedType - 1);
-            if (CastProgress <= 1f)
+            //Speed = SpeedTypeData.GetDataByType(speedType - 1);
+            if (_castProgress <= 1f)
             {
-                CastProgress += 1f / CurrentCastCastTime * Time.deltaTime;
-                CastBar.fillAmount = CastProgress;
+                _castProgress += 1f / _currentCastCastTime * Time.deltaTime;
+                _castBar.fillAmount = _castProgress;
             }
             else
             {
-                CastBar.fillAmount = 1f;
+                _castBar.fillAmount = 1f;
             }
         }
         else
         {
-            Speed = SpeedTypeData.GetDataByType(speedType);
+            //Speed = SpeedTypeData.GetDataByType(speedType);
         }
 
         int j = 0;
-        foreach (Image shard in FireShards)
+        foreach (Image shard in _fireShards)
         {
-            if (FS_RefreshProgress[j] < 1f)
+            if (_fsRefreshProgress[j] < 1f)
             {
-                FS_RefreshProgress[j] += 1f / FS_RefreshTime * Time.deltaTime;
-                shard.fillAmount = FS_RefreshProgress[j];
+                _fsRefreshProgress[j] += 1f / _fsRefreshTime * Time.deltaTime;
+                shard.fillAmount = _fsRefreshProgress[j];
             }
             j++;
         }
         j = 0;
-        foreach (Image shard in FrostShards)
+        foreach (Image shard in _frostShards)
         {
-            if (FrS_RefreshProgress[j] < 1f)
+            if (_frSRefreshProgress[j] < 1f)
             {
-                FrS_RefreshProgress[j] += 1f / FrS_RefreshTime * Time.deltaTime;
-                shard.fillAmount = FrS_RefreshProgress[j];
+                _frSRefreshProgress[j] += 1f / _frSRefreshTime * Time.deltaTime;
+                shard.fillAmount = _frSRefreshProgress[j];
             }
             j++;
         }
         j = 0;
-        foreach (Image shard in EarthShards)
+        foreach (Image shard in _earthShards)
         {
-            if (ES_RefreshProgress[j] < 1f)
+            if (_esRefreshProgress[j] < 1f)
             {
-                ES_RefreshProgress[j] += 1f / ES_RefreshTime * Time.deltaTime;
-                shard.fillAmount = ES_RefreshProgress[j];
+                _esRefreshProgress[j] += 1f / _esRefreshTime * Time.deltaTime;
+                shard.fillAmount = _esRefreshProgress[j];
             }
             j++;
         }
         
-        if (GCDprogress >= 0)
+        if (_gcDprogress >= 0)
         {
-            GCDprogress -= 1f / GCD * Time.deltaTime;
+            _gcDprogress -= 1f / _gcd * Time.deltaTime;
         }
         else
         {
-            GCDprogress = 0;
+            _gcDprogress = 0;
         }
-        foreach (Image bar in GCD_barz)
+        foreach (Image bar in _gcdBarz)
         {
-            bar.fillAmount = GCDprogress;
+            bar.fillAmount = _gcDprogress;
         }
         
-        if (currentTarget != null)
+        if (_currentTarget != null)
         {
             CheckTargetDistance();
         }
@@ -363,70 +371,70 @@ public class Player : MonoBehaviour
             CheckTargetCastingToDistance();
         }
         
-        if (isBlinked)
+        if (_isBlinked)
         {
-            if (BlinkRefreshProgress <= 1f)
+            if (_blinkRefreshProgress <= 1f)
             {
-                BlinkRefreshProgress += 1f / blinkCD * Time.deltaTime;
-                BlinkRefreshBar.fillAmount = BlinkRefreshProgress;
+                _blinkRefreshProgress += 1f / _blinkCd * Time.deltaTime;
+                _blinkRefreshBar.fillAmount = _blinkRefreshProgress;
             }
             else
             {
-                BlinkRefreshBar.fillAmount = 1f;
+                _blinkRefreshBar.fillAmount = 1f;
             }
         }
     }
 
     private void FixedUpdate()
     {
-        this.rb.MovePosition(this.rb.position + this.Movement * (Speed * Time.fixedDeltaTime));
+        this._rb.MovePosition(this._rb.position + this._movement * (_speed * Time.fixedDeltaTime));
     }
 
     private void TrySelectTarget(InputAction.CallbackContext context)
     {
         Enemy[] enemies = FindObjectsOfType<Enemy>();
-        EnemiesInRange.Clear();
+        _enemiesInRange.Clear();
         foreach (Enemy enemy in enemies)
         {
             float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <= interactionRange)
+            if (distanceToEnemy <= _interactionRange)
             {
-                EnemiesInRange.Add(enemy);
+                _enemiesInRange.Add(enemy);
             }
         }
 
-        if (EnemiesInRange.Count > 0)
+        if (_enemiesInRange.Count > 0)
         {
-            EnemiesInRange = EnemiesInRange.OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position)).ToList();
+            _enemiesInRange = _enemiesInRange.OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position)).ToList();
 
-            if (currentTarget != null)
+            if (_currentTarget != null)
             {
-                currentIndex = EnemiesInRange.IndexOf(currentTarget);
+                _currentIndex = _enemiesInRange.IndexOf(_currentTarget);
                 ClearTarget();
                 
-                if (currentIndex == -1 || currentIndex >= EnemiesInRange.Count - 1)
+                if (_currentIndex == -1 || _currentIndex >= _enemiesInRange.Count - 1)
                 {
-                    currentTarget = EnemiesInRange[0];
-                    EnemiesInRange[0].Target();
+                    _currentTarget = _enemiesInRange[0];
+                    _enemiesInRange[0].Target();
                 }
                 else
                 {
-                    currentTarget = EnemiesInRange[currentIndex + 1];
-                    EnemiesInRange[currentIndex + 1].Target();
+                    _currentTarget = _enemiesInRange[_currentIndex + 1];
+                    _enemiesInRange[_currentIndex + 1].Target();
                 }
             }
             else
             {
-                currentTarget = EnemiesInRange[0];
-                EnemiesInRange[0].Target();
+                _currentTarget = _enemiesInRange[0];
+                _enemiesInRange[0].Target();
             }
         }
     }
 
     private void CheckTargetDistance()
     {
-        float distanceToTarget = Vector2.Distance(this.transform.position, currentTarget.transform.position);
-            if (distanceToTarget > interactionRange)
+        float distanceToTarget = Vector2.Distance(this.transform.position, _currentTarget.transform.position);
+            if (distanceToTarget > _interactionRange)
             {
                 ClearTarget();
                 StopAllCasts();
@@ -435,12 +443,12 @@ public class Player : MonoBehaviour
 
     private void CheckTargetCastingToDistance()
     {
-        if (isCasting)
+        if (_isCasting)
         {
-            if (TargetCastingTo != null)
+            if (_targetCastingTo != null)
             {
-                float distanceToTarget = Vector2.Distance(this.transform.position, TargetCastingTo.transform.position);
-                if (distanceToTarget > interactionRange)
+                float distanceToTarget = Vector2.Distance(this.transform.position, _targetCastingTo.transform.position);
+                if (distanceToTarget > _interactionRange)
                 {
                     StopAllCasts();
                 }
@@ -450,7 +458,7 @@ public class Player : MonoBehaviour
 
     private void HandleMouseClick(InputAction.CallbackContext context)
     {
-        Ray ray = Camera.main.ScreenPointToRay(playerInputActions.UI.MousePosition.ReadValue<Vector2>());
+        Ray ray = Camera.main.ScreenPointToRay(_playerInputActions.UI.MousePosition.ReadValue<Vector2>());
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
         if (hit.collider != null)
@@ -460,7 +468,7 @@ public class Player : MonoBehaviour
             if (enemy != null)
             {
                 enemy.Target();
-                currentTarget = enemy;
+                _currentTarget = enemy;
             }
         }
         else
@@ -471,24 +479,24 @@ public class Player : MonoBehaviour
 
     public void ClearTarget()
     {
-        if (currentTarget != null)
+        if (_currentTarget != null)
         { 
-            currentTarget.ResetTarget();
-            currentTarget = null;
+            _currentTarget.ResetTarget();
+            _currentTarget = null;
         }
     }
     
     private void CastStop()
     {
-        TargetCastingTo = null;
-        isCasting = false;
-        CastProgress = 0f;
-        CastBar.fillAmount = CastProgress;
+        _targetCastingTo = null;
+        _isCasting = false;
+        _castProgress = 0f;
+        _castBar.fillAmount = _castProgress;
     }
 
     private void InterruptCast(InputAction.CallbackContext context)
     {
-        if (isCasting)
+        if (_isCasting)
         {
             StopAllCasts();
             GCDstop();
@@ -501,11 +509,11 @@ public class Player : MonoBehaviour
         switch (amountOfInvocations)
         {
             case 1:
-                shardsToInvoke.Add(lastUsedShard);
+                shardsToInvoke.Add(_lastUsedShard);
                 break;
             case 2:
-                shardsToInvoke.Add(lastUsedShard);
-                shardsToInvoke.Add(previosShard);
+                shardsToInvoke.Add(_lastUsedShard);
+                shardsToInvoke.Add(_previosShard);
                 break;
         }
 
@@ -514,17 +522,17 @@ public class Player : MonoBehaviour
             switch (shard)
             {
                 case ShardType.FireShard:
-                    for (int i = 0; i < fireShardsRefreshRoutine.Length; i++)
+                    for (int i = 0; i < _fireShardsRefreshRoutine.Length; i++)
                     {
-                        if (isfireShardsRefreshRoutineStarted[i])
+                        if (_isfireShardsRefreshRoutineStarted[i])
                         {
-                            FireShards[i].fillAmount = 1f;
-                            FS_RefreshProgress[i] = 1f;
+                            _fireShards[i].fillAmount = 1f;
+                            _fsRefreshProgress[i] = 1f;
 
-                            StopCoroutine(fireShardsRefreshRoutine[i]);
+                            StopCoroutine(_fireShardsRefreshRoutine[i]);
 
-                            isfireShardsRefreshRoutineStarted[i] = false;
-                            fireShardsRefreshRoutine[i] = FS_Refreshing(i);
+                            _isfireShardsRefreshRoutineStarted[i] = false;
+                            _fireShardsRefreshRoutine[i] = FS_Refreshing(i);
                             GetFireShard();
                             break;
                         }
@@ -532,17 +540,17 @@ public class Player : MonoBehaviour
                     break;
                 
                 case ShardType.FrostShard:
-                    for (int i = 0; i < frostShardsRefreshRoutine.Length; i++)
+                    for (int i = 0; i < _frostShardsRefreshRoutine.Length; i++)
                     {
-                        if (isfrostShardsRefreshRoutineStarted[i])
+                        if (_isfrostShardsRefreshRoutineStarted[i])
                         {
-                            FrostShards[i].fillAmount = 1f;
-                            FrS_RefreshProgress[i] = 1f;
+                            _frostShards[i].fillAmount = 1f;
+                            _frSRefreshProgress[i] = 1f;
 
-                            StopCoroutine(frostShardsRefreshRoutine[i]);
+                            StopCoroutine(_frostShardsRefreshRoutine[i]);
 
-                            isfrostShardsRefreshRoutineStarted[i] = false;
-                            frostShardsRefreshRoutine[i] = FrS_Refreshing(i);
+                            _isfrostShardsRefreshRoutineStarted[i] = false;
+                            _frostShardsRefreshRoutine[i] = FrS_Refreshing(i);
                             GetFrostShard();
                             break;
                         }
@@ -550,17 +558,17 @@ public class Player : MonoBehaviour
                     break;
                 
                 case ShardType.EarthShard:
-                    for (int i = 0; i < earthShardsRefreshRoutine.Length; i++)
+                    for (int i = 0; i < _earthShardsRefreshRoutine.Length; i++)
                     {
-                        if (isearthShardsRefreshRoutineStarted[i])
+                        if (_isearthShardsRefreshRoutineStarted[i])
                         {
-                            EarthShards[i].fillAmount = 1f;
-                            ES_RefreshProgress[i] = 1f;
+                            _earthShards[i].fillAmount = 1f;
+                            _esRefreshProgress[i] = 1f;
 
-                            StopCoroutine(earthShardsRefreshRoutine[i]);
+                            StopCoroutine(_earthShardsRefreshRoutine[i]);
 
-                            isearthShardsRefreshRoutineStarted[i] = false;
-                            earthShardsRefreshRoutine[i] = ES_Refreshing(i);
+                            _isearthShardsRefreshRoutineStarted[i] = false;
+                            _earthShardsRefreshRoutine[i] = ES_Refreshing(i);
                             GetEarthShard();
                             break;
                         }
@@ -573,38 +581,38 @@ public class Player : MonoBehaviour
 
     public void SetCritAdjustFire(float mult, float chance)
     {
-        fireCritMultAdjust = mult;
-        fireCritChanceAdjust = chance;
+        _fireCritMultAdjust = mult;
+        _fireCritChanceAdjust = chance;
     }
     
     public void SetCritAdjustFrost(float mult, float chance)
     {
-        frostCritMultAdjust = mult;
-        frostCritChanceAdjust = chance;
+        _frostCritMultAdjust = mult;
+        _frostCritChanceAdjust = chance;
     }
     
     public void SetCritAdjustEarth(float mult, float chance)
     {
-        earthCritMultAdjust = mult;
-        earthCritChanceAdjust = chance;
+        _earthCritMultAdjust = mult;
+        _earthCritChanceAdjust = chance;
     }
     
     public void SetCritAdjustNoelem(float mult, float chance)
     {
-        noelemCritMultAdjust = mult;
-        noelemCritChanceAdjust = chance;
+        _noelemCritMultAdjust = mult;
+        _noelemCritChanceAdjust = chance;
     }
 
     public void FreezeMovement()
     {
         _isAvailableToMove = false;
-        iceTomb.SetActive(true);
+        _iceTomb.SetActive(true);
     }
     
     public void UnfreezeMovement()
     {
         _isAvailableToMove = true;
-        iceTomb.SetActive(false);
+        _iceTomb.SetActive(false);
     }
     
     public void StopAllCasts()
@@ -626,156 +634,156 @@ public class Player : MonoBehaviour
         switch (spellType)
         {
             case SpellType.Fireball:
-                if (isEnoughShards(fireballCost))
+                if (IsEnoughShards(_fireballCost))
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
-                        CurrentCastCastTime = FireballCastTime;
-                        CastBar.color = FireballCastBarColor;
+                        _currentCastCastTime = _fireballCastTime;
+                        _castBar.color = _fireballCastBarColor;
                         StartCoroutine("FireballCast");
                     }
                 }
                 break;
-            case SpellType.Frost_whirlwind:
-                if (isEnoughShards(frost_whirlwindCost))
+            case SpellType.FrostWhirlwind:
+                if (IsEnoughShards(_frostWhirlwindCost))
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
-                        CurrentCastCastTime = frost_whirlwindCastTime;
-                        CastBar.color = FrostWhirlwindCastBarColor;
+                        _currentCastCastTime = _frostWhirlwindCastTime;
+                        _castBar.color = _frostWhirlwindCastBarColor;
                         StartCoroutine("frost_whirlwindCast");
                     }
                 }
                 break;
             case SpellType.Spike:
-                if (isEnoughShards(SpikeCost)) 
+                if (IsEnoughShards(_spikeCost)) 
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
-                        CurrentCastCastTime = SpikeCastTime;
-                        CastBar.color = SpikeCastBarColor;
+                        _currentCastCastTime = _spikeCastTime;
+                        _castBar.color = _spikeCastBarColor;
                         StartCoroutine("SpikeCast");
                     }
                 }
                 break;
             case SpellType.Zap:
-                if (RemainderAmount >= ZapCost) 
+                if (_remainderAmount >= _zapCost) 
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
                         ZapCast();
                     }
                 }
                 break;
             case SpellType.Boom:
-                if (isEnoughShards(BoomCost))
+                if (IsEnoughShards(_boomCost))
                 {
                     BoomCast();
                 }
                 break;
             case SpellType.Firewall:
-                if (isEnoughShards(FirewallCost))
+                if (IsEnoughShards(_firewallCost))
                 {
-                    CurrentCastCastTime = FirewallCastTime;
-                    CastBar.color = FirewallCastBarColor;
+                    _currentCastCastTime = _firewallCastTime;
+                    _castBar.color = _firewallCastBarColor;
                     StartCoroutine("FirewallCast");
                 }
                 break;
             case SpellType.Firespirit:
-                if (isEnoughShards(FirespiritCost))
+                if (IsEnoughShards(_firespiritCost))
                 {
-                    CurrentCastCastTime = FirespiritCastTime;
-                    CastBar.color = FireSpiritCastBarColor;
+                    _currentCastCastTime = _firespiritCastTime;
+                    _castBar.color = _fireSpiritCastBarColor;
                     StartCoroutine("FireSpiritCast");
                 }
                 break; 
             case SpellType.Firelaser:
-                if (isEnoughShards(FirelaserCost))
+                if (IsEnoughShards(_firelaserCost))
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
-                        CurrentCastCastTime = FirelaserCastTime;
-                        CastBar.color = FirelaserCastBarColor;
+                        _currentCastCastTime = _firelaserCastTime;
+                        _castBar.color = _firelaserCastBarColor;
                         StartCoroutine("FirelaserCast");
                     }
                 }
                 break;
             case SpellType.Fireaura:
-                if (isEnoughShards(FireauraCost))
+                if (IsEnoughShards(_fireauraCost))
                 {
                     FireAuraCast();
                 }
                 break;
             case SpellType.Firemark:
-                if (isEnoughShards(FiremarkCost))
+                if (IsEnoughShards(_firemarkCost))
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
-                        CurrentCastCastTime = FiremarkCastTime;
-                        CastBar.color = FireMarkCastBarColor;
+                        _currentCastCastTime = _firemarkCastTime;
+                        _castBar.color = _fireMarkCastBarColor;
                         StartCoroutine("FireMarkCast");
                     }
                 }
                 break;
             case SpellType.FlashFreeze:
-                if (isEnoughShards(flashFreezeCost))
+                if (IsEnoughShards(_flashFreezeCost))
                 {
                     FlashFreezeCast();
                 }
                 break;
             case SpellType.StasisFreeze:
-                if (isEnoughShards(stasisFreezeCost))
+                if (IsEnoughShards(_stasisFreezeCost))
                 {
                     StasisFreezeCast();
                 }
                 break;
             case SpellType.IcicleBarrage:
-                if (isEnoughShards(IcecleBarrageCost)) 
+                if (IsEnoughShards(_icecleBarrageCost)) 
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
-                        CurrentCastCastTime = IcecleBarrageCastTime;
-                        CastBar.color = IcecleBarrageCastBarColor;
+                        _currentCastCastTime = _icecleBarrageCastTime;
+                        _castBar.color = _icecleBarrageCastBarColor;
                         StartCoroutine("IcecleBarrageCast");
                     }
                 }
                 break;
             case SpellType.CryoLeach:
-                if (isEnoughShards(CryoLeachCost)) 
+                if (IsEnoughShards(_cryoLeachCost)) 
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
                         CryoLeachCast();
                     }
                 }
                 break;
             case SpellType.FrostAegis:
-                if (isEnoughShards(frostAegisCost))
+                if (IsEnoughShards(_frostAegisCost))
                 {
-                    frostAegisCast();
+                    FrostAegisCast();
                 }
                 break;
             case SpellType.AvalancheCore:
-                if (isEnoughShards(avalancheCoreCost))
+                if (IsEnoughShards(_avalancheCoreCost))
                 {
-                    if (currentTarget != null)
+                    if (_currentTarget != null)
                     {
-                        CurrentCastCastTime = AvalancheCoreCastTime;
-                        CastBar.color = AvalancheCoreCastBarColor;
+                        _currentCastCastTime = _avalancheCoreCastTime;
+                        _castBar.color = _avalancheCoreCastBarColor;
                         StartCoroutine("AvalancheCoreCast");
                     }
                 }
                 break;
             case SpellType.EarthShield:
-                if (isEnoughShards(earthShieldCost))
+                if (IsEnoughShards(_earthShieldCost))
                 {
-                    earthShieldCast();
+                    EarthShieldCast();
                 }
                 break;
             case SpellType.DeathZone:
-                if (isEnoughShards(deathZoneCost))
+                if (IsEnoughShards(_deathZoneCost))
                 {
-                    deathZoneCast();
+                    DeathZoneCast();
                 }
                 break;
         }
@@ -785,36 +793,36 @@ public class Player : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            if (!isCasting)
+            if (!_isCasting)
             {
-                if (GCDprogress <= 0)
+                if (_gcDprogress <= 0)
                 {
                     if (_isAvailableToMove)
                     {
-                        TargetCastingTo = currentTarget;
+                        _targetCastingTo = _currentTarget;
 
                         switch (context.action.name)
                         {
                             case "Castbar1":
-                                CastSpell(spellBarCells[0].GetSpellType());
+                                CastSpell(_spellBarCells[0].GetSpellType());
                                 break;
                             case "Castbar2":
-                                CastSpell(spellBarCells[1].GetSpellType());
+                                CastSpell(_spellBarCells[1].GetSpellType());
                                 break;
                             case "Castbar3":
-                                CastSpell(spellBarCells[2].GetSpellType());
+                                CastSpell(_spellBarCells[2].GetSpellType());
                                 break;
                             case "Castbar4":
-                                CastSpell(spellBarCells[3].GetSpellType());
+                                CastSpell(_spellBarCells[3].GetSpellType());
                                 break;
                             case "Castbar5":
-                                CastSpell(spellBarCells[4].GetSpellType());
+                                CastSpell(_spellBarCells[4].GetSpellType());
                                 break;
                             case "Castbar6":
-                                CastSpell(spellBarCells[5].GetSpellType());
+                                CastSpell(_spellBarCells[5].GetSpellType());
                                 break;
                             case "Castbar7":
-                                CastSpell(spellBarCells[6].GetSpellType());
+                                CastSpell(_spellBarCells[6].GetSpellType());
                                 break;
                         }
                     }
@@ -826,15 +834,15 @@ public class Player : MonoBehaviour
     private IEnumerator FireballCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
-        yield return new WaitForSeconds(FireballCastTime);
-        if (TargetCastingTo != null)
+        yield return new WaitForSeconds(_fireballCastTime);
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(FireBallPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
-            UseShards(fireballCost);
+            spell = Instantiate(_fireBallPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_fireCritMultAdjust,_fireCritChanceAdjust);
+            UseShards(_fireballCost);
         }
         CastStop();
     }
@@ -842,15 +850,15 @@ public class Player : MonoBehaviour
     private IEnumerator frost_whirlwindCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
-        yield return new WaitForSeconds(frost_whirlwindCastTime);
-        if (TargetCastingTo != null)
+        yield return new WaitForSeconds(_frostWhirlwindCastTime);
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(frost_whirlwindPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
-            UseShards(frost_whirlwindCost);
+            spell = Instantiate(_frostWhirlwindPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_frostCritMultAdjust,_frostCritChanceAdjust);
+            UseShards(_frostWhirlwindCost);
         }
         CastStop();
     }
@@ -858,15 +866,15 @@ public class Player : MonoBehaviour
     private IEnumerator SpikeCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
-        yield return new WaitForSeconds(SpikeCastTime);
-        if (TargetCastingTo != null)
+        yield return new WaitForSeconds(_spikeCastTime);
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(SpikePrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(earthCritMultAdjust,earthCritChanceAdjust);
-            UseShards(SpikeCost);
+            spell = Instantiate(_spikePrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_earthCritMultAdjust,_earthCritChanceAdjust);
+            UseShards(_spikeCost);
         }
         CastStop();
     }
@@ -874,15 +882,15 @@ public class Player : MonoBehaviour
     private void ZapCast()
     {
         Spell spell;
-        isCasting = true;
-        if (TargetCastingTo != null)
+        _isCasting = true;
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(ZapPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell = Instantiate(_zapPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.GetComponent<LineRenderer>().SetPosition(0,this.transform.position);
-            spell.GetComponent<LineRenderer>().SetPosition(1,TargetCastingTo.transform.position);
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(noelemCritMultAdjust,noelemCritChanceAdjust);
-            RemainderAmount -= ZapCost;
+            spell.GetComponent<LineRenderer>().SetPosition(1,_targetCastingTo.transform.position);
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_noelemCritMultAdjust,_noelemCritChanceAdjust);
+            _remainderAmount -= _zapCost;
         }
         GCDstart();
         CastStop();
@@ -891,10 +899,10 @@ public class Player : MonoBehaviour
     private void BoomCast()
     {
         Spell spell;
-        isCasting = true;
-        spell = Instantiate(BoomPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
-        spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
-        UseShards(BoomCost);
+        _isCasting = true;
+        spell = Instantiate(_boomPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(_fireCritMultAdjust,_fireCritChanceAdjust);
+        UseShards(_boomCost);
         GCDstart();
         CastStop();
     }
@@ -902,19 +910,19 @@ public class Player : MonoBehaviour
     private void FlashFreezeCast()
     {
         Spell spell;
-        isCasting = true;
-        spell = Instantiate(FlashFreezePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
-        spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
-        UseShards(flashFreezeCost);
+        _isCasting = true;
+        spell = Instantiate(_flashFreezePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(_frostCritMultAdjust,_frostCritChanceAdjust);
+        UseShards(_flashFreezeCost);
         GCDstart();
         CastStop();
     }
 
     private void StasisFreezeCast()
     {
-        isCasting = true;
+        _isCasting = true;
         this.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze, this);
-        UseShards(stasisFreezeCost);
+        UseShards(_stasisFreezeCost);
         GCDstart();
         CastStop();
     }
@@ -922,56 +930,56 @@ public class Player : MonoBehaviour
     private IEnumerator FirewallCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
         
-        yield return new WaitForSeconds(FirewallCastTime);
+        yield return new WaitForSeconds(_firewallCastTime);
         
-        spell = Instantiate(FirewallPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
-        spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
-        UseShards(FirewallCost);
+        spell = Instantiate(_firewallPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(_fireCritMultAdjust,_fireCritChanceAdjust);
+        UseShards(_firewallCost);
         CastStop();
     }
     
     private IEnumerator FireSpiritCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
         
-        yield return new WaitForSeconds(FirespiritCastTime);
+        yield return new WaitForSeconds(_firespiritCastTime);
         
-        spell = Instantiate(FirespiritPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
-        spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
-        UseShards(FirespiritCost);
+        spell = Instantiate(_firespiritPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        spell.AdjustCrit(_fireCritMultAdjust,_fireCritChanceAdjust);
+        UseShards(_firespiritCost);
         CastStop();
     }
 
     private IEnumerator FirelaserCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
         
-        yield return new WaitForSeconds(FirelaserCastTime);
+        yield return new WaitForSeconds(_firelaserCastTime);
         
-        if (TargetCastingTo != null)
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(FirelaserPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell = Instantiate(_firelaserPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.GetComponent<LineRenderer>().SetPosition(0, this.transform.position);
-            spell.GetComponent<LineRenderer>().SetPosition(1, TargetCastingTo.transform.position);
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
-            UseShards(FirelaserCost);
+            spell.GetComponent<LineRenderer>().SetPosition(1, _targetCastingTo.transform.position);
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_fireCritMultAdjust,_fireCritChanceAdjust);
+            UseShards(_firelaserCost);
         }
         CastStop();
     }
 
     private void FireAuraCast()
     {
-        isCasting = true;
+        _isCasting = true;
         this.GetComponent<Buff>().GetBuff(BuffType.FireAura, this);
-        UseShards(FireauraCost);
+        UseShards(_fireauraCost);
         GCDstart();
         CastStop();
     }
@@ -979,17 +987,17 @@ public class Player : MonoBehaviour
     private IEnumerator FireMarkCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
         
-        yield return new WaitForSeconds(FiremarkCastTime);
+        yield return new WaitForSeconds(_firemarkCastTime);
         
-        if (TargetCastingTo != null)
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(FiremarkPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(fireCritMultAdjust,fireCritChanceAdjust);
-            UseShards(FiremarkCost);
+            spell = Instantiate(_firemarkPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_fireCritMultAdjust,_fireCritChanceAdjust);
+            UseShards(_firemarkCost);
         }
         CastStop();
     }
@@ -997,20 +1005,20 @@ public class Player : MonoBehaviour
     private IEnumerator IcecleBarrageCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
-        yield return new WaitForSeconds(IcecleBarrageCastTime);
-        if (TargetCastingTo != null)
+        yield return new WaitForSeconds(_icecleBarrageCastTime);
+        if (_targetCastingTo != null)
         {
-            UseShards(IcecleBarrageCost);
-            for (int i = 0; i < amountOfIcecles; i++)
+            UseShards(_icecleBarrageCost);
+            for (int i = 0; i < _amountOfIcecles; i++)
             {
                 Vector2 intstpos = transform.position;
                 intstpos.x += Random.Range(-0.3f, 0.3f);
                 intstpos.y += Random.Range(-0.3f, 0.3f);
-                spell = Instantiate(IcecleBarragePrefub, intstpos, Quaternion.identity).GetComponent<Spell>();
-                spell.SetTarget(TargetCastingTo);
-                spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
+                spell = Instantiate(_icecleBarragePrefub, intstpos, Quaternion.identity).GetComponent<Spell>();
+                spell.SetTarget(_targetCastingTo);
+                spell.AdjustCrit(_frostCritMultAdjust,_frostCritChanceAdjust);
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -1020,25 +1028,25 @@ public class Player : MonoBehaviour
     private void CryoLeachCast()
     {
         Spell spell;
-        isCasting = true;
-        if (TargetCastingTo != null)
+        _isCasting = true;
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(CryoLeachPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell = Instantiate(_cryoLeachPrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
             spell.GetComponent<LineRenderer>().SetPosition(0,this.transform.position);
-            spell.GetComponent<LineRenderer>().SetPosition(1,TargetCastingTo.transform.position);
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
-            UseShards(CryoLeachCost);
+            spell.GetComponent<LineRenderer>().SetPosition(1,_targetCastingTo.transform.position);
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_frostCritMultAdjust,_frostCritChanceAdjust);
+            UseShards(_cryoLeachCost);
         }
         GCDstart();
         CastStop();
     }
 
-    private void frostAegisCast()
+    private void FrostAegisCast()
     {
-        isCasting = true;
-        this.GetComponent<HP>().GetOverHP(SpellType.FrostAegis);
-        UseShards(frostAegisCost);
+        _isCasting = true;
+        this.GetComponent<Hp>().GetOverHp(SpellType.FrostAegis);
+        UseShards(_frostAegisCost);
         GCDstart();
         CastStop();
     }
@@ -1046,85 +1054,85 @@ public class Player : MonoBehaviour
     private IEnumerator AvalancheCoreCast()
     {
         Spell spell;
-        isCasting = true;
+        _isCasting = true;
         GCDstart();
         
-        yield return new WaitForSeconds(AvalancheCoreCastTime);
+        yield return new WaitForSeconds(_avalancheCoreCastTime);
         
-        if (TargetCastingTo != null)
+        if (_targetCastingTo != null)
         {
-            spell = Instantiate(AvalancheCorePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
-            spell.SetTarget(TargetCastingTo);
-            spell.AdjustCrit(frostCritMultAdjust,frostCritChanceAdjust);
-            UseShards(avalancheCoreCost);
+            spell = Instantiate(_avalancheCorePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+            spell.SetTarget(_targetCastingTo);
+            spell.AdjustCrit(_frostCritMultAdjust,_frostCritChanceAdjust);
+            UseShards(_avalancheCoreCost);
         }
         CastStop();
     }
 
-    private void earthShieldCast()
+    private void EarthShieldCast()
     {
-        isCasting = true;
-        this.GetComponent<HP>().GetShieldStacks(SpellType.EarthShield);
-        UseShards(earthShieldCost);
+        _isCasting = true;
+        this.GetComponent<Hp>().GetShieldStacks(SpellType.EarthShield);
+        UseShards(_earthShieldCost);
         GCDstart();
         CastStop();
     }
 
-    private void deathZoneCast()
+    private void DeathZoneCast()
     {
-        isCasting = true;
+        _isCasting = true;
         
-        Instantiate(DeathZonePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
-        UseShards(deathZoneCost);
+        Instantiate(_deathZonePrefub, transform.position, Quaternion.identity).GetComponent<Spell>();
+        UseShards(_deathZoneCost);
         GCDstart();
         CastStop();
     }
     
     private void GainRemainder(int amount)
     {
-        if (RemainderAmount < MaxRemainderAmount)
+        if (_remainderAmount < MaxRemainderAmount)
         {
-            RemainderAmount += amount;
-            if (RemainderAmount > MaxRemainderAmount)
+            _remainderAmount += amount;
+            if (_remainderAmount > MaxRemainderAmount)
             {
-                RemainderAmount = MaxRemainderAmount;
+                _remainderAmount = MaxRemainderAmount;
             }
         }
     }
 
     private void UseShards(Vector3Int shards)
     {
-        UseFS(shards.x);
+        UseFs(shards.x);
         UseFrS(shards.y);
         UseES(shards.z);
     }
     
-    private void UseFS(int amount)
+    private void UseFs(int amount)
     {
         if (amount > 0)
         {
-            if(FSAmount > 0)
+            if(_fsAmount > 0)
             {
-                FSAmount -= amount;
+                _fsAmount -= amount;
                 
-                if (lastUsedShard == ShardType.None)
+                if (_lastUsedShard == ShardType.None)
                 {
-                    lastUsedShard = ShardType.FireShard;
+                    _lastUsedShard = ShardType.FireShard;
                 }
                 else
                 {
-                    previosShard = lastUsedShard;
-                    lastUsedShard = ShardType.FireShard;
+                    _previosShard = _lastUsedShard;
+                    _lastUsedShard = ShardType.FireShard;
                 }
                 
                 GainRemainder(20 * amount);
                 for (int i = 0; i < amount; i++)
                 {
-                    for (int j = 0; j < fireShardsRefreshRoutine.Length; j++)
+                    for (int j = 0; j < _fireShardsRefreshRoutine.Length; j++)
                     {
-                        if (isfireShardsRefreshRoutineStarted[j] == false)
+                        if (_isfireShardsRefreshRoutineStarted[j] == false)
                         {
-                            StartCoroutine(fireShardsRefreshRoutine[j]);
+                            StartCoroutine(_fireShardsRefreshRoutine[j]);
                             break;
                         }
                     }
@@ -1137,28 +1145,28 @@ public class Player : MonoBehaviour
     {
         if (amount > 0)
         {
-            if (FrSAmount > 0)
+            if (_frSAmount > 0)
             {
-                FrSAmount -= amount;
+                _frSAmount -= amount;
                 
-                if (lastUsedShard == ShardType.None)
+                if (_lastUsedShard == ShardType.None)
                 {
-                    lastUsedShard = ShardType.FrostShard;
+                    _lastUsedShard = ShardType.FrostShard;
                 }
                 else
                 {
-                    previosShard = lastUsedShard;
-                    lastUsedShard = ShardType.FrostShard;
+                    _previosShard = _lastUsedShard;
+                    _lastUsedShard = ShardType.FrostShard;
                 }
                 
                 GainRemainder(20 * amount);
                 for (int i = 0; i < amount; i++)
                 {
-                    for (int j = 0; j < frostShardsRefreshRoutine.Length; j++)
+                    for (int j = 0; j < _frostShardsRefreshRoutine.Length; j++)
                     {
-                        if (isfrostShardsRefreshRoutineStarted[j] == false)
+                        if (_isfrostShardsRefreshRoutineStarted[j] == false)
                         {
-                            StartCoroutine(frostShardsRefreshRoutine[j]);
+                            StartCoroutine(_frostShardsRefreshRoutine[j]);
                             break;
                         }
                     }
@@ -1171,28 +1179,28 @@ public class Player : MonoBehaviour
     {
         if (amount > 0)
         {
-            if (ESAmount > 0)
+            if (_esAmount > 0)
             {
-                ESAmount -= amount;
+                _esAmount -= amount;
                 
-                if (lastUsedShard == ShardType.None)
+                if (_lastUsedShard == ShardType.None)
                 {
-                    lastUsedShard = ShardType.EarthShard;
+                    _lastUsedShard = ShardType.EarthShard;
                 }
                 else
                 {
-                    previosShard = lastUsedShard;
-                    lastUsedShard = ShardType.EarthShard;
+                    _previosShard = _lastUsedShard;
+                    _lastUsedShard = ShardType.EarthShard;
                 }
                 
                 GainRemainder(20 * amount);
                 for (int i = 0; i < amount; i++)
                 {
-                    for (int j = 0; j < earthShardsRefreshRoutine.Length; j++)
+                    for (int j = 0; j < _earthShardsRefreshRoutine.Length; j++)
                     {
-                        if (isearthShardsRefreshRoutineStarted[j] == false)
+                        if (_isearthShardsRefreshRoutineStarted[j] == false)
                         {
-                            StartCoroutine(earthShardsRefreshRoutine[j]);
+                            StartCoroutine(_earthShardsRefreshRoutine[j]);
                             break;
                         }
                     }
@@ -1201,131 +1209,131 @@ public class Player : MonoBehaviour
         }
     }
 
-    private IEnumerator FS_Refreshing(int ID)
+    private IEnumerator FS_Refreshing(int id)
     {
-        isfireShardsRefreshRoutineStarted[ID] = true;
+        _isfireShardsRefreshRoutineStarted[id] = true;
         //Debug.Log("Started " + ID);
         int k = 0;
-        foreach (Image shard in FireShards)
+        foreach (Image shard in _fireShards)
         {
-            if (FS_RefreshProgress[k] >= 1f)
+            if (_fsRefreshProgress[k] >= 1f)
             {
-                FS_RefreshProgress[k] = 0f;
+                _fsRefreshProgress[k] = 0f;
                 break;
             }
             k++;
         }
         
-        yield return new WaitForSeconds(FS_RefreshTime);
+        yield return new WaitForSeconds(_fsRefreshTime);
         
         GetFireShard();
-        fireShardsRefreshRoutine[ID] = FS_Refreshing(ID);
-        isfireShardsRefreshRoutineStarted[ID] = false;
+        _fireShardsRefreshRoutine[id] = FS_Refreshing(id);
+        _isfireShardsRefreshRoutineStarted[id] = false;
         //Debug.Log("Finished " + ID);
     }
 
-    private IEnumerator FrS_Refreshing(int ID)
+    private IEnumerator FrS_Refreshing(int id)
     {
-        isfrostShardsRefreshRoutineStarted[ID] = true;
+        _isfrostShardsRefreshRoutineStarted[id] = true;
         
         int k = 0;
-        foreach (Image shard in FrostShards)
+        foreach (Image shard in _frostShards)
         {
-            if (FrS_RefreshProgress[k] >= 1f)
+            if (_frSRefreshProgress[k] >= 1f)
             {
-                FrS_RefreshProgress[k] = 0f;
+                _frSRefreshProgress[k] = 0f;
                 break;
             }
             k++;
         }
         
-        yield return new WaitForSeconds(FrS_RefreshTime);
+        yield return new WaitForSeconds(_frSRefreshTime);
         
         GetFrostShard();
-        frostShardsRefreshRoutine[ID] = FrS_Refreshing(ID);
-        isfrostShardsRefreshRoutineStarted[ID] = false;
+        _frostShardsRefreshRoutine[id] = FrS_Refreshing(id);
+        _isfrostShardsRefreshRoutineStarted[id] = false;
     }
     
-    private IEnumerator ES_Refreshing(int ID)
+    private IEnumerator ES_Refreshing(int id)
     {
-        isearthShardsRefreshRoutineStarted[ID] = true;
+        _isearthShardsRefreshRoutineStarted[id] = true;
         
         int k = 0;
-        foreach (Image shard in EarthShards)
+        foreach (Image shard in _earthShards)
         {
-            if (ES_RefreshProgress[k] >= 1f)
+            if (_esRefreshProgress[k] >= 1f)
             {
-                ES_RefreshProgress[k] = 0f;
+                _esRefreshProgress[k] = 0f;
                 break;
             }
             k++;
         }
         
-        yield return new WaitForSeconds(ES_RefreshTime);
+        yield return new WaitForSeconds(_esRefreshTime);
         
         GetEarthShard();
-        earthShardsRefreshRoutine[ID] = ES_Refreshing(ID);
-        isearthShardsRefreshRoutineStarted[ID] = false;
+        _earthShardsRefreshRoutine[id] = ES_Refreshing(id);
+        _isearthShardsRefreshRoutineStarted[id] = false;
     }
 
     private void GetFireShard()
     {
-        if(FSAmount < MaxFSAmount)
+        if(_fsAmount < MaxFsAmount)
         {
-            FSAmount++;
+            _fsAmount++;
             //Debug.Log("fire: " + FSAmount);
-            if (FSAmount > MaxFSAmount)
+            if (_fsAmount > MaxFsAmount)
             {
-                FSAmount = MaxFSAmount;
+                _fsAmount = MaxFsAmount;
             }
         }
     }
 
     private void GetFrostShard()
     {
-        if(FrSAmount < MaxFrSAmount)
+        if(_frSAmount < MaxFrSAmount)
         {
-            FrSAmount++;
+            _frSAmount++;
             //Debug.Log("frost: " + FrSAmount);
-            if (FrSAmount > MaxFrSAmount)
+            if (_frSAmount > MaxFrSAmount)
             {
-                FrSAmount = MaxFrSAmount;
+                _frSAmount = MaxFrSAmount;
             }
         }
     }
 
     private void GetEarthShard()
     {
-        if(ESAmount < MaxESAmount)
+        if(_esAmount < MaxESAmount)
         {
-            ESAmount++;
-            if (ESAmount > MaxESAmount)
+            _esAmount++;
+            if (_esAmount > MaxESAmount)
             {
-                ESAmount = MaxESAmount;
+                _esAmount = MaxESAmount;
             }
         }
     }
 
     private void Blink(InputAction.CallbackContext context)
     {
-        if (Movement.magnitude != 0f)
+        if (_movement.magnitude != 0f)
         {
-            if (!isBlinked)
+            if (!_isBlinked)
             {
                 float raycastOffet = 0.4f;
                 float distFactor = 0.8f;
                 LayerMask mask = LayerMask.GetMask("Walls");
-                blinkRCH = Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y - raycastOffet), this.Movement, BlinkDist, mask);
+                _blinkRch = Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y - raycastOffet), this._movement, _blinkDist, mask);
                 //Debug.DrawLine(new Vector3(transform.position.x,transform.position.y - raycastOffet, 0),new Vector3(transform.position.x + Movement.x * blinkRCH.distance * distFactor, transform.position.y + this.Movement.y * blinkRCH.distance * distFactor, 0), Color.red, 99f);
-                if (blinkRCH.collider != null)
+                if (_blinkRch.collider != null)
                 {
-                    this.rb.position += this.Movement * blinkRCH.distance * distFactor;
+                    this._rb.position += this._movement * _blinkRch.distance * distFactor;
                 }
                 else
                 {
-                    this.rb.position += this.Movement * BlinkDist;
+                    this._rb.position += this._movement * _blinkDist;
                 }
-                BlinkRefreshBar.fillAmount = 0f;
+                _blinkRefreshBar.fillAmount = 0f;
                 StartCoroutine("BlinkRefresh");   
             }
         }
@@ -1333,33 +1341,33 @@ public class Player : MonoBehaviour
 
     private IEnumerator BlinkRefresh()
     {
-        isBlinked = true;
-        yield return new WaitForSeconds(blinkCD);
-        BlinkRefreshProgress = 0f;
-        isBlinked = false;
+        _isBlinked = true;
+        yield return new WaitForSeconds(_blinkCd);
+        _blinkRefreshProgress = 0f;
+        _isBlinked = false;
     }
 
     private void GCDstart()
     {
-        GCDprogress = 1f;
-        foreach (var bar in GCD_barz)
+        _gcDprogress = 1f;
+        foreach (var bar in _gcdBarz)
         {
-            bar.fillAmount = GCDprogress;
+            bar.fillAmount = _gcDprogress;
         }
     }
 
     private void GCDstop()
     {
-        GCDprogress = 0f;
-        foreach (var bar in GCD_barz)
+        _gcDprogress = 0f;
+        foreach (var bar in _gcdBarz)
         {
-            bar.fillAmount = GCDprogress;
+            bar.fillAmount = _gcDprogress;
         }
     }
 
-    private bool isEnoughShards(Vector3Int cost)
+    private bool IsEnoughShards(Vector3Int cost)
     {
-        return (FSAmount >= cost.x) && (FrSAmount >= cost.y) &&
-               (ESAmount >= cost.z);
+        return (_fsAmount >= cost.x) && (_frSAmount >= cost.y) &&
+               (_esAmount >= cost.z);
     }
 }

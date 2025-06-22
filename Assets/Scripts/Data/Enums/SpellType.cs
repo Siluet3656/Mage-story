@@ -1,0 +1,30 @@
+﻿namespace Data.Enums
+{
+    public enum SpellType
+    {
+        NoSpell,
+        Fireball,
+        Zap,
+        FrostWhirlwind,
+        Spike,
+        Boom,
+        Firewall,
+        Firespirit,
+        Firelaser,
+        Fireaura,
+        Firemark,
+        FlashFreeze,
+        StasisFreeze,
+        IcicleBarrage,
+        CryoLeach,
+        FrostAegis,
+        AvalancheCore,
+        AvalancheCoreChunk,
+        EarthShield,
+        DeathZone,
+        NaturePower,
+        Plague,
+        Flower,
+        NatureWraith
+    }
+}

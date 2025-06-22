@@ -1,28 +1,29 @@
-﻿using UnityEngine;
+﻿using Data.Enums;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SpellBarButton : MonoBehaviour, IPointerClickHandler
 {
-    private SpellDrag hand;
-    private SpellType currentSpell;
+    private SpellDrag _hand;
+    private SpellType _currentSpell;
 
     private void Start()
     {
-        hand = FindObjectsOfType<SpellDrag>()[0];
+        _hand = FindObjectsOfType<SpellDrag>()[0];
     }
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (hand.GetIsDragging())
+        if (_hand.GetIsDragging())
         {
-            hand.PlaceSpell(this.GetComponent<Image>());
-            this.currentSpell = hand.GetSpellType();
+            _hand.PlaceSpell(this.GetComponent<Image>());
+            this._currentSpell = _hand.GetSpellType();
         }
     }
 
     public SpellType GetSpellType()
     {
-        return this.currentSpell;
+        return this._currentSpell;
     }
 }

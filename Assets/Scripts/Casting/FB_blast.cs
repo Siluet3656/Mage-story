@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using Data.Enums;
 using UnityEngine;
 
-public class FB_blast : MonoBehaviour
+public class FbBlast : MonoBehaviour
 {
     [SerializeField] private RangeType _rangeType;
     [SerializeField] private float _blastingTime;
@@ -31,10 +32,10 @@ public class FB_blast : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        HP hp = other.gameObject.GetComponent<HP>();
+        Hp hp = other.gameObject.GetComponent<Hp>();
         if (hp != null)
         {
-            hp.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_damage, _critmultiply, _critchance);
+            hp.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_damage, _critmultiply, _critchance);
         }
     }
     

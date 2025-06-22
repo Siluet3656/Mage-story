@@ -8,10 +8,10 @@ using UnityEngine.InputSystem.Utilities;
 
 public class @PlayerInputActions : IInputActionCollection, IDisposable
 {
-    public InputActionAsset asset { get; }
+    public InputActionAsset Asset { get; }
     public @PlayerInputActions()
     {
-        asset = InputActionAsset.FromJson(@"{
+        Asset = InputActionAsset.FromJson(@"{
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
@@ -539,53 +539,53 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     ]
 }");
         // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
-        m_Player_Castbar1 = m_Player.FindAction("Castbar1", throwIfNotFound: true);
-        m_Player_Castbar2 = m_Player.FindAction("Castbar2", throwIfNotFound: true);
-        m_Player_Castbar3 = m_Player.FindAction("Castbar3", throwIfNotFound: true);
-        m_Player_Castbar4 = m_Player.FindAction("Castbar4", throwIfNotFound: true);
-        m_Player_Castbar5 = m_Player.FindAction("Castbar5", throwIfNotFound: true);
-        m_Player_Castbar6 = m_Player.FindAction("Castbar6", throwIfNotFound: true);
-        m_Player_Castbar7 = m_Player.FindAction("Castbar7", throwIfNotFound: true);
-        m_Player_CastInterrupt = m_Player.FindAction("CastInterrupt ", throwIfNotFound: true);
-        m_Player_Blink = m_Player.FindAction("Blink", throwIfNotFound: true);
-        m_Player_FastTarget = m_Player.FindAction("FastTarget", throwIfNotFound: true);
+        _mPlayer = Asset.FindActionMap("Player", throwIfNotFound: true);
+        _mPlayerMovement = _mPlayer.FindAction("Movement", throwIfNotFound: true);
+        _mPlayerCastbar1 = _mPlayer.FindAction("Castbar1", throwIfNotFound: true);
+        _mPlayerCastbar2 = _mPlayer.FindAction("Castbar2", throwIfNotFound: true);
+        _mPlayerCastbar3 = _mPlayer.FindAction("Castbar3", throwIfNotFound: true);
+        _mPlayerCastbar4 = _mPlayer.FindAction("Castbar4", throwIfNotFound: true);
+        _mPlayerCastbar5 = _mPlayer.FindAction("Castbar5", throwIfNotFound: true);
+        _mPlayerCastbar6 = _mPlayer.FindAction("Castbar6", throwIfNotFound: true);
+        _mPlayerCastbar7 = _mPlayer.FindAction("Castbar7", throwIfNotFound: true);
+        _mPlayerCastInterrupt = _mPlayer.FindAction("CastInterrupt ", throwIfNotFound: true);
+        _mPlayerBlink = _mPlayer.FindAction("Blink", throwIfNotFound: true);
+        _mPlayerFastTarget = _mPlayer.FindAction("FastTarget", throwIfNotFound: true);
         // UI
-        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_OpenSpellBook = m_UI.FindAction("OpenSpellBook", throwIfNotFound: true);
-        m_UI_MousePosition = m_UI.FindAction("MousePosition", throwIfNotFound: true);
-        m_UI_LBM = m_UI.FindAction("LBM", throwIfNotFound: true);
-        m_UI_RBM = m_UI.FindAction("RBM", throwIfNotFound: true);
+        _mUI = Asset.FindActionMap("UI", throwIfNotFound: true);
+        _mUIOpenSpellBook = _mUI.FindAction("OpenSpellBook", throwIfNotFound: true);
+        _mUIMousePosition = _mUI.FindAction("MousePosition", throwIfNotFound: true);
+        _mUILbm = _mUI.FindAction("LBM", throwIfNotFound: true);
+        _mUIRbm = _mUI.FindAction("RBM", throwIfNotFound: true);
     }
 
     public void Dispose()
     {
-        UnityEngine.Object.Destroy(asset);
+        UnityEngine.Object.Destroy(Asset);
     }
 
     public InputBinding? bindingMask
     {
-        get => asset.bindingMask;
-        set => asset.bindingMask = value;
+        get => Asset.bindingMask;
+        set => Asset.bindingMask = value;
     }
 
     public ReadOnlyArray<InputDevice>? devices
     {
-        get => asset.devices;
-        set => asset.devices = value;
+        get => Asset.devices;
+        set => Asset.devices = value;
     }
 
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+    public ReadOnlyArray<InputControlScheme> controlSchemes => Asset.controlSchemes;
 
     public bool Contains(InputAction action)
     {
-        return asset.Contains(action);
+        return Asset.Contains(action);
     }
 
     public IEnumerator<InputAction> GetEnumerator()
     {
-        return asset.GetEnumerator();
+        return Asset.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -595,87 +595,87 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
 
     public void Enable()
     {
-        asset.Enable();
+        Asset.Enable();
     }
 
     public void Disable()
     {
-        asset.Disable();
+        Asset.Disable();
     }
 
     // Player
-    private readonly InputActionMap m_Player;
-    private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_Movement;
-    private readonly InputAction m_Player_Castbar1;
-    private readonly InputAction m_Player_Castbar2;
-    private readonly InputAction m_Player_Castbar3;
-    private readonly InputAction m_Player_Castbar4;
-    private readonly InputAction m_Player_Castbar5;
-    private readonly InputAction m_Player_Castbar6;
-    private readonly InputAction m_Player_Castbar7;
-    private readonly InputAction m_Player_CastInterrupt;
-    private readonly InputAction m_Player_Blink;
-    private readonly InputAction m_Player_FastTarget;
+    private readonly InputActionMap _mPlayer;
+    private IPlayerActions _mPlayerActionsCallbackInterface;
+    private readonly InputAction _mPlayerMovement;
+    private readonly InputAction _mPlayerCastbar1;
+    private readonly InputAction _mPlayerCastbar2;
+    private readonly InputAction _mPlayerCastbar3;
+    private readonly InputAction _mPlayerCastbar4;
+    private readonly InputAction _mPlayerCastbar5;
+    private readonly InputAction _mPlayerCastbar6;
+    private readonly InputAction _mPlayerCastbar7;
+    private readonly InputAction _mPlayerCastInterrupt;
+    private readonly InputAction _mPlayerBlink;
+    private readonly InputAction _mPlayerFastTarget;
     public struct PlayerActions
     {
-        private @PlayerInputActions m_Wrapper;
-        public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_Player_Movement;
-        public InputAction @Castbar1 => m_Wrapper.m_Player_Castbar1;
-        public InputAction @Castbar2 => m_Wrapper.m_Player_Castbar2;
-        public InputAction @Castbar3 => m_Wrapper.m_Player_Castbar3;
-        public InputAction @Castbar4 => m_Wrapper.m_Player_Castbar4;
-        public InputAction @Castbar5 => m_Wrapper.m_Player_Castbar5;
-        public InputAction @Castbar6 => m_Wrapper.m_Player_Castbar6;
-        public InputAction @Castbar7 => m_Wrapper.m_Player_Castbar7;
-        public InputAction @CastInterrupt => m_Wrapper.m_Player_CastInterrupt;
-        public InputAction @Blink => m_Wrapper.m_Player_Blink;
-        public InputAction @FastTarget => m_Wrapper.m_Player_FastTarget;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        private @PlayerInputActions _mWrapper;
+        public PlayerActions(@PlayerInputActions wrapper) { _mWrapper = wrapper; }
+        public InputAction @Movement => _mWrapper._mPlayerMovement;
+        public InputAction @Castbar1 => _mWrapper._mPlayerCastbar1;
+        public InputAction @Castbar2 => _mWrapper._mPlayerCastbar2;
+        public InputAction @Castbar3 => _mWrapper._mPlayerCastbar3;
+        public InputAction @Castbar4 => _mWrapper._mPlayerCastbar4;
+        public InputAction @Castbar5 => _mWrapper._mPlayerCastbar5;
+        public InputAction @Castbar6 => _mWrapper._mPlayerCastbar6;
+        public InputAction @Castbar7 => _mWrapper._mPlayerCastbar7;
+        public InputAction @CastInterrupt => _mWrapper._mPlayerCastInterrupt;
+        public InputAction @Blink => _mWrapper._mPlayerBlink;
+        public InputAction @FastTarget => _mWrapper._mPlayerFastTarget;
+        public InputActionMap Get() { return _mWrapper._mPlayer; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
+        public bool Enabled => Get().enabled;
         public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
         public void SetCallbacks(IPlayerActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
+            if (_mWrapper._mPlayerActionsCallbackInterface != null)
             {
-                @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Castbar1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar1;
-                @Castbar1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar1;
-                @Castbar1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar1;
-                @Castbar2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar2;
-                @Castbar2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar2;
-                @Castbar2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar2;
-                @Castbar3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar3;
-                @Castbar3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar3;
-                @Castbar3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar3;
-                @Castbar4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar4;
-                @Castbar4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar4;
-                @Castbar4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar4;
-                @Castbar5.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar5;
-                @Castbar5.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar5;
-                @Castbar5.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar5;
-                @Castbar6.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar6;
-                @Castbar6.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar6;
-                @Castbar6.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar6;
-                @Castbar7.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar7;
-                @Castbar7.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar7;
-                @Castbar7.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastbar7;
-                @CastInterrupt.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastInterrupt;
-                @CastInterrupt.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastInterrupt;
-                @CastInterrupt.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastInterrupt;
-                @Blink.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlink;
-                @Blink.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlink;
-                @Blink.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlink;
-                @FastTarget.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFastTarget;
-                @FastTarget.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFastTarget;
-                @FastTarget.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFastTarget;
+                @Movement.started -= _mWrapper._mPlayerActionsCallbackInterface.OnMovement;
+                @Movement.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnMovement;
+                @Castbar1.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar1;
+                @Castbar1.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar1;
+                @Castbar1.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar1;
+                @Castbar2.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar2;
+                @Castbar2.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar2;
+                @Castbar2.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar2;
+                @Castbar3.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar3;
+                @Castbar3.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar3;
+                @Castbar3.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar3;
+                @Castbar4.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar4;
+                @Castbar4.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar4;
+                @Castbar4.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar4;
+                @Castbar5.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar5;
+                @Castbar5.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar5;
+                @Castbar5.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar5;
+                @Castbar6.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar6;
+                @Castbar6.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar6;
+                @Castbar6.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar6;
+                @Castbar7.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar7;
+                @Castbar7.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar7;
+                @Castbar7.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastbar7;
+                @CastInterrupt.started -= _mWrapper._mPlayerActionsCallbackInterface.OnCastInterrupt;
+                @CastInterrupt.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnCastInterrupt;
+                @CastInterrupt.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnCastInterrupt;
+                @Blink.started -= _mWrapper._mPlayerActionsCallbackInterface.OnBlink;
+                @Blink.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnBlink;
+                @Blink.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnBlink;
+                @FastTarget.started -= _mWrapper._mPlayerActionsCallbackInterface.OnFastTarget;
+                @FastTarget.performed -= _mWrapper._mPlayerActionsCallbackInterface.OnFastTarget;
+                @FastTarget.canceled -= _mWrapper._mPlayerActionsCallbackInterface.OnFastTarget;
             }
-            m_Wrapper.m_PlayerActionsCallbackInterface = instance;
+            _mWrapper._mPlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Movement.started += instance.OnMovement;
@@ -717,43 +717,43 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     public PlayerActions @Player => new PlayerActions(this);
 
     // UI
-    private readonly InputActionMap m_UI;
-    private IUIActions m_UIActionsCallbackInterface;
-    private readonly InputAction m_UI_OpenSpellBook;
-    private readonly InputAction m_UI_MousePosition;
-    private readonly InputAction m_UI_LBM;
-    private readonly InputAction m_UI_RBM;
+    private readonly InputActionMap _mUI;
+    private IUIActions _mUIActionsCallbackInterface;
+    private readonly InputAction _mUIOpenSpellBook;
+    private readonly InputAction _mUIMousePosition;
+    private readonly InputAction _mUILbm;
+    private readonly InputAction _mUIRbm;
     public struct UIActions
     {
-        private @PlayerInputActions m_Wrapper;
-        public UIActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OpenSpellBook => m_Wrapper.m_UI_OpenSpellBook;
-        public InputAction @MousePosition => m_Wrapper.m_UI_MousePosition;
-        public InputAction @LBM => m_Wrapper.m_UI_LBM;
-        public InputAction @RBM => m_Wrapper.m_UI_RBM;
-        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        private @PlayerInputActions _mWrapper;
+        public UIActions(@PlayerInputActions wrapper) { _mWrapper = wrapper; }
+        public InputAction @OpenSpellBook => _mWrapper._mUIOpenSpellBook;
+        public InputAction @MousePosition => _mWrapper._mUIMousePosition;
+        public InputAction Lbm => _mWrapper._mUILbm;
+        public InputAction Rbm => _mWrapper._mUIRbm;
+        public InputActionMap Get() { return _mWrapper._mUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
+        public bool Enabled => Get().enabled;
         public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
         public void SetCallbacks(IUIActions instance)
         {
-            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            if (_mWrapper._mUIActionsCallbackInterface != null)
             {
-                @OpenSpellBook.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenSpellBook;
-                @OpenSpellBook.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenSpellBook;
-                @OpenSpellBook.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenSpellBook;
-                @MousePosition.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
-                @MousePosition.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
-                @MousePosition.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
-                @LBM.started -= m_Wrapper.m_UIActionsCallbackInterface.OnLBM;
-                @LBM.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnLBM;
-                @LBM.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnLBM;
-                @RBM.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRBM;
-                @RBM.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRBM;
-                @RBM.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRBM;
+                @OpenSpellBook.started -= _mWrapper._mUIActionsCallbackInterface.OnOpenSpellBook;
+                @OpenSpellBook.performed -= _mWrapper._mUIActionsCallbackInterface.OnOpenSpellBook;
+                @OpenSpellBook.canceled -= _mWrapper._mUIActionsCallbackInterface.OnOpenSpellBook;
+                @MousePosition.started -= _mWrapper._mUIActionsCallbackInterface.OnMousePosition;
+                @MousePosition.performed -= _mWrapper._mUIActionsCallbackInterface.OnMousePosition;
+                @MousePosition.canceled -= _mWrapper._mUIActionsCallbackInterface.OnMousePosition;
+                Lbm.started -= _mWrapper._mUIActionsCallbackInterface.OnLBM;
+                Lbm.performed -= _mWrapper._mUIActionsCallbackInterface.OnLBM;
+                Lbm.canceled -= _mWrapper._mUIActionsCallbackInterface.OnLBM;
+                Rbm.started -= _mWrapper._mUIActionsCallbackInterface.OnRBM;
+                Rbm.performed -= _mWrapper._mUIActionsCallbackInterface.OnRBM;
+                Rbm.canceled -= _mWrapper._mUIActionsCallbackInterface.OnRBM;
             }
-            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            _mWrapper._mUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @OpenSpellBook.started += instance.OnOpenSpellBook;
@@ -762,32 +762,32 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @MousePosition.started += instance.OnMousePosition;
                 @MousePosition.performed += instance.OnMousePosition;
                 @MousePosition.canceled += instance.OnMousePosition;
-                @LBM.started += instance.OnLBM;
-                @LBM.performed += instance.OnLBM;
-                @LBM.canceled += instance.OnLBM;
-                @RBM.started += instance.OnRBM;
-                @RBM.performed += instance.OnRBM;
-                @RBM.canceled += instance.OnRBM;
+                Lbm.started += instance.OnLBM;
+                Lbm.performed += instance.OnLBM;
+                Lbm.canceled += instance.OnLBM;
+                Rbm.started += instance.OnRBM;
+                Rbm.performed += instance.OnRBM;
+                Rbm.canceled += instance.OnRBM;
             }
         }
     }
     public UIActions @UI => new UIActions(this);
-    private int m_KeyboardSchemeIndex = -1;
+    private int _mKeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
         get
         {
-            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
-            return asset.controlSchemes[m_KeyboardSchemeIndex];
+            if (_mKeyboardSchemeIndex == -1) _mKeyboardSchemeIndex = Asset.FindControlSchemeIndex("Keyboard");
+            return Asset.controlSchemes[_mKeyboardSchemeIndex];
         }
     }
-    private int m_KeyboardALTSchemeIndex = -1;
-    public InputControlScheme KeyboardALTScheme
+    private int _mKeyboardAltSchemeIndex = -1;
+    public InputControlScheme KeyboardAltScheme
     {
         get
         {
-            if (m_KeyboardALTSchemeIndex == -1) m_KeyboardALTSchemeIndex = asset.FindControlSchemeIndex("KeyboardALT");
-            return asset.controlSchemes[m_KeyboardALTSchemeIndex];
+            if (_mKeyboardAltSchemeIndex == -1) _mKeyboardAltSchemeIndex = Asset.FindControlSchemeIndex("KeyboardALT");
+            return Asset.controlSchemes[_mKeyboardAltSchemeIndex];
         }
     }
     public interface IPlayerActions

@@ -1,33 +1,68 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Data.Enums;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class SpellData
+namespace Data
 {
-    public Sprite Icon {private set; get; }
-    public GameObject PrefubOfSpell {private set; get; }
-    public float Damage {private set; get; }
-    public float Cd {private set; get; }
-    public float CastTime { private set; get; }
-    public Vector3Int ShardsCost {private set; get; }
-    public float ReminderCost {private set; get; }
-    public SpellType Type { private set; get; }
+    public static class SpellData
+    {   
+        private static readonly Dictionary<SpellType, SpellConfig> SpellValues = new Dictionary<SpellType, SpellConfig>
+        {
+            // Примеры конфигураций заклинаний
+            {
+                SpellType.Fireball,
+                new SpellConfig
+                {
+                    Icon = Resources.Load<Image>("Spells/Icons/Fireball"),
+                    ShardCost = new Vector3Int(1, 0, 0), 
+                    ReminderCost = 20f, 
+                    CastTime = 1.5f, 
+                    Cooldown = 3f,
+                    CastBarColor = new Color(1f, 0.3f, 0.1f) 
+                }
+            },
+            {
+                SpellType.Zap,
+                new SpellConfig
+                {
+                    Icon = Resources.Load<Image>("Spells/Icons/Zap"),
+                    ShardCost = new Vector3Int(0, 1, 0),
+                    ReminderCost = 15f,
+                    CastTime = 0.5f,
+                    Cooldown = 2f,
+                    CastBarColor = new Color(0.9f, 0.9f, 0.1f)
+                }
+            },
+            {
+                SpellType.FrostWhirlwind,
+                new SpellConfig
+                {
+                    Icon = Resources.Load<Image>("Spells/Icons/FrostWhirlwind"),
+                    ShardCost = new Vector3Int(0, 0, 1),
+                    ReminderCost = 30f,
+                    CastTime = 2f,
+                    Cooldown = 8f,
+                    CastBarColor = new Color(0.2f, 0.7f, 1f) 
+                }
+            }
+            
+        };
 
-    public SpellData(Sprite icon,GameObject prefubOfSpell, float damage, float cd, float castTime ,Vector3Int shardsCostcost)
-    {
-        Icon = icon;
-        Damage = damage;
-        Cd = cd;
-        ShardsCost = shardsCostcost;
-        CastTime = castTime;
-        PrefubOfSpell = prefubOfSpell;
+        public static SpellConfig GetSpellConfig(SpellType type)
+        {
+            return SpellValues.TryGetValue(type, out SpellConfig config) ? config : null;
+        }
     }
     
-    public SpellData(Sprite icon, GameObject prefubOfSpell, float damage, float cd, float castTime , float reminderCost)
+    //  Иконка - Стоимость шарды - Стоимость остаток - Время каста - Время отката - Цвет кастбара
+    public class SpellConfig
     {
-        Icon = icon;
-        Damage = damage;
-        Cd = cd;
-        ReminderCost = reminderCost;
-        CastTime = castTime;
-        PrefubOfSpell = prefubOfSpell;
+        public Image Icon { get; set; }
+        public Vector3Int ShardCost { get; set; }
+        public float ReminderCost { get; set; }
+        public float CastTime { get; set; }
+        public float Cooldown { get; set; }
+        public Color CastBarColor { get; set; }
     }
 }

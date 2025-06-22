@@ -1,58 +1,60 @@
 ﻿using System.Collections;
+using Data.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class SpellDrag : MonoBehaviour
 {
-    [SerializeField] private SpellTypeData data;
-    [SerializeField] private GameObject corner;
-    private PlayerInputActions playerInputActions;
-    private SpellType draggingSpell;
-    private Vector2 offset = new Vector2(0.5f,-0.5f);
-    private Camera cam;
-    private bool isDragging = false;
-    private float waitabit;
+    [FormerlySerializedAs("data")] [SerializeField] private SpellTypeData _data;
+    [FormerlySerializedAs("corner")] [SerializeField] private GameObject _corner;
+    private PlayerInputActions _playerInputActions;
+    private SpellType _draggingSpell;
+    private Vector2 _offset = new Vector2(0.5f,-0.5f);
+    private Camera _cam;
+    private bool _isDragging = false;
+    private float _waitabit;
 
     private void Awake()
     {
-        playerInputActions = new PlayerInputActions();
-        playerInputActions.UI.LBM.performed += TryToDropASpell;
+        _playerInputActions = new PlayerInputActions();
+        _playerInputActions.UI.Lbm.performed += TryToDropASpell;
     }
 
     private void OnEnable()
     {
-        playerInputActions.UI.Enable();
+        _playerInputActions.UI.Enable();
     }
 
     private void OnDisable()
     {
-        playerInputActions.UI.Disable();
+        _playerInputActions.UI.Disable();
     }
 
     private void Start()
     {
-        cam = Camera.main;
+        _cam = Camera.main;
     }
     private void Update()
     {
-        if (isDragging)
+        if (_isDragging)
         {
-            Vector3 point = cam.ScreenToWorldPoint(playerInputActions.UI.MousePosition.ReadValue<Vector2>());
-            point.x += offset.x;
-            point.y += offset.y;
+            Vector3 point = _cam.ScreenToWorldPoint(_playerInputActions.UI.MousePosition.ReadValue<Vector2>());
+            point.x += _offset.x;
+            point.y += _offset.y;
             point.z += 1f;
             transform.position = point;
         }
-        waitabit = Time.fixedDeltaTime * 15;
+        _waitabit = Time.fixedDeltaTime * 15;
     }
     public void TakeSpell(SpellType type)
     {
-        draggingSpell = type;
-        GetComponent<Image>().sprite = data.GetDataByType(type).Icon;
+        _draggingSpell = type;
+        GetComponent<Image>().sprite = _data.GetDataByType(type).Icon;
         this.GetComponent<Image>().color = new Color(1,1,1,1);
-        corner.SetActive(true);
-        isDragging = true;
+        _corner.SetActive(true);
+        _isDragging = true;
         Cursor.visible = false;
         StopCoroutine("WaitaBit");
     }
@@ -64,14 +66,14 @@ public class SpellDrag : MonoBehaviour
     private void DropSpell()
     {
         this.GetComponent<Image>().color = new Color(1,1,1,0);
-        corner.SetActive(false);
-        isDragging = false;
+        _corner.SetActive(false);
+        _isDragging = false;
         Cursor.visible = true;
     }
 
     private void TryToDropASpell(InputAction.CallbackContext context)
     {
-        if (isDragging)
+        if (_isDragging)
         {
             StartCoroutine(WaitaBit());
         }
@@ -79,17 +81,17 @@ public class SpellDrag : MonoBehaviour
     
     private IEnumerator WaitaBit()
     {
-        yield return new WaitForSeconds(waitabit);
+        yield return new WaitForSeconds(_waitabit);
         DropSpell();
     }
 
     public bool GetIsDragging()
     {
-        return this.isDragging;
+        return this._isDragging;
     }
 
     public SpellType GetSpellType()
     {
-        return this.draggingSpell;
+        return this._draggingSpell;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Data.Enums;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -43,11 +44,11 @@ public class Spell : MonoBehaviour
         switch (_spellType)
         {
             case SpellType.Firewall:
-                _playerInputActions.UI.LBM.started += PlaceFirewall;
+                _playerInputActions.UI.Lbm.started += PlaceFirewall;
                 break;
             
             case SpellType.DeathZone:
-                _playerInputActions.UI.LBM.started += PlaceDeathZone;
+                _playerInputActions.UI.Lbm.started += PlaceDeathZone;
                 break;
         }
     }
@@ -166,7 +167,7 @@ public class Spell : MonoBehaviour
                     this.GetComponent<LineRenderer>().SetPosition(1,_target.transform.position);
                     if (!_isCasted)
                     {
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         _isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
@@ -175,7 +176,7 @@ public class Spell : MonoBehaviour
                     this.GetComponent<LineRenderer>().SetPosition(1,_target.transform.position);
                     if (!_isCasted)
                     {
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         _isCasted = true;
                     }
                     StartCoroutine("InstantSpellAnimation");
@@ -218,12 +219,12 @@ public class Spell : MonoBehaviour
                     break;
                 //direction = direction.normalized * (SpellSpeed * Time.deltaTime);
                 //transform.Translate(direction, Space.World);
-                case SpellType.Frost_whirlwind:
+                case SpellType.FrostWhirlwind:
                     _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
                     if (_distanceToTarget < _minimumDist)
                     {
                         _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, _target);
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
                     _direction = _target.transform.position - transform.position;
@@ -236,7 +237,7 @@ public class Spell : MonoBehaviour
                     if (_distanceToTarget < _minimumDist)
                     {
                         _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, _target);
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
                     _direction = _target.transform.position - transform.position;
@@ -258,7 +259,7 @@ public class Spell : MonoBehaviour
                     if (_distanceToTarget < _minimumDist)
                     {
                         _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.FireMark, _target);
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
                     _direction = _target.transform.position - transform.position;
@@ -270,7 +271,7 @@ public class Spell : MonoBehaviour
                     _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
                     if (_distanceToTarget < _minimumDist)
                     {
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
                     _direction = _target.transform.position - transform.position;
@@ -282,7 +283,7 @@ public class Spell : MonoBehaviour
                     _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
                     if (_distanceToTarget < _minimumDist)
                     {
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         PlaceEntity();
                     }
                     _direction = _target.transform.position - transform.position;
@@ -294,7 +295,7 @@ public class Spell : MonoBehaviour
                     _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
                     if (_distanceToTarget < _minimumDist)
                     {
-                        _target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
+                        _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
                     _direction = _target.transform.position - transform.position;
@@ -309,7 +310,7 @@ public class Spell : MonoBehaviour
     private void PlaceEntity()
     {
         GameObject entity = Instantiate(_entity, transform.position, Quaternion.identity);
-        FB_blast fireballBlast = entity.GetComponent<FB_blast>();
+        FbBlast fireballBlast = entity.GetComponent<FbBlast>();
         Firewall firewall = entity.GetComponent<Firewall>();
         Freeze freeze = entity.GetComponent<Freeze>();
         AvalancheCoreChuncker avalancheCoreChuncker = entity.GetComponent<AvalancheCoreChuncker>();

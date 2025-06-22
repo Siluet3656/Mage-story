@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Data.Enums;
+using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 

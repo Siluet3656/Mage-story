@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Firewall : MonoBehaviour
 {
-    [SerializeField] private float duration;
+    [FormerlySerializedAs("duration")] [SerializeField] private float _duration;
     private float _damage;
     private bool _isWaiting;
     private float _critmultiply;
@@ -16,7 +17,7 @@ public class Firewall : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        HP hp = other.gameObject.GetComponent<HP>();
+        Hp hp = other.gameObject.GetComponent<Hp>();
         if (hp != null)
         {
             hp.StartTakingDamageEachSecond(_damage, _critmultiply, _critchance);
@@ -25,7 +26,7 @@ public class Firewall : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        HP hp = other.gameObject.GetComponent<HP>();
+        Hp hp = other.gameObject.GetComponent<Hp>();
         if (hp != null)
         {
             hp.StopTakingDamageEachSecond();
@@ -34,7 +35,7 @@ public class Firewall : MonoBehaviour
 
     private IEnumerator FirewallDuration()
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(_duration);
         Destroy(this.gameObject);
     }
 

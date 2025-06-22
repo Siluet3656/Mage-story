@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using Data.Enums;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class SpellButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    [SerializeField] private SpellType type;
+    [FormerlySerializedAs("type")] [SerializeField] private SpellType _type;
     private SpellDrag _hand;
 
     private void Start()
@@ -13,11 +15,11 @@ public class SpellButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (type != SpellType.NoSpell)
+        if (_type != SpellType.NoSpell)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                _hand.TakeSpell(type);
+                _hand.TakeSpell(_type);
             }
         }
     }

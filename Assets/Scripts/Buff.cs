@@ -1,20 +1,25 @@
 ﻿using System.Collections;
+using Data.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Buff : MonoBehaviour
 {
+    [FormerlySerializedAs("statusPanel")]
     [Header("Panel")] 
-    [SerializeField] private StatusPanel statusPanel;
+    [SerializeField] private StatusPanel _statusPanel;
     
+    [FormerlySerializedAs("fireAuraDuration")]
     [Header("Buffs")]
-    [SerializeField] private int fireAuraDuration;
-    [SerializeField] private float fireAuraMultAdjust;
-    [SerializeField] private float fireAuraChanceAdjust;
+    [SerializeField] private int _fireAuraDuration;
+    [FormerlySerializedAs("fireAuraMultAdjust")] [SerializeField] private float _fireAuraMultAdjust;
+    [FormerlySerializedAs("fireAuraChanceAdjust")] [SerializeField] private float _fireAuraChanceAdjust;
+    [FormerlySerializedAs("stasysFreezeDuration")]
     [Space] 
-    [SerializeField] private int stasysFreezeDuration;
+    [SerializeField] private int _stasysFreezeDuration;
     
-    private bool isFireAuraApplied = false;
-    private bool isStasisFreezeApplied = false;
+    private bool _isFireAuraApplied = false;
+    private bool _isStasisFreezeApplied = false;
 
     public delegate void DoPlayerFreeze();
     public delegate void DoPlayerUnFreeze();
@@ -30,20 +35,20 @@ public class Buff : MonoBehaviour
         switch (buff)
         {
             case BuffType.FireAura:
-                if (!isFireAuraApplied)
+                if (!_isFireAuraApplied)
                 {
-                    player.SetCritAdjustFire(fireAuraMultAdjust,fireAuraChanceAdjust);
-                    isFireAuraApplied = true;
-                    statusPanel.AddStatus(BuffType.FireAura, player);
+                    player.SetCritAdjustFire(_fireAuraMultAdjust,_fireAuraChanceAdjust);
+                    _isFireAuraApplied = true;
+                    _statusPanel.AddStatus(BuffType.FireAura, player);
                     StartCoroutine(RemoveBuff(BuffType.FireAura, player));
                 }
                 break;
             case BuffType.StasisFreeze:
-                if (!isStasisFreezeApplied)
+                if (!_isStasisFreezeApplied)
                 {
                     OnPlayerFreeze?.Invoke();
-                    isStasisFreezeApplied = true;
-                    statusPanel.AddStatus(BuffType.StasisFreeze, player);
+                    _isStasisFreezeApplied = true;
+                    _statusPanel.AddStatus(BuffType.StasisFreeze, player);
                     StartCoroutine(RemoveBuff(BuffType.StasisFreeze, player));
                 }
                 break;
@@ -55,11 +60,11 @@ public class Buff : MonoBehaviour
         switch (buff)
         {
             case BuffType.StasisFreeze:
-                if (!isStasisFreezeApplied)
+                if (!_isStasisFreezeApplied)
                 {
                     OnEnemyFreeze?.Invoke();
-                    isStasisFreezeApplied = true;
-                    statusPanel.AddStatus(BuffType.StasisFreeze, enemy);
+                    _isStasisFreezeApplied = true;
+                    _statusPanel.AddStatus(BuffType.StasisFreeze, enemy);
                     StartCoroutine(RemoveBuff(BuffType.StasisFreeze, enemy));
                 }
                 break;
@@ -71,16 +76,16 @@ public class Buff : MonoBehaviour
         switch (type)
         {
             case BuffType.FireAura:
-                yield return new WaitForSeconds(fireAuraDuration);
+                yield return new WaitForSeconds(_fireAuraDuration);
                 player.SetCritAdjustFire(1,1);
-                isFireAuraApplied = false;
-                statusPanel.RemoveStatus(BuffType.FireAura, player);
+                _isFireAuraApplied = false;
+                _statusPanel.RemoveStatus(BuffType.FireAura, player);
                 break;
             case BuffType.StasisFreeze:
-                yield return new WaitForSeconds(stasysFreezeDuration);
+                yield return new WaitForSeconds(_stasysFreezeDuration);
                 OnPlayerUnFreeze?.Invoke();
-                isStasisFreezeApplied = false;
-                statusPanel.RemoveStatus(BuffType.StasisFreeze, player);
+                _isStasisFreezeApplied = false;
+                _statusPanel.RemoveStatus(BuffType.StasisFreeze, player);
                 break;
         }
     }
@@ -90,10 +95,10 @@ public class Buff : MonoBehaviour
         switch (type)
         {
             case BuffType.StasisFreeze:
-                yield return new WaitForSeconds(stasysFreezeDuration);
+                yield return new WaitForSeconds(_stasysFreezeDuration);
                 OnEnemyUnFreeze?.Invoke();
-                isStasisFreezeApplied = false;
-                statusPanel.RemoveStatus(BuffType.StasisFreeze, enemy);
+                _isStasisFreezeApplied = false;
+                _statusPanel.RemoveStatus(BuffType.StasisFreeze, enemy);
                 break;
         }
     }
