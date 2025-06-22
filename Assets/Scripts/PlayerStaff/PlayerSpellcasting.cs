@@ -1,46 +1,50 @@
 ﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 using Data;
 using Data.Enums;
-using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
+
 
 namespace PlayerStaff
 {
+    [RequireComponent(typeof(SpellResources))]
+    [RequireComponent(typeof(PlayerTargeting))]
     public class PlayerSpellcasting : MonoBehaviour
     {
-        [SerializeField] private SpellTypeData _spellData;
         [SerializeField] private Image _castBar;
-        [SerializeField] private float _globalCooldown = 0.5f;
 
+        private PlayerStats _stats;
         private SpellResources _resources;
         private PlayerTargeting _targeting;
         private bool _isCasting;
         private float _currentCastTime;
+        private float _globalCooldown;
         private float _globalCooldownTimer;
 
         private void Awake()
         {
             _resources = GetComponent<SpellResources>();
             _targeting = GetComponent<PlayerTargeting>();
+            _stats = new PlayerStats();
+            _globalCooldown = _stats.GlobalCooldown;
         }
 
         public void CastSpell(SpellType spellType)
         {
-            if (_isCasting || _globalCooldownTimer > 0 || !_targeting.HasTarget) return;
+            if (_isCasting || _globalCooldownTimer > 0 || _targeting.HasTarget == false) return;
 
-            var spellInfo = _spellData.GetDataByType(spellType);
+            SpellConfig spellConfig = SpellData.GetSpellConfig(spellType);
 
-            if (!_resources.HasEnoughResources(spellInfo.ShardsCost, spellInfo.ReminderCost)) return;
+            if (_resources.HasEnoughResources(spellConfig.ShardCost, spellConfig.ReminderCost) == false) return;
 
-            StartCoroutine(CastSpellRoutine(spellInfo));
+            StartCoroutine(CastSpellRoutine(spellConfig));
         }
 
-        private IEnumerator CastSpellRoutine(SpellData spellInfo)
+        private IEnumerator CastSpellRoutine(SpellConfig config)
         {
             _isCasting = true;
-            _castBar.color = GetSpellColor(spellInfo.Type);
-            _currentCastTime = spellInfo.CastTime;
+            _castBar.color = config.CastBarColor;
+            _currentCastTime = config.CastTime;
 
             // Cast bar progress
             float timer = 0;
@@ -52,9 +56,9 @@ namespace PlayerStaff
             }
 
             // Create spell and consume resources
-            var spell = Instantiate(spellInfo.PrefubOfSpell, transform.position, Quaternion.identity);
+            //var spell = Instantiate(spellInfo.PrefubOfSpell, transform.position, Quaternion.identity);
             //spell.SetTarget(_targeting.CurrentTarget);
-            _resources.ConsumeResources(spellInfo.ShardsCost, spellInfo.ReminderCost);
+            _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
 
             // Global cooldown
             _globalCooldownTimer = _globalCooldown;
@@ -66,13 +70,6 @@ namespace PlayerStaff
 
             _isCasting = false;
             _castBar.fillAmount = 0;
-        }
-
-        private Color GetSpellColor(SpellType type)
-        {
-            // Return appropriate color based on spell type
-            // (Implementation from original code)
-            return new Color(0,0,0);
         }
     }
 }

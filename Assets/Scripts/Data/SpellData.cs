@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Data.Enums;
 using UnityEngine;
 using UnityEngine.UI;
+using Data.Enums;
 
 namespace Data
 {

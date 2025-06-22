@@ -2,6 +2,7 @@
 {
     public class PlayerStats
     {
+        public float GlobalCooldown { get; private set; } = 0.5f;
         public float FireCritMultiplier { get; private set; } = 1f;
         public float FireCritChance { get; private set; } = 1f;
         public float FrostCritMultiplier { get; private set; } = 1f;

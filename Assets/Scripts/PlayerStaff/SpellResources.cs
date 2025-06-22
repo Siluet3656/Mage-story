@@ -1,7 +1,6 @@
-﻿using Data.Enums;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using Data.Enums;
 
 namespace PlayerStaff
 {
