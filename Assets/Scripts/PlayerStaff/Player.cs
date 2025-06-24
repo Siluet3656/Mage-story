@@ -1,8 +1,9 @@
-﻿/*using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Data.Enums;
+using UI.Buttons;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -15,7 +16,7 @@ public class Player : MonoBehaviour
     
     [FormerlySerializedAs("data")]
     [Header("Spell")]
-    [SerializeField] private SpellTypeData _data;
+    //[SerializeField] private SpellTypeData _data;
     [FormerlySerializedAs("CastBar")] [SerializeField] private Image _castBar = null;
     [FormerlySerializedAs("RemainderBar")] [SerializeField] private Image _remainderBar = null;
     [FormerlySerializedAs("spellBarCells")] [SerializeField] private SpellBarButton[] _spellBarCells;
@@ -239,7 +240,7 @@ public class Player : MonoBehaviour
 
         //SpellData data = this.data.GetDataByType(SpellType.Fireball);
         
-        _fireBallPrefab = _data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
+        /*_fireBallPrefab = _data.GetDataByType(SpellType.Fireball).PrefubOfSpell;
         _frostWhirlwindPrefab = _data.GetDataByType(SpellType.FrostWhirlwind).PrefubOfSpell;
         _spikePrefab = _data.GetDataByType(SpellType.Spike).PrefubOfSpell;
         _zapPrefub = _data.GetDataByType(SpellType.Zap).PrefubOfSpell;
@@ -281,7 +282,7 @@ public class Player : MonoBehaviour
         _frostAegisCost = _data.GetDataByType(SpellType.FrostAegis).ShardsCost;
         _avalancheCoreCost = _data.GetDataByType(SpellType.AvalancheCore).ShardsCost;
         _earthShieldCost = _data.GetDataByType(SpellType.EarthShield).ShardsCost;
-        _deathZoneCost = _data.GetDataByType(SpellType.DeathZone).ShardsCost;
+        _deathZoneCost = _data.GetDataByType(SpellType.DeathZone).ShardsCost;*/
     }
 
     private void Update()
@@ -1371,4 +1372,3 @@ public class Player : MonoBehaviour
                (_esAmount >= cost.z);
     }
 }
-*/

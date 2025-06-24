@@ -2,30 +2,33 @@
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class Menu : MonoBehaviour
+namespace UI
 {
-    [FormerlySerializedAs("spellbook")] [SerializeField] private CanvasGroup _spellbook;
-    private PlayerInputActions _playerInputActions;
-
-    private void Awake()
+    public class Menu : MonoBehaviour
     {
-        _playerInputActions = new PlayerInputActions();
-        _playerInputActions.UI.OpenSpellBook.performed += SwitchSpellBookState;
-    }
+        [FormerlySerializedAs("spellbook")] [SerializeField] private CanvasGroup _spellbook;
+        private PlayerInputActions _playerInputActions;
 
-    private void OnEnable()
-    {
-        _playerInputActions.Enable();
-    }
+        private void Awake()
+        {
+            _playerInputActions = new PlayerInputActions();
+            _playerInputActions.UI.OpenSpellBook.performed += SwitchSpellBookState;
+        }
 
-    private void OnDisable()
-    {
-        _playerInputActions.Disable();
-    }
+        private void OnEnable()
+        {
+            _playerInputActions.Enable();
+        }
 
-    private void SwitchSpellBookState(InputAction.CallbackContext context)
-    {
-        _spellbook.alpha = _spellbook.alpha > 0 ? 0 : 1;
-        _spellbook.blocksRaycasts = _spellbook.blocksRaycasts? false : true;
+        private void OnDisable()
+        {
+            _playerInputActions.Disable();
+        }
+
+        private void SwitchSpellBookState(InputAction.CallbackContext context)
+        {
+            _spellbook.alpha = _spellbook.alpha > 0 ? 0 : 1;
+            _spellbook.blocksRaycasts = _spellbook.blocksRaycasts? false : true;
+        }
     }
 }

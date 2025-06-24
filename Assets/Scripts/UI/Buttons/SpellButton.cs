@@ -3,34 +3,37 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
-public class SpellButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+namespace UI.Buttons
 {
-    [FormerlySerializedAs("type")] [SerializeField] private SpellType _type;
-    private SpellDrag _hand;
-
-    private void Start()
+    public class SpellButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        _hand = FindObjectsOfType<SpellDrag>()[0];
-    }
+        [FormerlySerializedAs("type")] [SerializeField] private SpellType _type;
+        private SpellDrag _hand;
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (_type != SpellType.NoSpell)
+        private void Start()
         {
-            if (eventData.button == PointerEventData.InputButton.Left)
+            _hand = FindObjectsOfType<SpellDrag>()[0];
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            if (_type != SpellType.NoSpell)
             {
-                _hand.TakeSpell(_type);
+                if (eventData.button == PointerEventData.InputButton.Left)
+                {
+                    _hand.TakeSpell(_type);
+                }
             }
         }
-    }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
+        public void OnEndDrag(PointerEventData eventData)
+        {
         
-    }
+        }
 
-    public void OnDrag(PointerEventData eventData)
-    {
+        public void OnDrag(PointerEventData eventData)
+        {
         
+        }
     }
 }

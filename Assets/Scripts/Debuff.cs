@@ -2,6 +2,7 @@
 using System.Collections;
 using Data;
 using Data.Enums;
+using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 

@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Spell : MonoBehaviour
 {
-    [SerializeField] private SpellTypeData _data;
+    //[SerializeField] private SpellTypeData _data;
     [SerializeField] private SpellType _spellType;
     [SerializeField] private float _spellSpeed = 0;
     [SerializeField] private GameObject _entity;
@@ -79,7 +79,7 @@ public class Spell : MonoBehaviour
         }
         else
         {
-            _spellDamage = _data.GetDataByType(_spellType).Damage;
+            //_spellDamage = _data.GetDataByType(_spellType).Damage;
         }
     }
 

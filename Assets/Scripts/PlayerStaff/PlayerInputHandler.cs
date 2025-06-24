@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UI.Buttons;
+using UnityEngine;
 
 namespace PlayerStaff
 {
@@ -14,11 +15,11 @@ namespace PlayerStaff
 
         private PlayerMovement _movement;
         private PlayerTargeting _targeting;
-        private PlayerSpellcasting _spellCasting;
+        private PlayerSpellCasting _spellCasting;
 
         private void Awake()
         {
-            _spellCasting = GetComponent<PlayerSpellcasting>();
+            _spellCasting = GetComponent<PlayerSpellCasting>();
             _movement = GetComponent<PlayerMovement>();
             _targeting = GetComponent<PlayerTargeting>();
             

@@ -3,27 +3,33 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SpellBarButton : MonoBehaviour, IPointerClickHandler
+namespace UI.Buttons
 {
-    private SpellDrag _hand;
-    private SpellType _currentSpell;
+    [RequireComponent(typeof(Image))]
+    public class SpellBarButton : MonoBehaviour, IPointerClickHandler
+    {
+        private Image _icon;
+        private SpellDrag _hand;
+        private SpellType _currentSpell;
 
-    private void Start()
-    {
-        _hand = FindObjectsOfType<SpellDrag>()[0];
-    }
-    
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (_hand.GetIsDragging())
+        private void Awake()
         {
-            _hand.PlaceSpell(this.GetComponent<Image>());
-            this._currentSpell = _hand.GetSpellType();
+            _hand = FindObjectsOfType<SpellDrag>()[0];
+            _icon = GetComponent<Image>();
         }
-    }
+    
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (_hand.GetIsDragging())
+            {
+                _hand.PlaceSpell(_icon);
+                _currentSpell = _hand.GetSpellType();
+            }
+        }
 
-    public SpellType GetSpellType()
-    {
-        return this._currentSpell;
+        public SpellType GetSpellType()
+        {
+            return _currentSpell;
+        }
     }
 }

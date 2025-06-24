@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Data.Enums;
+using UI;
 
 namespace PlayerStaff
 {
+    [RequireComponent(typeof(PlayerUI))]
     public class SpellResources : MonoBehaviour
     {
+        [Header("Shards")]
+        [SerializeField] private float _shardRefreshTime = 5f;
+        [Header("Remainder")]
         [SerializeField] private int _maxRemainder = 100;
-        [SerializeField] private Image _remainderBar;
-        [SerializeField] private Image[] _fireShards;
-        [SerializeField] private Image[] _frostShards;
-        [SerializeField] private Image[] _earthShards;
 
+        private PlayerUI _ui;
+        
         private int _currentRemainder;
         private int _fireShardCount;
         private int _frostShardCount;
@@ -22,10 +24,11 @@ namespace PlayerStaff
         private float[] _earthShardRefreshTimers;
 
         private const int MaxShards = 3;
-        private const float ShardRefreshTime = 5f;
 
-        private void Start()
+        private void Awake()
         {
+            _ui = GetComponent<PlayerUI>();
+            
             _fireShardCount = MaxShards;
             _frostShardCount = MaxShards;
             _earthShardCount = MaxShards;
@@ -39,22 +42,6 @@ namespace PlayerStaff
         {
             UpdateShardRefreshTimers();
             UpdateUI();
-        }
-
-        public bool HasEnoughResources(Vector3Int shardCost, float remainderCost)
-        {
-            return _fireShardCount >= shardCost.x &&
-                   _frostShardCount >= shardCost.y &&
-                   _earthShardCount >= shardCost.z &&
-                   _currentRemainder >= remainderCost;
-        }
-
-        public void ConsumeResources(Vector3Int shardCost, float remainderCost)
-        {
-            UseShards(ShardType.FireShard, shardCost.x);
-            UseShards(ShardType.FrostShard, shardCost.y);
-            UseShards(ShardType.EarthShard, shardCost.z);
-            _currentRemainder -= (int)remainderCost;
         }
 
         private void UseShards(ShardType type, int amount)
@@ -88,7 +75,7 @@ namespace PlayerStaff
                 {
                     if (timers[j] <= 0)
                     {
-                        timers[j] = ShardRefreshTime;
+                        timers[j] = _shardRefreshTime;
                         break;
                     }
                 }
@@ -124,22 +111,29 @@ namespace PlayerStaff
 
         private void UpdateUI()
         {
-            _remainderBar.fillAmount = (float)_currentRemainder / _maxRemainder;
-
-            // Update shard UI visuals
-            UpdateShardUI(_fireShards, _fireShardRefreshTimers);
-            UpdateShardUI(_frostShards, _frostShardRefreshTimers);
-            UpdateShardUI(_earthShards, _earthShardRefreshTimers);
+            _ui.UpdateReminderBar((float)_currentRemainder / _maxRemainder);
+            
+            _ui.UpdateShardsUI(ShardType.FireShard, _fireShardRefreshTimers, _shardRefreshTime);
+            _ui.UpdateShardsUI(ShardType.FrostShard, _frostShardRefreshTimers, _shardRefreshTime);
+            _ui.UpdateShardsUI(ShardType.EarthShard, _earthShardRefreshTimers, _shardRefreshTime);
+        }
+        
+        
+        
+        public bool HasEnoughResources(Vector3Int shardCost, float remainderCost)
+        {
+            return _fireShardCount >= shardCost.x &&
+                   _frostShardCount >= shardCost.y &&
+                   _earthShardCount >= shardCost.z &&
+                   _currentRemainder >= remainderCost;
         }
 
-        private void UpdateShardUI(Image[] shardImages, float[] timers)
+        public void ConsumeResources(Vector3Int shardCost, float remainderCost)
         {
-            for (int i = 0; i < shardImages.Length; i++)
-            {
-                shardImages[i].fillAmount = timers[i] > 0
-                    ? 1 - (timers[i] / ShardRefreshTime)
-                    : 1;
-            }
+            UseShards(ShardType.FireShard, shardCost.x);
+            UseShards(ShardType.FrostShard, shardCost.y);
+            UseShards(ShardType.EarthShard, shardCost.z);
+            _currentRemainder -= (int)remainderCost;
         }
     }
 }
