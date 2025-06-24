@@ -44,6 +44,8 @@ namespace PlayerStaff
             _inputActions.Player.Castbar6.started += ctx => OnSpellBarButton(5);
             _inputActions.Player.Castbar7.started += ctx => OnSpellBarButton(6);
 
+            _inputActions.Player.CastInterrupt.started += ctx => OnCastInterrupt();
+
             _inputActions.UI.MousePosition.performed += ctx => OnMouseMove(ctx.ReadValue<Vector2>());
             
             _mainCamera = Camera.main;
@@ -104,6 +106,11 @@ namespace PlayerStaff
             {
                 _spellCasting.CastSpell(_spellBarButtons[buttonIndex].GetSpellType());
             }
+        }
+
+        private void OnCastInterrupt()
+        {
+            _spellCasting.StopCast();
         }
     }
 }

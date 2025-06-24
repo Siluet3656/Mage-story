@@ -31,13 +31,12 @@ namespace PlayerStaff
             _stats = new PlayerStats();
             _globalCooldown = _stats.GlobalCooldown;
         }
-
-        private IEnumerator CastSpellRoutine(SpellConfig config)
+        
+        private IEnumerator CastSpellWithCastTime(SpellConfig config)
         {
             _isCasting = true;
             _ui.SetCastBarColor(config.CastBarColor);
             _currentCastTime = config.CastTime;
-
             _globalCooldownTimer = _globalCooldown;
 
             float castTimer = 0;
@@ -56,22 +55,36 @@ namespace PlayerStaff
 
                 yield return null;
             }
-
-            _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
-
             _isCasting = false;
             _ui.ChangeCastBarFillAmount(0);
+            
+            _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
+        }
+        
+        private void CastSpellInstantly(SpellConfig config)
+        {
+            _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
         }
         
         public void CastSpell(SpellType spellType)
         {
-            if (_isCasting || _globalCooldownTimer > 0 || _targeting.HasTarget == false) return;
+            if (_isCasting || _globalCooldownTimer > 0) return;
 
             SpellConfig spellConfig = SpellData.GetSpellConfig(spellType);
 
             if (_resources.HasEnoughResources(spellConfig.ShardCost, spellConfig.ReminderCost) == false) return;
-            _spellCastRoutine = CastSpellRoutine(spellConfig);
-            StartCoroutine(_spellCastRoutine);
+            if (spellConfig.RequireTarget && _targeting.HasTarget == false) return;
+                
+            if (spellConfig.CastTime > 0)
+            {
+                _spellCastRoutine = CastSpellWithCastTime(spellConfig);
+                StartCoroutine(_spellCastRoutine);
+            }
+            else
+            {
+                CastSpellInstantly(spellConfig);
+            }
+            
         }
 
         public void StopCast()
@@ -79,6 +92,7 @@ namespace PlayerStaff
             if (_isCasting == false) return;
             
             StopCoroutine(_spellCastRoutine);
+            _spellCastRoutine = null;
         }
     }
 }

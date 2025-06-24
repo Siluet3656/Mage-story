@@ -17,7 +17,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 0f, 0f) 
+                    CastBarColor = new Color(0f, 0f, 0f),
+                    RequireTarget = false
                 }
             },
             {
@@ -29,7 +30,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 3f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(1f, 0.1f, 0.1f) 
+                    CastBarColor = new Color(1f, 0.1f, 0.1f),
+                    RequireTarget = true
                 }
             },
             {
@@ -41,7 +43,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.8f, 0.3f, 0.1f) 
+                    CastBarColor = new Color(0.8f, 0.3f, 0.1f),
+                    RequireTarget = false
                 }
             },
             {
@@ -53,7 +56,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 2f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(1f, 0.3f, 0.1f) 
+                    CastBarColor = new Color(1f, 0.3f, 0.1f),
+                    RequireTarget = false
                 }
             },
             {
@@ -65,7 +69,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 1f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.8f, 0.3f, 0.2f) 
+                    CastBarColor = new Color(0.8f, 0.3f, 0.2f),
+                    RequireTarget = false
                 }
             },
             {
@@ -77,7 +82,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.8f, 0.3f, 0.2f) 
+                    CastBarColor = new Color(0.8f, 0.3f, 0.2f),
+                    RequireTarget = false
                 }
             },
             {
@@ -89,7 +95,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0.5f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(1f, 0.5f, 0.2f) 
+                    CastBarColor = new Color(1f, 0.5f, 0.2f),
+                    RequireTarget = true
                 }
             },
             {
@@ -101,7 +108,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 4f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(1f, 0f, 0.2f) 
+                    CastBarColor = new Color(1f, 0f, 0.2f),
+                    RequireTarget = true
                 }
             },
             {
@@ -113,7 +121,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 4f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 1f, 1f) 
+                    CastBarColor = new Color(0f, 1f, 1f),
+                    RequireTarget = true
                 }
             },
             {
@@ -125,7 +134,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 1f, 1f) 
+                    CastBarColor = new Color(0f, 1f, 1f),
+                    RequireTarget = false
                 }
             },
             {
@@ -137,7 +147,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 1f, 1f) 
+                    CastBarColor = new Color(0f, 1f, 1f),
+                    RequireTarget = false
                 }
             },
             {
@@ -149,7 +160,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 1f, 1f) 
+                    CastBarColor = new Color(0f, 1f, 1f),
+                    RequireTarget = false
                 }
             },
             {
@@ -161,7 +173,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 4f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 1f, 1f) 
+                    CastBarColor = new Color(0f, 1f, 1f),
+                    RequireTarget = true
                 }
             },
             {
@@ -173,7 +186,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 1f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.1f, 0.4f, 1f) 
+                    CastBarColor = new Color(0.1f, 0.4f, 1f),
+                    RequireTarget = true
                 }
             },
             {
@@ -185,7 +199,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 4f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.1f, 0f, 1f) 
+                    CastBarColor = new Color(0.1f, 0f, 1f),
+                    RequireTarget = true
                 }
             },
             {
@@ -197,7 +212,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 3f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.4f, 1f, 0.2f) 
+                    CastBarColor = new Color(0.4f, 1f, 0.2f),
+                    RequireTarget = true
                 }
             },
             {
@@ -209,7 +225,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.4f, 1f, 0.2f) 
+                    CastBarColor = new Color(0.4f, 1f, 0.2f),
+                    RequireTarget = false
                 }
             },
             {
@@ -221,7 +238,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 0f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.4f, 1f, 0.2f) 
+                    CastBarColor = new Color(0.4f, 1f, 0.2f),
+                    RequireTarget = false
                 }
             },
             {
@@ -233,7 +251,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 1f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.5f, 1f, 0.3f) 
+                    CastBarColor = new Color(0.5f, 1f, 0.3f),
+                    RequireTarget = true
                 }
             },
             {
@@ -245,7 +264,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 1f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 1f, 0.4f) 
+                    CastBarColor = new Color(0f, 1f, 0.4f),
+                    RequireTarget = true
                 }
             },
             {
@@ -257,7 +277,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 2f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0.5f, 0.7f, 0.2f) 
+                    CastBarColor = new Color(0.5f, 0.7f, 0.2f),
+                    RequireTarget = false
                 }
             },
             {
@@ -269,7 +290,8 @@ namespace Data
                     ReminderCost = 0f, 
                     CastTime = 4f, 
                     Cooldown = 0f,
-                    CastBarColor = new Color(0f, 0.5f, 0f) 
+                    CastBarColor = new Color(0f, 0.5f, 0f),
+                    RequireTarget = true
                 }
             }
         };
@@ -280,7 +302,7 @@ namespace Data
         }
     }
     
-    //  Иконка - Стоимость шарды - Стоимость остаток - Время каста - Время отката - Цвет кастбара
+    //  Иконка - Стоимость шарды - Стоимость остаток - Время каста - Время отката - Цвет кастбара - Нужна ли цель
     public class SpellConfig
     {
         public Sprite Icon { get; set; }
@@ -289,5 +311,6 @@ namespace Data
         public float CastTime { get; set; }
         public float Cooldown { get; set; }
         public Color CastBarColor { get; set; }
+        public bool RequireTarget { get; set; }
     }
 }
