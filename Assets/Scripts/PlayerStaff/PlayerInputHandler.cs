@@ -1,5 +1,6 @@
-﻿using UI.Buttons;
-using UnityEngine;
+﻿using UnityEngine;
+using UI;
+using UI.Buttons;
 
 namespace PlayerStaff
 {
@@ -16,6 +17,8 @@ namespace PlayerStaff
         private PlayerMovement _movement;
         private PlayerTargeting _targeting;
         private PlayerSpellCasting _spellCasting;
+
+        private SpellDrag _hand;
 
         private void Awake()
         {
@@ -40,6 +43,8 @@ namespace PlayerStaff
             _inputActions.Player.Castbar5.started += ctx => OnSpellBarButton(4);
             _inputActions.Player.Castbar6.started += ctx => OnSpellBarButton(5);
             _inputActions.Player.Castbar7.started += ctx => OnSpellBarButton(6);
+
+            _inputActions.UI.MousePosition.performed += ctx => OnMouseMove(ctx.ReadValue<Vector2>());
             
             _mainCamera = Camera.main;
 
@@ -47,6 +52,8 @@ namespace PlayerStaff
             {
                 Debug.Log("NO CAMERA!!!");
             }
+            
+            _hand = FindObjectsOfType<SpellDrag>()[0];
         }
         
         private void OnEnable() => _inputActions.Enable();
@@ -74,9 +81,21 @@ namespace PlayerStaff
 
         private void OnLeftMouseButtonClicked()
         {
-            Ray ray = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-            _targeting.OnMouseTargetSelect(hit);
+            if (_hand.CheckDraggingStatus())
+            {
+                _hand.TryToDropASpell();
+            }
+            else
+            {
+                Ray ray = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+                _targeting.OnMouseTargetSelect(hit);
+            }
+        }
+
+        private void OnMouseMove(Vector2 point)
+        {
+            _hand.SetPoint(_mainCamera.ScreenToWorldPoint(point));
         }
         
         private void OnSpellBarButton(int buttonIndex)

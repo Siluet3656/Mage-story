@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Data.Enums;
 
 namespace Data
@@ -9,12 +8,11 @@ namespace Data
     {   
         private static readonly Dictionary<SpellType, SpellConfig> SpellValues = new Dictionary<SpellType, SpellConfig>
         {
-            // Примеры конфигураций заклинаний
             {
                 SpellType.NoSpell,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/EmptyIconspot"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/EmptyIconSpot"),
                     ShardCost = new Vector3Int(0, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -26,7 +24,7 @@ namespace Data
                 SpellType.Fireball,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Fire/Fireball"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Fireball"),
                     ShardCost = new Vector3Int(1, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 3f, 
@@ -38,7 +36,7 @@ namespace Data
                 SpellType.Boom,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Fire/Boom"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Boom"),
                     ShardCost = new Vector3Int(1, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -50,7 +48,7 @@ namespace Data
                 SpellType.Firewall,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Fire/Firewall"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firewall"),
                     ShardCost = new Vector3Int(1, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 2f, 
@@ -62,7 +60,7 @@ namespace Data
                 SpellType.Firespirit,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Fire/Firespirit"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firespirit"),
                     ShardCost = new Vector3Int(1, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 1f, 
@@ -74,7 +72,7 @@ namespace Data
                 SpellType.Fireaura,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Fire/Fireaura"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Fireaura"),
                     ShardCost = new Vector3Int(1, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -86,7 +84,7 @@ namespace Data
                 SpellType.Firemark,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Fire/Firemark"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firemark"),
                     ShardCost = new Vector3Int(1, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 0.5f, 
@@ -98,7 +96,7 @@ namespace Data
                 SpellType.Firelaser,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Fire/Firelaser"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firelaser"),
                     ShardCost = new Vector3Int(1, 0, 0), 
                     ReminderCost = 0f, 
                     CastTime = 4f, 
@@ -110,7 +108,7 @@ namespace Data
                 SpellType.FrostWhirlwind,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Frost/FrostWhirlwind"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/FrostWhirlwind"),
                     ShardCost = new Vector3Int(0, 1, 0), 
                     ReminderCost = 0f, 
                     CastTime = 4f, 
@@ -122,7 +120,7 @@ namespace Data
                 SpellType.FlashFreeze,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Frost/FlashFreeze"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/FlashFreeze"),
                     ShardCost = new Vector3Int(0, 1, 0), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -134,7 +132,7 @@ namespace Data
                 SpellType.FrostAegis,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Frost/FrostWhirlwind"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/FrostWhirlwind"),
                     ShardCost = new Vector3Int(0, 1, 0), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -146,7 +144,7 @@ namespace Data
                 SpellType.StasisFreeze,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Frost/StasisFreeze"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/StasisFreeze"),
                     ShardCost = new Vector3Int(0, 1, 0), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -158,7 +156,7 @@ namespace Data
                 SpellType.IcicleBarrage,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Frost/IcicleBarrage"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/IcicleBarrage"),
                     ShardCost = new Vector3Int(0, 1, 0), 
                     ReminderCost = 0f, 
                     CastTime = 4f, 
@@ -170,7 +168,7 @@ namespace Data
                 SpellType.CryoLeach,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Frost/CryoLeach"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/CryoLeach"),
                     ShardCost = new Vector3Int(0, 1, 0), 
                     ReminderCost = 0f, 
                     CastTime = 1f, 
@@ -182,7 +180,7 @@ namespace Data
                 SpellType.AvalancheCore,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Frost/AvalancheCore"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/AvalancheCore"),
                     ShardCost = new Vector3Int(0, 1, 0), 
                     ReminderCost = 0f, 
                     CastTime = 4f, 
@@ -194,7 +192,7 @@ namespace Data
                 SpellType.Spike,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Earth/Spike"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/Spike"),
                     ShardCost = new Vector3Int(0, 0, 1), 
                     ReminderCost = 0f, 
                     CastTime = 3f, 
@@ -206,7 +204,7 @@ namespace Data
                 SpellType.EarthShield,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Earth/EarthShield"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/EarthShield"),
                     ShardCost = new Vector3Int(0, 0, 1), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -218,7 +216,7 @@ namespace Data
                 SpellType.DeathZone,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Earth/DeathZone"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/DeathZone"),
                     ShardCost = new Vector3Int(0, 0, 1), 
                     ReminderCost = 0f, 
                     CastTime = 0f, 
@@ -230,7 +228,7 @@ namespace Data
                 SpellType.NaturePower,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Earth/NaturePower"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/NaturePower"),
                     ShardCost = new Vector3Int(0, 0, 1), 
                     ReminderCost = 0f, 
                     CastTime = 1f, 
@@ -242,7 +240,7 @@ namespace Data
                 SpellType.Plague,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Earth/Plague"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/Plague"),
                     ShardCost = new Vector3Int(0, 0, 1), 
                     ReminderCost = 0f, 
                     CastTime = 1f, 
@@ -254,7 +252,7 @@ namespace Data
                 SpellType.Flower,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Earth/Flower"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/Flower"),
                     ShardCost = new Vector3Int(0, 0, 1), 
                     ReminderCost = 0f, 
                     CastTime = 2f, 
@@ -266,7 +264,7 @@ namespace Data
                 SpellType.NatureWraith,
                 new SpellConfig
                 {
-                    Icon = Resources.Load<Image>("Sprites/UI/SkillIcons/Earth/NatureWraith"),
+                    Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/NatureWraith"),
                     ShardCost = new Vector3Int(0, 0, 1), 
                     ReminderCost = 0f, 
                     CastTime = 4f, 
@@ -285,7 +283,7 @@ namespace Data
     //  Иконка - Стоимость шарды - Стоимость остаток - Время каста - Время отката - Цвет кастбара
     public class SpellConfig
     {
-        public Image Icon { get; set; }
+        public Sprite Icon { get; set; }
         public Vector3Int ShardCost { get; set; }
         public float ReminderCost { get; set; }
         public float CastTime { get; set; }

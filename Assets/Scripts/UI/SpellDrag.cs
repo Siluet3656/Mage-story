@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using Data;
 using Data.Enums;
 using UnityEngine.UI;
 
@@ -8,91 +8,90 @@ namespace UI
 {
     public class SpellDrag : MonoBehaviour
     {
-        [SerializeField] private GameObject _corner;
-        private PlayerInputActions _playerInputActions;
+        private GameObject _corner;
+        private Image _handIcon;
         private SpellType _draggingSpell;
+        private Vector3 _point;
+        private bool _isDragging;
+        // Костыли
         private readonly Vector2 _offset = new Vector2(0.5f,-0.5f);
-        private Camera _cam;
-        private bool _isDragging = false;
-        private float _waitabit;
 
         private void Awake()
         {
-            _playerInputActions = new PlayerInputActions();
-            _playerInputActions.UI.Lbm.performed += TryToDropASpell;
+            _corner = transform.GetChild(0).gameObject;
+            _handIcon = GetComponent<Image>();
+            
+            _isDragging = false;
         }
 
-        private void OnEnable()
-        {
-            _playerInputActions.UI.Enable();
-        }
-
-        private void OnDisable()
-        {
-            _playerInputActions.UI.Disable();
-        }
-
-        private void Start()
-        {
-            _cam = Camera.main;
-        }
         private void Update()
         {
             if (_isDragging)
             {
-                Vector3 point = _cam.ScreenToWorldPoint(_playerInputActions.UI.MousePosition.ReadValue<Vector2>());
-                point.x += _offset.x;
-                point.y += _offset.y;
-                point.z += 1f;
-                transform.position = point;
+                transform.position = _point;
             }
-            _waitabit = Time.fixedDeltaTime * 15;
         }
-        public void TakeSpell(SpellType type)
-        {
-            _draggingSpell = type;
-            GetComponent<Image>().sprite = _data.GetDataByType(type).Icon;
-            this.GetComponent<Image>().color = new Color(1,1,1,1);
-            _corner.SetActive(true);
-            _isDragging = true;
-            Cursor.visible = false;
-            StopCoroutine("WaitaBit");
-        }
-        public void PlaceSpell(Image toplace)
-        {
-            toplace.sprite = this.GetComponent<Image>().sprite;
-            DropSpell();
-        }
+       
         private void DropSpell()
         {
-            this.GetComponent<Image>().color = new Color(1,1,1,0);
+            Cursor.visible = true;
+            _handIcon.color = new Color(1,1,1,0);
             _corner.SetActive(false);
             _isDragging = false;
-            Cursor.visible = true;
         }
+        
+        private IEnumerator WaitaBit()
+        {
+            yield return new WaitForSeconds(Time.deltaTime * 15);
+            DropSpell();
+        }
+        
+        public void TakeSpell(SpellType type)
+        {
 
-        private void TryToDropASpell(InputAction.CallbackContext context)
+            Cursor.visible = false;
+            _handIcon.color = new Color(1,1,1,1);
+            _corner.SetActive(true);
+            _isDragging = true;
+            
+            SpellConfig config = SpellData.GetSpellConfig(type);
+            _draggingSpell = type;
+            _handIcon.sprite = config.Icon;
+        }
+        
+        public void TryToDropASpell()
         {
             if (_isDragging)
             {
                 StartCoroutine(WaitaBit());
             }
         }
-    
-        private IEnumerator WaitaBit()
+        
+        public void PlaceSpell(Image place)
         {
-            yield return new WaitForSeconds(_waitabit);
-            DropSpell();
+            place.sprite = GetComponent<Image>().sprite;
         }
-
+        
         public bool GetIsDragging()
         {
-            return this._isDragging;
+            return _isDragging;
         }
 
         public SpellType GetSpellType()
         {
-            return this._draggingSpell;
+            return _draggingSpell;
+        }
+
+        public bool CheckDraggingStatus()
+        {
+            return _isDragging;
+        }
+
+        public void SetPoint(Vector2 point)
+        {
+            _point = point;
+            _point.x += _offset.x;
+            _point.y += _offset.y;
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace UI
 {
     public class Menu : MonoBehaviour
     {
-        [FormerlySerializedAs("spellbook")] [SerializeField] private CanvasGroup _spellbook;
+        [SerializeField] private CanvasGroup _spellbook;
         private PlayerInputActions _playerInputActions;
 
         private void Awake()

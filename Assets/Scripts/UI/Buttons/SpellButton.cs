@@ -1,13 +1,12 @@
 ﻿using Data.Enums;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace UI.Buttons
 {
     public class SpellButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        [FormerlySerializedAs("type")] [SerializeField] private SpellType _type;
+        [SerializeField] private SpellType _type;
         private SpellDrag _hand;
 
         private void Start()
