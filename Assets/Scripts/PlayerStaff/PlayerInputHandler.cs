@@ -17,6 +17,7 @@ namespace PlayerStaff
         private PlayerMovement _movement;
         private PlayerTargeting _targeting;
         private PlayerSpellCasting _spellCasting;
+        private Menu _menu;
 
         private SpellDrag _hand;
 
@@ -48,6 +49,8 @@ namespace PlayerStaff
 
             _inputActions.UI.MousePosition.performed += ctx => OnMouseMove(ctx.ReadValue<Vector2>());
             
+            _inputActions.UI.OpenSpellBook.performed += ctx => OnSpellBookOpen();
+            
             _mainCamera = Camera.main;
 
             if (_mainCamera == null)
@@ -56,6 +59,7 @@ namespace PlayerStaff
             }
             
             _hand = FindObjectsOfType<SpellDrag>()[0];
+            _menu = FindObjectsOfType<Menu>()[0];
         }
         
         private void OnEnable() => _inputActions.Enable();
@@ -111,6 +115,11 @@ namespace PlayerStaff
         private void OnCastInterrupt()
         {
             _spellCasting.StopCast();
+        }
+
+        private void OnSpellBookOpen()
+        {
+            _menu.SwitchSpellBookState();
         }
     }
 }

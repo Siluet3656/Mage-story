@@ -1,33 +1,15 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace UI
 {
     public class Menu : MonoBehaviour
     {
-        [SerializeField] private CanvasGroup _spellbook;
-        private PlayerInputActions _playerInputActions;
+        [SerializeField] private CanvasGroup _spellBook;
 
-        private void Awake()
+        public void SwitchSpellBookState()
         {
-            _playerInputActions = new PlayerInputActions();
-            _playerInputActions.UI.OpenSpellBook.performed += SwitchSpellBookState;
-        }
-
-        private void OnEnable()
-        {
-            _playerInputActions.Enable();
-        }
-
-        private void OnDisable()
-        {
-            _playerInputActions.Disable();
-        }
-
-        private void SwitchSpellBookState(InputAction.CallbackContext context)
-        {
-            _spellbook.alpha = _spellbook.alpha > 0 ? 0 : 1;
-            _spellbook.blocksRaycasts = _spellbook.blocksRaycasts? false : true;
+            _spellBook.alpha = _spellBook.alpha > 0 ? 0 : 1;
+            _spellBook.blocksRaycasts = !_spellBook.blocksRaycasts;
         }
     }
 }
