@@ -12,6 +12,7 @@ namespace UI
         [SerializeField] private Image[] _fireShards;
         [SerializeField] private Image[] _frostShards;
         [SerializeField] private Image[] _earthShards;
+        [SerializeField] private Image[] _gcdBars;
         
         private void Awake()
         {
@@ -43,8 +44,10 @@ namespace UI
             }
         }
         
-        public void ChangeCastBarFillAmount(float amount)
+        public void UpdateCastBar(float amount)
         {
+            if (amount > 1f || amount < 0f) return;
+            
             _castBar.fillAmount = amount;
         }
         
@@ -53,7 +56,7 @@ namespace UI
             _castBar.color = color;
         }
         
-        public void SetBlinkRefreshBarFillAmount(float value)
+        public void UpdateBlinkRefreshBar(float value)
         {
             if (value < 0f)
             {
@@ -70,6 +73,12 @@ namespace UI
         
         public void UpdateShardsUI(ShardType type, float[] timers, float shardRefreshTime)
         {
+            if (shardRefreshTime < 0f) return;
+            foreach (var timer in timers)
+            {
+                if (timer > 1f || timer < 0f) return;
+            }
+            
             Image[] shards = GetShardsByType(type);
             if (shards == null || shards.Length != timers.Length) return;
     
@@ -83,7 +92,19 @@ namespace UI
 
         public void UpdateReminderBar(float amount)
         {
+            if (amount > 1f || amount < 0f) return;
+            
             _remainderBar.fillAmount = amount;
+        }
+
+        public void UpdateGcdBars(float value)
+        {
+            if (value > 1f || value < 0f) return;
+            
+            foreach (var bar in _gcdBars)
+            {
+                bar.fillAmount = value;
+            }
         }
     }
 }

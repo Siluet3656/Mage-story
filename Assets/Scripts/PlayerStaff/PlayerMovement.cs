@@ -29,11 +29,8 @@ namespace PlayerStaff
         private Vector2 _movementInput;
         private bool _isBlinkOnCooldown;
         private bool _isMovementEnabled;
-        private float _currentSpeed;
-        
-        public void SetSpeed(float speed) => _currentSpeed = speed;
-        public void SetMovementInput(Vector2 value) => _movementInput = value;
-        public Vector2 GetMovementInput() => _movementInput;
+        private SpeedType _currentSpeed;
+        private SpeedType _adjustedSpeed;
         
         private void Awake()
         {
@@ -41,7 +38,8 @@ namespace PlayerStaff
             _rb = GetComponent<Rigidbody2D>();
             _playerAnimations = GetComponent<PlayerAnimations>();
             
-            _currentSpeed = SpeedData.GetDataByType(_playerDefaultSpeed);
+            _currentSpeed = _playerDefaultSpeed;
+            _adjustedSpeed = _currentSpeed;
 
             _isBlinkOnCooldown = false;
             _isMovementEnabled = true;
@@ -51,7 +49,7 @@ namespace PlayerStaff
         {
             if (_isMovementEnabled)
             {
-                _rb.MovePosition(_rb.position + _movementInput * (_currentSpeed * Time.fixedDeltaTime));
+                _rb.MovePosition(_rb.position + _movementInput * (SpeedData.GetDataByType(_currentSpeed) * Time.fixedDeltaTime));
                 _playerAnimations.SetMovementVector(_movementInput);
             }
             else
@@ -80,18 +78,27 @@ namespace PlayerStaff
         {
             _isBlinkOnCooldown = true;
             
-            _ui.SetBlinkRefreshBarFillAmount(0);
+            _ui.UpdateBlinkRefreshBar(0);
             float timer = 0;
             
             while (timer < _blinkCooldown)
             {
                 timer += Time.deltaTime;
-                _ui.SetBlinkRefreshBarFillAmount(timer / _blinkCooldown);
+                _ui.UpdateBlinkRefreshBar(timer / _blinkCooldown);
                 yield return null;
             }
             
             _isBlinkOnCooldown = false;
         }
+
+        public SpeedType GetDefaultPlayerSpeed() => _playerDefaultSpeed;
+        public SpeedType GetAdjustedPlayerSpeed() => _adjustedSpeed;
+        
+        public void SetMovementInput(Vector2 value) => _movementInput = value;
+        public Vector2 GetMovementInput() => _movementInput;
+        
+        public void EnableMovement() => _isMovementEnabled = true;
+        public void DisableMovement() => _isMovementEnabled = false;
         
         public void OnBlink()
         {
@@ -100,8 +107,10 @@ namespace PlayerStaff
                 PerformBlink();
             }
         }
-        
-        public void EnableMovement() => _isMovementEnabled = true;
-        public void DisableMovement() => _isMovementEnabled = false;
+
+        public void UpdateMovementSpeed(SpeedType type)
+        {
+            _currentSpeed = type;
+        }
     }
 }
