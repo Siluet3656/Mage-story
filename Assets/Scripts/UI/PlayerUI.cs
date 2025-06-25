@@ -74,11 +74,7 @@ namespace UI
         public void UpdateShardsUI(ShardType type, float[] timers, float shardRefreshTime)
         {
             if (shardRefreshTime < 0f) return;
-            foreach (var timer in timers)
-            {
-                if (timer > 1f || timer < 0f) return;
-            }
-            
+    
             Image[] shards = GetShardsByType(type);
             if (shards == null || shards.Length != timers.Length) return;
     

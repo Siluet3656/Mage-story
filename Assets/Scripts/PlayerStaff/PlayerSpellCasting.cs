@@ -4,7 +4,6 @@ using Data;
 using Data.Enums;
 using UI;
 
-
 namespace PlayerStaff
 {
     [RequireComponent(typeof(SpellResources))]
@@ -20,10 +19,13 @@ namespace PlayerStaff
         private PlayerUI _ui;
             
         private IEnumerator _spellCastRoutine;
+        private IEnumerator _globalCooldownRoutine;
         private bool _isCasting;
         private float _currentCastTime;
         private float _globalCooldown;
         private float _globalCooldownTimer;
+        
+        public bool Casting => _isCasting;
 
         private void Awake()
         {
@@ -39,23 +41,16 @@ namespace PlayerStaff
         {
             _ui.SetCastBarColor(config.CastBarColor);
             _currentCastTime = config.CastTime;
-            _globalCooldownTimer = _globalCooldown;
 
             float castTimer = 0;
-            while (castTimer < _currentCastTime || _globalCooldownTimer > 0)
+            while (castTimer < _currentCastTime)
             {
                 if (castTimer <= _currentCastTime)
                 {
                     castTimer += Time.deltaTime;
                     _ui.UpdateCastBar(castTimer / _currentCastTime);
                 }
-
-                if (_globalCooldownTimer >= 0)
-                {
-                    _globalCooldownTimer -= Time.deltaTime;
-                    _ui.UpdateGcdBars(_globalCooldownTimer);
-                }
-
+                
                 yield return null;
             }
             _ui.UpdateCastBar(0f);
@@ -71,8 +66,25 @@ namespace PlayerStaff
             _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
         }
+
+        private IEnumerator GlobalCooldown()
+        {
+            _globalCooldownTimer = _globalCooldown;
+            
+            while (_globalCooldownTimer > 0)
+            {
+                if (_globalCooldownTimer >= 0)
+                {
+                    _globalCooldownTimer -= Time.deltaTime;
+                    _ui.UpdateGcdBars(_globalCooldownTimer / _globalCooldown);
+                }
+                
+                yield return null;
+            }
+            _ui.UpdateGcdBars(0f);
+        }
         
-        public void CastSpell(SpellType spellType)
+        public void CastStart(SpellType spellType)
         {
             if (_isCasting || _globalCooldownTimer > 0) return;
 
@@ -83,6 +95,8 @@ namespace PlayerStaff
                 
             _isCasting = true;
             _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
+            _globalCooldownRoutine = GlobalCooldown();
+            StartCoroutine(_globalCooldownRoutine);
             if (spellConfig.CastTime > 0)
             {
                 _spellCastRoutine = CastSpellWithCastTime(spellConfig);
@@ -100,8 +114,10 @@ namespace PlayerStaff
             if (_isCasting == false) return;
             
             StopCoroutine(_spellCastRoutine);
+            StopCoroutine(_globalCooldownRoutine);
             _spellCastRoutine = null;
             _isCasting = false;
+            _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed());
             _globalCooldownTimer = 0f;
             _ui.UpdateGcdBars(0f);
             _ui.UpdateCastBar(0f);

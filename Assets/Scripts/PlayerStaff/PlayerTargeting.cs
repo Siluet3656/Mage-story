@@ -4,21 +4,29 @@ using System.Linq;
 
 namespace PlayerStaff
 {
+    [RequireComponent(typeof(PlayerSpellCasting))]
     public class PlayerTargeting : MonoBehaviour
     {
         [SerializeField] private float _interactionRange = 10f;
 
+        private PlayerSpellCasting _spellCasting;
+        
         private Enemy _currentTarget;
         private readonly List<Enemy> _nearbyEnemies = new List<Enemy>();
         private List<Enemy> _enemiesInRange = new List<Enemy>();
         
         public bool HasTarget => _currentTarget != null;
 
+        private void Awake()
+        {
+            _spellCasting = GetComponent<PlayerSpellCasting>();
+        }
+
         private void Update()
         {
             if (IsTargetInRange() == false)
             {
-                ClearTarget();
+                InterruptCast();
             }
         }
 
@@ -99,6 +107,12 @@ namespace PlayerStaff
         {
             return HasTarget &&
                    Vector2.Distance(transform.position, _currentTarget.transform.position) <= _interactionRange;
+        }
+
+        private void InterruptCast()
+        {
+            if (_spellCasting.Casting) _spellCasting.StopCast();
+            ClearTarget();
         }
     }
 }
