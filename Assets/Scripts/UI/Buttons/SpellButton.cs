@@ -1,12 +1,13 @@
 ﻿using Data.Enums;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace UI.Buttons
 {
     public class SpellButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        [SerializeField] private SpellType _type;
+        [FormerlySerializedAs("_type")] [SerializeField] private SpellName _name;
         private SpellDrag _hand;
 
         private void Start()
@@ -16,11 +17,11 @@ namespace UI.Buttons
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (_type != SpellType.NoSpell)
+            if (_name != SpellName.NoSpell)
             {
                 if (eventData.button == PointerEventData.InputButton.Left)
                 {
-                    _hand.TakeSpell(_type);
+                    _hand.TakeSpell(_name);
                 }
             }
         }

@@ -12,10 +12,12 @@ namespace PlayerStaff
         private PlayerSpellCasting _spellCasting;
         
         private Enemy _currentTarget;
+        
         private readonly List<Enemy> _nearbyEnemies = new List<Enemy>();
         private List<Enemy> _enemiesInRange = new List<Enemy>();
         
         public bool HasTarget => _currentTarget != null;
+        public Enemy GetTarget => _currentTarget;
 
         private void Awake()
         {
@@ -46,6 +48,35 @@ namespace PlayerStaff
             {
                 _nearbyEnemies.Remove(enemy);
             }
+        }
+        
+        private void OrderEnemiesInRange()
+        {
+            _enemiesInRange = _nearbyEnemies
+                .Where(enemy => Vector2.Distance(transform.position, enemy.transform.position) <= _interactionRange)
+                .OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position))
+                .ToList();
+        }
+        
+        private void ClearTarget()
+        {
+            if (HasTarget)
+            {
+                _currentTarget.ResetTarget();
+                _currentTarget = null;
+            }
+        }
+
+        private bool IsTargetInRange()
+        {
+            return HasTarget &&
+                   Vector2.Distance(transform.position, _currentTarget.transform.position) <= _interactionRange;
+        }
+
+        private void InterruptCast()
+        {
+            if (_spellCasting.Casting) _spellCasting.StopCast();
+            ClearTarget();
         }
         
         public void OnFastTarget()
@@ -84,35 +115,6 @@ namespace PlayerStaff
                 enemy.Target();
                 _currentTarget = enemy;
             }
-        }
-
-        private void OrderEnemiesInRange()
-        {
-            _enemiesInRange = _nearbyEnemies
-                .Where(enemy => Vector2.Distance(transform.position, enemy.transform.position) <= _interactionRange)
-                .OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position))
-                .ToList();
-        }
-        
-        private void ClearTarget()
-        {
-            if (HasTarget)
-            {
-                _currentTarget.ResetTarget();
-                _currentTarget = null;
-            }
-        }
-
-        private bool IsTargetInRange()
-        {
-            return HasTarget &&
-                   Vector2.Distance(transform.position, _currentTarget.transform.position) <= _interactionRange;
-        }
-
-        private void InterruptCast()
-        {
-            if (_spellCasting.Casting) _spellCasting.StopCast();
-            ClearTarget();
         }
     }
 }

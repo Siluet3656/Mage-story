@@ -2,6 +2,8 @@
 using UnityEngine;
 using Data;
 using Data.Enums;
+using Shard;
+using Spells;
 using UI;
 
 namespace PlayerStaff
@@ -17,6 +19,7 @@ namespace PlayerStaff
         private PlayerTargeting _targeting;
         private PlayerMovement _movement;
         private PlayerUI _ui;
+        private PlayersShard _shard;
             
         private IEnumerator _spellCastRoutine;
         private IEnumerator _globalCooldownRoutine;
@@ -24,6 +27,8 @@ namespace PlayerStaff
         private float _currentCastTime;
         private float _globalCooldown;
         private float _globalCooldownTimer;
+
+        private Spell _spell;
         
         public bool Casting => _isCasting;
 
@@ -35,6 +40,13 @@ namespace PlayerStaff
             _ui = GetComponent<PlayerUI>();
             _stats = new PlayerStats();
             _globalCooldown = _stats.GlobalCooldown;
+            
+            _shard = FindObjectOfType<PlayersShard>();
+
+            if (_shard == null)
+            {
+                Debug.LogError("NO SHARD!!!");
+            }
         }
         
         private IEnumerator CastSpellWithCastTime(SpellConfig config)
@@ -53,15 +65,34 @@ namespace PlayerStaff
                 
                 yield return null;
             }
-            _ui.UpdateCastBar(0f);
+
+            switch (config.Type)
+            {
+                case SpellType.Projectile:
+                    DoProjectileSpell();
+                    break;
+            }
             
+            _ui.UpdateCastBar(0f);
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
             _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
         }
-        
-        private void CastSpellInstantly(SpellConfig config)
+
+        private void DoProjectileSpell()
         {
+            if (_targeting.HasTarget == false) return;
+
+            if ((_spell as ProjectileSpell)?.SetTarget(_targeting.GetTarget) == false) return;
+            
+            _spell.transform.position = _shard.transform.position;
+            _spell.DoSpell();
+        }
+        
+        private void CastSpellInstantly (SpellConfig config)
+        {
+            _spell.DoSpell();
+            
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
             _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
@@ -84,11 +115,12 @@ namespace PlayerStaff
             _ui.UpdateGcdBars(0f);
         }
         
-        public void CastStart(SpellType spellType)
+        public void CastStart(SpellName spellName)
         {
             if (_isCasting || _globalCooldownTimer > 0) return;
+            if (spellName == SpellName.NoSpell) return;
 
-            SpellConfig spellConfig = SpellData.GetSpellConfig(spellType);
+            SpellConfig spellConfig = SpellData.GetSpellConfig(spellName);
 
             if (_resources.HasEnoughResources(spellConfig.ShardCost, spellConfig.ReminderCost) == false) return;
             if (spellConfig.RequireTarget && _targeting.HasTarget == false) return;
@@ -97,6 +129,9 @@ namespace PlayerStaff
             _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
+            
+            _spell = SpellFactory.Instance.CreateSpell(spellName);
+            
             if (spellConfig.CastTime > 0)
             {
                 _spellCastRoutine = CastSpellWithCastTime(spellConfig);
@@ -112,6 +147,8 @@ namespace PlayerStaff
         public void StopCast()
         {
             if (_isCasting == false) return;
+            
+            SpellFactory.Instance.ReturnSpell(_spell);
             
             StopCoroutine(_spellCastRoutine);
             StopCoroutine(_globalCooldownRoutine);

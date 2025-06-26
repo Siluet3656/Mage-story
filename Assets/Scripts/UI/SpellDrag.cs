@@ -10,7 +10,7 @@ namespace UI
     {
         private GameObject _corner;
         private Image _handIcon;
-        private SpellType _draggingSpell;
+        private SpellName _draggingSpell;
         private Vector3 _point;
         private bool _isDragging;
         // Костыли
@@ -46,7 +46,7 @@ namespace UI
             DropSpell();
         }
         
-        public void TakeSpell(SpellType type)
+        public void TakeSpell(SpellName name)
         {
 
             Cursor.visible = false;
@@ -54,8 +54,8 @@ namespace UI
             _corner.SetActive(true);
             _isDragging = true;
             
-            SpellConfig config = SpellData.GetSpellConfig(type);
-            _draggingSpell = type;
+            SpellConfig config = SpellData.GetSpellConfig(name);
+            _draggingSpell = name;
             _handIcon.sprite = config.Icon;
         }
         
@@ -77,7 +77,7 @@ namespace UI
             return _isDragging;
         }
 
-        public SpellType GetSpellType()
+        public SpellName GetSpellType()
         {
             return _draggingSpell;
         }

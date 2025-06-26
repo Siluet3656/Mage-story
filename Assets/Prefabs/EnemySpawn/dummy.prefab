@@ -167,7 +167,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6746311934899669593}
   - component: {fileID: 6746311934899669592}
-  - component: {fileID: 6746311934899669596}
   - component: {fileID: 6746311934899669586}
   - component: {fileID: 6746311934899669598}
   - component: {fileID: 3781871321352403343}
@@ -209,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e199d5dd44d0b46af6e07773cd9f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PatrolPoints:
+  _patrolPoints:
   - {fileID: 7516235456082516903, guid: a81373122b988e040905ca510a736afd, type: 3}
   - {fileID: 6846496783656338022, guid: 4002c3bdcf5ba224c9cf3dcbfaebe208, type: 3}
   - {fileID: 6846496783656338022, guid: c2a4284959723f044bda3daa17e9c8c3, type: 3}
@@ -220,29 +219,11 @@ MonoBehaviour:
   - {fileID: 372848680585531786, guid: a4acefbfdecf6e54b9b53c8516703bbb, type: 3}
   - {fileID: 7516235456082516903, guid: ecbcfd6be80c1c44cb331fa6fdf137f2, type: 3}
   - {fileID: 7516235456082516903, guid: a81373122b988e040905ca510a736afd, type: 3}
-  TargetedSR: {fileID: 6746311936119279055}
-  speedType: 0
-  MinWaitingTime: 1
-  MaxWaitingTime: 3
-  iceTomb: {fileID: 2243542452867873685}
---- !u!114 &6746311934899669596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6746311934899669595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a506825b7bbb154ca29b40b93b313df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 6746311935797336348}
-  overhpBar: {fileID: 5841031136327718698}
-  maxHp: 500
-  frostAegisOverHpAmount: 0
-  currentHp: 0
-  overHp: 0
+  _targetedSr: {fileID: 6746311936119279055}
+  _speedType: 0
+  _minWaitingTime: 1
+  _maxWaitingTime: 3
+  _iceTomb: {fileID: 2243542452867873685}
 --- !u!114 &6746311934899669586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,18 +236,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35f13a5f767fa494bbb742e3af82d3c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusPanel: {fileID: 6746311935500150677}
-  slowDuration: 3
-  poisonDuration: 5
-  poisonDamage: 10
-  amountOfTicks: 15
-  critChancePoison: 0.1
-  critMultyplyPoison: 1.5
-  firemarkDuration: 10
-  fireMarkBlastPrefub: {fileID: 872843416596052933, guid: 04cd0408cc1340149b011fdcf2415989, type: 3}
-  fireMarkBlastDamage: 50
-  critChanceFireMark: 0.1
-  critMultyplyFireMark: 1.5
+  _statusPanel: {fileID: 6746311935500150677}
+  _slowDuration: 3
+  _poisonDuration: 5
+  _poisonDamage: 10
+  _amountOfTicks: 15
+  _critChancePoison: 0.1
+  _critMultyplyPoison: 1.5
+  _firemarkDuration: 10
+  _fireMarkBlastPrefub: {fileID: 872843416596052933, guid: 04cd0408cc1340149b011fdcf2415989, type: 3}
+  _fireMarkBlastDamage: 50
+  _critChanceFireMark: 0.1
+  _critMultyplyFireMark: 1.5
 --- !u!212 &6746311934899669598
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -330,11 +311,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a743c7a5b31bc4c4a90c7af40c290b58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusPanel: {fileID: 6746311935500150677}
-  fireAuraDuration: 0
-  fireAuraMultAdjust: 0
-  fireAuraChanceAdjust: 0
-  stasysFreezeDuration: 3
+  _statusPanel: {fileID: 6746311935500150677}
+  _fireAuraDuration: 0
+  _fireAuraMultAdjust: 0
+  _fireAuraChanceAdjust: 0
+  _stasysFreezeDuration: 3
 --- !u!61 &6746311934899669599
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -570,11 +551,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a788b88dd52e6488be23e36cfa231f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowPF: {fileID: 5001322819261538868, guid: e32e99d90cc059b4fb0e42320f8beb8c, type: 3}
-  poisonPF: {fileID: 5001322819261538868, guid: 30878c2616473e3469ea49e030258d65, type: 3}
-  firemarkPF: {fileID: 5001322819261538868, guid: 322fcbd64ba1abf4bb7782369f3050cf, type: 3}
-  fireauraPF: {fileID: 0}
-  icetombPF: {fileID: 5001322819261538868, guid: edf50fcfcdcd05e4d98cd0c770f29c6f, type: 3}
+  _slowPf: {fileID: 5001322819261538868, guid: e32e99d90cc059b4fb0e42320f8beb8c, type: 3}
+  _poisonPf: {fileID: 5001322819261538868, guid: 30878c2616473e3469ea49e030258d65, type: 3}
+  _firemarkPf: {fileID: 5001322819261538868, guid: 322fcbd64ba1abf4bb7782369f3050cf, type: 3}
+  _fireauraPf: {fileID: 0}
+  _icetombPf: {fileID: 5001322819261538868, guid: edf50fcfcdcd05e4d98cd0c770f29c6f, type: 3}
 --- !u!1 &6746311935797336350
 GameObject:
   m_ObjectHideFlags: 0

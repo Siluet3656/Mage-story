@@ -6,10 +6,10 @@ namespace Data
 {
     public static class SpellData
     {   
-        private static readonly Dictionary<SpellType, SpellConfig> SpellValues = new Dictionary<SpellType, SpellConfig>
+        private static readonly Dictionary<SpellName, SpellConfig> SpellValues = new Dictionary<SpellName, SpellConfig>
         {
             {
-                SpellType.NoSpell,
+                SpellName.NoSpell,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/EmptyIconSpot"),
@@ -18,11 +18,15 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 0f, 0f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 0f,
+                    CriticalMultiply = 0f,
+                    Damage = 0f,
+                    Type = SpellType.Unknown
                 }
             },
             {
-                SpellType.Fireball,
+                SpellName.Fireball,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Fireball"),
@@ -31,11 +35,15 @@ namespace Data
                     CastTime = 3f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(1f, 0.1f, 0.1f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f,
+                    Type = SpellType.Projectile
                 }
             },
             {
-                SpellType.Boom,
+                SpellName.Boom,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Boom"),
@@ -44,11 +52,14 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.8f, 0.3f, 0.1f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Firewall,
+                SpellName.Firewall,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firewall"),
@@ -57,11 +68,14 @@ namespace Data
                     CastTime = 2f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(1f, 0.3f, 0.1f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Firespirit,
+                SpellName.FireSpirit,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firespirit"),
@@ -70,11 +84,14 @@ namespace Data
                     CastTime = 1f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.8f, 0.3f, 0.2f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Fireaura,
+                SpellName.FireAura,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Fireaura"),
@@ -83,11 +100,14 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.8f, 0.3f, 0.2f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Firemark,
+                SpellName.FireMark,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firemark"),
@@ -96,11 +116,14 @@ namespace Data
                     CastTime = 0.5f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(1f, 0.5f, 0.2f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Firelaser,
+                SpellName.FireLaser,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Fire/Firelaser"),
@@ -109,11 +132,14 @@ namespace Data
                     CastTime = 4f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(1f, 0f, 0.2f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.FrostWhirlwind,
+                SpellName.FrostWhirlwind,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/FrostWhirlwind"),
@@ -122,11 +148,15 @@ namespace Data
                     CastTime = 4f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 1f, 1f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f,
+                    Type = SpellType.Projectile
                 }
             },
             {
-                SpellType.FlashFreeze,
+                SpellName.FlashFreeze,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/FlashFreeze"),
@@ -135,11 +165,14 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 1f, 1f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.FrostAegis,
+                SpellName.FrostAegis,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/FrostWhirlwind"),
@@ -148,11 +181,14 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 1f, 1f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.StasisFreeze,
+                SpellName.StasisFreeze,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/StasisFreeze"),
@@ -161,11 +197,14 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 1f, 1f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.IcicleBarrage,
+                SpellName.IcicleBarrage,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/IcicleBarrage"),
@@ -174,11 +213,14 @@ namespace Data
                     CastTime = 4f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 1f, 1f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.CryoLeach,
+                SpellName.CryoLeach,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/CryoLeach"),
@@ -187,11 +229,14 @@ namespace Data
                     CastTime = 1f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.1f, 0.4f, 1f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.AvalancheCore,
+                SpellName.AvalancheCore,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Frost/AvalancheCore"),
@@ -200,11 +245,14 @@ namespace Data
                     CastTime = 4f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.1f, 0f, 1f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Spike,
+                SpellName.Spike,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/Spike"),
@@ -213,11 +261,15 @@ namespace Data
                     CastTime = 3f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.4f, 1f, 0.2f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f,
+                    Type = SpellType.Projectile
                 }
             },
             {
-                SpellType.EarthShield,
+                SpellName.EarthShield,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/EarthShield"),
@@ -226,11 +278,14 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.4f, 1f, 0.2f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.DeathZone,
+                SpellName.DeathZone,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/DeathZone"),
@@ -239,11 +294,14 @@ namespace Data
                     CastTime = 0f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.4f, 1f, 0.2f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.NaturePower,
+                SpellName.NaturePower,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/NaturePower"),
@@ -252,11 +310,14 @@ namespace Data
                     CastTime = 1f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.5f, 1f, 0.3f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Plague,
+                SpellName.Plague,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/Plague"),
@@ -265,11 +326,14 @@ namespace Data
                     CastTime = 1f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 1f, 0.4f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.Flower,
+                SpellName.Flower,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/Flower"),
@@ -278,11 +342,14 @@ namespace Data
                     CastTime = 2f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0.5f, 0.7f, 0.2f),
-                    RequireTarget = false
+                    RequireTarget = false,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             },
             {
-                SpellType.NatureWraith,
+                SpellName.NatureWraith,
                 new SpellConfig
                 {
                     Icon = Resources.Load<Sprite>("Sprites/UI/SkillIcons/Earth/NatureWraith"),
@@ -291,26 +358,17 @@ namespace Data
                     CastTime = 4f, 
                     Cooldown = 0f,
                     CastBarColor = new Color(0f, 0.5f, 0f),
-                    RequireTarget = true
+                    RequireTarget = true,
+                    CriticalChance = 1f,
+                    CriticalMultiply = 1f,
+                    Damage = 0f
                 }
             }
         };
 
-        public static SpellConfig GetSpellConfig(SpellType type)
+        public static SpellConfig GetSpellConfig(SpellName name)
         {
-            return SpellValues.TryGetValue(type, out SpellConfig config) ? config : GetSpellConfig(SpellType.NoSpell);
+            return SpellValues.TryGetValue(name, out SpellConfig config) ? config : GetSpellConfig(SpellName.NoSpell);
         }
-    }
-    
-    //  Иконка - Стоимость шарды - Стоимость остаток - Время каста - Время отката - Цвет кастбара - Нужна ли цель
-    public class SpellConfig
-    {
-        public Sprite Icon { get; set; }
-        public Vector3Int ShardCost { get; set; }
-        public float ReminderCost { get; set; }
-        public float CastTime { get; set; }
-        public float Cooldown { get; set; }
-        public Color CastBarColor { get; set; }
-        public bool RequireTarget { get; set; }
     }
 }

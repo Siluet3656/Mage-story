@@ -10,7 +10,7 @@ namespace UI.Buttons
     {
         private Image _icon;
         private SpellDrag _hand;
-        private SpellType _currentSpell;
+        private SpellName _currentSpell;
 
         private void Awake()
         {
@@ -27,7 +27,7 @@ namespace UI.Buttons
             }
         }
 
-        public SpellType GetSpellType()
+        public SpellName GetSpellType()
         {
             return _currentSpell;
         }

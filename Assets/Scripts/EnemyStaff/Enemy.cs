@@ -79,7 +79,7 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy() 
     {
-        var spellsToClear = FindObjectsOfType<Spell>();
+        /*var spellsToClear = FindObjectsOfType<Spell>();
         var palyerToClear = FindObjectOfType<Player>();
         Enemy nullenemy = null;
         for (var i = 0; i < spellsToClear.Length; i++)
@@ -93,7 +93,7 @@ public class Enemy : MonoBehaviour
         {
             palyerToClear.ClearTarget();
             palyerToClear.StopAllCasts();
-        }
+        }*/
     }
     
     private void PickNextPoint()
