@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class SpellOLD : MonoBehaviour
+public class SpellOld : MonoBehaviour
 {
     //[SerializeField] private SpellTypeData _data;
     [FormerlySerializedAs("_spellType")] [SerializeField] private SpellName _spellName;

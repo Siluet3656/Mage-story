@@ -1,6 +1,6 @@
-﻿using Data;
+﻿using UnityEngine;
+using Data.SpellConfigs;
 using EntityResources;
-using UnityEngine;
 
 namespace Spells
 {
@@ -52,10 +52,18 @@ namespace Spells
 
         public override void Initialize(SpellConfig config)
         {
+            if (config is ProjectileSpellConfig projectileSpellConfig)
+            {
+                Initialize(projectileSpellConfig);
+            }
+        }
+
+        public override void Initialize(ProjectileSpellConfig config)
+        {
             SpellDamage = config.Damage;
             CriticalChance = config.CriticalChance;
             CriticalMultiply = config.CriticalMultiply;
-            _sprite = config.SpellSprite;
+            _sprite = config.ProjectileSprite;
         }
 
         public override void DoSpell()

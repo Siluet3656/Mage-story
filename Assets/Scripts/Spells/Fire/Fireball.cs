@@ -1,5 +1,6 @@
 ﻿using Data;
 using Data.Enums;
+using Data.SpellConfigs;
 
 namespace Spells.Fire
 {
@@ -7,7 +8,7 @@ namespace Spells.Fire
     {
         protected override void OnReachTarget()
         {
-            SpellConfig config = SpellData.GetSpellConfig(SpellName.Boom);
+            SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Boom);
             Spell fireballExplosion = SpellFactory.Instance.CreateSpell(config);
             fireballExplosion.Initialize(config);
             fireballExplosion.gameObject.SetActive(true);

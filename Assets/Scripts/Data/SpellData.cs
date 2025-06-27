@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
 
@@ -6,7 +7,9 @@ namespace Data
 {
     public class SpellData : MonoBehaviour
     {
-        [SerializeField] private ISpellConfig _fireball;
+        [SerializeField] private SpellConfig _fireball;
+
+        private Dictionary<SpellName, SpellConfig> _spellValues;
         
         public static SpellData Instance { get; private set; }
 
@@ -18,13 +21,18 @@ namespace Data
                 return;
             }
             Instance = this;
+
+            _spellValues = new Dictionary<SpellName, SpellConfig>
+            {
+                { SpellName.Fireball, _fireball }
+            };
         }
         
        
 
-        public static SpellConfig GetSpellConfig(SpellName name)
+        public SpellConfig GetSpellConfig(SpellName spellName)
         {
-            return new SpellConfig();
+            return _spellValues.TryGetValue(spellName, out SpellConfig config) ? config : GetSpellConfig(SpellName.NoSpell);
         }
     }
 }

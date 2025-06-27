@@ -2,6 +2,7 @@
 using UnityEngine;
 using Data.Enums;
 using Data;
+using Data.SpellConfigs;
 using Shard;
 
 namespace Spells

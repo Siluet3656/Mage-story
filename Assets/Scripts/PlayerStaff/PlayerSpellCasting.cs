@@ -2,6 +2,7 @@
 using UnityEngine;
 using Data;
 using Data.Enums;
+using Data.SpellConfigs;
 using Shard;
 using Spells;
 using UI;
@@ -49,10 +50,12 @@ namespace PlayerStaff
             }
         }
         
-        private IEnumerator CastSpellWithCastTime(SpellConfig config)
+        private IEnumerator CastSpellWithCastTime(SpellConfig config, ICast castConfig)
         {
-            _ui.SetCastBarColor(config.CastBarColor);
-            _currentCastTime = config.CastTime;
+            
+            
+            _ui.SetCastBarColor(castConfig.GetCastBarColor());
+            _currentCastTime = castConfig.GetCastTime();
 
             float castTimer = 0;
             while (castTimer < _currentCastTime)
@@ -66,7 +69,7 @@ namespace PlayerStaff
                 yield return null;
             }
 
-            switch (config.Type)
+            switch ((config as SpellConfig).Type)
             {
                 case SpellType.Projectile:
                     DoProjectileSpell();
@@ -126,8 +129,7 @@ namespace PlayerStaff
         private bool IsSpellRequirementsMet(SpellConfig spellConfig)
         {
             if (_resources.HasEnoughResources(spellConfig.ShardCost, spellConfig.ReminderCost) == false) return false;
-            if (spellConfig.RequireTarget && _targeting.HasTarget == false) return false;
-            
+            if (spellConfig.RequiresTarget && _targeting.HasTarget == false) return false;
             return true;
         }
         
@@ -135,8 +137,8 @@ namespace PlayerStaff
         {
             if (IsCastAvailable(spellName) == false) return;
             
-            SpellConfig spellConfig = SpellData.GetSpellConfig(spellName);
-
+            SpellConfig spellConfig = SpellData.Instance.GetSpellConfig(spellName);
+            
             if (IsSpellRequirementsMet(spellConfig) == false) return;
             
             _spell = SpellFactory.Instance.CreateSpell(spellConfig);
@@ -149,16 +151,16 @@ namespace PlayerStaff
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
             
-            if (spellConfig.CastTime > 0)
+            if (spellConfig is ICast castSpellConfig)
             {
-                _spellCastRoutine = CastSpellWithCastTime(spellConfig);
+                _spellCastRoutine = CastSpellWithCastTime(spellConfig, castSpellConfig);
                 StartCoroutine(_spellCastRoutine);
+                
             }
             else
             {
                 CastSpellInstantly(spellConfig);
             }
-            
         }
 
         public void StopCast()

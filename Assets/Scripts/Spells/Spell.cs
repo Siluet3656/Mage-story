@@ -1,5 +1,6 @@
 ﻿using Data;
 using Data.Enums;
+using Data.SpellConfigs;
 using EntityResources;
 using UnityEngine;
 
@@ -35,6 +36,7 @@ namespace Spells
         }
 
         public abstract void Initialize(SpellConfig config);
+        public abstract void Initialize(ProjectileSpellConfig config);
 
 
         public abstract void DoSpell();

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Data;
 using Data.Enums;
+using Data.SpellConfigs;
 using UnityEngine.UI;
 
 namespace UI
@@ -42,11 +43,11 @@ namespace UI
         
         private IEnumerator WaitaBit()
         {
-            yield return new WaitForSeconds(Time.deltaTime * 15);
+            yield return new WaitForSeconds(Time.deltaTime * 30);
             DropSpell();
         }
         
-        public void TakeSpell(SpellName name)
+        public void TakeSpell(SpellName spellName)
         {
 
             Cursor.visible = false;
@@ -54,8 +55,8 @@ namespace UI
             _corner.SetActive(true);
             _isDragging = true;
             
-            SpellConfig config = SpellData.GetSpellConfig(name);
-            _draggingSpell = name;
+            SpellConfig config = SpellData.Instance.GetSpellConfig(spellName);
+            _draggingSpell = spellName;
             _handIcon.sprite = config.Icon;
         }
         
