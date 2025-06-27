@@ -49,13 +49,19 @@ namespace UI
         
         public void TakeSpell(SpellName spellName)
         {
-
             Cursor.visible = false;
             _handIcon.color = new Color(1,1,1,1);
             _corner.SetActive(true);
             _isDragging = true;
             
             SpellConfig config = SpellData.Instance.GetSpellConfig(spellName);
+
+            if (config == null)
+            {
+                DropSpell();
+                return;
+            }
+            
             _draggingSpell = spellName;
             _handIcon.sprite = config.Icon;
         }

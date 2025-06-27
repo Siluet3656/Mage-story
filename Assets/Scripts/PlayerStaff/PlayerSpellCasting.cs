@@ -52,8 +52,6 @@ namespace PlayerStaff
         
         private IEnumerator CastSpellWithCastTime(SpellConfig config, ICast castConfig)
         {
-            
-            
             _ui.SetCastBarColor(castConfig.GetCastBarColor());
             _currentCastTime = castConfig.GetCastTime();
 
