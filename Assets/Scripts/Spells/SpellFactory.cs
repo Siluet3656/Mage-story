@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Data.Enums;
+using Data;
 using Shard;
 
 namespace Spells
@@ -12,7 +13,7 @@ namespace Spells
         [Header("Prefabs")]
         [SerializeField] private ProjectileSpell _projectileSpell;
 
-        private readonly Queue<Spell> _playerSpellPool = new Queue<Spell>();
+        private readonly Queue<Spell> _playerProjectileSpellPool = new Queue<Spell>();
         private PlayersShard _shard;
        
         public static SpellFactory Instance { get; private set; }
@@ -35,30 +36,46 @@ namespace Spells
             {
                 var spell = Instantiate(_projectileSpell, transform);
                 spell.gameObject.SetActive(false);
-                _playerSpellPool.Enqueue(spell);
+                _playerProjectileSpellPool.Enqueue(spell);
             }
         }
 
-        public Spell CreateSpell(SpellName spellName)
+        private ProjectileSpell GetProjectileSpell()
         {
-            if (_playerSpellPool == null)
+            ProjectileSpell projectileSpell;
+            
+            if (_playerProjectileSpellPool == null)
             {
-                Debug.LogError($"No pool found for spell type: {spellName}");
                 return null;
             }
-
-            Spell spell;
-            if (_playerSpellPool.Count > 0)
+            
+            if (_playerProjectileSpellPool.Count > 0)
             {
-                spell = _playerSpellPool.Dequeue();
+                projectileSpell = _playerProjectileSpellPool.Dequeue() as ProjectileSpell;
             }
             else
             {
-                spell = Instantiate(_projectileSpell, transform);
-                spell.gameObject.SetActive(false);
-                Debug.LogWarning($"Expanding pool for {spellName}");
+                projectileSpell = Instantiate(_projectileSpell, transform);
+                projectileSpell.gameObject.SetActive(false);
             }
 
+            return projectileSpell;
+        }
+
+        public Spell CreateSpell(SpellConfig config)
+        {
+            Spell spell;
+            SpellType type = config.Type;
+
+            switch (type)
+            {
+                case SpellType.Projectile:
+                    spell = GetProjectileSpell();
+                    break;
+                default:
+                    return null;
+            }
+            
             spell.transform.SetParent(null);
             return spell;
         }
@@ -68,9 +85,9 @@ namespace Spells
             spell.gameObject.SetActive(false);
             spell.transform.SetParent(transform);
 
-            if (_playerSpellPool != null)
+            if (_playerProjectileSpellPool != null)
             {
-                _playerSpellPool.Enqueue(spell);
+                _playerProjectileSpellPool.Enqueue(spell);
             }
             else
             {

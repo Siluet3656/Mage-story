@@ -108,7 +108,7 @@ namespace PlayerStaff
         {
             if (buttonIndex >= 0 && buttonIndex < _spellBarButtons.Length)
             {
-                _spellCasting.CastStart(_spellBarButtons[buttonIndex].GetSpellType());
+                _spellCasting.StartCast(_spellBarButtons[buttonIndex].GetSpellType());
             }
         }
 

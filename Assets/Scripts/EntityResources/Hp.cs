@@ -151,7 +151,7 @@ namespace EntityResources
                 if (isProced)
                 {
                     TakeDamage(damage * multiply);
-                    GetComponent<Debuff>().GotCrit();
+                    //GetComponent<Debuff>().GotCrit();
                 }
                 else
                 {

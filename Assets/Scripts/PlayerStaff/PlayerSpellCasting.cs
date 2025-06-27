@@ -83,7 +83,7 @@ namespace PlayerStaff
         {
             if (_targeting.HasTarget == false) return;
 
-            if ((_spell as ProjectileSpell)?.SetTarget(_targeting.GetTarget) == false) return;
+            if ((_spell as ProjectileSpell)?.TrySetTarget(_targeting.GetTarget) == false) return;
             
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
@@ -114,23 +114,40 @@ namespace PlayerStaff
             }
             _ui.UpdateGcdBars(0f);
         }
-        
-        public void CastStart(SpellName spellName)
-        {
-            if (_isCasting || _globalCooldownTimer > 0) return;
-            if (spellName == SpellName.NoSpell) return;
 
+        private bool IsCastAvailable(SpellName spellName)
+        {
+            if (spellName == SpellName.NoSpell) return false;
+            if (_isCasting || _globalCooldownTimer > 0) return false;
+            
+            return true;
+        }
+
+        private bool IsSpellRequirementsMet(SpellConfig spellConfig)
+        {
+            if (_resources.HasEnoughResources(spellConfig.ShardCost, spellConfig.ReminderCost) == false) return false;
+            if (spellConfig.RequireTarget && _targeting.HasTarget == false) return false;
+            
+            return true;
+        }
+        
+        public void StartCast(SpellName spellName)
+        {
+            if (IsCastAvailable(spellName) == false) return;
+            
             SpellConfig spellConfig = SpellData.GetSpellConfig(spellName);
 
-            if (_resources.HasEnoughResources(spellConfig.ShardCost, spellConfig.ReminderCost) == false) return;
-            if (spellConfig.RequireTarget && _targeting.HasTarget == false) return;
-                
+            if (IsSpellRequirementsMet(spellConfig) == false) return;
+            
+            _spell = SpellFactory.Instance.CreateSpell(spellConfig);
+
+            if (_spell == null) return;
+            
+            _spell.Initialize(spellConfig);    
             _isCasting = true;
             _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
-            
-            _spell = SpellFactory.Instance.CreateSpell(spellName);
             
             if (spellConfig.CastTime > 0)
             {

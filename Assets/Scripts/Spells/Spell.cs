@@ -7,24 +7,17 @@ namespace Spells
 {
     public abstract class Spell : MonoBehaviour
     {
-        private float _spellDamage;
-        private float _criticalChance;
-        private float _criticalMultiply;
+        protected float SpellDamage;
+        protected float CriticalChance;
+        protected float CriticalMultiply;
         
         protected abstract void Awake();
         
-        protected virtual void Initialize(SpellConfig config)
-        {
-            _spellDamage = config.Damage;
-            _criticalChance = config.CriticalChance;
-            _criticalMultiply = config.CriticalMultiply;
-        }
-       
-        protected virtual void ApplyDamage(Enemy target)
+        protected virtual void ApplyDamage(Hp target)
         {
             if (target != null)
             {
-                target.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _criticalMultiply, _criticalChance);
+                target.TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
             }
         }
 
@@ -35,13 +28,16 @@ namespace Spells
                 target.GetComponent<Debuff>().DebuffTarget(debuffType, target);
             }
         }
-
-        public abstract void DoSpell();
-
+        
         protected virtual void ReturnToPool()
         {
             SpellFactory.Instance.ReturnSpell(this);
         }
+
+        public abstract void Initialize(SpellConfig config);
+
+
+        public abstract void DoSpell();
 
         public virtual void OnSpawned()
         {

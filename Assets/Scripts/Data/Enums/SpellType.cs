@@ -3,6 +3,14 @@
     public enum SpellType
     {
         Unknown,
-        Projectile
+        Projectile,
+        LineSpell,
+        PlacedSpell,
+        TargetedInstantSpell,
+        SelfInstantSpell,
+        AoeInstantSpell,
+        SummonSpell,
+        ShieldSpell,
+        HealSpell
     }
 }
