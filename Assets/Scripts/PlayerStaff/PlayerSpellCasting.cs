@@ -5,6 +5,7 @@ using Data.Enums;
 using Data.SpellConfigs;
 using Shard;
 using Spells;
+using Spells.Fire;
 using UI;
 
 namespace PlayerStaff
@@ -29,6 +30,7 @@ namespace PlayerStaff
         private float _globalCooldown;
         private float _globalCooldownTimer;
 
+        private SpellName _spellName;
         private Spell _spell;
         
         public bool Casting => _isCasting;
@@ -67,7 +69,7 @@ namespace PlayerStaff
                 yield return null;
             }
 
-            switch ((config as SpellConfig).Type)
+            switch (config.Type)
             {
                 case SpellType.Projectile:
                     DoProjectileSpell();
@@ -139,10 +141,11 @@ namespace PlayerStaff
             
             if (IsSpellRequirementsMet(spellConfig) == false) return;
             
-            _spell = SpellFactory.Instance.CreateSpell(spellConfig);
+            _spell = SpellFactory.Instance.CreateSpell(spellName);
 
             if (_spell == null) return;
-            
+
+            _spellName = spellName;
             _spell.Initialize(spellConfig);    
             _isCasting = true;
             _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
@@ -165,7 +168,7 @@ namespace PlayerStaff
         {
             if (_isCasting == false) return;
             
-            SpellFactory.Instance.ReturnSpell(_spell);
+            SpellFactory.Instance.ReturnSpell(_spellName ,_spell);
             
             StopCoroutine(_spellCastRoutine);
             StopCoroutine(_globalCooldownRoutine);

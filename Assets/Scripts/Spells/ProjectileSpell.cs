@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Data.Enums;
+using UnityEngine;
 using Data.SpellConfigs;
 using EntityResources;
 
@@ -8,8 +9,9 @@ namespace Spells
     [RequireComponent(typeof(SpriteRenderer))]
     public class ProjectileSpell : Spell
     {
-        [SerializeField] private float _speed;
-        [SerializeField] private float _minimumDistance;
+        private const float Speed = 800f;
+        private const float MinimumDistance = 0.3f;
+
         private Sprite _sprite;
         private Rigidbody2D _rigidbody;
         private SpriteRenderer _spriteRenderer;
@@ -31,27 +33,35 @@ namespace Spells
             _direction = _target.transform.position - transform.position;
             Move();
             
-            if (Vector2.Distance(transform.position, _target.transform.position) < _minimumDistance)
+            if (Vector2.Distance(transform.position, _target.transform.position) < MinimumDistance)
             {
-                OnReachTarget();
+                OnReachTarget(_target);
             }
         }
 
         private void Move()
         {
             _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
-            _rigidbody.velocity = _direction.normalized * (_speed * Time.fixedDeltaTime);
+            _rigidbody.velocity = _direction.normalized * (Speed * Time.fixedDeltaTime);
             transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
         }
         
-        protected virtual void OnReachTarget()
+        protected virtual void OnReachTarget(Enemy target)
         {
             base.ApplyDamage(_targetsHp);
             base.ReturnToPool();
         }
 
+        public override SpellName SpellName { get; protected set; }
+        public override SpellType Type => SpellType.Projectile;
+
+        private ProjectileSpellConfig _config;
+
+
         public override void Initialize(SpellConfig config)
         {
+            //base.Initialize(config);
+            //_config = config as ProjectileSpellConfig;
             if (config is ProjectileSpellConfig projectileSpellConfig)
             {
                 Initialize(projectileSpellConfig);

@@ -11,7 +11,7 @@ namespace Spells
         protected float SpellDamage;
         protected float CriticalChance;
         protected float CriticalMultiply;
-        
+
         protected abstract void Awake();
         
         protected virtual void ApplyDamage(Hp target)
@@ -32,10 +32,15 @@ namespace Spells
         
         protected virtual void ReturnToPool()
         {
-            SpellFactory.Instance.ReturnSpell(this);
+            SpellFactory.Instance.ReturnSpell(SpellName, this);
         }
-
-        public abstract void Initialize(SpellConfig config);
+        public abstract SpellName SpellName { get; protected set; }
+        public abstract SpellType Type { get; }
+        public virtual void Initialize(SpellConfig config)
+        {
+            SpellName = config.SpellName;
+            // Initialize common spell properties from config
+        }
         public abstract void Initialize(ProjectileSpellConfig config);
 
 
