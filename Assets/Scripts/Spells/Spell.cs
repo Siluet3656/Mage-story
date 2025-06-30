@@ -26,7 +26,7 @@ namespace Spells
         {
             if (target != null)
             {
-                target.GetComponent<Debuff>().DebuffTarget(debuffType, target);
+                //target.GetComponent<Debuff>().DebuffTarget(debuffType, target);
             }
         }
         

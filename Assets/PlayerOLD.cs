@@ -130,7 +130,7 @@ public class Player : MonoBehaviour
     private Color _avalancheCoreCastBarColor = new Color(0.2f, 0.2f, 1f);
     private Color _spikeCastBarColor = new Color(0.3f,1f,0.1f);
 
-    private Buff _playerBuffs;
+    //private Buff _playerBuffs;
 
     [FormerlySerializedAs("speedType")]
     [Header("Movement")] 

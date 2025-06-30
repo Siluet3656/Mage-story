@@ -167,9 +167,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6746311934899669593}
   - component: {fileID: 6746311934899669592}
-  - component: {fileID: 6746311934899669586}
+  - component: {fileID: 945141686}
   - component: {fileID: 6746311934899669598}
-  - component: {fileID: 3781871321352403343}
   - component: {fileID: 6746311934899669599}
   - component: {fileID: 6746311934899669597}
   m_Layer: 0
@@ -208,23 +207,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e199d5dd44d0b46af6e07773cd9f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolPoints:
-  - {fileID: 7516235456082516903, guid: a81373122b988e040905ca510a736afd, type: 3}
-  - {fileID: 6846496783656338022, guid: 4002c3bdcf5ba224c9cf3dcbfaebe208, type: 3}
-  - {fileID: 6846496783656338022, guid: c2a4284959723f044bda3daa17e9c8c3, type: 3}
-  - {fileID: 3382121372902043731, guid: 00049316a68e91a4ebbe733e71ed6a1c, type: 3}
-  - {fileID: 3382121372902043731, guid: 6733b0470a210044297f492075a88dfa, type: 3}
-  - {fileID: 372848680585531786, guid: cc6b9d43f83eb98419914cf67f7188bd, type: 3}
-  - {fileID: 372848680585531786, guid: 3fc85676ad344df49848c70f447b889f, type: 3}
-  - {fileID: 372848680585531786, guid: a4acefbfdecf6e54b9b53c8516703bbb, type: 3}
-  - {fileID: 7516235456082516903, guid: ecbcfd6be80c1c44cb331fa6fdf137f2, type: 3}
-  - {fileID: 7516235456082516903, guid: a81373122b988e040905ca510a736afd, type: 3}
+  _patrolPoints: []
   _targetedSr: {fileID: 6746311936119279055}
   _speedType: 0
   _minWaitingTime: 1
   _maxWaitingTime: 3
   _iceTomb: {fileID: 2243542452867873685}
---- !u!114 &6746311934899669586
+--- !u!114 &945141686
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,21 +222,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6746311934899669595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35f13a5f767fa494bbb742e3af82d3c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a506825b7bbb154ca29b40b93b313df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statusPanel: {fileID: 6746311935500150677}
-  _slowDuration: 3
-  _poisonDuration: 5
-  _poisonDamage: 10
-  _amountOfTicks: 15
-  _critChancePoison: 0.1
-  _critMultyplyPoison: 1.5
-  _firemarkDuration: 10
-  _fireMarkBlastPrefub: {fileID: 872843416596052933, guid: 04cd0408cc1340149b011fdcf2415989, type: 3}
-  _fireMarkBlastDamage: 50
-  _critChanceFireMark: 0.1
-  _critMultyplyFireMark: 1.5
+  _healthBar: {fileID: 6746311935797336348}
+  _additionalHealthBar: {fileID: 5841031136327718698}
+  _mainShieldStackBar: {fileID: 5841031136327718698}
+  _shieldStackBars: []
+  _maxHealth: 1000
+  _frostAegisOverHpAmount: 0
+  _earthShieldStacksAmount: 0
+  _currentHp: 0
+  _overHp: 0
+  _shieldStacks: 0
 --- !u!212 &6746311934899669598
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -299,23 +286,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3781871321352403343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6746311934899669595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a743c7a5b31bc4c4a90c7af40c290b58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _statusPanel: {fileID: 6746311935500150677}
-  _fireAuraDuration: 0
-  _fireAuraMultAdjust: 0
-  _fireAuraChanceAdjust: 0
-  _stasysFreezeDuration: 3
 --- !u!61 &6746311934899669599
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -35,14 +35,14 @@ public class Freeze : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Hp hp = other.gameObject.GetComponent<Hp>();
-        Debuff dbf = other.gameObject.GetComponent<Debuff>();
+        //Debuff dbf = other.gameObject.GetComponent<Debuff>();
         Enemy target = other.gameObject.GetComponent<Enemy>();
         //Debug.Log(hp & dbf & target);
-        if (hp & dbf & target)
+        /*if (hp & dbf & target)
         {
             hp.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_damage, _critmultiply, _critchance);
             dbf.DebuffTarget(DebuffType.Slow, target);
-        }
+        }*/
     }
     
     private IEnumerator Blasting()

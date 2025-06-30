@@ -189,7 +189,7 @@ public class SpellOld : MonoBehaviour
                     if (!_isCasted)
                     {
                         //Target.gameObject.GetComponent<HP>().TryToTakeCriticalDamage(SpellDamage, critMultyply, critChance);
-                        _target.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze,_target);
+                        //_target.GetComponent<Buff>().GetBuff(BuffType.StasisFreeze,_target);
                         player.ElementalInvocation(2);
                         _isCasted = true;
                     }
@@ -225,7 +225,7 @@ public class SpellOld : MonoBehaviour
                     _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
                     if (_distanceToTarget < _minimumDist)
                     {
-                        _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, _target);
+                        //_target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Slow, _target);
                         _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
@@ -238,7 +238,7 @@ public class SpellOld : MonoBehaviour
                     _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
                     if (_distanceToTarget < _minimumDist)
                     {
-                        _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, _target);
+                        //_target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.Poison, _target);
                         _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }
@@ -260,7 +260,7 @@ public class SpellOld : MonoBehaviour
                     _distanceToTarget = Vector2.Distance(transform.position, _target.transform.position);
                     if (_distanceToTarget < _minimumDist)
                     {
-                        _target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.FireMark, _target);
+                        //_target.gameObject.GetComponent<Debuff>().DebuffTarget(DebuffType.FireMark, _target);
                         _target.gameObject.GetComponent<Hp>().TryToTakeCriticalDamage(_spellDamage, _critMultyply, _critChance);
                         Destroy(this.gameObject);
                     }

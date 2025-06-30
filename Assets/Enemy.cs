@@ -26,15 +26,15 @@ public class Enemy : MonoBehaviour
     private float _distanceToTarget = 0;
     private float _waitingTime = 0;
     
-    private Buff _enemyBuffs;
+    //private Buff _enemyBuffs;
     private bool _isAvailableToMove = true;
 
     private void Awake()
     {
-        _enemyBuffs = this.GetComponent<Buff>();
+        /*_enemyBuffs = this.GetComponent<Buff>();
         
         _enemyBuffs.OnEnemyFreeze += FreezeMovement;
-        _enemyBuffs.OnEnemyUnFreeze += UnfreezeMovement;
+        _enemyBuffs.OnEnemyUnFreeze += UnfreezeMovement;*/
     }
 
     private void Start()

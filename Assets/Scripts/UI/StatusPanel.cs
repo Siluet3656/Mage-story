@@ -1,214 +1,104 @@
 ﻿using System.Collections.Generic;
 using Data.Enums;
-using Statuses;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UI
 {
-   public class StatusPanel : MonoBehaviour
-   {
-      [FormerlySerializedAs("slowPF")]
-      [Header("Debuffs")] 
-      [SerializeField] private GameObject _slowPf;
-      [FormerlySerializedAs("poisonPF")] [SerializeField] private GameObject _poisonPf;
-      [FormerlySerializedAs("firemarkPF")] [SerializeField] private GameObject _firemarkPf;
+    public class StatusPanel : MonoBehaviour
+    {
+        [Header("Icon Prefabs")]
+        [SerializeField] private StatusIconPrefabs _iconPrefabs;
 
-      [FormerlySerializedAs("fireauraPF")]
-      [Header("Buffs")] 
-      [SerializeField] private GameObject _fireauraPf;
-      [FormerlySerializedAs("icetombPF")] [SerializeField] private GameObject _icetombPf;
+        [Header("Player Display Settings")]
+        [SerializeField] private StatusDisplaySettings _playerSettings;
 
-      private List<GameObject> _statuses = new List<GameObject>();
-      private float _defaultXenemy = -3.5f;
-      private float _defaultYenemy = 0.65f;
-      private float _offsetenemy = 1.2f;
-   
-      private float _defaultXplayer = -9f;
-      private float _defaultYplayer = 2.4f;
-      private float _offsetBuffsplayer = 2.8f;
-      public void AddStatus(DebuffType type, Player player)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case DebuffType.Slow:
-               gm = Instantiate(_slowPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
-               _statuses.Add(gm);
-               break;
-            case DebuffType.Poison:
-               gm = Instantiate(_poisonPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
-               _statuses.Add(gm);
-               break;
-            case DebuffType.FireMark:
-               gm = Instantiate(_firemarkPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
-               _statuses.Add(gm);
-               break;
-         }
-      }
+        [Header("Enemy Display Settings")]
+        [SerializeField] private StatusDisplaySettings _enemySettings;
 
-      public void AddStatus(BuffType type, Player player)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case BuffType.FireAura:
-               gm = Instantiate(_fireauraPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
-               _statuses.Add(gm);
-               break;
-            case BuffType.StasisFreeze:
-               gm = Instantiate(_icetombPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.Count, _defaultYplayer, 0);
-               _statuses.Add(gm);
-               break;
-         }
-      }
-   
-      public void AddStatus(DebuffType type, Enemy enemy)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case DebuffType.Slow:
-               gm = Instantiate(_slowPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
-               _statuses.Add(gm);
-               break;
-            case DebuffType.Poison:
-               gm = Instantiate(_poisonPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
-               _statuses.Add(gm);
-               break;
-            case DebuffType.FireMark:
-               gm = Instantiate(_firemarkPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
-               _statuses.Add(gm);
-               break;
-         }
-      }
-   
-      public void AddStatus(BuffType type, Enemy enemy)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case BuffType.FireAura:
-               gm = Instantiate(_fireauraPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
-               _statuses.Add(gm);
-               break;
-            case BuffType.StasisFreeze:
-               gm = Instantiate(_icetombPf, this.gameObject.transform, false);
-               gm.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.Count, _defaultYenemy, 0);
-               _statuses.Add(gm);
-               break;
-         }
-      }
+        private Dictionary<StatusType, GameObject> _activeStatusIcons = new Dictionary<StatusType, GameObject>();
+        private Dictionary<GameObject, StatusDisplaySettings> _targetSettings = new Dictionary<GameObject, StatusDisplaySettings>();
 
-      public void RemoveStatus(DebuffType type, Player player)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case DebuffType.Slow:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Slow);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-            case DebuffType.Poison:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Poison);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-            case DebuffType.FireMark:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.FireMark);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-         }
-         RefreshStatusesPositions(player);
-      }
+        public void AddStatusEffect(StatusType type, GameObject target)
+        {
+            // Don't add duplicate status icons
+            if (_activeStatusIcons.ContainsKey(type))
+                return;
 
-      public void RemoveStatus(BuffType type, Player player)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case BuffType.FireAura:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.FireAura);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-            case BuffType.StasisFreeze:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.StasisFreeze);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-         }
-         RefreshStatusesPositions(player);
-      }
-   
-      public void RemoveStatus(DebuffType type, Enemy enemy)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case DebuffType.Slow:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Slow);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-            case DebuffType.Poison:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.Poison);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-            case DebuffType.FireMark:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._dt == DebuffType.FireMark);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-         }
-         RefreshStatusesPositions(enemy);
-      }
+            // Get the appropriate prefab
+            GameObject prefab = GetPrefabForStatus(type);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"No prefab assigned for status type: {type}");
+                return;
+            }
 
-      public void RemoveStatus(BuffType type, Enemy enemy)
-      {
-         GameObject gm;
-         switch (type)
-         {
-            case BuffType.FireAura:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.FireAura);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-            case BuffType.StasisFreeze:
-               gm = _statuses.Find(o => o.GetComponent<Status>()._bt == BuffType.StasisFreeze);
-               _statuses.Remove(gm);
-               Destroy(gm);
-               break;
-         }
-         RefreshStatusesPositions(enemy);
-      }
+            // Get display settings based on target
+            if (!_targetSettings.TryGetValue(target, out var settings))
+            {
+                settings = target.CompareTag("Player") ? _playerSettings : _enemySettings;
+                _targetSettings[target] = settings;
+            }
 
-      private void RefreshStatusesPositions(Player player)
-      {
-         foreach (var status in _statuses)
-         {
-            status.transform.localPosition = new Vector3(_defaultXplayer + _offsetBuffsplayer * _statuses.IndexOf(status), _defaultYplayer, 0);
-         }
-      }
-   
-      private void RefreshStatusesPositions(Enemy enemy)
-      {
-         foreach (var status in _statuses)
-         {
-            status.transform.localPosition = new Vector3(_defaultXenemy + _offsetenemy * _statuses.IndexOf(status), _defaultYenemy, 0);
-         }
-      }
-   }
+            // Create and position the icon
+            GameObject icon = Instantiate(prefab, transform);
+            int statusCount = _activeStatusIcons.Count;
+            icon.transform.localPosition = new Vector3(
+                settings.DefaultX + settings.Offset * statusCount,
+                settings.DefaultY,
+                0
+            );
+
+            _activeStatusIcons.Add(type, icon);
+        }
+
+        public void RemoveStatusEffect(StatusType type, GameObject target)
+        {
+            if (_activeStatusIcons.TryGetValue(type, out var icon))
+            {
+                Destroy(icon);
+                _activeStatusIcons.Remove(type);
+                RefreshStatusPositions(target);
+            }
+        }
+
+        private void RefreshStatusPositions(GameObject target)
+        {
+            if (!_targetSettings.TryGetValue(target, out var settings))
+                return;
+
+            int index = 0;
+            foreach (var icon in _activeStatusIcons.Values)
+            {
+                icon.transform.localPosition = new Vector3(
+                    settings.DefaultX + settings.Offset * index,
+                    settings.DefaultY,
+                    0
+                );
+                index++;
+            }
+        }
+
+        private GameObject GetPrefabForStatus(StatusType type)
+        {
+            switch (type)
+            {
+                case StatusType.Slow: return _iconPrefabs.Slow;
+                case StatusType.Poison: return _iconPrefabs.Poison;
+                case StatusType.FireMark: return _iconPrefabs.FireMark;
+                case StatusType.FireAura: return _iconPrefabs.FireAura;
+                case StatusType.StasisFreeze: return _iconPrefabs.IceTomb;
+                default: return null;
+            }
+        }
+
+        public void ClearAllStatuses()
+        {
+            foreach (var icon in _activeStatusIcons.Values)
+            {
+                Destroy(icon);
+            }
+            _activeStatusIcons.Clear();
+            _targetSettings.Clear();
+        }
+    }
 }

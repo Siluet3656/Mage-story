@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Spells;
+using UnityEngine;
 
 namespace Data.SpellConfigs
 {

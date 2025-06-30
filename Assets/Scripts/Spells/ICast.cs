@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Data.SpellConfigs
+namespace Spells
 {
     public interface ICast
     {

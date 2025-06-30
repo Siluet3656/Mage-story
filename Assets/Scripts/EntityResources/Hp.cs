@@ -29,18 +29,18 @@ namespace EntityResources
         private float _tickingCriticalChance;
         private float _tickingCriticalMultiply;
 
-        private Buff _buffs;
+        //private Buff _buffs;
 
         private void Awake()
         {
-            _buffs = this.GetComponent<Buff>();
+            /*_buffs = this.GetComponent<Buff>();
             if (_buffs)
             {
                 _buffs.OnPlayerFreeze += GetInvulnerability;
                 _buffs.OnPlayerUnFreeze += RemoveInvulnerability;
                 _buffs.OnEnemyFreeze += GetInvulnerability;
                 _buffs.OnEnemyUnFreeze += RemoveInvulnerability;
-            }
+            }*/
         }
 
         private void Start() {
