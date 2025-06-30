@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Data.Enums;
 using EntityResources;
+using Statuses;
 using UnityEngine;
 
 public class Freeze : MonoBehaviour

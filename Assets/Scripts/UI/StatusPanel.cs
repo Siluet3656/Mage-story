@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Data.Enums;
+using Statuses;
 using UnityEngine;
 using UnityEngine.Serialization;
 

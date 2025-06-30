@@ -4,6 +4,7 @@ using UnityEngine;
 using Data.Enums;
 using Data;
 using Shard;
+using Spells.Earth;
 using Spells.Fire;
 using Spells.Frost;
 
@@ -44,6 +45,9 @@ namespace Spells
             
             _playerSpellPools.Add(SpellName.FrostWhirlwind, new Queue<Spell>());
             InstantiateSpells(SpellName.FrostWhirlwind, typeof(FrostWhirlwind), _projectileSpell);
+            
+            _playerSpellPools.Add(SpellName.Spike, new Queue<Spell>());
+            InstantiateSpells(SpellName.Spike, typeof(Spike), _projectileSpell);
         }
 
         private void InstantiateSpells(SpellName spellName, Type spellType, GameObject prefab)

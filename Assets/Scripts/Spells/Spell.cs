@@ -1,7 +1,7 @@
-﻿using Data;
-using Data.Enums;
+﻿using Data.Enums;
 using Data.SpellConfigs;
 using EntityResources;
+using Statuses;
 using UnityEngine;
 
 namespace Spells
@@ -39,7 +39,6 @@ namespace Spells
         public virtual void Initialize(SpellConfig config)
         {
             SpellName = config.SpellName;
-            // Initialize common spell properties from config
         }
         public abstract void Initialize(ProjectileSpellConfig config);
 

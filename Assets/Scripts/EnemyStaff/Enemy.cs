@@ -3,6 +3,7 @@ using Data.Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Data;
+using Statuses;
 using UnityEngine.Serialization;
 
 public class Enemy : MonoBehaviour

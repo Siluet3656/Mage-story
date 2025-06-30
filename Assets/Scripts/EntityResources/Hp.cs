@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Data.Enums;
+using Statuses;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
