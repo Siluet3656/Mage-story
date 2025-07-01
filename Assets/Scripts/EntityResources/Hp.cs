@@ -1,203 +1,119 @@
-﻿using System.Collections;
-using Data.Enums;
-using Statuses;
+﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using Data.Enums;
 
 namespace EntityResources
 {
     public class Hp : MonoBehaviour
     {
-        [Header("PRESET")]
-        [SerializeField] private Image _healthBar;
-        [SerializeField] private Image _additionalHealthBar;
-        [SerializeField] private Image _mainShieldStackBar;
-        [SerializeField] private Image [] _shieldStackBars;
-        [Space]
-        [SerializeField] private int _maxHealth;
-        [SerializeField] private float _frostAegisOverHpAmount;
-        [SerializeField] private int _earthShieldStacksAmount;
-        [Header("CURRENT STATE")]
-        [SerializeField] private float _currentHp;
-        [SerializeField] private float _overHp;
-        [SerializeField] private int _shieldStacks;
-        private bool _isTakingDamageEachSecond;
-        private bool _isWaitingOneSecond;
+        [Header("Base Stats")]
+        [SerializeField, Min(1)] private int _maxHealth;
+        [SerializeField, Min(1)] private float _frostAegisAdditionalHealthAmount ;
+        [SerializeField, Range(1,3)] private int _earthShieldStacksAmount;
+
+        private float _currentHealth;
+        private float _additionalHealth;
+        private int _shieldStacks;
         private bool _isInvulnerable;
-        private float _tickingDamage;
-        private float _tickingCriticalChance;
-        private float _tickingCriticalMultiply;
-
-        //private Buff _buffs;
-
+        
         private void Awake()
         {
-            /*_buffs = this.GetComponent<Buff>();
-            if (_buffs)
-            {
-                _buffs.OnPlayerFreeze += GetInvulnerability;
-                _buffs.OnPlayerUnFreeze += RemoveInvulnerability;
-                _buffs.OnEnemyFreeze += GetInvulnerability;
-                _buffs.OnEnemyUnFreeze += RemoveInvulnerability;
-            }*/
+            InitializeHealth();
         }
-
-        private void Start() {
-            if (_maxHealth > 0)
-            {
-                _currentHp = _maxHealth;
-            }
-            else
-            {
-                _currentHp = 1;
-            }
-        }
-
-        private void Update() {
-            _healthBar.fillAmount = (float)_currentHp/_maxHealth;
-            _additionalHealthBar.fillAmount = (float)_overHp/_frostAegisOverHpAmount;
-
-            if (_isTakingDamageEachSecond)
-            {
-                if (!_isWaitingOneSecond)
-                {
-                    StartCoroutine(WaitOneSecondAndTakeDamage());
-                }
-            }
-        }
-
-        private void Die()
-        {
-            Destroy(gameObject);
-        }
-    
-        private IEnumerator WaitOneSecondAndTakeDamage()
-        {
-            _isWaitingOneSecond = true;
-            yield return new WaitForSeconds(1);
-            TryToTakeCriticalDamage(_tickingDamage, _tickingCriticalMultiply, _tickingCriticalChance);
-            _isWaitingOneSecond = false;
         
+        private void InitializeHealth()
+        {
+            _currentHealth = Mathf.Max(_maxHealth, 1);
+            OnHealthChanged?.Invoke(_currentHealth);
         }
-    
+
         private void TakeDamage(float damage)
         {
             if (_shieldStacks > 0)
             {
-                RemoveOneShieldStack();
+                RemoveShieldStack();
                 return;
             }
+
+            ApplyDamageToHealth(damage);
+        }
+
+        private void ApplyDamageToHealth(float damage)
+        {
+            if (_additionalHealth > 0)
+            {
+                float additionalHealthDamage = Mathf.Min(damage, _additionalHealth);
+                _additionalHealth -= additionalHealthDamage;
+                damage -= additionalHealthDamage;
+                OnAdditionalHealthChanged?.Invoke(_additionalHealth);
+                
+                if (damage <= 0) return;
+            }
+            
+            _currentHealth = Mathf.Max(0, _currentHealth - damage);
+            OnHealthChanged?.Invoke(_currentHealth);
+            
+            if (_currentHealth <= 0)
+                Die();
+        }
+
+        private void RemoveShieldStack()
+        {
+            _shieldStacks = Mathf.Max(0, _shieldStacks - 1);
+            OnShieldStacksChanged?.Invoke(_shieldStacks);
+        }
+
+        private void Die()
+        {
+            OnDeath?.Invoke();
+            Destroy(gameObject); //Фабрика
+        }
         
-            if (_overHp - damage > 0)
-            {
-                _overHp -= damage;
-            }
-            else if (_overHp > 0)
-            {
-                damage -= _overHp;
-                _overHp = 0;
-                if (_currentHp - damage > 0)
-                {
-                    _currentHp -= damage;
-                }
-                else
-                {
-                    _currentHp = 0;
-                    Die();
-                }
-            }
-            else
-            {
-                if (_currentHp - damage > 0)
-                {
-                    _currentHp -= damage;
-                }
-                else
-                {
-                    _currentHp = 0;
-                    Die();
-                }
-            }
+        public event Action<float> OnHealthChanged;
+        public event Action<float> OnAdditionalHealthChanged;
+        public event Action<int> OnShieldStacksChanged;
+        public event Action OnDeath;
+
+        public float MaxHealth => _maxHealth;
+
+        public float FrostAegisAdditionalHealthAmount => _frostAegisAdditionalHealthAmount;
+
+        public void TryToTakeCriticalDamage(float damage, float criticalMultiply, float criticalChance)
+        {
+            if (_isInvulnerable) return;
+            
+            bool isCritical = Random.Range(0f, 1f) < criticalChance;
+            float finalDamage = isCritical ? damage * criticalMultiply : damage;
+            
+            TakeDamage(finalDamage);
         }
 
-        private void GetInvulnerability()
-        {
-            _isInvulnerable = true;
-        }
-    
-        private void RemoveInvulnerability()
-        {
-            _isInvulnerable = false;
-        }
-
-        private void RemoveOneShieldStack()
-        {
-            _shieldStacks -= 1;
-        
-            _shieldStackBars[_shieldStacks].gameObject.SetActive(false);
-            if (_shieldStacks <= 0)
-            {
-                _mainShieldStackBar.gameObject.SetActive(false);
-            }
-        }
-
-        public void TryToTakeCriticalDamage(float damage, float multiply, float chance)
-        {
-            if (_isInvulnerable == false)
-            {
-                float proc = Random.Range(0,100);
-                bool isProced = (proc - chance * 100) < 0;
-                //Debug.Log(multiply + " / " + chance);
-                if (isProced)
-                {
-                    TakeDamage(damage * multiply);
-                    //GetComponent<Debuff>().GotCrit();
-                }
-                else
-                {
-                    TakeDamage(damage);
-                }
-            }
-        }
-
-        public void StartTakingDamageEachSecond(float damage, float multiply, float chance)
-        {
-            _isTakingDamageEachSecond = true;
-            _tickingDamage = damage;
-            _tickingCriticalMultiply = multiply;
-            _tickingCriticalChance = chance;
-        }
-    
-        public void StopTakingDamageEachSecond()
-        {
-            _isTakingDamageEachSecond = false;
-            StopCoroutine(WaitOneSecondAndTakeDamage());
-        }
-
-        public void GetOverHp(SpellName source)
+        public void GetAdditionalHp(SpellName source)
         {
             switch (source)
             {
                 case SpellName.FrostAegis:
-                    _overHp = _frostAegisOverHpAmount;
+                    _additionalHealth = _frostAegisAdditionalHealthAmount;
+                    OnAdditionalHealthChanged?.Invoke(_additionalHealth);
                     break;
             }
         }
-
+        
         public void GetShieldStacks(SpellName source)
         {
             switch (source)
             {
                 case SpellName.EarthShield:
                     _shieldStacks = _earthShieldStacksAmount;
-                    _mainShieldStackBar.gameObject.SetActive(true);
-                    foreach (var shieldStack in _shieldStackBars)
-                    {
-                        shieldStack.gameObject.SetActive(true);
-                    }
+                    OnShieldStacksChanged?.Invoke(_shieldStacks);
                     break;
             }
+        }
+
+        public void SetInvulnerable(bool isInvulnerable)
+        {
+            _isInvulnerable = isInvulnerable;
         }
     }
 }

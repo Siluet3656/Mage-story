@@ -1,4 +1,5 @@
 ﻿using Data;
+using PlayerStaff;
 using UnityEngine;
 
 namespace Statuses
@@ -14,20 +15,26 @@ namespace Statuses
     
         public override void Apply(GameObject target)
         {
-            /*base.Apply(target);
-            var movement = target.GetComponent<IMovement>();
-            if (movement != null)
+            base.Apply(target);
+            if (target.TryGetComponent(out PlayerMovement movement))
             {
-                movement.ModifySpeed(-speedReduction);
+                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed() - 1);
+            }
+            /*else if (target.TryGetComponent(out EnemyMovement movement))
+            {
+                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed() - 1);
             }*/
         }
     
         public override void Remove(GameObject target)
         {
-            /*var movement = target.GetComponent<IMovement>();
-            if (movement != null)
+            if (target.TryGetComponent(out PlayerMovement movement))
             {
-                movement.ResetSpeed();
+                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed());
+            }
+            /*else if (target.TryGetComponent(out EnemyMovement movement))
+            {
+                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed());
             }*/
             base.Remove(target);
         }

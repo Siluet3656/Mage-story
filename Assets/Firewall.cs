@@ -21,7 +21,7 @@ public class Firewall : MonoBehaviour
         Hp hp = other.gameObject.GetComponent<Hp>();
         if (hp != null)
         {
-            hp.StartTakingDamageEachSecond(_damage, _critmultiply, _critchance);
+            //hp.StartTakingDamageEachSecond(_damage, _critmultiply, _critchance);
         }
     }
 
@@ -30,7 +30,7 @@ public class Firewall : MonoBehaviour
         Hp hp = other.gameObject.GetComponent<Hp>();
         if (hp != null)
         {
-            hp.StopTakingDamageEachSecond();
+            //hp.StopTakingDamageEachSecond();
         }
     }
 

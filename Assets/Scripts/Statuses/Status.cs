@@ -10,21 +10,21 @@ namespace Statuses
         private bool _isActive;
         private GameObject _target;
     
-        public StatusType Type { get; protected set; }
-        public StatusCategory Category { get; protected set; }
-        public float Duration => _remainingDuration;
-        public bool IsActive => _isActive;
-    
         protected StatusEffect(StatusEffectData data)
         {
             Type = data.Type;
             Category = data.Category;
             _remainingDuration = data.BaseDuration;
         }
+        
+        public StatusType Type { get; protected set; }
+        public StatusCategory Category { get; protected set; }
+        public float Duration => _remainingDuration;
+        public bool IsActive => _isActive;
     
         public virtual void Apply(GameObject target)
         {
-            this._target = target;
+            _target = target;
             _isActive = true;
         }
     

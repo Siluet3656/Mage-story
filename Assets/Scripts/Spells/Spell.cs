@@ -22,11 +22,11 @@ namespace Spells
             }
         }
 
-        protected virtual void ApplyDebuff(Enemy target, DebuffType debuffType)
+        protected virtual void ApplyDebuff(Enemy target, StatusType statusType)
         {
             if (target != null)
             {
-                //target.GetComponent<Debuff>().DebuffTarget(debuffType, target);
+                target.GetComponent<StatusApplier>().ApplyStatusToTarget(statusType, target.gameObject);
             }
         }
         

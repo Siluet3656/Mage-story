@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Statuses
 {
+    [RequireComponent(typeof(StatusView))]
     public class StatusController : MonoBehaviour
     {
         private readonly Dictionary<StatusType, IStatusEffect> _activeStatusEffects = new Dictionary<StatusType, IStatusEffect>();
@@ -22,7 +23,6 @@ namespace Statuses
     
         private void Update()
         {
-            // Create a copy to avoid modification during iteration
             List<IStatusEffect> effects = new List<IStatusEffect>(_activeStatusEffects.Values);
             foreach (var effect in effects)
             {
@@ -67,7 +67,6 @@ namespace Statuses
                     return new PoisonStatusEffect(data, 
                         (float)parameters[0], (float)parameters[1], 
                         (float)parameters[2], (float)parameters[3]);
-                // Add cases for other status Types
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;

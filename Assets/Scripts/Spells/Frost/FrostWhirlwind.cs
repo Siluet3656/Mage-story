@@ -8,8 +8,7 @@ namespace Spells.Frost
         public override SpellName SpellName => SpellName.FrostWhirlwind;
         protected override void OnReachTarget(Enemy target)
         {
-            ApplyDebuff(target, DebuffType.Slow);
-            Debug.Log("FWW");
+            //ApplyDebuff(target, StatusType.Slow);
             base.OnReachTarget(target);
         }
     }
