@@ -3,7 +3,7 @@ using System.Collections;
 using Animations;
 using Data;
 using Data.Enums;
-using UI;
+using View;
 
 namespace PlayerStaff
 { 

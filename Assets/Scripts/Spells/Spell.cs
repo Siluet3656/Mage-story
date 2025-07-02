@@ -1,5 +1,6 @@
 ﻿using Data.Enums;
 using Data.SpellConfigs;
+using EnemyStaff;
 using EntityResources;
 using Statuses;
 using UnityEngine;
@@ -14,11 +15,11 @@ namespace Spells
 
         protected abstract void Awake();
         
-        protected virtual void ApplyDamage(Hp target)
+        protected virtual void ApplyDamage(Hp targetHealth)
         {
-            if (target != null)
+            if (targetHealth != null)
             {
-                target.TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
+                targetHealth.TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
             }
         }
 

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5001322819261538869}
   - component: {fileID: 5001322819261538867}
   - component: {fileID: 5001322819261538866}
-  - component: {fileID: -3041730732511890976}
   m_Layer: 5
   m_Name: Icetomb
   m_TagString: Untagged
@@ -76,17 +75,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-3041730732511890976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5001322819261538868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e1f8345c49dcb4ca29e2c94c7c16cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dt: 0
-  bt: 1

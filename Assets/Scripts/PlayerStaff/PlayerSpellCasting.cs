@@ -6,7 +6,7 @@ using Data.SpellConfigs;
 using Shard;
 using Spells;
 using Spells.Fire;
-using UI;
+using View;
 
 namespace PlayerStaff
 {

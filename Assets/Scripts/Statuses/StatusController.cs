@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Data;
 using Data.Enums;
-using UI;
+using View;
 using UnityEngine;
 
 namespace Statuses

@@ -1,6 +1,7 @@
 ﻿using Data;
 using Data.Enums;
 using Data.SpellConfigs;
+using EnemyStaff;
 using UnityEngine;
 
 namespace Spells.Earth
@@ -8,7 +9,7 @@ namespace Spells.Earth
     public class Spike : ProjectileSpell
     {
         public override SpellName SpellName => SpellName.Spike;
-        protected override void OnReachTarget(Enemy target)
+        protected override void OnReachTarget(ITargetble target)
         {
             //SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Boom);
             //Spell fireballExplosion = SpellFactory.Instance.CreateSpell(SpellName.Boom);

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using EnemyStaff;
 
 namespace PlayerStaff
 {
@@ -11,13 +12,13 @@ namespace PlayerStaff
 
         private PlayerSpellCasting _spellCasting;
         
-        private Enemy _currentTarget;
+        private ITargetble _currentTarget;
         
-        private readonly List<Enemy> _nearbyEnemies = new List<Enemy>();
-        private List<Enemy> _enemiesInRange = new List<Enemy>();
+        private readonly List<ITargetble> _nearbyTargets = new List<ITargetble>();
+        private List<ITargetble> _targetsInRange = new List<ITargetble>();
         
         public bool HasTarget => _currentTarget != null;
-        public Enemy GetTarget => _currentTarget;
+        public ITargetble GetTarget => _currentTarget;
 
         private void Awake()
         {
@@ -34,27 +35,27 @@ namespace PlayerStaff
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null && _nearbyEnemies.Contains(enemy) == false)
+            ITargetble target = other.GetComponent<ITargetble>();
+            if (target != null && _nearbyTargets.Contains(target) == false)
             {
-                _nearbyEnemies.Add(enemy);
+                _nearbyTargets.Add(target);
             }
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null && _nearbyEnemies.Contains(enemy))
+            ITargetble target = other.GetComponent<ITargetble>();
+            if (target != null && _nearbyTargets.Contains(target))
             {
-                _nearbyEnemies.Remove(enemy);
+                _nearbyTargets.Remove(target);
             }
         }
         
         private void OrderEnemiesInRange()
         {
-            _enemiesInRange = _nearbyEnemies
-                .Where(enemy => Vector2.Distance(transform.position, enemy.transform.position) <= _interactionRange)
-                .OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position))
+            _targetsInRange = _nearbyTargets
+                .Where(target => Vector2.Distance(transform.position, target.GameObject.transform.position) <= _interactionRange)
+                .OrderBy(enemy => Vector2.Distance(transform.position, enemy.GameObject.transform.position))
                 .ToList();
         }
         
@@ -62,7 +63,7 @@ namespace PlayerStaff
         {
             if (HasTarget)
             {
-                _currentTarget.ResetTarget();
+                _currentTarget.OnUntargeted();
                 _currentTarget = null;
             }
         }
@@ -70,7 +71,7 @@ namespace PlayerStaff
         private bool IsTargetInRange()
         {
             return HasTarget &&
-                   Vector2.Distance(transform.position, _currentTarget.transform.position) <= _interactionRange;
+                   Vector2.Distance(transform.position, _currentTarget.GameObject.transform.position) <= _interactionRange;
         }
 
         private void InterruptCast()
@@ -83,7 +84,7 @@ namespace PlayerStaff
         {
             OrderEnemiesInRange();
 
-            if (_enemiesInRange.Count == 0)
+            if (_targetsInRange.Count == 0)
             {
                 ClearTarget();
                 return;
@@ -91,29 +92,29 @@ namespace PlayerStaff
 
             if (HasTarget)
             {
-                int currentIndex = _enemiesInRange.IndexOf(_currentTarget);
+                int currentIndex = _targetsInRange.IndexOf(_currentTarget);
                 ClearTarget();
 
-                _currentTarget = currentIndex == -1 || currentIndex >= _enemiesInRange.Count - 1
-                    ? _enemiesInRange[0]
-                    : _enemiesInRange[currentIndex + 1];
+                _currentTarget = currentIndex == -1 || currentIndex >= _targetsInRange.Count - 1
+                    ? _targetsInRange[0]
+                    : _targetsInRange[currentIndex + 1];
             }
             else
             {
-                _currentTarget = _enemiesInRange[0];
+                _currentTarget = _targetsInRange[0];
             }
 
-            _currentTarget.Target();
+            _currentTarget.OnTargeted();
         }
 
         public void OnMouseTargetSelect(RaycastHit2D hit)
         {
             ClearTarget();
 
-            if (hit.collider != null && hit.collider.TryGetComponent<Enemy>(out var enemy))
+            if (hit.collider != null && hit.collider.TryGetComponent<ITargetble>(out var target))
             {
-                enemy.Target();
-                _currentTarget = enemy;
+                target.OnTargeted();
+                _currentTarget = target;
             }
         }
     }

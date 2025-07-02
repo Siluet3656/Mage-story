@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Data.Enums;
+using EnemyStaff;
 using EntityResources;
 using Statuses;
 using UnityEngine;

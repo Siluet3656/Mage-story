@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Data.Enums;
-using UI;
+using View;
 
 namespace EntityResources
 {

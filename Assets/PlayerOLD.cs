@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Data.Enums;
+using EnemyStaff;
 using Statuses;
-using UI.Buttons;
+using View.Buttons;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -417,18 +418,18 @@ public class Player : MonoBehaviour
                 if (_currentIndex == -1 || _currentIndex >= _enemiesInRange.Count - 1)
                 {
                     _currentTarget = _enemiesInRange[0];
-                    _enemiesInRange[0].Target();
+                    //_enemiesInRange[0].Target();
                 }
                 else
                 {
                     _currentTarget = _enemiesInRange[_currentIndex + 1];
-                    _enemiesInRange[_currentIndex + 1].Target();
+                    //_enemiesInRange[_currentIndex + 1].Target();
                 }
             }
             else
             {
                 _currentTarget = _enemiesInRange[0];
-                _enemiesInRange[0].Target();
+                //_enemiesInRange[0].Target();
             }
         }
     }
@@ -469,7 +470,7 @@ public class Player : MonoBehaviour
             Enemy enemy = hit.collider.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.Target();
+                //enemy.Target();
                 _currentTarget = enemy;
             }
         }
@@ -483,7 +484,7 @@ public class Player : MonoBehaviour
     {
         if (_currentTarget != null)
         { 
-            _currentTarget.ResetTarget();
+            //_currentTarget.ResetTarget();
             _currentTarget = null;
         }
     }

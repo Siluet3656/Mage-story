@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Data.Enums;
-using UI;
+using View;
 
 namespace PlayerStaff
 {

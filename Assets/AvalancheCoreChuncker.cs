@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Data.Enums;
+using EnemyStaff;
 using EntityResources;
 using UnityEngine;
 using UnityEngine.Serialization;

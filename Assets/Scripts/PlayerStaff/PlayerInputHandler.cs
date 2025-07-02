@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UI;
-using UI.Buttons;
+using View;
+using View.Buttons;
 
 namespace PlayerStaff
 {
