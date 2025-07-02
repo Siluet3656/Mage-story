@@ -20,9 +20,8 @@ namespace Spells
         private Hp _targetsHp;
         private Vector3 _direction;
         private float _angle;
-        
-        public override SpellName SpellName { get; protected set; }
-        public override SpellType Type => SpellType.Projectile;
+
+        protected override SpellName SpellName { get; set; }
 
         private ProjectileSpellConfig _config;
 

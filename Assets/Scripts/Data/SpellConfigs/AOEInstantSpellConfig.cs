@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
+using Data.Enums;
 
 namespace Data.SpellConfigs
 {
-    [CreateAssetMenu(fileName = "InstantSpell", menuName = "Spells/InstantSpell", order = 52)]
-    public class InstantSpellConfig : SpellConfig
+    [CreateAssetMenu(fileName = "AOEInstantSpell", menuName = "Spells/AOEInstantSpell", order = 52)]
+    public class AoeInstantSpellConfig : SpellConfig
     {
-        [Header("Instant Cast")]
+        [Header("AOE Instant Cast")]
         [SerializeField] private Sprite _castSprite;
         [SerializeField] private float _existTime;
+        [SerializeField] private RangeType _range;
         
         public Sprite CastSprite => _castSprite;
         public float ExistTime => _existTime;
@@ -19,5 +21,11 @@ namespace Data.SpellConfigs
         public float Damage => _damage;
         public float CriticalChance => _criticalChance;
         public float CriticalMultiply => _criticalMultiply;
+        
+        public override SpellType GetSPellType()
+        {
+            return SpellType.AoeInstantSpell;
+        }
+
     }
 }

@@ -5035,6 +5035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _numOfEachSpell: 3
   _projectileSpell: {fileID: 3167266902314898038, guid: 9e6eeafe129fef646bc893f1ff2690ed, type: 3}
+  _aoeInstantSpell: {fileID: 3167266902314898038, guid: b076ff447a2058c478c6469ab195f26c, type: 3}
 --- !u!4 &102588858
 Transform:
   m_ObjectHideFlags: 0
@@ -46413,13 +46414,13 @@ GameObject:
   - component: {fileID: 1418598210}
   - component: {fileID: 1418598205}
   - component: {fileID: 1418598213}
+  - component: {fileID: 1418598212}
+  - component: {fileID: 1418598219}
   - component: {fileID: 1418598204}
   - component: {fileID: 1418598208}
   - component: {fileID: 1418598209}
   - component: {fileID: 1418598207}
   - component: {fileID: 1418598211}
-  - component: {fileID: 1418598219}
-  - component: {fileID: 1418598212}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -46635,7 +46636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a506825b7bbb154ca29b40b93b313df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxHealth: 10000
   _frostAegisAdditionalHealthAmount: 1000
   _earthShieldStacksAmount: 3
 --- !u!114 &1418598213

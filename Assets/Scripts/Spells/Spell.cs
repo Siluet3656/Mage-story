@@ -10,11 +10,11 @@ namespace Spells
     [RequireComponent(typeof(StatusApplier))]
     public abstract class Spell : MonoBehaviour
     {
+        private StatusApplier _statusApplier;
+        
         protected float SpellDamage;
         protected float CriticalChance;
         protected float CriticalMultiply;
-
-        private StatusApplier _statusApplier;
 
         protected virtual void Awake()
         {
@@ -41,8 +41,8 @@ namespace Spells
         {
             SpellFactory.Instance.ReturnSpell(SpellName, this);
         }
-        public abstract SpellName SpellName { get; protected set; }
-        public abstract SpellType Type { get; }
+
+        protected abstract SpellName SpellName { get; set; }
         public virtual void Initialize(SpellConfig config)
         {
             SpellName = config.SpellName;

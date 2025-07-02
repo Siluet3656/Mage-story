@@ -1,29 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
 using EntityResources;
-using UnityEngine;
 
 namespace Spells.Fire
 {
     [RequireComponent(typeof(CircleCollider2D))]
-    public class Explosion : InstantSpell
+    public class Explosion : AoeInstantSpell
     {
-        private List<Hp> ToDamage = new List<Hp>();
         private void OnTriggerEnter2D(Collider2D other)
         {
             Hp otherHp = other.GetComponent<Hp>();
             if (otherHp != null)
             {
-                ToDamage.Add(otherHp);
+                otherHp.TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
             }
-        }
-
-        public override void DoSpell()
-        {
-            foreach (var entityHp in ToDamage)
-            {
-                entityHp.TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
-            }
-            base.DoSpell();
         }
     }
 }

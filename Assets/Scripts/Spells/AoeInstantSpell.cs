@@ -8,20 +8,21 @@ using EntityResources;
 namespace Spells
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    public class InstantSpell : Spell
+    public class AoeInstantSpell : Spell
     {
         private Sprite _sprite;
         private SpriteRenderer _spriteRenderer;
         private ITargetble _target;
         private Hp _targetsHp;
         private float _exitsTime;
-        
-        public override SpellName SpellName { get; protected set; }
-        public override SpellType Type => SpellType.AoeInstantSpell;
+
+        protected override SpellName SpellName { get; set; }
 
         private IEnumerator Existing()
         {
             yield return new WaitForSeconds(_exitsTime);
+            
+            base.ReturnToPool();
         }
 
         protected override void Awake()
@@ -31,7 +32,7 @@ namespace Spells
             base.Awake();
         }
         
-        private void Initialize(InstantSpellConfig config)
+        private void Initialize(AoeInstantSpellConfig config)
         {
             SpellDamage = config.Damage;
             CriticalChance = config.CriticalChance;
@@ -42,7 +43,7 @@ namespace Spells
         
         public override void Initialize(SpellConfig config)
         {
-            if (config is InstantSpellConfig instantSpellConfig)
+            if (config is AoeInstantSpellConfig instantSpellConfig)
             {
                 Initialize(instantSpellConfig);
             }
@@ -54,8 +55,8 @@ namespace Spells
         {
             _spriteRenderer.sprite = _sprite;
             gameObject.SetActive(true);
+
             StartCoroutine(Existing());
-            base.ReturnToPool();
         }
     }
 }

@@ -69,7 +69,7 @@ namespace PlayerStaff
                 yield return null;
             }
 
-            switch (config.Type)
+            switch (config.GetSPellType())
             {
                 case SpellType.Projectile:
                     DoProjectileSpell();
@@ -91,11 +91,22 @@ namespace PlayerStaff
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
         }
+
+        private void DoAoeInstantSpell()
+        {
+            _spell.transform.position = _shard.transform.position;
+            _spell.DoSpell();
+        }
         
         private void CastSpellInstantly (SpellConfig config)
         {
-            _spell.DoSpell();
-            
+            switch (config.GetSPellType())
+            {
+                case SpellType.AoeInstantSpell:
+                    DoAoeInstantSpell();
+                    break;
+            }
+
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;

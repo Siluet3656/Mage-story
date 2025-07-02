@@ -14,7 +14,7 @@ namespace View
         private SpellName _draggingSpell;
         private Vector3 _point;
         private bool _isDragging;
-        // Костыли
+        // Костыль
         private readonly Vector2 _offset = new Vector2(0.5f,-0.5f);
 
         private void Awake()
@@ -43,7 +43,7 @@ namespace View
         
         private IEnumerator WaitaBit()
         {
-            yield return new WaitForSeconds(Time.deltaTime * 30);
+            yield return new WaitForSeconds(Time.deltaTime * 30); // костыль
             DropSpell();
         }
         

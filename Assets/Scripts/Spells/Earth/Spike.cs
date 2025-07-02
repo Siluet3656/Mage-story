@@ -8,7 +8,7 @@ namespace Spells.Earth
 {
     public class Spike : ProjectileSpell
     {
-        public override SpellName SpellName => SpellName.Spike;
+        protected override SpellName SpellName => SpellName.Spike;
         protected override void OnReachTarget(ITargetble target)
         {
             //SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Boom);

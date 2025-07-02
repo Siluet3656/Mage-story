@@ -1,4 +1,6 @@
-﻿using Spells;
+﻿using System;
+using Data.Enums;
+using Spells;
 using UnityEngine;
 
 namespace Data.SpellConfigs
@@ -7,6 +9,7 @@ namespace Data.SpellConfigs
     public class ProjectileSpellConfig : SpellConfig, ICast
     {
         [SerializeField] private Sprite _projectileSprite;
+
         public Sprite ProjectileSprite => _projectileSprite;
         
         [Header("Casting")]
@@ -38,5 +41,10 @@ namespace Data.SpellConfigs
         
         [SerializeField, Min(1)] private float _criticalMultiply;
         public float CriticalMultiply => _criticalMultiply;
+        
+        public override SpellType GetSPellType()
+        {
+            return SpellType.Projectile;
+        }
     }
 }

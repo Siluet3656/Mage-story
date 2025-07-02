@@ -11,13 +11,15 @@ namespace EntityResources
     {
         [Header("Base Stats")]
         [SerializeField, Min(1)] private int _maxHealth;
-        [SerializeField, Min(1)] private float _frostAegisAdditionalHealthAmount ;
-        [SerializeField, Range(1,3)] private int _earthShieldStacksAmount;
+        [SerializeField, Min(0)] private float _frostAegisAdditionalHealthAmount ;
+        [SerializeField, Range(0,3)] private int _earthShieldStacksAmount;
 
         private float _currentHealth;
         private float _additionalHealth;
         private int _shieldStacks;
         private bool _isInvulnerable;
+
+        public bool IsInvulnerable => _isInvulnerable;
         
         private void Awake()
         {
@@ -113,9 +115,14 @@ namespace EntityResources
             }
         }
 
-        public void SetInvulnerable(bool isInvulnerable)
+        public void GetInvulnerable()
         {
-            _isInvulnerable = isInvulnerable;
+            _isInvulnerable = true;
+        }
+        
+        public void GetVulnerable()
+        {
+            _isInvulnerable = false;
         }
     }
 }

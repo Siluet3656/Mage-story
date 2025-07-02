@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using Data.Enums;
-using Spells;
 
 namespace Data.SpellConfigs
 {
-    public class SpellConfig : ScriptableObject
+    public abstract class SpellConfig : ScriptableObject
     {
-        public SpellType Type { get; } = SpellType.Projectile;
-
+        public abstract SpellType GetSPellType();
+        
         [Header("Basic")]
         [SerializeField] private SpellName _name;
         [SerializeField] private Sprite _icon;

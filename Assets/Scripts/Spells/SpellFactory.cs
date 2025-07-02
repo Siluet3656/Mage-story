@@ -15,8 +15,10 @@ namespace Spells
     {
         [Header("Base")] 
         [SerializeField, Min(1)] private int _numOfEachSpell;
+        
         [Header("Prefabs")]
         [SerializeField] private GameObject _projectileSpell;
+        [SerializeField] private GameObject _aoeInstantSpell;
         
         private readonly Dictionary<SpellName, Queue<Spell>> _playerSpellPools = new Dictionary<SpellName, Queue<Spell>>();
 
@@ -35,21 +37,31 @@ namespace Spells
 
             InitializePlayerPools();
         }
-
+        
+        
         private void InitializePlayerPools()
         {
             _playerSpellPools.Add(SpellName.NoSpell, new Queue<Spell>());
             
+            #region SpellinitFire
             _playerSpellPools.Add(SpellName.Fireball, new Queue<Spell>());
             InstantiateSpells(SpellName.Fireball, typeof(Fireball), _projectileSpell);
             
+            _playerSpellPools.Add(SpellName.Boom, new Queue<Spell>());
+            InstantiateSpells(SpellName.Boom, typeof(Explosion), _aoeInstantSpell);
+            #endregion
+            
+            #region SpellinitFrost
             _playerSpellPools.Add(SpellName.FrostWhirlwind, new Queue<Spell>());
             InstantiateSpells(SpellName.FrostWhirlwind, typeof(FrostWhirlwind), _projectileSpell);
+            #endregion
             
+            #region SpellinitEarth
             _playerSpellPools.Add(SpellName.Spike, new Queue<Spell>());
             InstantiateSpells(SpellName.Spike, typeof(Spike), _projectileSpell);
+            #endregion
         }
-
+        
         private void InstantiateSpells(SpellName spellName, Type spellType, GameObject prefab)
         {
             for (int i = 0; i < _numOfEachSpell; i++)
@@ -60,7 +72,7 @@ namespace Spells
                 projectile.gameObject.SetActive(false);
             }
         }
-
+        
         private ProjectileSpell GetProjectileSpell(SpellName spellName)
         {
             if (_playerSpellPools == null) return null;
@@ -86,15 +98,43 @@ namespace Spells
             return projectileSpell;
         }
 
+        private AoeInstantSpell GetAoeInstantSpell(SpellName spellName)
+        {
+            if (_playerSpellPools == null) return null;
+
+            AoeInstantSpell aoeInstantSpell;
+            
+            if (_playerSpellPools[spellName].Count > 1)
+            {
+                aoeInstantSpell = _playerSpellPools[spellName].Dequeue() as AoeInstantSpell;
+            }
+            else if (_playerSpellPools[spellName].Count == 1)
+            {
+                var spell = _playerSpellPools[spellName].Dequeue();
+                InstantiateSpells(spellName, spell.GetType(), _aoeInstantSpell);
+                aoeInstantSpell = spell as AoeInstantSpell;
+            }
+            else
+            {
+                aoeInstantSpell = null;
+                Debug.LogError("NO SPELLS IN POOL WTF");
+            }
+            
+            return aoeInstantSpell;
+        }
+
         public Spell CreateSpell(SpellName spellName)
         {
             Spell spell;
-            SpellType type = SpellData.Instance.GetSpellConfig(spellName).Type;
-
+            SpellType type = SpellData.Instance.GetSpellConfig(spellName).GetSPellType();
+            Debug.Log(type);
             switch (type)
             {
                 case SpellType.Projectile:
                     spell = GetProjectileSpell(spellName);
+                    break;
+                case SpellType.AoeInstantSpell:
+                    spell = GetAoeInstantSpell(spellName);
                     break;
                 default:
                     return null;
