@@ -49,12 +49,14 @@ namespace UI
         private void UpdateHealthBar(float currentHealth)
         {
             if (_hp == null || _healthBar == null) return;
+            
             _healthBar.fillAmount = currentHealth / _hp.MaxHealth;
         }
 
         private void UpdateOverHealthBar(float overHealth)
         {
             if (_hp == null || _additionalHealthBar == null) return;
+            
             _additionalHealthBar.fillAmount = overHealth / _hp.FrostAegisAdditionalHealthAmount;
         }
 

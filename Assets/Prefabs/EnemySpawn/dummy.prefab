@@ -167,9 +167,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6746311934899669593}
   - component: {fileID: 6746311934899669592}
-  - component: {fileID: 945141686}
+  - component: {fileID: 1448242435343081685}
   - component: {fileID: 8392274863007428816}
   - component: {fileID: 4888018219519930604}
+  - component: {fileID: 5174457874312117543}
   - component: {fileID: 6746311934899669598}
   - component: {fileID: 6746311934899669599}
   - component: {fileID: 6746311934899669597}
@@ -215,7 +216,7 @@ MonoBehaviour:
   _minWaitingTime: 1
   _maxWaitingTime: 3
   _iceTomb: {fileID: 2243542452867873685}
---- !u!114 &945141686
+--- !u!114 &1448242435343081685
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,16 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a506825b7bbb154ca29b40b93b313df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBar: {fileID: 6746311935797336348}
-  _additionalHealthBar: {fileID: 5841031136327718698}
-  _mainShieldStackBar: {fileID: 5841031136327718698}
-  _shieldStackBars: []
-  _maxHealth: 1000
-  _frostAegisOverHpAmount: 0
+  _maxHealth: 500
+  _frostAegisAdditionalHealthAmount: 5000
   _earthShieldStacksAmount: 0
-  _currentHp: 0
-  _overHp: 0
-  _shieldStacks: 0
 --- !u!114 &8392274863007428816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +256,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _statusPanel: {fileID: 117975478400512657}
+--- !u!114 &5174457874312117543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6746311934899669595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9cd967e6fc649449d3ab68874f4ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthBar: {fileID: 6746311935797336348}
+  _additionalHealthBar: {fileID: 5841031136327718698}
+  _mainShieldStackBar: {fileID: 0}
+  _shieldStackBars: []
 --- !u!212 &6746311934899669598
 SpriteRenderer:
   m_ObjectHideFlags: 0

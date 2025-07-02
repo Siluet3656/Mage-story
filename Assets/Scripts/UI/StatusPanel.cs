@@ -17,6 +17,36 @@ namespace UI
 
         private Dictionary<StatusType, GameObject> _activeStatusIcons = new Dictionary<StatusType, GameObject>();
         private Dictionary<GameObject, StatusDisplaySettings> _targetSettings = new Dictionary<GameObject, StatusDisplaySettings>();
+        
+        private void RefreshStatusPositions(GameObject target)
+        {
+            if (!_targetSettings.TryGetValue(target, out var settings))
+                return;
+
+            int index = 0;
+            foreach (var icon in _activeStatusIcons.Values)
+            {
+                icon.transform.localPosition = new Vector3(
+                    settings.DefaultX + settings.Offset * index,
+                    settings.DefaultY,
+                    0
+                );
+                index++;
+            }
+        }
+
+        private GameObject GetPrefabForStatus(StatusType type)
+        {
+            switch (type)
+            {
+                case StatusType.Slow: return _iconPrefabs.Slow;
+                case StatusType.Poison: return _iconPrefabs.Poison;
+                case StatusType.FireMark: return _iconPrefabs.FireMark;
+                case StatusType.FireAura: return _iconPrefabs.FireAura;
+                case StatusType.StasisFreeze: return _iconPrefabs.IceTomb;
+                default: return null;
+            }
+        }
 
         public void AddStatusEffect(StatusType type, GameObject target)
         {
@@ -61,36 +91,6 @@ namespace UI
             }
         }
 
-        private void RefreshStatusPositions(GameObject target)
-        {
-            if (!_targetSettings.TryGetValue(target, out var settings))
-                return;
-
-            int index = 0;
-            foreach (var icon in _activeStatusIcons.Values)
-            {
-                icon.transform.localPosition = new Vector3(
-                    settings.DefaultX + settings.Offset * index,
-                    settings.DefaultY,
-                    0
-                );
-                index++;
-            }
-        }
-
-        private GameObject GetPrefabForStatus(StatusType type)
-        {
-            switch (type)
-            {
-                case StatusType.Slow: return _iconPrefabs.Slow;
-                case StatusType.Poison: return _iconPrefabs.Poison;
-                case StatusType.FireMark: return _iconPrefabs.FireMark;
-                case StatusType.FireAura: return _iconPrefabs.FireAura;
-                case StatusType.StasisFreeze: return _iconPrefabs.IceTomb;
-                default: return null;
-            }
-        }
-
         public void ClearAllStatuses()
         {
             foreach (var icon in _activeStatusIcons.Values)
@@ -100,5 +100,6 @@ namespace UI
             _activeStatusIcons.Clear();
             _targetSettings.Clear();
         }
+
     }
 }

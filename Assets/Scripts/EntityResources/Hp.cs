@@ -2,9 +2,11 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Data.Enums;
+using UI;
 
 namespace EntityResources
 {
+    [RequireComponent(typeof(HpView))]
     public class Hp : MonoBehaviour
     {
         [Header("Base Stats")]
