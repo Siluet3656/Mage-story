@@ -108,7 +108,7 @@ namespace PlayerStaff
             }
         }
 
-        public void UpdateMovementSpeed(SpeedType type)
+        public void SetSpeed(SpeedType type)
         {
             _currentSpeed = type;
         }

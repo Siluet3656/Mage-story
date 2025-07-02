@@ -25,6 +25,8 @@ namespace Spells
         {
             _rigidbody = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            
+            base.Awake();
         }
 
         private void FixedUpdate()

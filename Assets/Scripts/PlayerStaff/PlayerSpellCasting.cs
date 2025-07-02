@@ -78,7 +78,7 @@ namespace PlayerStaff
             
             _ui.UpdateCastBar(0f);
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
-            _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed());
+            _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
         }
 
@@ -97,7 +97,7 @@ namespace PlayerStaff
             _spell.DoSpell();
             
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
-            _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed());
+            _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
         }
 
@@ -148,7 +148,7 @@ namespace PlayerStaff
             _spellName = spellName;
             _spell.Initialize(spellConfig);    
             _isCasting = true;
-            _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
+            _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
             
@@ -174,7 +174,7 @@ namespace PlayerStaff
             StopCoroutine(_globalCooldownRoutine);
             _spellCastRoutine = null;
             _isCasting = false;
-            _movement.UpdateMovementSpeed(_movement.GetAdjustedPlayerSpeed());
+            _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _globalCooldownTimer = 0f;
             _ui.UpdateGcdBars(0f);
             _ui.UpdateCastBar(0f);

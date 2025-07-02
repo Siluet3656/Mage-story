@@ -1,41 +1,39 @@
-﻿using Data;
+﻿using UnityEngine;
+using Data;
+using EnemyStaff;
 using PlayerStaff;
-using UnityEngine;
 
 namespace Statuses
 {
     public class SlowStatusEffect : StatusEffect
     {
-        private float _speedReduction;
-    
-        public SlowStatusEffect(StatusEffectData data, float speedReduction) : base(data)
+        public SlowStatusEffect(StatusEffectData data) : base(data)
         {
-            _speedReduction = speedReduction;
         }
-    
+
         public override void Apply(GameObject target)
         {
             base.Apply(target);
-            if (target.TryGetComponent(out PlayerMovement movement))
+            if (target.TryGetComponent(out PlayerMovement player))
             {
-                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed() - 1);
+                player.SetSpeed(player.GetAdjustedPlayerSpeed() - 1);
             }
-            /*else if (target.TryGetComponent(out EnemyMovement movement))
+            else if (target.TryGetComponent(out Enemy enemy))
             {
-                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed() - 1);
-            }*/
+                enemy.SetSpeed(enemy.CurrentSpeed - 1);
+            }
         }
     
         public override void Remove(GameObject target)
         {
             if (target.TryGetComponent(out PlayerMovement movement))
             {
-                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed());
+                movement.SetSpeed(movement.GetAdjustedPlayerSpeed());
             }
-            /*else if (target.TryGetComponent(out EnemyMovement movement))
+            else if (target.TryGetComponent(out Enemy enemy))
             {
-                movement.UpdateMovementSpeed(movement.GetAdjustedPlayerSpeed());
-            }*/
+                enemy.SetSpeed(enemy.DefaultSpeed);
+            }
             base.Remove(target);
         }
     }

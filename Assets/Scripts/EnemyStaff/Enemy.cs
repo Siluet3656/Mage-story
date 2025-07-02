@@ -30,6 +30,7 @@ namespace EnemyStaff
         private bool _isPatrolling;
 
         public SpeedType CurrentSpeed => _currentSpeed;
+        public SpeedType DefaultSpeed => _defaultSpeed;
         public bool IsTargeted => _isTargeted;
         public bool IsTargetable { get; }
 
@@ -69,7 +70,12 @@ namespace EnemyStaff
                 StartPatrol();
             }
         }
-        
+
+        private void OnDestroy()
+        {
+            OnTargetDestroy?.Invoke();
+        }
+
         public void OnTargeted()
         {
             SetTargetStatus(true);
@@ -81,6 +87,7 @@ namespace EnemyStaff
         }
 
         public GameObject GameObject => gameObject;
+        public event Action OnTargetDestroy;
 
         private void StartPatrol()
         {

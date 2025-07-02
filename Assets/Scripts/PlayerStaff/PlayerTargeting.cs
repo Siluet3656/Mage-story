@@ -58,12 +58,20 @@ namespace PlayerStaff
                 .OrderBy(enemy => Vector2.Distance(transform.position, enemy.GameObject.transform.position))
                 .ToList();
         }
+
+        private void SetTarget(ITargetble target)
+        {
+            target.OnTargeted();
+            target.OnTargetDestroy += ClearTarget;
+            _currentTarget = target;
+        }
         
         private void ClearTarget()
         {
             if (HasTarget)
             {
                 _currentTarget.OnUntargeted();
+                _currentTarget.OnTargetDestroy += ClearTarget;
                 _currentTarget = null;
             }
         }
@@ -82,6 +90,8 @@ namespace PlayerStaff
         
         public void OnFastTarget()
         {
+            ITargetble target;
+            
             OrderEnemiesInRange();
 
             if (_targetsInRange.Count == 0)
@@ -95,16 +105,16 @@ namespace PlayerStaff
                 int currentIndex = _targetsInRange.IndexOf(_currentTarget);
                 ClearTarget();
 
-                _currentTarget = currentIndex == -1 || currentIndex >= _targetsInRange.Count - 1
+                target = currentIndex == -1 || currentIndex >= _targetsInRange.Count - 1
                     ? _targetsInRange[0]
                     : _targetsInRange[currentIndex + 1];
             }
             else
             {
-                _currentTarget = _targetsInRange[0];
+                target = _targetsInRange[0];
             }
-
-            _currentTarget.OnTargeted();
+            
+            SetTarget(target);
         }
 
         public void OnMouseTargetSelect(RaycastHit2D hit)
@@ -113,8 +123,7 @@ namespace PlayerStaff
 
             if (hit.collider != null && hit.collider.TryGetComponent<ITargetble>(out var target))
             {
-                target.OnTargeted();
-                _currentTarget = target;
+                SetTarget(target);
             }
         }
     }

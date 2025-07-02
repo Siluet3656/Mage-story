@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace EnemyStaff
 {
@@ -11,5 +12,7 @@ namespace EnemyStaff
         void OnUntargeted();
         
         GameObject GameObject { get; }
+
+        event Action OnTargetDestroy;
     }
 }

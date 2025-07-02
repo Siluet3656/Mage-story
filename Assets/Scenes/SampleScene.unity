@@ -58119,6 +58119,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2917276155359522141, guid: 5c83a811bdcf65a49ada25b998c2738f, type: 3}
+      propertyPath: _defaultSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917276155359522141, guid: 5c83a811bdcf65a49ada25b998c2738f, type: 3}
+      propertyPath: _minWaitingTime
+      value: 99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917276155359522141, guid: 5c83a811bdcf65a49ada25b998c2738f, type: 3}
+      propertyPath: _maxWaitingTime
+      value: 99999
+      objectReference: {fileID: 0}
     - target: {fileID: 6746311934899669593, guid: 5c83a811bdcf65a49ada25b998c2738f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

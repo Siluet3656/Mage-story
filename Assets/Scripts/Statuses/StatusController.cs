@@ -27,6 +27,11 @@ namespace Statuses
             foreach (var effect in effects)
             {
                 effect.Update(Time.deltaTime);
+                
+                if (effect.IsActive == false)
+                {
+                    RemoveStatus(effect.Type);
+                }
             }
         }
     
@@ -62,7 +67,7 @@ namespace Statuses
             switch (data.Type)
             {
                 case StatusType.Slow:
-                    return new SlowStatusEffect(data, (float)parameters[0]);
+                    return new SlowStatusEffect(data);
                 case StatusType.Poison:
                     return new PoisonStatusEffect(data, 
                         (float)parameters[0], (float)parameters[1], 

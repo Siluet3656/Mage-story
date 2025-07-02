@@ -20,20 +20,6 @@ namespace Statuses
             _nextTickTime = tickInterval;
         }
     
-        public override void Update(float deltaTime)
-        {
-            base.Update(deltaTime);
-        
-            if (!IsActive) return;
-        
-            _nextTickTime -= deltaTime;
-            if (_nextTickTime <= 0)
-            {
-                ApplyDamage();
-                _nextTickTime = _tickInterval;
-            }
-        }
-    
         private void ApplyDamage()
         {
             /*var health = target.GetComponent<IHealth>();

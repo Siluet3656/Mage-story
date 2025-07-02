@@ -7,13 +7,19 @@ using UnityEngine;
 
 namespace Spells
 {
+    [RequireComponent(typeof(StatusApplier))]
     public abstract class Spell : MonoBehaviour
     {
         protected float SpellDamage;
         protected float CriticalChance;
         protected float CriticalMultiply;
 
-        protected abstract void Awake();
+        private StatusApplier _statusApplier;
+
+        protected virtual void Awake()
+        {
+            _statusApplier = GetComponent<StatusApplier>();
+        }
         
         protected virtual void ApplyDamage(Hp targetHealth)
         {
@@ -27,7 +33,7 @@ namespace Spells
         {
             if (target != null)
             {
-                target.GetComponent<StatusApplier>().ApplyStatusToTarget(statusType, target.gameObject);
+                _statusApplier.ApplyStatusToTarget(statusType, target.gameObject);
             }
         }
         

@@ -1,6 +1,5 @@
 ﻿using Data.Enums;
 using EnemyStaff;
-using UnityEngine;
 
 namespace Spells.Frost
 {
@@ -9,7 +8,7 @@ namespace Spells.Frost
         public override SpellName SpellName => SpellName.FrostWhirlwind;
         protected override void OnReachTarget(ITargetble target)
         {
-            //ApplyDebuff(target, StatusType.Slow);
+            ApplyDebuff(target as Enemy, StatusType.Slow);
             base.OnReachTarget(target);
         }
     }
