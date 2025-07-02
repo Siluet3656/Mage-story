@@ -20,6 +20,11 @@ namespace Spells
         private Hp _targetsHp;
         private Vector3 _direction;
         private float _angle;
+        
+        public override SpellName SpellName { get; protected set; }
+        public override SpellType Type => SpellType.Projectile;
+
+        private ProjectileSpellConfig _config;
 
         protected override void Awake()
         {
@@ -27,6 +32,14 @@ namespace Spells
             _spriteRenderer = GetComponent<SpriteRenderer>();
             
             base.Awake();
+        }
+
+        private void Initialize(ProjectileSpellConfig config)
+        {
+            SpellDamage = config.Damage;
+            CriticalChance = config.CriticalChance;
+            CriticalMultiply = config.CriticalMultiply;
+            _sprite = config.ProjectileSprite;
         }
 
         private void FixedUpdate()
@@ -54,27 +67,15 @@ namespace Spells
             base.ApplyDamage(_targetsHp);
             base.ReturnToPool();
         }
-
-        public override SpellName SpellName { get; protected set; }
-        public override SpellType Type => SpellType.Projectile;
-
-        private ProjectileSpellConfig _config;
-
-
+        
         public override void Initialize(SpellConfig config)
         {
             if (config is ProjectileSpellConfig projectileSpellConfig)
             {
                 Initialize(projectileSpellConfig);
             }
-        }
-
-        public override void Initialize(ProjectileSpellConfig config)
-        {
-            SpellDamage = config.Damage;
-            CriticalChance = config.CriticalChance;
-            CriticalMultiply = config.CriticalMultiply;
-            _sprite = config.ProjectileSprite;
+            
+            base.Initialize(config);
         }
 
         public override void DoSpell()

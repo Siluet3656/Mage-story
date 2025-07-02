@@ -47,8 +47,6 @@ namespace Spells
         {
             SpellName = config.SpellName;
         }
-        public abstract void Initialize(ProjectileSpellConfig config);
-
 
         public abstract void DoSpell();
 
