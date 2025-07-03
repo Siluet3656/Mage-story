@@ -15,8 +15,10 @@ namespace Spells.Fire
 
             if (fireballExplosion != null)
             {
+                fireballExplosion.transform.position = transform.position;
                 fireballExplosion.Initialize(config);
                 fireballExplosion.gameObject.SetActive(true);
+                fireballExplosion.DoSpell();
             }
             
             base.OnReachTarget(target);
