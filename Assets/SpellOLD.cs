@@ -139,7 +139,7 @@ public class SpellOld : MonoBehaviour
                         }
                     }
                     break;
-                case SpellName.Boom:
+                case SpellName.Explosion:
                     PlaceEntity();
                     break;
                 case SpellName.FlashFreeze:
@@ -314,17 +314,17 @@ public class SpellOld : MonoBehaviour
     {
         GameObject entity = Instantiate(_entity, transform.position, Quaternion.identity);
         FbBlast fireballBlast = entity.GetComponent<FbBlast>();
-        Firewall firewall = entity.GetComponent<Firewall>();
+        //Firewall firewall = entity.GetComponent<Firewall>();
         Freeze freeze = entity.GetComponent<Freeze>();
         AvalancheCoreChuncker avalancheCoreChuncker = entity.GetComponent<AvalancheCoreChuncker>();
         if (fireballBlast)
         {
             fireballBlast.SetDamage(this._spellDamage, this._critMultyply,this._critChance);
         }
-        else if (firewall)
+        /*else if (firewall)
         {
             firewall.SetDamage(this._spellDamage, this._critMultyply,this._critChance);
-        }
+        }*/
         else if (freeze)
         {
             freeze.SetDamage(this._spellDamage, _critMultyply, _critChance);

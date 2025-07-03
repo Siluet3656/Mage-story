@@ -7,7 +7,7 @@
         Zap,
         FrostWhirlwind,
         Spike,
-        Boom,
+        Explosion,
         Firewall,
         FireSpirit,
         FireLaser,

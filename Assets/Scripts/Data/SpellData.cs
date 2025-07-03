@@ -50,7 +50,7 @@ namespace Data
             _spellValues = new Dictionary<SpellName, SpellConfig>
             {
                 { SpellName.Fireball, _fireball },
-                { SpellName.Boom, _boom },
+                { SpellName.Explosion, _boom },
                 { SpellName.Firewall, _fireWall },
                 { SpellName.FireAura, _fireAura },
                 { SpellName.FireMark, _fireMark },

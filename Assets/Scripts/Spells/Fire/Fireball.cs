@@ -10,8 +10,8 @@ namespace Spells.Fire
         protected override SpellName SpellName => SpellName.Fireball;
         protected override void OnReachTarget(ITargetble target)
         {
-            SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Boom);
-            Spell fireballExplosion = SpellFactory.Instance.CreateSpell(SpellName.Boom);
+            SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
+            Spell fireballExplosion = SpellFactory.Instance.CreateSpell(SpellName.Explosion);
 
             if (fireballExplosion != null)
             {

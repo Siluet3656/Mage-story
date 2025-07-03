@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3019739202028831266}
   - component: {fileID: -3720317527074783983}
   - component: {fileID: 6565655789490873522}
-  - component: {fileID: 6253858566871098172}
+  - component: {fileID: 4827959659657589637}
   m_Layer: 0
-  m_Name: InstantAOE
+  m_Name: deployable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _statusEffectsData:
   - {fileID: 11400000, guid: 7a822ffa2e5449f4eb1771d480e093a1, type: 2}
---- !u!58 &6253858566871098172
-CircleCollider2D:
+--- !u!61 &4827959659657589637
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,5 +112,15 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.6, y: 1.2}
+    newSize: {x: 1.6, y: 1.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 1.7
+  m_Size: {x: 1.6, y: 1.2}
+  m_EdgeRadius: 0

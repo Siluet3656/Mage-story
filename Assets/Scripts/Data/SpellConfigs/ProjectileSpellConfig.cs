@@ -42,9 +42,6 @@ namespace Data.SpellConfigs
         [SerializeField, Min(1)] private float _criticalMultiply;
         public float CriticalMultiply => _criticalMultiply;
         
-        public override SpellType GetSPellType()
-        {
-            return SpellType.Projectile;
-        }
+        public override SpellType GetSPellType() => SpellType.Projectile;
     }
 }
