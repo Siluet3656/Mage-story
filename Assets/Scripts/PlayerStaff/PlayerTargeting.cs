@@ -71,7 +71,7 @@ namespace PlayerStaff
             if (HasTarget)
             {
                 _currentTarget.OnUntargeted();
-                _currentTarget.OnTargetDestroy += ClearTarget;
+                _currentTarget.OnTargetDestroy -= ClearTarget;
                 _currentTarget = null;
             }
         }
@@ -84,7 +84,7 @@ namespace PlayerStaff
 
         private void InterruptCast()
         {
-            if (_spellCasting.Casting) _spellCasting.StopCast();
+            if (_spellCasting.Casting && _spellCasting.RequireTarget) _spellCasting.StopCast();
             ClearTarget();
         }
         

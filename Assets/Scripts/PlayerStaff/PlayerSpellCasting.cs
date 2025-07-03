@@ -5,7 +5,6 @@ using Data.Enums;
 using Data.SpellConfigs;
 using Shard;
 using Spells;
-using Spells.Fire;
 using View;
 
 namespace PlayerStaff
@@ -34,6 +33,7 @@ namespace PlayerStaff
         private Spell _spell;
         
         public bool Casting => _isCasting;
+        public bool RequireTarget => SpellData.Instance.GetSpellConfig(_spellName).RequiresTarget;
 
         private void Awake()
         {
@@ -56,10 +56,10 @@ namespace PlayerStaff
         {
             _ui.SetCastBarColor(castConfig.GetCastBarColor());
             _currentCastTime = castConfig.GetCastTime();
-
+            Debug.Log(_currentCastTime);
             float castTimer = 0;
             while (castTimer < _currentCastTime)
-            {
+            { Debug.Log(castTimer);
                 if (castTimer <= _currentCastTime)
                 {
                     castTimer += Time.deltaTime;
@@ -68,11 +68,14 @@ namespace PlayerStaff
                 
                 yield return null;
             }
-
+            Debug.Log("cho");
             switch (config.GetSPellType())
             {
                 case SpellType.Projectile:
                     DoProjectileSpell();
+                    break;
+                case SpellType.PlacedSpell:
+                    DeploySpell();
                     break;
             }
             
@@ -90,6 +93,11 @@ namespace PlayerStaff
             
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
+        }
+
+        private void DeploySpell()
+        {
+            Debug.Log("Deploying...");
         }
 
         private void DoAoeInstantSpell()
@@ -162,12 +170,11 @@ namespace PlayerStaff
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
-            
+
             if (spellConfig is ICast castSpellConfig)
-            {
+            { 
                 _spellCastRoutine = CastSpellWithCastTime(spellConfig, castSpellConfig);
                 StartCoroutine(_spellCastRoutine);
-                
             }
             else
             {
