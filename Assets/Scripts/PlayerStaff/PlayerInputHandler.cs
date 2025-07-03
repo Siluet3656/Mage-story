@@ -6,6 +6,7 @@ namespace PlayerStaff
 {
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerTargeting))]
+    [RequireComponent(typeof(PlayerSpellCasting))]
     public class PlayerInputHandler : MonoBehaviour
     {
         [SerializeField] private SpellBarButton[] _spellBarButtons;
@@ -46,8 +47,6 @@ namespace PlayerStaff
             _inputActions.Player.Castbar7.started += ctx => OnSpellBarButton(6);
 
             _inputActions.Player.CastInterrupt.started += ctx => OnCastInterrupt();
-
-            _inputActions.UI.MousePosition.performed += ctx => OnMouseMove(ctx.ReadValue<Vector2>());
             
             _inputActions.UI.OpenSpellBook.performed += ctx => OnSpellBookOpen();
             
@@ -64,6 +63,14 @@ namespace PlayerStaff
         
         private void OnEnable() => _inputActions.Enable();
         private void OnDisable() => _inputActions.Disable();
+
+        private void Update()
+        {
+            Vector2 point = _inputActions.UI.MousePosition.ReadValue<Vector2>();
+            
+            _hand.SetPoint(_mainCamera.ScreenToWorldPoint(point));
+            _spellCasting.SetMousePosition(new Vector3(_mainCamera.ScreenToWorldPoint(point).x, _mainCamera.ScreenToWorldPoint(point).y, -3));
+        }
 
         private void OnMovementPerformed(Vector2 value)
         {
@@ -91,17 +98,16 @@ namespace PlayerStaff
             {
                 _hand.TryToDropASpell();
             }
+            else if (_spellCasting.IsPlacing)
+            {
+                _spellCasting.Place();
+            }
             else
             {
                 Ray ray = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
                 _targeting.OnMouseTargetSelect(hit);
             }
-        }
-
-        private void OnMouseMove(Vector2 point)
-        {
-            _hand.SetPoint(_mainCamera.ScreenToWorldPoint(point));
         }
         
         private void OnSpellBarButton(int buttonIndex)
@@ -114,7 +120,14 @@ namespace PlayerStaff
 
         private void OnCastInterrupt()
         {
-            _spellCasting.StopCast();
+            if (_spellCasting.IsPlacing)
+            {
+                _spellCasting.CancelPlacing();
+            }
+            else
+            {
+                _spellCasting.StopCast();
+            }
         }
 
         private void OnSpellBookOpen()

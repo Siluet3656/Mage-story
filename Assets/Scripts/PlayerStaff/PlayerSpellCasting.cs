@@ -12,6 +12,7 @@ namespace PlayerStaff
     [RequireComponent(typeof(SpellResources))]
     [RequireComponent(typeof(PlayerTargeting))]
     [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerInputHandler))]
     [RequireComponent(typeof(PlayerUI))]
     public class PlayerSpellCasting : MonoBehaviour
     {
@@ -31,8 +32,13 @@ namespace PlayerStaff
 
         private SpellName _spellName;
         private Spell _spell;
+
+        private Vector3 _mousePosition;
+        private GameObject _ghost;
+        private bool _isPlacing = false;
         
         public bool Casting => _isCasting;
+        public bool IsPlacing => _isPlacing;
         public bool RequireTarget => SpellData.Instance.GetSpellConfig(_spellName).RequiresTarget;
 
         private void Awake()
@@ -51,15 +57,20 @@ namespace PlayerStaff
                 Debug.LogError("NO SHARD!!!");
             }
         }
-        
+
+        private void Update()
+        {
+            if (_isPlacing) _ghost.transform.position = _mousePosition;
+        }
+
         private IEnumerator CastSpellWithCastTime(SpellConfig config, ICast castConfig)
         {
             _ui.SetCastBarColor(castConfig.GetCastBarColor());
             _currentCastTime = castConfig.GetCastTime();
-            Debug.Log(_currentCastTime);
+ 
             float castTimer = 0;
             while (castTimer < _currentCastTime)
-            { Debug.Log(castTimer);
+            {
                 if (castTimer <= _currentCastTime)
                 {
                     castTimer += Time.deltaTime;
@@ -68,14 +79,13 @@ namespace PlayerStaff
                 
                 yield return null;
             }
-            Debug.Log("cho");
             switch (config.GetSPellType())
             {
                 case SpellType.Projectile:
                     DoProjectileSpell();
                     break;
                 case SpellType.PlacedSpell:
-                    DeploySpell();
+                    StartDeployingSpell(config);
                     break;
             }
             
@@ -95,9 +105,21 @@ namespace PlayerStaff
             _spell.DoSpell();
         }
 
-        private void DeploySpell()
+        private void StartDeployingSpell(SpellConfig config)
         {
-            Debug.Log("Deploying...");
+            if (config is DeployableSpellConfig deployableSpellConfig)
+            {
+                Color ghostColor = deployableSpellConfig.GetGhostColor();
+                Sprite ghostSprite = deployableSpellConfig.DeployedSprite;
+
+                _ghost = new GameObject("ghost");
+                
+                SpriteRenderer ghostSpriteRenderer = _ghost.AddComponent<SpriteRenderer>();
+                ghostSpriteRenderer.sprite = ghostSprite;
+                ghostSpriteRenderer.color = ghostColor;
+
+                _isPlacing = true;
+            }
         }
 
         private void DoAoeInstantSpell()
@@ -196,6 +218,26 @@ namespace PlayerStaff
             _globalCooldownTimer = 0f;
             _ui.UpdateGcdBars(0f);
             _ui.UpdateCastBar(0f);
+        }
+
+        public void SetMousePosition(Vector3 position) => _mousePosition = position;
+
+        public void Place()
+        {
+            _spell.transform.position = _ghost.transform.position;
+            _spell.DoSpell();
+            Destroy(_ghost);
+            
+            _isPlacing = false;
+        }
+
+        public void CancelPlacing()
+        {
+            
+            Destroy(_ghost);
+            _isPlacing = false;
+            
+            SpellFactory.Instance.ReturnSpell(_spellName ,_spell);
         }
     }
 }

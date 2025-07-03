@@ -5036,6 +5036,7 @@ MonoBehaviour:
   _numOfEachSpell: 3
   _projectileSpell: {fileID: 3167266902314898038, guid: 9e6eeafe129fef646bc893f1ff2690ed, type: 3}
   _aoeInstantSpell: {fileID: 3167266902314898038, guid: b076ff447a2058c478c6469ab195f26c, type: 3}
+  _deployableSpell: {fileID: 3167266902314898038, guid: 4dfa9719650f77846a6e6b962236b9b5, type: 3}
 --- !u!4 &102588858
 Transform:
   m_ObjectHideFlags: 0
@@ -45419,6 +45420,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1266098293}
   m_CullTransparentMesh: 0
+--- !u!1 &1267521543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1267521546}
+  - component: {fileID: 1267521545}
+  - component: {fileID: 1267521544}
+  m_Layer: 2
+  m_Name: TargetingCircle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1267521544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267521543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fbcca93150b6f54bb24402ceb7e0e3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &1267521545
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267521543}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 70
+--- !u!4 &1267521546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267521543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1418598206}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1272256695
 GameObject:
   m_ObjectHideFlags: 0
@@ -46420,7 +46481,6 @@ GameObject:
   - component: {fileID: 1418598208}
   - component: {fileID: 1418598209}
   - component: {fileID: 1418598207}
-  - component: {fileID: 1418598211}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -46474,6 +46534,7 @@ Transform:
   m_Children:
   - {fileID: 519420032}
   - {fileID: 966547429}
+  - {fileID: 1267521546}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46608,22 +46669,6 @@ MonoBehaviour:
   - {fileID: 411425025}
   - {fileID: 600229742}
   - {fileID: 315083127}
---- !u!58 &1418598211
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418598203}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 70
 --- !u!114 &1418598212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46665,6 +46710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e714602c886987489f23a2a885dce03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetingCircle: {fileID: 1267521544}
   _interactionRange: 9
 --- !u!114 &1418598215
 MonoBehaviour:
@@ -60777,7 +60823,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fireball: {fileID: 11400000, guid: c67080937b8ad76408320fb12839aa76, type: 2}
   _boom: {fileID: 11400000, guid: 26c39bb88420c564cb8bb7dcee2b2961, type: 2}
-  _fireWall: {fileID: 0}
+  _fireWall: {fileID: 11400000, guid: 707eba0df4686e04ab06713d3e1dba53, type: 2}
   _fireAura: {fileID: 0}
   _fireMark: {fileID: 11400000, guid: 2707116f6be1b8841ae1d168c76e53bb, type: 2}
   _fireSpirit: {fileID: 0}

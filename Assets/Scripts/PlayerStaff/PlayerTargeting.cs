@@ -8,13 +8,13 @@ namespace PlayerStaff
     [RequireComponent(typeof(PlayerSpellCasting))]
     public class PlayerTargeting : MonoBehaviour
     {
+        [SerializeField] private TargetingCircle _targetingCircle;
         [SerializeField] private float _interactionRange = 10f;
 
         private PlayerSpellCasting _spellCasting;
         
         private ITargetble _currentTarget;
         
-        private readonly List<ITargetble> _nearbyTargets = new List<ITargetble>();
         private List<ITargetble> _targetsInRange = new List<ITargetble>();
         
         public bool HasTarget => _currentTarget != null;
@@ -32,28 +32,10 @@ namespace PlayerStaff
                 InterruptCast();
             }
         }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            ITargetble target = other.GetComponent<ITargetble>();
-            if (target != null && _nearbyTargets.Contains(target) == false)
-            {
-                _nearbyTargets.Add(target);
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            ITargetble target = other.GetComponent<ITargetble>();
-            if (target != null && _nearbyTargets.Contains(target))
-            {
-                _nearbyTargets.Remove(target);
-            }
-        }
         
         private void OrderEnemiesInRange()
         {
-            _targetsInRange = _nearbyTargets
+            _targetsInRange = _targetingCircle.NearbyTargets
                 .Where(target => Vector2.Distance(transform.position, target.GameObject.transform.position) <= _interactionRange)
                 .OrderBy(enemy => Vector2.Distance(transform.position, enemy.GameObject.transform.position))
                 .ToList();
