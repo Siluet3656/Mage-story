@@ -60828,7 +60828,7 @@ MonoBehaviour:
   _fireAura: {fileID: 0}
   _fireMark: {fileID: 11400000, guid: 2707116f6be1b8841ae1d168c76e53bb, type: 2}
   _fireSpirit: {fileID: 11400000, guid: 6801412b4f827884dbcce55705cdf31e, type: 2}
-  _fireLaser: {fileID: 0}
+  _fireLaser: {fileID: 11400000, guid: 83fdf0ecf92ad614284453123a0e37f4, type: 2}
   _frostWhirlwind: {fileID: 11400000, guid: 070baf56c56a78d458025107fd1f443c, type: 2}
   _flashFreeze: {fileID: 0}
   _frostAegis: {fileID: 0}

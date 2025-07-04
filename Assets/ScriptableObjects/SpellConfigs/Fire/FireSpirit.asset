@@ -18,6 +18,8 @@ MonoBehaviour:
   _shardCost: {x: 1, y: 0, z: 0}
   _reminderCost: 0
   _summonSprite: {fileID: 21300000, guid: 073f9f757f2aba64fba00c72ba9d2ebd, type: 3}
+  _attackRadius: 5
+  _existingTime: 10
   _castTime: 1
   _cooldown: 0
   _castBarColor: {r: 0.8490566, g: 0.28469267, b: 0.10012458, a: 1}
