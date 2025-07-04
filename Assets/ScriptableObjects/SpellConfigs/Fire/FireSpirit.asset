@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b8740ff5752c14b808974ea764b631, type: 3}
-  m_Name: Fireball
+  m_Script: {fileID: 11500000, guid: 4cad84b2b8db9234f86192992e3527c2, type: 3}
+  m_Name: FireSpirit
   m_EditorClassIdentifier: 
-  _name: 1
-  _icon: {fileID: 21300000, guid: 551fa5f754d6e614fb8f2f4e516a1ee7, type: 3}
-  _requiresTarget: 1
+  _name: 7
+  _icon: {fileID: 21300000, guid: d772bf227f382e54d86ad05e94bed0a6, type: 3}
+  _requiresTarget: 0
   _shardCost: {x: 1, y: 0, z: 0}
   _reminderCost: 0
-  _projectileSprite: {fileID: 21300000, guid: 6346e1de559e2204b813587a67bbb72b, type: 3}
+  _summonSprite: {fileID: 21300000, guid: 073f9f757f2aba64fba00c72ba9d2ebd, type: 3}
   _castTime: 1
   _cooldown: 0
-  _castBarColor: {r: 0.8867924, g: 0.17150229, b: 0.19922571, a: 1}
+  _castBarColor: {r: 0.8490566, g: 0.28469267, b: 0.10012458, a: 1}
   _damage: 100
   _criticalChance: 0
   _criticalMultiply: 1

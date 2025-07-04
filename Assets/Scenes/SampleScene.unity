@@ -5037,6 +5037,7 @@ MonoBehaviour:
   _projectileSpell: {fileID: 3167266902314898038, guid: 9e6eeafe129fef646bc893f1ff2690ed, type: 3}
   _aoeInstantSpell: {fileID: 3167266902314898038, guid: b076ff447a2058c478c6469ab195f26c, type: 3}
   _deployableSpell: {fileID: 3167266902314898038, guid: 4dfa9719650f77846a6e6b962236b9b5, type: 3}
+  _summonSpell: {fileID: 3167266902314898038, guid: ce5d68b281ef15a488f43950e3ca2386, type: 3}
 --- !u!4 &102588858
 Transform:
   m_ObjectHideFlags: 0
@@ -60826,7 +60827,7 @@ MonoBehaviour:
   _fireWall: {fileID: 11400000, guid: 707eba0df4686e04ab06713d3e1dba53, type: 2}
   _fireAura: {fileID: 0}
   _fireMark: {fileID: 11400000, guid: 2707116f6be1b8841ae1d168c76e53bb, type: 2}
-  _fireSpirit: {fileID: 0}
+  _fireSpirit: {fileID: 11400000, guid: 6801412b4f827884dbcce55705cdf31e, type: 2}
   _fireLaser: {fileID: 0}
   _frostWhirlwind: {fileID: 11400000, guid: 070baf56c56a78d458025107fd1f443c, type: 2}
   _flashFreeze: {fileID: 0}

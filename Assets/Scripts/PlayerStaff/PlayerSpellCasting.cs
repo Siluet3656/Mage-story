@@ -87,6 +87,9 @@ namespace PlayerStaff
                 case SpellType.PlacedSpell:
                     StartDeployingSpell(config);
                     break;
+                case SpellType.SummonSpell:
+                    Summon();
+                    break;
             }
             
             _ui.UpdateCastBar(0f);
@@ -120,6 +123,12 @@ namespace PlayerStaff
 
                 _isPlacing = true;
             }
+        }
+
+        private void Summon()
+        {
+            _spell.transform.position = _shard.transform.position;
+            _spell.DoSpell();
         }
 
         private void DoAoeInstantSpell()
