@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using Data.Enums;
-using Spells;
 
 namespace Data.SpellConfigs
 {
     [CreateAssetMenu(fileName = "DeployableSpell", menuName = "Spells/DeployableSpell", order = 52)]
-    public class DeployableSpellConfig : SpellConfig, IDeploy, ICast
+    public class DeployableSpellConfig : SpellConfig, IDeploy, ICast, INeedPrefab
     {
         [Header("Deploying")] 
         [SerializeField] private Color _ghostColor;

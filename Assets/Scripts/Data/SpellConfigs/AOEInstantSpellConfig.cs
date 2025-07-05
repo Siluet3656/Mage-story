@@ -4,7 +4,7 @@ using Data.Enums;
 namespace Data.SpellConfigs
 {
     [CreateAssetMenu(fileName = "AOEInstantSpell", menuName = "Spells/AOEInstantSpell", order = 52)]
-    public class AoeInstantSpellConfig : SpellConfig
+    public class AoeInstantSpellConfig : SpellConfig, INeedPrefab
     {
         [Header("AOE Instant Cast")]
         [SerializeField] private Sprite _castSprite;

@@ -5,6 +5,7 @@ using Data.Enums;
 using Data.SpellConfigs;
 using Shard;
 using Spells;
+using Statuses;
 using View;
 
 namespace PlayerStaff
@@ -14,6 +15,7 @@ namespace PlayerStaff
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerInputHandler))]
     [RequireComponent(typeof(PlayerUI))]
+    [RequireComponent(typeof(StatusApplier))]
     public class PlayerSpellCasting : MonoBehaviour
     {
         private PlayerStats _stats;
@@ -22,6 +24,7 @@ namespace PlayerStaff
         private PlayerMovement _movement;
         private PlayerUI _ui;
         private PlayersShard _shard;
+        private StatusApplier _statusApplier;
             
         private IEnumerator _spellCastRoutine;
         private IEnumerator _globalCooldownRoutine;
@@ -35,7 +38,7 @@ namespace PlayerStaff
 
         private Vector3 _mousePosition;
         private GameObject _ghost;
-        private bool _isPlacing = false;
+        private bool _isPlacing;
         
         public bool Casting => _isCasting;
         public bool IsPlacing => _isPlacing;
@@ -43,19 +46,22 @@ namespace PlayerStaff
 
         private void Awake()
         {
+            _ui = GetComponent<PlayerUI>();
             _resources = GetComponent<SpellResources>();
             _targeting = GetComponent<PlayerTargeting>();
             _movement = GetComponent<PlayerMovement>();
-            _ui = GetComponent<PlayerUI>();
+            _statusApplier = GetComponent<StatusApplier>();
+            
             _stats = new PlayerStats();
             _globalCooldown = _stats.GlobalCooldown;
             
             _shard = FindObjectOfType<PlayersShard>();
-
             if (_shard == null)
             {
                 Debug.LogError("NO SHARD!!!");
             }
+            
+            _isPlacing = false;
         }
 
         private void Update()
@@ -171,11 +177,19 @@ namespace PlayerStaff
                 case SpellType.AoeInstantSpell:
                     DoAoeInstantSpell();
                     break;
+                case SpellType.SelfInstantSpell:
+                    DoSelfBuff(config as SelfBuffSpellConfig);
+                    break;
             }
 
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
+        }
+
+        private void DoSelfBuff(SelfBuffSpellConfig buffSpellConfig)
+        {
+            _statusApplier.ApplyStatusToTarget(buffSpellConfig.Buff, gameObject);
         }
 
         private IEnumerator GlobalCooldown()
@@ -217,8 +231,15 @@ namespace PlayerStaff
             SpellConfig spellConfig = SpellData.Instance.GetSpellConfig(spellName);
             
             if (IsSpellRequirementsMet(spellConfig) == false) return;
-            
-            _spell = SpellFactory.Instance.CreateSpell(spellName);
+
+            if (spellConfig is INeedPrefab)
+            {
+                _spell = SpellFactory.Instance.CreateSpell(spellName);
+            }
+            else
+            {
+                CastSpellInstantly(spellConfig);
+            }
 
             if (_spell == null) return;
 

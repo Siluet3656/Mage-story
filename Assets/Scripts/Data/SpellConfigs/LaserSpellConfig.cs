@@ -4,7 +4,7 @@ using Data.Enums;
 namespace Data.SpellConfigs
 {
     [CreateAssetMenu(fileName = "LaserSpell", menuName = "Spells/LaserSpell", order = 52)]
-    public class LaserSpellConfig : SpellConfig, ICast
+    public class LaserSpellConfig : SpellConfig, ICast, INeedPrefab
     {
         [Header("Line")]
         [SerializeField] private Gradient _color;

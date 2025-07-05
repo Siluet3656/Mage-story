@@ -46,6 +46,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  _duration: 0.1
   _castTime: 1
   _cooldown: 0
   _castBarColor: {r: 0.8113208, g: 0.3169353, b: 0.057404764, a: 1}
