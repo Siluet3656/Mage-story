@@ -79,30 +79,57 @@ namespace PlayerStaff
                 
                 yield return null;
             }
+
+            if (TryToChooseSpellAndDoIt(config))
+            {
+                _ui.UpdateCastBar(0f);
+                _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
+                _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
+                _isCasting = false;
+                
+            }
+            else
+            {
+                StopCast();
+            }
+        }
+
+        private bool TryToChooseSpellAndDoIt(SpellConfig config)
+        {
             switch (config.GetSPellType())
             {
                 case SpellType.Projectile:
                     DoProjectileSpell();
-                    break;
+                    return true;
                 case SpellType.PlacedSpell:
                     StartDeployingSpell(config);
-                    break;
+                    return true;
                 case SpellType.SummonSpell:
                     Summon();
-                    break;
+                    return true;
+                case SpellType.LineSpell:
+                    LineSpellCast();
+                    return true;
             }
+
+            return false;
+        }
+
+        private void LineSpellCast()
+        {
+            if (_targeting.HasTarget == false) {StopCast(); return;}
             
-            _ui.UpdateCastBar(0f);
-            _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
-            _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
-            _isCasting = false;
+            if ((_spell as LineSpell)?.TrySetTarget(_targeting.GetTarget) == false) {StopCast(); return;}
+            
+            _spell.transform.position = _shard.transform.position;
+            _spell.DoSpell();
         }
 
         private void DoProjectileSpell()
         {
-            if (_targeting.HasTarget == false) return;
+            if (_targeting.HasTarget == false) {StopCast(); return;}
 
-            if ((_spell as ProjectileSpell)?.TrySetTarget(_targeting.GetTarget) == false) return;
+            if ((_spell as ProjectileSpell)?.TrySetTarget(_targeting.GetTarget) == false) {StopCast(); return;}
             
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();

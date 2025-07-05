@@ -1,6 +1,5 @@
-﻿using Data.Enums;
-using Spells;
-using UnityEngine;
+﻿using UnityEngine;
+using Data.Enums;
 
 namespace Data.SpellConfigs
 {

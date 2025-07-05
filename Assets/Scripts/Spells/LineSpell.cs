@@ -2,31 +2,34 @@
 using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
+using EnemyStaff;
 
 namespace Spells
 {
-    [RequireComponent(typeof(SpriteRenderer))]
-    public abstract class DeployableSpell : Spell
+    [RequireComponent(typeof(LineRenderer))]
+    public abstract class LineSpell : Spell
     {
-        protected override SpellName SpellName { get; set; }
-        private SpriteRenderer _spriteRenderer;
-        private Sprite _sprite;
+        private LineRenderer _lineRenderer;
         private float _duration;
+        private ITargetble _target;
+        
+        protected override SpellName SpellName { get; set; }
+        protected ITargetble Target => _target;
 
         protected override void Awake()
         {
             base.Awake();
 
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _lineRenderer = GetComponent<LineRenderer>();
         }
 
-        private void Initialize(DeployableSpellConfig config)
+        private void Initialize(LaserSpellConfig config)
         {
             SpellDamage = config.Damage;
             CriticalChance = config.CriticalChance;
             CriticalMultiply = config.CriticalMultiply;
-            _sprite = config.DeployedSprite;
             _duration = config.Duration;
+            _lineRenderer.colorGradient = config.Color;
         }
 
         private IEnumerator Existing()
@@ -38,7 +41,7 @@ namespace Spells
         
         public override void Initialize(SpellConfig config)
         {
-            if (config is DeployableSpellConfig deployableSpellConfig)
+            if (config is LaserSpellConfig deployableSpellConfig)
             {
                 Initialize(deployableSpellConfig);
             }
@@ -48,10 +51,21 @@ namespace Spells
         
         public override void DoSpell()
         {
-            _spriteRenderer.sprite = _sprite;
+            _lineRenderer.SetPosition(0, transform.position);
+            _lineRenderer.SetPosition(1, _target.GameObject.transform.position);
+            
             gameObject.SetActive(true);
 
             StartCoroutine(Existing());
+        }
+        
+        public bool TrySetTarget(ITargetble target)
+        {
+            if (target == null) return false;
+            
+            _target = target;
+
+            return true;
         }
     }
 }

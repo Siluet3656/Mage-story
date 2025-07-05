@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Spells
+namespace Data.SpellConfigs
 {
     public interface IDeploy
     {

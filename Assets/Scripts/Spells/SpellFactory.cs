@@ -21,6 +21,7 @@ namespace Spells
         [SerializeField] private GameObject _aoeInstantSpell;
         [SerializeField] private GameObject _deployableSpell;
         [SerializeField] private GameObject _summonSpell;
+        [SerializeField] private GameObject _lineSpell;
         
         private readonly Dictionary<SpellName, Queue<Spell>> _playerSpellPools = new Dictionary<SpellName, Queue<Spell>>();
 
@@ -51,6 +52,7 @@ namespace Spells
             InstantiateSpells(SpellName.Explosion, typeof(Explosion), _aoeInstantSpell);
             InstantiateSpells(SpellName.Firewall, typeof(FireWall), _deployableSpell);
             InstantiateSpells(SpellName.FireSpirit, typeof(FireSpirit), _summonSpell);
+            InstantiateSpells(SpellName.FireLaser, typeof(FireLaser), _lineSpell);
             
             #endregion
             
@@ -131,6 +133,9 @@ namespace Spells
                     break;
                 case SpellType.SummonSpell:
                     spell = GetSpell<SummoningSpell>(spellName, _summonSpell);
+                    break;
+                case SpellType.LineSpell:
+                    spell = GetSpell<LineSpell>(spellName, _lineSpell);
                     break;
                 default:
                     return null;
