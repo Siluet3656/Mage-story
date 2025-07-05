@@ -1,4 +1,5 @@
-﻿using Data.Enums;
+﻿using Data;
+using Data.Enums;
 using UnityEngine;
 
 namespace View
@@ -7,9 +8,9 @@ namespace View
     {
         [SerializeField] private StatusPanel _statusPanel;
     
-        public void AddStatusEffect(StatusType type, GameObject target)
+        public void AddStatusEffect(StatusEffectData data, GameObject target)
         {
-            _statusPanel.AddStatusEffect(type, target);
+            _statusPanel.AddStatusEffect(data, target);
         }
     
         public void RemoveStatusEffect(StatusType type, GameObject target)

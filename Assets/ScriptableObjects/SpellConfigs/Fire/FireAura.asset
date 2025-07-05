@@ -17,4 +17,4 @@ MonoBehaviour:
   _requiresTarget: 0
   _shardCost: {x: 1, y: 0, z: 0}
   _reminderCost: 0
-  _buff: 1
+  _buffName: 0

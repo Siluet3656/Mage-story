@@ -34,6 +34,22 @@ namespace Statuses
                 }
             }
         }
+        
+        private IStatusEffect CreateStatusEffect(StatusEffectData data, object[] parameters)
+        {
+            switch (data.Type)
+            {
+                case StatusType.Slow:
+                    return new SlowStatusEffect(data);
+                case StatusType.Poison:
+                    return new PoisonStatusEffect(data, 
+                        (float)parameters[0], (float)parameters[1], 
+                        (float)parameters[2], (float)parameters[3]);
+                default:
+                    Debug.LogWarning($"No implementation for status Type: {data.Type}");
+                    return null;
+            }
+        }
     
         public void ApplyStatus(StatusEffectData data, params object[] parameters)
         {
@@ -48,7 +64,7 @@ namespace Statuses
             {
                 _activeStatusEffects[data.Type] = effect;
                 effect.Apply(gameObject);
-                _statusView?.AddStatusEffect(data.Type, gameObject);
+                _statusView?.AddStatusEffect(data, gameObject);
             }
         }
     
@@ -59,22 +75,6 @@ namespace Statuses
                 effect.Remove(gameObject);
                 _activeStatusEffects.Remove(type);
                 _statusView?.RemoveStatusEffect(type, gameObject);
-            }
-        }
-    
-        private IStatusEffect CreateStatusEffect(StatusEffectData data, object[] parameters)
-        {
-            switch (data.Type)
-            {
-                case StatusType.Slow:
-                    return new SlowStatusEffect(data);
-                case StatusType.Poison:
-                    return new PoisonStatusEffect(data, 
-                        (float)parameters[0], (float)parameters[1], 
-                        (float)parameters[2], (float)parameters[3]);
-                default:
-                    Debug.LogWarning($"No implementation for status Type: {data.Type}");
-                    return null;
             }
         }
     
