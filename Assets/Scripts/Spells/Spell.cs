@@ -43,21 +43,13 @@ namespace Spells
         }
 
         protected abstract SpellName SpellName { get; set; }
-        public virtual void Initialize(SpellConfig config)
+        public virtual void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
         {
             SpellName = config.SpellName;
+            CriticalChance = adjustedCriticalChance;
+            CriticalMultiply = adjustedCriticalMultiply;
         }
 
         public abstract void DoSpell();
-
-        public virtual void OnSpawned()
-        {
-
-        }
-
-        public virtual void OnReturned()
-        {
-
-        }
     }
 }

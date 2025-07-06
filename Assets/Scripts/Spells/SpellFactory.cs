@@ -119,7 +119,7 @@ namespace Spells
         {
             Spell spell;
             SpellType type = SpellData.Instance.GetSpellConfig(spellName).GetSPellType();
-            Debug.Log(type);
+            //Debug.Log(type);
             switch (type)
             {
                 case SpellType.Projectile:

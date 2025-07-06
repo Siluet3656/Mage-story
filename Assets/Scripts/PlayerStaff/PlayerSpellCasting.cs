@@ -18,7 +18,8 @@ namespace PlayerStaff
     [RequireComponent(typeof(StatusApplier))]
     public class PlayerSpellCasting : MonoBehaviour
     {
-        private PlayerStats _stats;
+        [SerializeField] private PlayerStats _stats;
+        
         private SpellResources _resources;
         private PlayerTargeting _targeting;
         private PlayerMovement _movement;
@@ -32,6 +33,9 @@ namespace PlayerStaff
         private float _currentCastTime;
         private float _globalCooldown;
         private float _globalCooldownTimer;
+        
+        private float _adjustedFireCriticalMultiply;
+        private float _adjustedFireCriticalChance;
 
         private SpellName _spellName;
         private Spell _spell;
@@ -43,6 +47,8 @@ namespace PlayerStaff
         public bool Casting => _isCasting;
         public bool IsPlacing => _isPlacing;
         public bool RequireTarget => SpellData.Instance.GetSpellConfig(_spellName).RequiresTarget;
+        public float AdjustedFireCriticalMultiply => _adjustedFireCriticalMultiply;
+        public float AdjustedFireCriticalChance => _adjustedFireCriticalChance;
 
         private void Awake()
         {
@@ -52,8 +58,9 @@ namespace PlayerStaff
             _movement = GetComponent<PlayerMovement>();
             _statusApplier = GetComponent<StatusApplier>();
             
-            _stats = new PlayerStats();
             _globalCooldown = _stats.GlobalCooldown;
+            _adjustedFireCriticalMultiply = _stats.FireCriticalMultiplier;
+            _adjustedFireCriticalChance = _stats.FireCriticalChance;
             
             _shard = FindObjectOfType<PlayersShard>();
             if (_shard == null)
@@ -224,6 +231,27 @@ namespace PlayerStaff
             return true;
         }
         
+        private void InitializeSpell(SpellConfig spellConfig)
+        {
+            if (_spell == null) return; 
+            
+            switch (spellConfig.SpellElementType)
+            {
+                case SpellElementType.Fire:
+                    _spell.Initialize(spellConfig, _adjustedFireCriticalMultiply, _adjustedFireCriticalChance);    
+                    break;
+                case SpellElementType.Frost:
+                    _spell.Initialize(spellConfig, 0, 0);  
+                    break;
+                case SpellElementType.Earth:
+                    _spell.Initialize(spellConfig, 0, 0);  
+                    break;
+                case SpellElementType.NoElemental:
+                    _spell.Initialize(spellConfig, 0, 0);  
+                    break;
+            }
+        }
+        
         public void StartCast(SpellName spellName)
         {
             if (IsCastAvailable(spellName) == false) return;
@@ -235,16 +263,10 @@ namespace PlayerStaff
             if (spellConfig is INeedPrefab)
             {
                 _spell = SpellFactory.Instance.CreateSpell(spellName);
+                InitializeSpell(spellConfig);
             }
-            else
-            {
-                CastSpellInstantly(spellConfig);
-            }
-
-            if (_spell == null) return;
-
+         
             _spellName = spellName;
-            _spell.Initialize(spellConfig);    
             _isCasting = true;
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
             _globalCooldownRoutine = GlobalCooldown();
@@ -260,12 +282,12 @@ namespace PlayerStaff
                 CastSpellInstantly(spellConfig);
             }
         }
-
+        
         public void StopCast()
         {
             if (_isCasting == false) return;
             
-            SpellFactory.Instance.ReturnSpell(_spellName ,_spell);
+            SpellFactory.Instance.ReturnSpell(_spellName, _spell);
             
             StopCoroutine(_spellCastRoutine);
             StopCoroutine(_globalCooldownRoutine);
@@ -295,6 +317,20 @@ namespace PlayerStaff
             _isPlacing = false;
             
             SpellFactory.Instance.ReturnSpell(_spellName ,_spell);
+        }
+
+        public void AdjustCriticalDamage(SpellElementType spellElementType,float multiply, float chance)
+        {
+            if (multiply < 1f) return;
+            if (chance < 0f || chance > 1f) return;
+
+            switch (spellElementType)
+            {
+                case SpellElementType.Fire:
+                    _adjustedFireCriticalMultiply = multiply;
+                    _adjustedFireCriticalChance = chance;
+                    break;
+            }
         }
     }
 }

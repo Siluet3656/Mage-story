@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b9c85fe7e13b2842a2e729113bc971c, type: 3}
+  m_Name: TestStats
+  m_EditorClassIdentifier: 
+  _globalCooldown: 1
+  _fireCriticalMultiplier: 1
+  _fireCriticalChance: 0
+  _frostCriticalMultiplier: 1
+  _frostCriticalChance: 0
+  _earthCriticalMultiplier: 1
+  _earthCriticalChance: 0
+  _noElementCriticalMultiplier: 1
+  _noElementCriticalChance: 0

@@ -18,19 +18,14 @@ namespace Data.SpellConfigs
         
         [Header("Damaging")]
         [SerializeField, Min(0)] private float _damage;
-        [SerializeField, Range(0f, 1f)] private float _criticalChance;
-        [SerializeField, Min(1)] private float _criticalMultiply;
         
         public Sprite SummonSprite => _summonSprite;
         public float AttackRadius => _attackRadius;
         public float ExistingTime => _existingTime;
         
         public float Damage => _damage;
-        public float CriticalChance => _criticalChance;
-        public float CriticalMultiply => _criticalMultiply;
-        
         public override SpellType GetSPellType() => SpellType.SummonSpell;
-
+        
         public float GetCastTime()
         {
             return _castTime;

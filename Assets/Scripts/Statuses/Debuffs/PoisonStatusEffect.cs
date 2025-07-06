@@ -1,6 +1,6 @@
 ﻿using Data;
 
-namespace Statuses
+namespace Statuses.Debuffs
 {
     public class PoisonStatusEffect : StatusEffect
     {
@@ -9,7 +9,6 @@ namespace Statuses
         private float _criticalChance;
         private float _criticalMultiplier;
         private float _nextTickTime;
-    
         public PoisonStatusEffect(StatusEffectData data, float tickInterval, float damagePerTick, 
             float criticalChance, float criticalMultiplier) : base(data)
         {

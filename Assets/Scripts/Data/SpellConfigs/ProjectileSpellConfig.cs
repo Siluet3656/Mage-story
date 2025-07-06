@@ -16,8 +16,6 @@ namespace Data.SpellConfigs
         
         [Header("Damaging")]
         [SerializeField, Min(0)] private float _damage;
-        [SerializeField, Range(0f, 1f)] private float _criticalChance;
-        [SerializeField, Min(1)] private float _criticalMultiply;
         
         public float GetCastTime()
         {
@@ -35,11 +33,7 @@ namespace Data.SpellConfigs
         }
         
         public float Damage => _damage;
-        public float CriticalChance => _criticalChance;
-        public float CriticalMultiply => _criticalMultiply;
-        
         public Sprite ProjectileSprite => _projectileSprite;
-        
         public override SpellType GetSPellType() => SpellType.Projectile;
     }
 }

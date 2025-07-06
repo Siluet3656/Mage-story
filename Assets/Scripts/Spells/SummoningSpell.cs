@@ -34,8 +34,6 @@ namespace Spells
         private void Initialize(SummoningSpellConfig config)
         {
             SpellDamage = config.Damage;
-            CriticalChance = config.CriticalChance;
-            CriticalMultiply = config.CriticalMultiply;
             _sprite = config.SummonSprite;
             _existTime = config.ExistingTime;
             _radius = config.AttackRadius;
@@ -54,14 +52,14 @@ namespace Spells
             base.ReturnToPool();
         }
         
-        public override void Initialize(SpellConfig config)
+        public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
         {
             if (config is SummoningSpellConfig projectileSpellConfig)
             {
                 Initialize(projectileSpellConfig);
             }
             
-            base.Initialize(config);
+            base.Initialize(config, adjustedCriticalMultiply, adjustedCriticalChance);
         }
 
         public override void DoSpell()

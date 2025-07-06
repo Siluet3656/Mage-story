@@ -23,8 +23,6 @@ namespace Spells
         private void Initialize(DeployableSpellConfig config)
         {
             SpellDamage = config.Damage;
-            CriticalChance = config.CriticalChance;
-            CriticalMultiply = config.CriticalMultiply;
             _sprite = config.DeployedSprite;
             _duration = config.Duration;
         }
@@ -36,14 +34,14 @@ namespace Spells
             base.ReturnToPool();
         }
         
-        public override void Initialize(SpellConfig config)
+        public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
         {
             if (config is DeployableSpellConfig deployableSpellConfig)
             {
                 Initialize(deployableSpellConfig);
             }
             
-            base.Initialize(config);
+            base.Initialize(config, adjustedCriticalMultiply, adjustedCriticalChance);
         }
         
         public override void DoSpell()

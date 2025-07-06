@@ -35,20 +35,18 @@ namespace Spells
         private void Initialize(AoeInstantSpellConfig config)
         {
             SpellDamage = config.Damage;
-            CriticalChance = config.CriticalChance;
-            CriticalMultiply = config.CriticalMultiply;
             _sprite = config.CastSprite;
             _exitsTime = config.ExistTime;
         }
         
-        public override void Initialize(SpellConfig config)
+        public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
         {
             if (config is AoeInstantSpellConfig instantSpellConfig)
             {
                 Initialize(instantSpellConfig);
             }
             
-            base.Initialize(config);
+            base.Initialize(config, adjustedCriticalMultiply, adjustedCriticalChance);
         }
 
         public override void DoSpell()

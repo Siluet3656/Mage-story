@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Data;
 using Data.Enums;
+using Statuses.Buffs;
+using Statuses.Debuffs;
 using View;
 using UnityEngine;
 
@@ -35,23 +37,31 @@ namespace Statuses
             }
         }
         
-        private IStatusEffect CreateStatusEffect(StatusEffectData data, object[] parameters)
+        private IStatusEffect CreateStatusEffect(StatusEffectData data)
         {
             switch (data.Type)
             {
                 case StatusType.Slow:
                     return new SlowStatusEffect(data);
-                case StatusType.Poison:
-                    return new PoisonStatusEffect(data, 
-                        (float)parameters[0], (float)parameters[1], 
-                        (float)parameters[2], (float)parameters[3]);
+                case StatusType.FireAura:
+                    return new FireAuraStatusEffect(data);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;
             }
         }
+        
+        private void RemoveStatus(StatusType type)
+        {
+            if (_activeStatusEffects.ContainsKey(type))
+            {
+                _activeStatusEffects.Remove(type);
+                _statusView?.RemoveStatusEffect(type, gameObject);
+            }
+        }
+
     
-        public void ApplyStatus(StatusEffectData data, params object[] parameters)
+        public void ApplyStatus(StatusEffectData data)
         {
             if (_activeStatusEffects.ContainsKey(data.Type))
             {
@@ -59,7 +69,7 @@ namespace Statuses
                 return;
             }
         
-            IStatusEffect effect = CreateStatusEffect(data, parameters);
+            IStatusEffect effect = CreateStatusEffect(data);
             if (effect != null)
             {
                 _activeStatusEffects[data.Type] = effect;
@@ -67,17 +77,7 @@ namespace Statuses
                 _statusView?.AddStatusEffect(data, gameObject);
             }
         }
-    
-        public void RemoveStatus(StatusType type)
-        {
-            if (_activeStatusEffects.TryGetValue(type, out var effect))
-            {
-                effect.Remove(gameObject);
-                _activeStatusEffects.Remove(type);
-                _statusView?.RemoveStatusEffect(type, gameObject);
-            }
-        }
-    
+        
         public bool HasStatus(StatusType type)
         {
             return _activeStatusEffects.ContainsKey(type);

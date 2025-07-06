@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using Data;
+﻿using Data;
 using EnemyStaff;
 using PlayerStaff;
+using UnityEngine;
 
-namespace Statuses
+namespace Statuses.Debuffs
 {
     public class SlowStatusEffect : StatusEffect
     {

@@ -9,7 +9,7 @@ namespace Statuses
     {
         [SerializeField] private StatusEffectData[] _statusEffectsData;
     
-        public void ApplyStatusToTarget(StatusType type, GameObject target, params object[] parameters)
+        public void ApplyStatusToTarget(StatusType type, GameObject target)
         {
             var data = GetStatusData(type);
             if (data != null && target != null)
@@ -20,7 +20,7 @@ namespace Statuses
                     statusController = target.AddComponent<StatusController>();
                 }
             
-                statusController.ApplyStatus(data, parameters);
+                statusController.ApplyStatus(data);
             }
         }
     

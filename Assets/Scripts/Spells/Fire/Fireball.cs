@@ -2,6 +2,7 @@
 using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
+using UnityEngine;
 
 namespace Spells.Fire
 {
@@ -16,7 +17,7 @@ namespace Spells.Fire
             if (fireballExplosion != null)
             {
                 fireballExplosion.transform.position = transform.position;
-                fireballExplosion.Initialize(config);
+                fireballExplosion.Initialize(config, CriticalMultiply, CriticalChance);
                 fireballExplosion.gameObject.SetActive(true);
                 fireballExplosion.DoSpell();
             }
