@@ -2,7 +2,6 @@
 using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
-using UnityEngine;
 
 namespace Spells.Fire
 {

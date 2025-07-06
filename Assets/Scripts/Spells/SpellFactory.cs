@@ -53,6 +53,7 @@ namespace Spells
             InstantiateSpells(SpellName.Firewall, typeof(FireWall), _deployableSpell);
             InstantiateSpells(SpellName.FireSpirit, typeof(FireSpirit), _summonSpell);
             InstantiateSpells(SpellName.FireLaser, typeof(FireLaser), _lineSpell);
+            InstantiateSpells(SpellName.FireMark, typeof(FireMark), _projectileSpell);
             
             #endregion
             

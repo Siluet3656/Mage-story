@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _globalCooldown: 1
   _fireCriticalMultiplier: 1
-  _fireCriticalChance: 0.11
+  _fireCriticalChance: 0
   _frostCriticalMultiplier: 1
   _frostCriticalChance: 0
   _earthCriticalMultiplier: 1

@@ -78,6 +78,7 @@ namespace EntityResources
         public event Action<float> OnAdditionalHealthChanged;
         public event Action<int> OnShieldStacksChanged;
         public event Action OnDeath;
+        public event Action OnCriticalDamageReceived; 
 
         public float MaxHealth => _maxHealth;
 
@@ -90,6 +91,8 @@ namespace EntityResources
             bool isCritical = Random.Range(0f, 1f) < criticalChance;
             float finalDamage = isCritical ? damage * criticalMultiply : damage;
             
+            if (isCritical) OnCriticalDamageReceived?.Invoke();
+
             TakeDamage(finalDamage);
         }
 

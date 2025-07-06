@@ -45,6 +45,8 @@ namespace Statuses
                     return new SlowStatusEffect(data);
                 case StatusType.FireAura:
                     return new FireAuraStatusEffect(data);
+                case StatusType.FireMark:
+                    return new FireMarkStatusEffect(data);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;
