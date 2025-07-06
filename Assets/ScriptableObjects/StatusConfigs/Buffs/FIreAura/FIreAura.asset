@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _category: 0
-  _baseDuration: 10
+  _baseDuration: 3
   _visualEffectPrefab: {fileID: 5001322819261538868, guid: dba02423a53a821479ee7530956a9503, type: 3}

@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: 1
   _icon: {fileID: 21300000, guid: 551fa5f754d6e614fb8f2f4e516a1ee7, type: 3}
   _requiresTarget: 1
+  _spellElementType: 1
   _shardCost: {x: 1, y: 0, z: 0}
   _reminderCost: 0
   _projectileSprite: {fileID: 21300000, guid: 6346e1de559e2204b813587a67bbb72b, type: 3}
@@ -22,5 +23,3 @@ MonoBehaviour:
   _cooldown: 0
   _castBarColor: {r: 0.8867924, g: 0.17150229, b: 0.19922571, a: 1}
   _damage: 100
-  _criticalChance: 0
-  _criticalMultiply: 1

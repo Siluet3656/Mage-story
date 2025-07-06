@@ -15,11 +15,10 @@ MonoBehaviour:
   _name: 5
   _icon: {fileID: 21300000, guid: 1364267133d254f43b58b96074d5dc60, type: 3}
   _requiresTarget: 0
+  _spellElementType: 1
   _shardCost: {x: 1, y: 0, z: 0}
   _reminderCost: 0
   _castSprite: {fileID: 21300000, guid: 1f3672c57ce14924eace80a7b3f02db9, type: 3}
   _existTime: 0.3
   _range: 1
   _damage: 100
-  _criticalChance: 0
-  _criticalMultiply: 1

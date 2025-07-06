@@ -54380,7 +54380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSettings:
-    _defaultX: 0
+    _defaultX: -9
     _defaultY: 0
     _offset: 0
 --- !u!114 &1485647951

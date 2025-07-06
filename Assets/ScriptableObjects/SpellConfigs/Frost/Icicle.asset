@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b8740ff5752c14b808974ea764b631, type: 3}
   m_Name: Icicle
   m_EditorClassIdentifier: 
+  _name: 0
   _icon: {fileID: 21300000, guid: 908ca7bc544bad044a472cf3975cf56b, type: 3}
   _requiresTarget: 1
+  _spellElementType: 2
   _shardCost: {x: 0, y: 1, z: 0}
   _reminderCost: 0
   _projectileSprite: {fileID: 21300000, guid: cd296699f7cd49d4db465d711428b6d1, type: 3}
@@ -21,5 +23,3 @@ MonoBehaviour:
   _cooldown: 0
   _castBarColor: {r: 0.08899963, g: 0.23811825, b: 0.754717, a: 1}
   _damage: 20
-  _criticalChance: 0
-  _criticalMultiply: 1
