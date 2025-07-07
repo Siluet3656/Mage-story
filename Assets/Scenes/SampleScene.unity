@@ -42478,7 +42478,7 @@ GameObject:
   - component: {fileID: 966547430}
   m_Layer: 0
   m_Name: icetomb
-  m_TagString: Untagged
+  m_TagString: IceTomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46827,6 +46827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _statusEffectsData:
   - {fileID: 11400000, guid: 280b465bf977baf45b87aedc8ffee55f, type: 2}
+  - {fileID: 11400000, guid: 0bd42c655defee141a165407d141fa3a, type: 2}
 --- !u!1 &1429814682
 GameObject:
   m_ObjectHideFlags: 0
@@ -60906,7 +60907,7 @@ MonoBehaviour:
   _flashFreeze: {fileID: 11400000, guid: 9a34826266d042e41a971aa39ab287bc, type: 2}
   _frostAegis: {fileID: 0}
   _icicleBarrage: {fileID: 11400000, guid: 5500eacc8b4a6a44b8da7c39830a43d0, type: 2}
-  _stasisFreeze: {fileID: 0}
+  _stasisFreeze: {fileID: 11400000, guid: fa549a5c248afb4418c97b2cfea1c225, type: 2}
   _cryoLeach: {fileID: 0}
   _avalancheCore: {fileID: 11400000, guid: b72d9a311c3b1a942b6346bfbedbf4e6, type: 2}
   _spike: {fileID: 11400000, guid: a0e4e81afa1a7954798f3547b895c0b0, type: 2}

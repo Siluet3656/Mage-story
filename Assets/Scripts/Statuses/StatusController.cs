@@ -47,6 +47,8 @@ namespace Statuses
                     return new FireAuraStatusEffect(data);
                 case StatusType.FireMark:
                     return new FireMarkStatusEffect(data);
+                case StatusType.StasisFreeze:
+                    return new StasisFreezeEffect(data);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;

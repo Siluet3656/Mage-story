@@ -30,6 +30,7 @@ namespace PlayerStaff
         private IEnumerator _spellCastRoutine;
         private IEnumerator _globalCooldownRoutine;
         private bool _isCasting;
+        private bool _isAbaleToCast;
         private float _currentCastTime;
         private float _globalCooldown;
         private float _globalCooldownTimer;
@@ -69,6 +70,7 @@ namespace PlayerStaff
             }
             
             _isPlacing = false;
+            _isAbaleToCast = true;
         }
 
         private void Update()
@@ -218,6 +220,7 @@ namespace PlayerStaff
 
         private bool IsCastAvailable(SpellName spellName)
         {
+            if (_isAbaleToCast == false) return false;
             if (spellName == SpellName.NoSpell) return false;
             if (_isCasting || _globalCooldownTimer > 0) return false;
             
@@ -331,6 +334,16 @@ namespace PlayerStaff
                     _adjustedFireCriticalChance = chance;
                     break;
             }
+        }
+
+        public void DisableCasting()
+        {
+            _isAbaleToCast = false;
+        }
+        
+        public void EnableCasting()
+        {
+            _isAbaleToCast = true;
         }
     }
 }
