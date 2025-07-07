@@ -60,6 +60,7 @@ namespace Spells
             #region SpellinitFrost
             
             InstantiateSpells(SpellName.FrostWhirlwind, typeof(FrostWhirlwind), _projectileSpell);
+            InstantiateSpells(SpellName.FlashFreeze, typeof(FlashFreeze), _aoeInstantSpell);
             
             #endregion
             
@@ -120,7 +121,7 @@ namespace Spells
         {
             Spell spell;
             SpellType type = SpellData.Instance.GetSpellConfig(spellName).GetSPellType();
-            //Debug.Log(type);
+
             switch (type)
             {
                 case SpellType.Projectile:

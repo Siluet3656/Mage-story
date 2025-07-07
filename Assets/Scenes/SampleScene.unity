@@ -60903,7 +60903,7 @@ MonoBehaviour:
   _fireSpirit: {fileID: 11400000, guid: 6801412b4f827884dbcce55705cdf31e, type: 2}
   _fireLaser: {fileID: 11400000, guid: 83fdf0ecf92ad614284453123a0e37f4, type: 2}
   _frostWhirlwind: {fileID: 11400000, guid: 070baf56c56a78d458025107fd1f443c, type: 2}
-  _flashFreeze: {fileID: 0}
+  _flashFreeze: {fileID: 11400000, guid: 9a34826266d042e41a971aa39ab287bc, type: 2}
   _frostAegis: {fileID: 0}
   _icicleBarrage: {fileID: 11400000, guid: 5500eacc8b4a6a44b8da7c39830a43d0, type: 2}
   _stasisFreeze: {fileID: 0}
