@@ -42476,6 +42476,7 @@ GameObject:
   m_Component:
   - component: {fileID: 966547429}
   - component: {fileID: 966547430}
+  - component: {fileID: 966547432}
   m_Layer: 0
   m_Name: icetomb
   m_TagString: IceTomb
@@ -42495,7 +42496,7 @@ Transform:
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 1418598206}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &966547430
 SpriteRenderer:
@@ -42548,6 +42549,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &966547432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966547428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07f801abf9b03a43b916e07dd7c2908, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &979993419
 GameObject:
   m_ObjectHideFlags: 0
@@ -45480,7 +45493,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1418598206}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1272256695
 GameObject:
@@ -46537,8 +46550,8 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children:
   - {fileID: 519420032}
-  - {fileID: 966547429}
   - {fileID: 1267521546}
+  - {fileID: 966547429}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -54383,7 +54396,7 @@ MonoBehaviour:
   _playerSettings:
     _defaultX: -9
     _defaultY: 0
-    _offset: 0
+    _offset: 2
 --- !u!114 &1485647951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56346,27 +56359,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577437957}
   m_CullTransparentMesh: 0
---- !u!1 &1579136504 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6746311935500150673, guid: 5c83a811bdcf65a49ada25b998c2738f, type: 3}
-  m_PrefabInstance: {fileID: 1787326730}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1579136505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579136504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 462a7226c56f77049b17de46361e3b94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemySettings:
-    _defaultX: 0
-    _defaultY: 0
-    _offset: 0
 --- !u!1 &1595517896
 GameObject:
   m_ObjectHideFlags: 0

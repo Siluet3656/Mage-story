@@ -15,4 +15,4 @@ MonoBehaviour:
   _type: 1
   _category: 0
   _baseDuration: 3
-  _visualEffectPrefab: {fileID: 5001322819261538868, guid: edf50fcfcdcd05e4d98cd0c770f29c6f, type: 3}
+  _visualEffectPrefab: {fileID: 5001322819261538868, guid: d945ecb48ba4832448477928b6f10282, type: 3}

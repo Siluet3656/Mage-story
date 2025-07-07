@@ -584,7 +584,7 @@ MonoBehaviour:
   _enemySettings:
     _defaultX: -4.5
     _defaultY: 0
-    _offset: 0
+    _offset: 1.4
 --- !u!1 &6746311935797336350
 GameObject:
   m_ObjectHideFlags: 0
