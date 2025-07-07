@@ -24,6 +24,7 @@ namespace Data
         [SerializeField] private SpellConfig _stasisFreeze;
         [SerializeField] private SpellConfig _cryoLeach;
         [SerializeField] private SpellConfig _avalancheCore;
+        [SerializeField] private SpellConfig _icicle;
 
         [Header("Earth")] 
         [SerializeField] private SpellConfig _spike;
@@ -64,6 +65,7 @@ namespace Data
                 { SpellName.StasisFreeze, _stasisFreeze },
                 { SpellName.CryoLeach, _cryoLeach },
                 { SpellName.AvalancheCore, _avalancheCore },
+                { SpellName.Icicle, _icicle},
                 
                 { SpellName.Spike, _spike },
                 { SpellName.NaturePower, _naturePower },

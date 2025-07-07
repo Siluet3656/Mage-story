@@ -11,7 +11,7 @@ namespace Spells.Fire
         protected override void OnReachTarget(ITargetble target)
         {
             SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
-            Spell fireballExplosion = SpellFactory.Instance.CreateSpell(SpellName.Explosion);
+            Spell fireballExplosion = SpellFactory.Instance.PoolSpell(SpellName.Explosion);
 
             if (fireballExplosion != null)
             {

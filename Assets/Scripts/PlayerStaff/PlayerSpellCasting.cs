@@ -5,6 +5,7 @@ using Data.Enums;
 using Data.SpellConfigs;
 using Shard;
 using Spells;
+using Spells.Frost;
 using Statuses;
 using View;
 
@@ -30,7 +31,7 @@ namespace PlayerStaff
         private IEnumerator _spellCastRoutine;
         private IEnumerator _globalCooldownRoutine;
         private bool _isCasting;
-        private bool _isAbaleToCast;
+        private bool _isAbleToCast;
         private float _currentCastTime;
         private float _globalCooldown;
         private float _globalCooldownTimer;
@@ -70,7 +71,7 @@ namespace PlayerStaff
             }
             
             _isPlacing = false;
-            _isAbaleToCast = true;
+            _isAbleToCast = true;
         }
 
         private void Update()
@@ -170,6 +171,9 @@ namespace PlayerStaff
         private void Summon()
         {
             _spell.transform.position = _shard.transform.position;
+
+            if (_spell is IcicleBarrage barrage) barrage.TrySetTarget(_targeting.GetTarget);
+            
             _spell.DoSpell();
         }
 
@@ -220,7 +224,7 @@ namespace PlayerStaff
 
         private bool IsCastAvailable(SpellName spellName)
         {
-            if (_isAbaleToCast == false) return false;
+            if (_isAbleToCast == false) return false;
             if (spellName == SpellName.NoSpell) return false;
             if (_isCasting || _globalCooldownTimer > 0) return false;
             
@@ -265,7 +269,7 @@ namespace PlayerStaff
 
             if (spellConfig is INeedPrefab)
             {
-                _spell = SpellFactory.Instance.CreateSpell(spellName);
+                _spell = SpellFactory.Instance.PoolSpell(spellName);
                 InitializeSpell(spellConfig);
             }
          
@@ -338,12 +342,12 @@ namespace PlayerStaff
 
         public void DisableCasting()
         {
-            _isAbaleToCast = false;
+            _isAbleToCast = false;
         }
         
         public void EnableCasting()
         {
-            _isAbaleToCast = true;
+            _isAbleToCast = true;
         }
     }
 }

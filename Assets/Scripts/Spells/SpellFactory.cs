@@ -61,6 +61,8 @@ namespace Spells
             
             InstantiateSpells(SpellName.FrostWhirlwind, typeof(FrostWhirlwind), _projectileSpell);
             InstantiateSpells(SpellName.FlashFreeze, typeof(FlashFreeze), _aoeInstantSpell);
+            InstantiateSpells(SpellName.IcicleBarrage, typeof(IcicleBarrage), _summonSpell);
+            InstantiateSpells(SpellName.Icicle, typeof(EmptyProjectile), _projectileSpell);
             
             #endregion
             
@@ -117,7 +119,7 @@ namespace Spells
             return spell;
         }
 
-        public Spell CreateSpell(SpellName spellName)
+        public Spell PoolSpell(SpellName spellName)
         {
             Spell spell;
             SpellType type = SpellData.Instance.GetSpellConfig(spellName).GetSPellType();

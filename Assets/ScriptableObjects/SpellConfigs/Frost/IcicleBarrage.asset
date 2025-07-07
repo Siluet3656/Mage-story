@@ -9,17 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b8740ff5752c14b808974ea764b631, type: 3}
-  m_Name: FrostWhirlwind
+  m_Script: {fileID: 11500000, guid: 4cad84b2b8db9234f86192992e3527c2, type: 3}
+  m_Name: IcicleBarrage
   m_EditorClassIdentifier: 
-  _name: 3
-  _icon: {fileID: 21300000, guid: 625174ac95fcebb41a37dd1a005a674a, type: 3}
+  _name: 13
+  _icon: {fileID: 21300000, guid: 908ca7bc544bad044a472cf3975cf56b, type: 3}
   _requiresTarget: 1
   _spellElementType: 2
   _shardCost: {x: 0, y: 1, z: 0}
   _reminderCost: 0
-  _projectileSprite: {fileID: 21300000, guid: c192fb66fdcdce34bb8058c95eaae5de, type: 3}
+  _summonSprite: {fileID: 21300000, guid: 443b7b6cbec001944801b095fbdfadfb, type: 3}
+  _attackRadius: 0
+  _existingTime: 2
   _castTime: 1
   _cooldown: 0
-  _castBarColor: {r: 0.25729796, g: 0.7523979, b: 0.9245283, a: 1}
-  _damage: 80
+  _castBarColor: {r: 0.48420256, g: 0.78951526, b: 0.8773585, a: 1}
+  _damage: 20

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Data;
 using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
@@ -22,6 +21,7 @@ namespace Spells
         protected override SpellName SpellName { get; set; }
         protected CircleCollider2D AttackCollider => _collider;
         protected float Radius => _radius;
+        protected float ExistTime => _existTime;
         
         protected override void Awake()
         {
@@ -43,10 +43,10 @@ namespace Spells
         {
             yield return new WaitForSeconds(_existTime);
 
-            OnReachTarget(null);
+            OnExistingEnd(null);
         }
         
-        protected virtual void OnReachTarget(Enemy enemy)
+        protected virtual void OnExistingEnd(Enemy enemy)
         {
             StopAllCoroutines();
             base.ReturnToPool();

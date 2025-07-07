@@ -17,7 +17,7 @@ namespace Statuses.Debuffs
         private void Explode()
         {
             SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
-            Spell fireMarkExplosion = SpellFactory.Instance.CreateSpell(SpellName.Explosion);
+            Spell fireMarkExplosion = SpellFactory.Instance.PoolSpell(SpellName.Explosion);
             
             if (fireMarkExplosion != null)
             {

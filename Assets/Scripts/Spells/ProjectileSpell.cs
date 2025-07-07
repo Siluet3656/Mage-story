@@ -74,6 +74,11 @@ namespace Spells
             
             base.Initialize(config, adjustedCriticalMultiply, adjustedCriticalChance);
         }
+        
+        public void OnTargetDeath()
+        {
+            ReturnToPool();
+        }
 
         public override void DoSpell()
         {

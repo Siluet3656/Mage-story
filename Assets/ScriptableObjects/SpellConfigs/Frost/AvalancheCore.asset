@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b8740ff5752c14b808974ea764b631, type: 3}
   m_Name: AvalancheCore
   m_EditorClassIdentifier: 
-  _name: 0
+  _name: 16
   _icon: {fileID: 21300000, guid: 73ed33ed7ee32f74b9800f905f72b846, type: 3}
   _requiresTarget: 1
   _spellElementType: 2

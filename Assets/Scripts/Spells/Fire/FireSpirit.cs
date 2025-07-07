@@ -34,7 +34,7 @@ namespace Spells.Fire
             
             if (Vector2.Distance(transform.position, _followed.GameObject.transform.position) < MinimumDistance)
             {
-                OnReachTarget(_followed);
+                OnExistingEnd(_followed);
             }
         }
         
@@ -67,7 +67,7 @@ namespace Spells.Fire
             _followed = followed;
         }
 
-        protected override void OnReachTarget(Enemy enemy)
+        protected override void OnExistingEnd(Enemy enemy)
         {
             if (enemy != null)
             {
@@ -75,7 +75,7 @@ namespace Spells.Fire
             }
             
             SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
-            Spell fireballExplosion = SpellFactory.Instance.CreateSpell(SpellName.Explosion);
+            Spell fireballExplosion = SpellFactory.Instance.PoolSpell(SpellName.Explosion);
 
             if (fireballExplosion != null)
             {
@@ -85,7 +85,7 @@ namespace Spells.Fire
                 fireballExplosion.DoSpell();
             }
             
-            base.OnReachTarget(enemy);
+            base.OnExistingEnd(enemy);
         }
     }
 }

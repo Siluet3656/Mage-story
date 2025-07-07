@@ -3,16 +3,19 @@
     public enum SpellName
     {
         NoSpell,
+        
         Fireball,
         Zap,
         FrostWhirlwind,
         Spike,
+        
         Explosion,
         Firewall,
         FireSpirit,
         FireLaser,
         FireAura,
         FireMark,
+        
         FlashFreeze,
         StasisFreeze,
         IcicleBarrage,
@@ -20,11 +23,14 @@
         FrostAegis,
         AvalancheCore,
         AvalancheCoreChunk,
+        
         EarthShield,
         DeathZone,
         NaturePower,
         Plague,
         Flower,
-        NatureWraith
+        NatureWraith,
+        
+        Icicle
     }
 }
