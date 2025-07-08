@@ -5,6 +5,8 @@
 
         FireAura,
         StasisFreeze,
+        FrostAegis,
+        EarthShield,
         
         Slow,
         Poison,

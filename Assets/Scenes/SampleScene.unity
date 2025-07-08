@@ -60897,18 +60897,18 @@ MonoBehaviour:
   _fireLaser: {fileID: 11400000, guid: 83fdf0ecf92ad614284453123a0e37f4, type: 2}
   _frostWhirlwind: {fileID: 11400000, guid: 070baf56c56a78d458025107fd1f443c, type: 2}
   _flashFreeze: {fileID: 11400000, guid: 9a34826266d042e41a971aa39ab287bc, type: 2}
-  _frostAegis: {fileID: 0}
+  _frostAegis: {fileID: 11400000, guid: 91f2a0d4bb978e540818c52d79d7570b, type: 2}
   _icicleBarrage: {fileID: 11400000, guid: ec2f64db57dd89a429395ad546caed33, type: 2}
   _stasisFreeze: {fileID: 11400000, guid: fa549a5c248afb4418c97b2cfea1c225, type: 2}
-  _cryoLeach: {fileID: 0}
+  _cryoLeach: {fileID: 11400000, guid: 6ea48cdbcb7a7e8428c11adcb72f7a45, type: 2}
   _avalancheCore: {fileID: 11400000, guid: b72d9a311c3b1a942b6346bfbedbf4e6, type: 2}
   _icicle: {fileID: 11400000, guid: 5500eacc8b4a6a44b8da7c39830a43d0, type: 2}
   _spike: {fileID: 11400000, guid: a0e4e81afa1a7954798f3547b895c0b0, type: 2}
-  _earthShield: {fileID: 0}
-  _deathZone: {fileID: 0}
+  _earthShield: {fileID: 11400000, guid: 2cc1355ac36334b43a8f794bf96f7752, type: 2}
+  _deathZone: {fileID: 11400000, guid: 2e9fe149b4ca8734bb51cb2269f14915, type: 2}
   _naturePower: {fileID: 0}
   _plague: {fileID: 0}
-  _flower: {fileID: 0}
+  _flower: {fileID: 11400000, guid: 4fa56ece001841647a3a25a573b7616d, type: 2}
   _natureWraith: {fileID: 0}
 --- !u!1 &2077632921
 GameObject:
