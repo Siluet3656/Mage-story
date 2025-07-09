@@ -38,6 +38,12 @@ namespace PlayerStaff
         
         private float _adjustedFireCriticalMultiply;
         private float _adjustedFireCriticalChance;
+        private float _adjustedFrostCriticalMultiply;
+        private float _adjustedFrostCriticalChance;
+        private float _adjustedEarthCriticalMultiply;
+        private float _adjustedEarthCriticalChance;
+        private float _adjustedNoElementalCriticalMultiply;
+        private float _adjustedNoElementalCriticalChance;
 
         private SpellName _spellName;
         private Spell _spell;
@@ -61,8 +67,18 @@ namespace PlayerStaff
             _statusApplier = GetComponent<StatusApplier>();
             
             _globalCooldown = _stats.GlobalCooldown;
+            
             _adjustedFireCriticalMultiply = _stats.FireCriticalMultiplier;
             _adjustedFireCriticalChance = _stats.FireCriticalChance;
+            
+            _adjustedFrostCriticalMultiply = _stats.FrostCriticalMultiplier;
+            _adjustedFrostCriticalChance = _stats.FrostCriticalChance;
+            
+            _adjustedEarthCriticalMultiply = _stats.EarthCriticalMultiplier;
+            _adjustedEarthCriticalChance = _stats.EarthCriticalChance;
+            
+            _adjustedNoElementalCriticalMultiply = _stats.NoElementCriticalMultiplier;
+            _adjustedNoElementalCriticalChance = _stats.NoElementCriticalChance;
             
             _shard = FindObjectOfType<PlayersShard>();
             if (_shard == null)
@@ -248,13 +264,13 @@ namespace PlayerStaff
                     _spell.Initialize(spellConfig, _adjustedFireCriticalMultiply, _adjustedFireCriticalChance);    
                     break;
                 case SpellElementType.Frost:
-                    _spell.Initialize(spellConfig, 0, 0);  
+                    _spell.Initialize(spellConfig, _adjustedFrostCriticalMultiply, _adjustedFrostCriticalChance);  
                     break;
                 case SpellElementType.Earth:
-                    _spell.Initialize(spellConfig, 0, 0);  
+                    _spell.Initialize(spellConfig, _adjustedEarthCriticalMultiply, _adjustedEarthCriticalChance);  
                     break;
                 case SpellElementType.NoElemental:
-                    _spell.Initialize(spellConfig, 0, 0);  
+                    _spell.Initialize(spellConfig, _adjustedNoElementalCriticalMultiply, _adjustedNoElementalCriticalChance);  
                     break;
             }
         }
@@ -337,6 +353,19 @@ namespace PlayerStaff
                     _adjustedFireCriticalMultiply = multiply;
                     _adjustedFireCriticalChance = chance;
                     break;
+                case SpellElementType.Frost:
+                    _adjustedFrostCriticalMultiply = multiply;
+                    _adjustedFrostCriticalChance = chance;
+                    break;
+                case SpellElementType.Earth:
+                    _adjustedEarthCriticalMultiply = multiply;
+                    _adjustedEarthCriticalChance = chance;
+                    break;
+                case SpellElementType.NoElemental:
+                    _adjustedNoElementalCriticalMultiply = multiply;
+                    _adjustedNoElementalCriticalChance = chance;
+                    break;
+                    
             }
         }
 

@@ -54,7 +54,7 @@ namespace EntityResources
                 
                 if (damage <= 0) return;
             }
-            
+            Debug.Log(damage);
             _currentHealth = Mathf.Max(0, _currentHealth - damage);
             OnHealthChanged?.Invoke(_currentHealth);
             

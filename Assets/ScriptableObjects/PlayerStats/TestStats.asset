@@ -15,8 +15,8 @@ MonoBehaviour:
   _globalCooldown: 1
   _fireCriticalMultiplier: 1
   _fireCriticalChance: 0
-  _frostCriticalMultiplier: 1
-  _frostCriticalChance: 0
+  _frostCriticalMultiplier: 2
+  _frostCriticalChance: 0.513
   _earthCriticalMultiplier: 1
   _earthCriticalChance: 0
   _noElementCriticalMultiplier: 1
