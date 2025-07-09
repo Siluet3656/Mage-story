@@ -20,8 +20,8 @@ MonoBehaviour:
   _reminderCost: 0
   _color:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0.118725546, g: 0.28042307, b: 0.8679245, a: 1}
+    key1: {r: 0.14244394, g: 0.63819087, b: 0.9150943, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}

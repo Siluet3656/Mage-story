@@ -63,6 +63,7 @@ namespace Spells
             InstantiateSpells(SpellName.FlashFreeze, typeof(FlashFreeze), _aoeInstantSpell);
             InstantiateSpells(SpellName.IcicleBarrage, typeof(IcicleBarrage), _summonSpell);
             InstantiateSpells(SpellName.Icicle, typeof(EmptyProjectile), _projectileSpell);
+            InstantiateSpells(SpellName.CryoLeach, typeof(CryoLeach), _lineSpell);
             
             #endregion
             

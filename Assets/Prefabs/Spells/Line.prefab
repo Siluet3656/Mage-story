@@ -96,7 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d8614524dae124f99c548bac069c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statusEffectsData: []
+  _statusEffectsData:
+  - {fileID: 11400000, guid: 0bd42c655defee141a165407d141fa3a, type: 2}
 --- !u!120 &6650280991801686592
 LineRenderer:
   m_ObjectHideFlags: 0
