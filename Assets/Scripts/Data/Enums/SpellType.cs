@@ -6,11 +6,10 @@
         Projectile,
         LineSpell,
         PlacedSpell,
-        Reserved1,
+        ShieldSpell,
         SelfInstantSpell,
         AoeInstantSpell,
         SummonSpell,
-        Reserved2,
         HealSpell
     }
 }

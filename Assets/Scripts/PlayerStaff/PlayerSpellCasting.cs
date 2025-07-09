@@ -3,6 +3,7 @@ using UnityEngine;
 using Data;
 using Data.Enums;
 using Data.SpellConfigs;
+using EntityResources;
 using Shard;
 using Spells;
 using Spells.Frost;
@@ -17,6 +18,7 @@ namespace PlayerStaff
     [RequireComponent(typeof(PlayerInputHandler))]
     [RequireComponent(typeof(PlayerUI))]
     [RequireComponent(typeof(StatusApplier))]
+    [RequireComponent(typeof(Hp))]
     public class PlayerSpellCasting : MonoBehaviour
     {
         [SerializeField] private PlayerStats _stats;
@@ -27,6 +29,7 @@ namespace PlayerStaff
         private PlayerUI _ui;
         private PlayersShard _shard;
         private StatusApplier _statusApplier;
+        private Hp _playerHp;
             
         private IEnumerator _spellCastRoutine;
         private IEnumerator _globalCooldownRoutine;
@@ -65,6 +68,7 @@ namespace PlayerStaff
             _targeting = GetComponent<PlayerTargeting>();
             _movement = GetComponent<PlayerMovement>();
             _statusApplier = GetComponent<StatusApplier>();
+            _playerHp = GetComponent<Hp>();
             
             _globalCooldown = _stats.GlobalCooldown;
             
@@ -209,11 +213,27 @@ namespace PlayerStaff
                 case SpellType.SelfInstantSpell:
                     DoSelfBuff(config as SelfBuffSpellConfig);
                     break;
+                case SpellType.ShieldSpell:
+                    DoShield(config as ShieldSpellConfig);
+                    break;
             }
 
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
+        }
+
+        private void DoShield(ShieldSpellConfig config)
+        {
+            switch (config.ShieldType)
+            {
+                case ShieldType.FrostShield:
+                    _playerHp.GetAdditionalHp(SpellName.FrostAegis);
+                    break;
+                case ShieldType.EarthShield:
+                    _playerHp.GetShieldStacks(SpellName.EarthShield);
+                    break;
+            }
         }
 
         private void DoSelfBuff(SelfBuffSpellConfig buffSpellConfig)

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74185e4e45601bb4887606122a5315e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7420f9d6278be27459398d2673b86dca, type: 3}
   m_Name: FrostAegis
   m_EditorClassIdentifier: 
   _name: 15
@@ -18,4 +18,4 @@ MonoBehaviour:
   _spellElementType: 2
   _shardCost: {x: 0, y: 1, z: 0}
   _reminderCost: 0
-  _buffName: 2
+  _shieldType: 1
