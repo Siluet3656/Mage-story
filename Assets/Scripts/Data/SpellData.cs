@@ -25,6 +25,7 @@ namespace Data
         [SerializeField] private SpellConfig _cryoLeach;
         [SerializeField] private SpellConfig _avalancheCore;
         [SerializeField] private SpellConfig _icicle;
+        [SerializeField] private SpellConfig _avalancheCoreChunk;
 
         [Header("Earth")] 
         [SerializeField] private SpellConfig _spike;
@@ -66,6 +67,7 @@ namespace Data
                 { SpellName.CryoLeach, _cryoLeach },
                 { SpellName.AvalancheCore, _avalancheCore },
                 { SpellName.Icicle, _icicle},
+                { SpellName.AvalancheCoreChunk, _avalancheCoreChunk},
                 
                 { SpellName.Spike, _spike },
                 { SpellName.NaturePower, _naturePower },

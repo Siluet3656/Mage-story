@@ -1,9 +1,9 @@
-﻿using Data.Enums;
+﻿using UnityEngine;
+using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
 using EntityResources;
 using Statuses;
-using UnityEngine;
 
 namespace Spells
 {
@@ -51,5 +51,10 @@ namespace Spells
         }
 
         public abstract void DoSpell();
+
+        public virtual void SetDamage(float damage)
+        {
+            SpellDamage = damage;
+        }
     }
 }

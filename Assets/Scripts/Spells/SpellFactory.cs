@@ -14,7 +14,7 @@ namespace Spells
     public class SpellFactory : MonoBehaviour
     {
         [Header("Base")] 
-        [SerializeField, Min(1)] private int _numOfEachSpell;
+        [SerializeField, Min(1)] private int _defaultAmountOfSpells;
         
         [Header("Prefabs")]
         [SerializeField] private GameObject _projectileSpell;
@@ -48,37 +48,39 @@ namespace Spells
             
             #region SpellinitFire
             
-            InstantiateSpells(SpellName.Fireball, typeof(Fireball), _projectileSpell);
-            InstantiateSpells(SpellName.Explosion, typeof(Explosion), _aoeInstantSpell);
-            InstantiateSpells(SpellName.Firewall, typeof(FireWall), _deployableSpell);
-            InstantiateSpells(SpellName.FireSpirit, typeof(FireSpirit), _summonSpell);
-            InstantiateSpells(SpellName.FireLaser, typeof(FireLaser), _lineSpell);
-            InstantiateSpells(SpellName.FireMark, typeof(FireMark), _projectileSpell);
+            InstantiateSpells(SpellName.Fireball, typeof(Fireball), _projectileSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.Explosion, typeof(Explosion), _aoeInstantSpell, _defaultAmountOfSpells * 10);
+            InstantiateSpells(SpellName.Firewall, typeof(FireWall), _deployableSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.FireSpirit, typeof(FireSpirit), _summonSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.FireLaser, typeof(FireLaser), _lineSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.FireMark, typeof(FireMark), _projectileSpell, _defaultAmountOfSpells);
             
             #endregion
             
             #region SpellinitFrost
             
-            InstantiateSpells(SpellName.FrostWhirlwind, typeof(FrostWhirlwind), _projectileSpell);
-            InstantiateSpells(SpellName.FlashFreeze, typeof(FlashFreeze), _aoeInstantSpell);
-            InstantiateSpells(SpellName.IcicleBarrage, typeof(IcicleBarrage), _summonSpell);
-            InstantiateSpells(SpellName.Icicle, typeof(EmptyProjectile), _projectileSpell);
-            InstantiateSpells(SpellName.CryoLeach, typeof(CryoLeach), _lineSpell);
+            InstantiateSpells(SpellName.FrostWhirlwind, typeof(FrostWhirlwind), _projectileSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.FlashFreeze, typeof(FlashFreeze), _aoeInstantSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.IcicleBarrage, typeof(IcicleBarrage), _summonSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.Icicle, typeof(EmptyProjectile), _projectileSpell, _defaultAmountOfSpells * 20);
+            InstantiateSpells(SpellName.CryoLeach, typeof(CryoLeach), _lineSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.AvalancheCore, typeof(AvalancheCore), _projectileSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.AvalancheCoreChunk, typeof(EmptyProjectile), _projectileSpell, _defaultAmountOfSpells * 10);
             
             #endregion
             
             #region SpellinitEarth
             
-            InstantiateSpells(SpellName.Spike, typeof(Spike), _projectileSpell);
+            InstantiateSpells(SpellName.Spike, typeof(Spike), _projectileSpell, _defaultAmountOfSpells);
             
             #endregion
         }
         
-        private void InstantiateSpells(SpellName spellName, Type spellType, GameObject prefab)
+        private void InstantiateSpells(SpellName spellName, Type spellType, GameObject prefab, int amountOfSpells)
         {
             _playerSpellPools.Add(spellName, new Queue<Spell>());
             
-            for (int i = 0; i < _numOfEachSpell; i++)
+            for (int i = 0; i < amountOfSpells; i++)
             {
                 InstantiateSpell(spellName, spellType, prefab);
             }

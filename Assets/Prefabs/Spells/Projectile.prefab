@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -3720317527074783983}
   - component: {fileID: 1954293825371618710}
   - component: {fileID: 6565655789490873522}
+  - component: {fileID: 6289142177759572521}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -120,3 +121,19 @@ MonoBehaviour:
   _statusEffectsData:
   - {fileID: 11400000, guid: 7a822ffa2e5449f4eb1771d480e093a1, type: 2}
   - {fileID: 11400000, guid: 52d49e1edabe7fe49bda80c0b6444b6b, type: 2}
+--- !u!58 &6289142177759572521
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167266902314898038}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 5
