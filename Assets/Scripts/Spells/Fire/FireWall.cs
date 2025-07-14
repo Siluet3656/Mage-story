@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using EntityResources;
 
 namespace Spells.Fire
@@ -14,6 +14,11 @@ namespace Spells.Fire
         protected override void Awake()
         {
             _defaultScale = transform.localScale;
+            
+            BoxCollider2D collider2d = gameObject.AddComponent<BoxCollider2D>();
+            collider2d.isTrigger = true;
+            collider2d.size = new Vector2(1.6f, 1.2f);
+            
             base.Awake();
         }
 
