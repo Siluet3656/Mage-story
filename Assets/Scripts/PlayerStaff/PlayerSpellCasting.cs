@@ -226,7 +226,7 @@ namespace PlayerStaff
         }
 
         private void DoShield(ShieldSpellConfig config)
-        {
+        { 
             switch (config.ShieldType)
             {
                 case ShieldType.FrostShield:
@@ -318,7 +318,7 @@ namespace PlayerStaff
             StartCoroutine(_globalCooldownRoutine);
 
             if (spellConfig.RequiresTarget) _targetCastingTo = _targeting.GetCurrentTarget;
-
+            
             if (spellConfig is ICast castSpellConfig)
             { 
                 _spellCastRoutine = CastSpellWithCastTime(spellConfig, castSpellConfig);

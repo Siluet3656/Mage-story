@@ -5,8 +5,8 @@
 
         FireAura,
         StasisFreeze,
-        FrostAegis,
-        EarthShield,
+        Reserve1,
+        Reserve2,
         
         Slow,
         Poison,
