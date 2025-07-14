@@ -3,6 +3,7 @@ using UnityEngine;
 using Data;
 using Data.Enums;
 using Data.SpellConfigs;
+using EnemyStaff;
 using EntityResources;
 using Shard;
 using Spells;
@@ -54,6 +55,7 @@ namespace PlayerStaff
         private Vector3 _mousePosition;
         private GameObject _ghost;
         private bool _isPlacing;
+        private ITargetble _targetCastingTo;
         
         public bool Casting => _isCasting;
         public bool IsPlacing => _isPlacing;
@@ -155,7 +157,7 @@ namespace PlayerStaff
         {
             if (_targeting.HasTarget == false) {StopCast(); return;}
             
-            if ((_spell as LineSpell)?.TrySetTarget(_targeting.GetTarget) == false) {StopCast(); return;}
+            if ((_spell as LineSpell)?.TrySetTarget(_targetCastingTo) == false) {StopCast(); return;}
             
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
@@ -165,7 +167,7 @@ namespace PlayerStaff
         {
             if (_targeting.HasTarget == false) {StopCast(); return;}
 
-            if ((_spell as ProjectileSpell)?.TrySetTarget(_targeting.GetTarget) == false) {StopCast(); return;}
+            if ((_spell as ProjectileSpell)?.TrySetTarget(_targetCastingTo) == false) {StopCast(); return;}
             
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
@@ -192,7 +194,7 @@ namespace PlayerStaff
         {
             _spell.transform.position = _shard.transform.position;
 
-            if (_spell is IcicleBarrage barrage) barrage.TrySetTarget(_targeting.GetTarget);
+            if (_spell is IcicleBarrage barrage) barrage.TrySetTarget(_targetCastingTo);
             
             _spell.DoSpell();
         }
@@ -314,6 +316,8 @@ namespace PlayerStaff
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
+
+            if (spellConfig.RequiresTarget) _targetCastingTo = _targeting.GetCurrentTarget;
 
             if (spellConfig is ICast castSpellConfig)
             { 

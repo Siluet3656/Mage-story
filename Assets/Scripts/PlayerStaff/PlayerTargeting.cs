@@ -18,7 +18,7 @@ namespace PlayerStaff
         private List<ITargetble> _targetsInRange = new List<ITargetble>();
         
         public bool HasTarget => _currentTarget != null;
-        public ITargetble GetTarget => _currentTarget;
+        public ITargetble GetCurrentTarget => _currentTarget;
 
         private void Awake()
         {
