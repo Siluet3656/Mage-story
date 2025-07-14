@@ -3,13 +3,13 @@
     public enum StatusType
     {
 
-        FireAura,
-        StasisFreeze,
+        FireAura = 0,
+        StasisFreeze = 1,
         Reserve1,
         Reserve2,
         
-        Slow,
-        Poison,
-        FireMark
+        Slow = 4,
+        Poison = 5,
+        FireMark = 6
     }
 }

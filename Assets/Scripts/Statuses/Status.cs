@@ -2,12 +2,14 @@
 using Data.Enums;
 using Data.StatusConfigs;
 
-
 namespace Statuses
 {
     public abstract class StatusEffect : IStatusEffect
     {
+        private readonly float _baseDuration;
+        
         private float _remainingDuration;
+        
         private bool _isActive;
         private GameObject _target;
     
@@ -15,7 +17,9 @@ namespace Statuses
         {
             Type = data.Type;
             Category = data.Category;
-            _remainingDuration = data.BaseDuration;
+            _baseDuration = data.BaseDuration;
+
+            RefreshDuration();
         }
         
         public StatusType Type { get; protected set; }
@@ -43,6 +47,11 @@ namespace Statuses
             {
                 Remove(_target);
             }
+        }
+
+        public void RefreshDuration()
+        {
+            _remainingDuration = _baseDuration;
         }
     }
 }

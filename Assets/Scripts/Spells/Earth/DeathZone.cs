@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Statuses;
 
 namespace Spells.Earth
 {
@@ -16,6 +17,16 @@ namespace Spells.Earth
             collider2d.radius = 0.45f;
             
             base.Awake();
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            StatusController statusController = other.GetComponent<StatusController>();
+
+            if (statusController != null)
+            {
+                statusController.RefreshAllStatuses();
+            }
         }
     }
 }

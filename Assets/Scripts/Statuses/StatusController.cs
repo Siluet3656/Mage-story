@@ -97,5 +97,13 @@ namespace Statuses
         {
             return _activeStatusEffects.ContainsKey(type);
         }
+
+        public void RefreshAllStatuses()
+        {
+            foreach (var statusEffect in _activeStatusEffects)
+            {
+                statusEffect.Value.RefreshDuration();
+            }
+        }
     }
 }

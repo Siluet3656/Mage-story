@@ -13,5 +13,6 @@ namespace Statuses
         void Apply(GameObject target);
         void Remove(GameObject target);
         void Update(float deltaTime);
+        void RefreshDuration();
     }
 }
