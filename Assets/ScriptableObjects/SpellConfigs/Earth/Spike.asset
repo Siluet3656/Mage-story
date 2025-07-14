@@ -22,4 +22,4 @@ MonoBehaviour:
   _castTime: 1
   _cooldown: 0
   _castBarColor: {r: 0.08770915, g: 0.6886792, b: 0.22720605, a: 1}
-  _damage: 50
+  _damage: 30

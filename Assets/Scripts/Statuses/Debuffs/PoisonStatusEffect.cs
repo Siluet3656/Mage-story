@@ -1,33 +1,49 @@
-﻿using Data;
+﻿using Data.StatusConfigs;
+using EntityResources;
+using UnityEngine;
 
 namespace Statuses.Debuffs
 {
     public class PoisonStatusEffect : StatusEffect
     {
         private readonly float _tickInterval;
-        private float _damagePerTick;
-        private float _criticalChance;
-        private float _criticalMultiplier;
-        private float _nextTickTime;
-        public PoisonStatusEffect(StatusEffectData data, float tickInterval, float damagePerTick, 
-            float criticalChance, float criticalMultiplier) : base(data)
+        private readonly float _damagePerTick;
+        private readonly float _criticalChance;
+        private readonly float _criticalMultiplier;
+        private readonly Hp _hp;
+        
+        private float _tickTime;
+        
+        public PoisonStatusEffect(TickingDamageStatusEffectData data, Hp hp) : base(data)
         {
-            _tickInterval = tickInterval;
-            _damagePerTick = damagePerTick;
-            _criticalChance = criticalChance;
-            _criticalMultiplier = criticalMultiplier;
-            _nextTickTime = tickInterval;
+            _tickInterval = data.TickInterval;
+            _damagePerTick = data.DamagePerTick;
+            _criticalChance = data.CriticalChance;
+            _criticalMultiplier = data.CriticalMultiplier;
+            _hp = hp;
+            
+            _tickTime = _tickInterval;
         }
-    
-        private void ApplyDamage()
+
+        public override void Update(float deltaTime)
         {
-            /*var health = target.GetComponent<IHealth>();
-            if (health != null)
+            _tickTime -= deltaTime;
+
+            if (_tickTime <= 0)
             {
-                bool isCrit = Random.value < critChance;
-                float damage = isCrit ? damagePerTick * critMultiplier : damagePerTick;
-                health.TakeDamage(damage, isCrit);
-            }*/
+                _tickTime = _tickInterval;
+                DoDamage();
+            }
+            
+            base.Update(deltaTime);
+        }
+
+        private void DoDamage()
+        {
+            if (_hp != null)
+            {
+                _hp.TryToTakeCriticalDamage(_damagePerTick, _criticalMultiplier, _criticalChance);
+            }
         }
     }
 }

@@ -121,6 +121,7 @@ MonoBehaviour:
   _statusEffectsData:
   - {fileID: 11400000, guid: 7a822ffa2e5449f4eb1771d480e093a1, type: 2}
   - {fileID: 11400000, guid: 52d49e1edabe7fe49bda80c0b6444b6b, type: 2}
+  - {fileID: 11400000, guid: 750a10ee85204024a8b84d97dc7de30a, type: 2}
 --- !u!58 &6289142177759572521
 CircleCollider2D:
   m_ObjectHideFlags: 0

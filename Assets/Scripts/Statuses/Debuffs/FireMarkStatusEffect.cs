@@ -2,6 +2,7 @@
 using Data;
 using Data.Enums;
 using Data.SpellConfigs;
+using Data.StatusConfigs;
 using EntityResources;
 using Spells;
 

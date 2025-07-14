@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.StatusConfigs;
 using EnemyStaff;
 using PlayerStaff;
 using UnityEngine;

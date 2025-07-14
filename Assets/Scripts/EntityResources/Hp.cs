@@ -93,7 +93,7 @@ namespace EntityResources
             
             if (isCritical) OnCriticalDamageReceived?.Invoke();
 
-            TakeDamage(finalDamage);
+            TakeDamage(finalDamage); Debug.Log($"Damage taken by {gameObject}: {finalDamage}");
         }
 
         public void GetAdditionalHp(SpellName source)

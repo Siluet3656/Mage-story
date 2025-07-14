@@ -1,12 +1,12 @@
 ﻿using Data.Enums;
 using UnityEngine;
 
-namespace Data
+namespace Data.StatusConfigs
 {
     [CreateAssetMenu(fileName = "StatusEffectData", menuName = "StatusEffects/StatusEffectData", order = 51)]
     public class StatusEffectData : ScriptableObject
     {
-        [SerializeField] private StatusType _type;
+        [SerializeField]  private StatusType _type;
         [SerializeField]  private StatusCategory _category;
         [SerializeField]  private float _baseDuration;
         [SerializeField]  private GameObject _visualEffectPrefab;

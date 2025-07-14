@@ -1,8 +1,5 @@
-﻿using Data;
-using Data.Enums;
-using Data.SpellConfigs;
+﻿using Data.Enums;
 using EnemyStaff;
-using UnityEngine;
 
 namespace Spells.Earth
 {
@@ -11,11 +8,7 @@ namespace Spells.Earth
         protected override SpellName SpellName => SpellName.Spike;
         protected override void OnReachTarget(ITargetble target)
         {
-            //SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Boom);
-            //Spell fireballExplosion = SpellFactory.Instance.CreateSpell(SpellName.Boom);
-            Debug.Log("spike");
-            //fireballExplosion.Initialize(config);
-            //fireballExplosion.gameObject.SetActive(true);
+            ApplyDebuff(target as Enemy, StatusType.Poison);
             base.OnReachTarget(target);
         }
     }

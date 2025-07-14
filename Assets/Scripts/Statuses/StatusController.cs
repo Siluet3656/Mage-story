@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
-using Data;
+using UnityEngine;
 using Data.Enums;
+using Data.StatusConfigs;
+using EntityResources;
 using Statuses.Buffs;
 using Statuses.Debuffs;
 using View;
-using UnityEngine;
+
 
 namespace Statuses
 {
@@ -13,6 +15,7 @@ namespace Statuses
     {
         private readonly Dictionary<StatusType, IStatusEffect> _activeStatusEffects = new Dictionary<StatusType, IStatusEffect>();
         private StatusView _statusView;
+        private Hp _hp;
     
         private void Awake()
         {
@@ -20,6 +23,12 @@ namespace Statuses
             if (_statusView == null)
             {
                 _statusView = gameObject.AddComponent<StatusView>();
+            }
+
+            _hp = gameObject.GetComponent<Hp>();
+            if (_hp == null)
+            {
+                _hp = gameObject.AddComponent<Hp>();
             }
         }
     
@@ -49,6 +58,8 @@ namespace Statuses
                     return new FireMarkStatusEffect(data);
                 case StatusType.StasisFreeze:
                     return new StasisFreezeEffect(data);
+                case StatusType.Poison:
+                    return new PoisonStatusEffect(data as TickingDamageStatusEffectData, _hp);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;

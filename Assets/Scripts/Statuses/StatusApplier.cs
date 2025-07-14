@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Data;
 using Data.Enums;
+using Data.StatusConfigs;
 
 
 namespace Statuses
