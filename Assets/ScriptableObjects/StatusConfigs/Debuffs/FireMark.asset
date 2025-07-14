@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30771e02bdd4336408d07a03c768890c, type: 3}
   m_Name: FireMark
   m_EditorClassIdentifier: 
-  _type: 4
+  _type: 6
   _category: 1
   _baseDuration: 5
   _visualEffectPrefab: {fileID: 5001322819261538868, guid: 322fcbd64ba1abf4bb7782369f3050cf, type: 3}

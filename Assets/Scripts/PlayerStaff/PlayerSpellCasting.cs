@@ -218,11 +218,28 @@ namespace PlayerStaff
                 case SpellType.ShieldSpell:
                     DoShield(config as ShieldSpellConfig);
                     break;
+                case SpellType.HealSpell:
+                    HealTarget(config as HealingSpellConfig);
+                    break;
             }
 
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
+        }
+
+        private void HealTarget(HealingSpellConfig config)
+        {
+            //Hp allyHp = _targetCastingTo.GameObject.GetComponent<Hp>();
+            //AllyScript
+            //if (allyHp)
+            //{
+                
+            //}
+            //else
+            //{
+                _playerHp.Heal(config.HealAmount);
+            //}
         }
 
         private void DoShield(ShieldSpellConfig config)
@@ -317,7 +334,7 @@ namespace PlayerStaff
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
 
-            if (spellConfig.RequiresTarget) _targetCastingTo = _targeting.GetCurrentTarget;
+            _targetCastingTo = _targeting.GetCurrentTarget;
             
             if (spellConfig is ICast castSpellConfig)
             { 

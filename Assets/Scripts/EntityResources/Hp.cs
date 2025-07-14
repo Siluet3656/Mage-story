@@ -127,5 +127,13 @@ namespace EntityResources
         {
             _isInvulnerable = false;
         }
+
+        public void Heal(float healAmount)
+        {
+            if (healAmount <= 0) return;
+            
+            _currentHealth += healAmount; Debug.Log($"Heal taken by {gameObject}: {healAmount}");
+            OnHealthChanged?.Invoke(_currentHealth);
+        }
     }
 }

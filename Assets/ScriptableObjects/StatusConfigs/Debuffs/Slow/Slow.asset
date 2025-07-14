@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30771e02bdd4336408d07a03c768890c, type: 3}
   m_Name: Slow
   m_EditorClassIdentifier: 
-  _type: 2
+  _type: 4
   _category: 1
   _baseDuration: 5
   _visualEffectPrefab: {fileID: 5001322819261538868, guid: e32e99d90cc059b4fb0e42320f8beb8c, type: 3}

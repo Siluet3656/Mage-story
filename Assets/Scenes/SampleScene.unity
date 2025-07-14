@@ -61055,7 +61055,7 @@ MonoBehaviour:
   _spike: {fileID: 11400000, guid: a0e4e81afa1a7954798f3547b895c0b0, type: 2}
   _earthShield: {fileID: 11400000, guid: 2cc1355ac36334b43a8f794bf96f7752, type: 2}
   _deathZone: {fileID: 11400000, guid: 2e9fe149b4ca8734bb51cb2269f14915, type: 2}
-  _naturePower: {fileID: 0}
+  _naturePower: {fileID: 11400000, guid: 7ae5f954515d8a44cacef37697a5dde0, type: 2}
   _plague: {fileID: 0}
   _flower: {fileID: 11400000, guid: 4fa56ece001841647a3a25a573b7616d, type: 2}
   _natureWraith: {fileID: 0}
