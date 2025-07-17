@@ -71,8 +71,9 @@ namespace Spells
             
             #region SpellinitEarth
             
-            InstantiateSpells(SpellName.Spike, typeof(Spike), _projectileSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.Spike, typeof(Spike), _projectileSpell, _defaultAmountOfSpells * 10);
             InstantiateSpells(SpellName.DeathZone, typeof(DeathZone), _deployableSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.Flower, typeof(Flower), _summonSpell, _defaultAmountOfSpells);
             
             #endregion
         }

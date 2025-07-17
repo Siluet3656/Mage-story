@@ -272,9 +272,9 @@ namespace PlayerStaff
         {
             _globalCooldownTimer = _globalCooldown;
             
-            while (_globalCooldownTimer > 0)
+            while (_globalCooldownTimer > 0f)
             {
-                if (_globalCooldownTimer >= 0)
+                if (_globalCooldownTimer >= 0f)
                 {
                     _globalCooldownTimer -= Time.deltaTime;
                     _ui.UpdateGcdBars(_globalCooldownTimer / _globalCooldown);
@@ -289,7 +289,7 @@ namespace PlayerStaff
         {
             if (_isAbleToCast == false) return false;
             if (spellName == SpellName.NoSpell) return false;
-            if (_isCasting || _globalCooldownTimer > 0) return false;
+            if (_isCasting || _globalCooldownTimer > 0f) return false;
             
             return true;
         }
