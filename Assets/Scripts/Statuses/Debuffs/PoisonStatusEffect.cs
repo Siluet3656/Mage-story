@@ -14,6 +14,14 @@ namespace Statuses.Debuffs
         
         private float _tickTime;
         
+        private void DoDamage()
+        {
+            if (_hp != null)
+            {
+                _hp.TryToTakeCriticalDamage(_damagePerTick, _criticalMultiplier, _criticalChance);
+            }
+        }
+        
         public PoisonStatusEffect(TickingDamageStatusEffectData data, Hp hp) : base(data)
         {
             _tickInterval = data.TickInterval;
@@ -36,14 +44,6 @@ namespace Statuses.Debuffs
             }
             
             base.Update(deltaTime);
-        }
-
-        private void DoDamage()
-        {
-            if (_hp != null)
-            {
-                _hp.TryToTakeCriticalDamage(_damagePerTick, _criticalMultiplier, _criticalChance);
-            }
         }
     }
 }

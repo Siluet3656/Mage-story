@@ -10,6 +10,7 @@
         SelfInstantSpell,
         AoeInstantSpell,
         SummonSpell,
-        HealSpell
+        HealSpell,
+        InstantDebuffSpell
     }
 }

@@ -60,6 +60,11 @@ namespace Statuses
                     return new StasisFreezeEffect(data);
                 case StatusType.Poison:
                     return new PoisonStatusEffect(data as TickingDamageStatusEffectData, _hp);
+                case StatusType.Plague:
+                    if (HasStatus(StatusType.Immunity)) return null;
+                    return new PlagueStatusEffect(data as TickingDamageStatusEffectData, _hp, this);
+                case StatusType.Immunity:
+                    return new ImmunityStatusEffect(data);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;

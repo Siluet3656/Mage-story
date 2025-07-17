@@ -221,11 +221,19 @@ namespace PlayerStaff
                 case SpellType.HealSpell:
                     HealTarget(config as HealingSpellConfig);
                     break;
+                case SpellType.InstantDebuffSpell:
+                    DebuffTarget(config as InstantDebuffSpellConfig);
+                    break;
             }
 
             _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
             _isCasting = false;
+        }
+
+        private void DebuffTarget(InstantDebuffSpellConfig config)
+        {
+            _statusApplier.ApplyStatusToTarget(config.Debuff, _targetCastingTo.GameObject);
         }
 
         private void HealTarget(HealingSpellConfig config)

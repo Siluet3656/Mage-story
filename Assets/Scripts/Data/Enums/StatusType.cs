@@ -5,11 +5,12 @@
 
         FireAura = 0,
         StasisFreeze = 1,
-        Reserve1,
-        Reserve2,
+        Immunity = 2,
+        Reserve2 = 3,
         
         Slow = 4,
         Poison = 5,
-        FireMark = 6
+        FireMark = 6,
+        Plague = 7
     }
 }
