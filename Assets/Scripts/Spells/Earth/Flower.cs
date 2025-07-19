@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Data.Enums;
@@ -7,7 +8,8 @@ using EnemyStaff;
 
 namespace Spells.Earth
 {
-    public class Flower : SummoningSpell
+    [RequireComponent(typeof(Ally))]
+    public class Flower : SummoningSpell, ITargetble
     {
         private readonly float _size = 5f;
         private readonly float _spikeCooldown = 2f;
@@ -17,12 +19,17 @@ namespace Spells.Earth
 
         private float _time;
         private bool _isReadyToShoot;
+
+        private bool _isTargeted;
+        private Ally _ally;
         
         protected override void Awake()
         {
             transform.localScale *= _size;
             _time = 0f;
             _isReadyToShoot = true;
+            _isTargeted = false;
+            _ally = GetComponent<Ally>();
             
             base.Awake();
         }
@@ -79,5 +86,27 @@ namespace Spells.Earth
             Enemy enemy = other.GetComponent<Enemy>();
             if (_nearbyEnemies.Contains(enemy)) _nearbyEnemies.Remove(enemy);
         }
+
+        private void OnDestroy()
+        {
+            OnTargetDestroy?.Invoke();
+        }
+
+        public bool IsTargetable => true;
+        public bool IsTargeted => _isTargeted;
+        public void OnTargeted()
+        {
+            _isTargeted = true;
+            _ally.OnTargeted();
+        }
+
+        public void OnUntargeted()
+        {
+            _isTargeted = false;
+            _ally.OnUntargeted();
+        }
+
+        public GameObject GameObject => gameObject;
+        public event Action OnTargetDestroy;
     }
 }

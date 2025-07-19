@@ -10,6 +10,9 @@ namespace Data.SpellConfigs
         [SerializeField] private Sprite _summonSprite;
         [SerializeField, Min(1)] private float _attackRadius;
         [SerializeField, Min(1)] private float _existingTime;
+        [SerializeField] private bool _isNeedHp;
+        [SerializeField] private bool _isTargetable;
+        [SerializeField] private float _summonHp;
         
         [Header("Casting")]
         [SerializeField, Min(0.1f)] private float _castTime;
@@ -25,6 +28,10 @@ namespace Data.SpellConfigs
         
         public float Damage => _damage;
         public override SpellType GetSPellType() => SpellType.SummonSpell;
+
+        public bool IsNeedHp => _isNeedHp;
+        public bool IsTargetable => _isTargetable;
+        public float SummonHp => _summonHp;
         
         public float GetCastTime()
         {

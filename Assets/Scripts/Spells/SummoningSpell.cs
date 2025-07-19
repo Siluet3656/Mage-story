@@ -9,8 +9,10 @@ namespace Spells
 {
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(CircleCollider2D))]
+    [RequireComponent(typeof(Ally))]
     public abstract class SummoningSpell : Spell
     {
+        private Ally _ally;
         private Sprite _sprite;
         private SpriteRenderer _spriteRenderer;
         private CircleCollider2D _collider;
@@ -27,6 +29,7 @@ namespace Spells
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _collider = GetComponent<CircleCollider2D>();
+            _ally = GetComponent<Ally>();
             
             base.Awake();
         }
@@ -37,6 +40,8 @@ namespace Spells
             _sprite = config.SummonSprite;
             _existTime = config.ExistingTime;
             _radius = config.AttackRadius;
+            
+            _ally.Initialize(config.IsTargetable, config.IsNeedHp, config.SummonHp);
         }
         
         private IEnumerator Existing()

@@ -23,13 +23,7 @@ namespace EntityResources
         
         private void Awake()
         {
-            InitializeHealth();
-        }
-        
-        private void InitializeHealth()
-        {
-            _currentHealth = Mathf.Max(_maxHealth, 1);
-            OnHealthChanged?.Invoke(_currentHealth);
+            InitializeHealth(_maxHealth);
         }
 
         private void TakeDamage(float damage)
@@ -83,6 +77,12 @@ namespace EntityResources
         public float MaxHealth => _maxHealth;
 
         public float FrostAegisAdditionalHealthAmount => _frostAegisAdditionalHealthAmount;
+        
+        public void InitializeHealth(float maxHealth)
+        {
+            _currentHealth = Mathf.Max(maxHealth, 1);
+            OnHealthChanged?.Invoke(_currentHealth);
+        }
 
         public void TryToTakeCriticalDamage(float damage, float criticalMultiply, float criticalChance)
         {
