@@ -238,16 +238,16 @@ namespace PlayerStaff
 
         private void HealTarget(HealingSpellConfig config)
         {
-            //Hp allyHp = _targetCastingTo.GameObject.GetComponent<Hp>();
-            //AllyScript
-            //if (allyHp)
-            //{
-                
-            //}
-            //else
-            //{
+            Hp allyHp = _targetCastingTo.GameObject.GetComponent<Hp>();
+            Ally ally = _targetCastingTo.GameObject.GetComponent<Ally>();
+            if (ally != null && allyHp != null)
+            {
+                allyHp.Heal(config.HealAmount);
+            }
+            else
+            {
                 _playerHp.Heal(config.HealAmount);
-            //}
+            }
         }
 
         private void DoShield(ShieldSpellConfig config)

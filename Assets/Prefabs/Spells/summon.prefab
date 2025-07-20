@@ -218,7 +218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e36768b68d6b24487273d99eb22e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpBar: {fileID: 6881450215311839918}
+  _hpBarBg: {fileID: 6881450215311839918}
+  _hpBar: {fileID: 5684298754013982019}
   _targetMark: {fileID: 2089769697807965645}
   _targetedColor: {r: 0, g: 0.6745098, b: 0, a: 0.68235296}
 --- !u!1 &5684298754013982019

@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using EntityResources;
+using UnityEngine.UI;
+using View;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Ally : MonoBehaviour
 {
+    [SerializeField] private GameObject _hpBarBg;
     [SerializeField] private GameObject _hpBar;
     [SerializeField] private GameObject _targetMark;
     [SerializeField] private Color _targetedColor;
@@ -17,15 +20,19 @@ public class Ally : MonoBehaviour
         _defaultColor = _spriteRenderer.color;
     }
 
-    public void Initialize(bool isTargetable, bool isNeedHp, float summonHp)
+    public void Initialize(bool isTargetable, bool isNeedHp, int summonHp)
     {
         _targetMark.SetActive(isTargetable);
-        _hpBar.SetActive(isNeedHp);
+        _hpBarBg.SetActive(isNeedHp);
 
         if (isNeedHp)
         {
             Hp hp = gameObject.AddComponent<Hp>();
-            hp.InitializeHealth(summonHp);
+            hp.SetMaxHealth(summonHp);
+            hp.InitializeHealth();
+
+            HpView hpView = gameObject.GetComponent<HpView>();
+            hpView.SetHealthBarImage(_hpBar.GetComponent<Image>());
         }
     }
 

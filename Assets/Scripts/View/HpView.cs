@@ -73,5 +73,10 @@ namespace View
                 }
             }
         }
+
+        public void SetHealthBarImage(Image healthBarImage)
+        {
+            _healthBar = healthBarImage;
+        }
     }
 }

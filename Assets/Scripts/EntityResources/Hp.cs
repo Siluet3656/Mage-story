@@ -23,7 +23,7 @@ namespace EntityResources
         
         private void Awake()
         {
-            InitializeHealth(_maxHealth);
+            InitializeHealth();
         }
 
         private void TakeDamage(float damage)
@@ -78,10 +78,15 @@ namespace EntityResources
 
         public float FrostAegisAdditionalHealthAmount => _frostAegisAdditionalHealthAmount;
         
-        public void InitializeHealth(float maxHealth)
+        public void InitializeHealth()
         {
-            _currentHealth = Mathf.Max(maxHealth, 1);
+            _currentHealth = Mathf.Max(_maxHealth, 1);
             OnHealthChanged?.Invoke(_currentHealth);
+        }
+
+        public void SetMaxHealth(int health)
+        {
+            _maxHealth = health;
         }
 
         public void TryToTakeCriticalDamage(float damage, float criticalMultiply, float criticalChance)
@@ -132,7 +137,8 @@ namespace EntityResources
         {
             if (healAmount <= 0) return;
             
-            _currentHealth += healAmount; Debug.Log($"Heal taken by {gameObject}: {healAmount}");
+            float resultHeal = Mathf.Min(_currentHealth + healAmount, _maxHealth); Debug.Log($"Heal taken by {gameObject}: {resultHeal - _currentHealth}");
+            _currentHealth = resultHeal;
             OnHealthChanged?.Invoke(_currentHealth);
         }
     }

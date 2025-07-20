@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Data;
 using Data.Enums;
-using UnityEngine;
 using EnemyStaff;
 
 namespace Spells.Earth

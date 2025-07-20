@@ -23,6 +23,7 @@ MonoBehaviour:
   _existingTime: 12
   _isNeedHp: 1
   _isTargetable: 1
+  _summonHp: 100
   _castTime: 1
   _cooldown: 0
   _castBarColor: {r: 0.04472231, g: 0.6320754, b: 0.22497708, a: 1}
