@@ -8,27 +8,23 @@ using EntityResources;
 namespace Spells
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    [RequireComponent(typeof(CircleCollider2D))]
     [RequireComponent(typeof(Ally))]
     public abstract class SummoningSpell : Spell
     {
         private Ally _ally;
         private Sprite _sprite;
         private SpriteRenderer _spriteRenderer;
-        private CircleCollider2D _collider;
         private Hp _targetsHp;
         private float _existTime;
         private float _radius;
         
         protected override SpellName SpellName { get; set; }
-        protected CircleCollider2D AttackCollider => _collider;
         protected float Radius => _radius;
         protected float ExistTime => _existTime;
         
         protected override void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            _collider = GetComponent<CircleCollider2D>();
             _ally = GetComponent<Ally>();
             
             base.Awake();

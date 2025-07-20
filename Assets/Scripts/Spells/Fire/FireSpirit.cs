@@ -4,6 +4,7 @@ using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
 using EntityResources;
+using PlayerStaff;
 
 namespace Spells.Fire
 {
@@ -16,11 +17,14 @@ namespace Spells.Fire
         
         private Rigidbody2D _rigidbody;
         private Enemy _followed;
+        private TargetingCircle _targetingCircle;
         private Vector3 _direction;
 
         protected override void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _targetingCircle = GetComponentInChildren<TargetingCircle>();
+            _targetingCircle.OnEnemyEnterCircle += TryToStartFollowEnemy;
             
             base.Awake();
         }
@@ -40,17 +44,17 @@ namespace Spells.Fire
         
         private void OnEnable()
         {
-            AttackCollider.radius = DefaultRadius * Radius;
+            _targetingCircle.Collider.radius = DefaultRadius * Radius;
         }
 
         private void OnDisable()
         {
-            AttackCollider.radius = DefaultRadius;
+            _targetingCircle.Collider.radius = DefaultRadius;
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        private void TryToStartFollowEnemy(ITargetble target)
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            Enemy enemy = target as Enemy;
             
             if (enemy  == null) return;
             

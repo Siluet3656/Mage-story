@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Data;
 using Data.Enums;
 using EnemyStaff;
+using PlayerStaff;
 
 namespace Spells.Earth
 {
@@ -15,7 +15,8 @@ namespace Spells.Earth
         private readonly float _spikeCooldown = 2f;
         private readonly float _spikeCriticalChance = 0.2f;
         private readonly float _spikeCriticalMultiply = 1.2f;
-        private readonly List<Enemy> _nearbyEnemies = new List<Enemy>();
+
+        private TargetingCircle _targetingCircle;
 
         private float _time;
         private bool _isReadyToShoot;
@@ -30,6 +31,7 @@ namespace Spells.Earth
             _isReadyToShoot = true;
             _isTargeted = false;
             _ally = GetComponent<Ally>();
+            _targetingCircle = GetComponentInChildren<TargetingCircle>();
             
             base.Awake();
         }
@@ -59,12 +61,15 @@ namespace Spells.Earth
 
         private void TryToShoot()
         {
-            if (_nearbyEnemies.Count == 0) return;
+            if (_targetingCircle.NearbyTargets.Count == 0) return;
             
-            Enemy nearestEnemy = _nearbyEnemies.OrderBy(enemy =>
-                Vector2.Distance(transform.position, enemy.GameObject.transform.position)
-            ).FirstOrDefault();
+            ITargetble nearestEnemy = _targetingCircle.NearbyTargets
+                .Where(enemy => enemy is Enemy)
+                .OrderBy(enemy => Vector2.Distance(transform.position, enemy.GameObject.transform.position))
+                .FirstOrDefault();
 
+            if (nearestEnemy == null) return;
+            
             Spell spell = SpellFactory.Instance.PoolSpell(SpellName.Spike);
 
             if ((spell as ProjectileSpell)?.TrySetTarget(nearestEnemy) == false) return;
@@ -73,18 +78,6 @@ namespace Spells.Earth
             spell.DoSpell();
             
             _isReadyToShoot = false;
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null) _nearbyEnemies.Add(enemy);
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (_nearbyEnemies.Contains(enemy)) _nearbyEnemies.Remove(enemy);
         }
 
         private void OnDestroy()
