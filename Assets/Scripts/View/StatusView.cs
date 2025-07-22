@@ -1,7 +1,6 @@
-﻿using Data;
+﻿using UnityEngine;
 using Data.Enums;
 using Data.StatusConfigs;
-using UnityEngine;
 
 namespace View
 {

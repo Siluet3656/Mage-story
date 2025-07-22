@@ -28,7 +28,7 @@ namespace Statuses.Debuffs
         private void SpawnPlagueSpread()
         {
             PlagueSpread plagueSpread = Object.Instantiate(_plagueSpreadPrefab, _hp.gameObject.transform.position, Quaternion.identity, null).GetComponent<PlagueSpread>();
-            plagueSpread.SetTarget(_hp.gameObject);
+            plagueSpread.SetCurrentTarget(_hp.gameObject);
         }
 
         public PlagueStatusEffect(TickingDamageStatusEffectData data, Hp hp, StatusController statusController) : base(data)

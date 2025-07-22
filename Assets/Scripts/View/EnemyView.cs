@@ -1,4 +1,5 @@
-﻿using EnemyStaff;
+﻿using Data.Enums;
+using EnemyStaff;
 using UnityEngine;
 
 namespace View
@@ -8,6 +9,7 @@ namespace View
         [Header("Visual References")]
         [SerializeField] private SpriteRenderer _targetedMark;
         [SerializeField] private GameObject _iceTomb;
+        [SerializeField] private GameObject _roots;
 
         private Enemy _enemyModel;
         private Color _originalColor;
@@ -51,9 +53,17 @@ namespace View
             _targetedMark.color = isTargeted ? _targetedColor : _originalColor;
         }
 
-        private void HandleMovementAvailabilityChanged(bool isAvailable)
+        private void HandleMovementAvailabilityChanged(bool isAvailable, MovementDisableSource source)
         {
-            _iceTomb.SetActive(!isAvailable);
+            switch (source)
+            {
+                case MovementDisableSource.IceTomb:
+                    _iceTomb.SetActive(!isAvailable);
+                    break;
+                case MovementDisableSource.Roots:
+                    _roots.SetActive(!isAvailable);
+                    break;
+            }
         }
     }
 }

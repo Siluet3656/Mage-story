@@ -47103,6 +47103,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 280b465bf977baf45b87aedc8ffee55f, type: 2}
   - {fileID: 11400000, guid: 0bd42c655defee141a165407d141fa3a, type: 2}
   - {fileID: 11400000, guid: c7aae254f7b9426458fa180e67303cf7, type: 2}
+  - {fileID: 11400000, guid: 9cbb9a7a04ac7324fbdb5bbed02b78e7, type: 2}
 --- !u!1 &1429814682
 GameObject:
   m_ObjectHideFlags: 0
@@ -61059,7 +61060,7 @@ MonoBehaviour:
   _naturePower: {fileID: 11400000, guid: 7ae5f954515d8a44cacef37697a5dde0, type: 2}
   _plague: {fileID: 11400000, guid: 0161667f5a81eb54a8e8227ca9ca534f, type: 2}
   _flower: {fileID: 11400000, guid: 4fa56ece001841647a3a25a573b7616d, type: 2}
-  _natureWraith: {fileID: 0}
+  _natureWraith: {fileID: 11400000, guid: d67a41ec42d3af648affe490b2797ee1, type: 2}
 --- !u!1 &2077632921
 GameObject:
   m_ObjectHideFlags: 0

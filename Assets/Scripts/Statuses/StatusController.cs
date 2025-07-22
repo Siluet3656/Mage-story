@@ -65,6 +65,10 @@ namespace Statuses
                     return new PlagueStatusEffect(data as TickingDamageStatusEffectData, _hp, this);
                 case StatusType.Immunity:
                     return new ImmunityStatusEffect(data);
+                case StatusType.RootCore:
+                    return new RootCoreStatusEffect(data, gameObject);
+                case StatusType.Root:
+                    return new RootStatusEffect(data, gameObject);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;

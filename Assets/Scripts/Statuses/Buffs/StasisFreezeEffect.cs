@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Data;
+using Data.Enums;
 using Data.StatusConfigs;
 using EnemyStaff;
 using EntityResources;
@@ -39,7 +40,7 @@ namespace Statuses.Buffs
             else if (_targetHp != null && _enemy != null /*&& _playerSpellCasting != null*/)
             {
                 _targetHp.GetInvulnerable();
-                _enemy.SetMovementAvailability(false);
+                _enemy.SetMovementAvailability(false, MovementDisableSource.IceTomb);
             }
             
             _tomb = target.GetComponentInChildren<IceTomb>(true); 
@@ -57,7 +58,7 @@ namespace Statuses.Buffs
             else if (_targetHp != null && _enemy != null /*&& _playerSpellCasting != null*/)
             {
                 _targetHp.GetInvulnerable();
-                _enemy.SetMovementAvailability(true);
+                _enemy.SetMovementAvailability(true, MovementDisableSource.IceTomb);
             }
             
             if (_tomb != null)  _tomb.gameObject.SetActive(false);

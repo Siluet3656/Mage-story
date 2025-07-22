@@ -11,6 +11,8 @@
         Slow = 4,
         Poison = 5,
         FireMark = 6,
-        Plague = 7
+        Plague = 7,
+        RootCore = 8,
+        Root = 9
     }
 }

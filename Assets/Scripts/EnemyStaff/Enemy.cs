@@ -35,7 +35,7 @@ namespace EnemyStaff
         public bool IsTargetable { get; }
 
         public event Action<bool> OnTargetStatusChanged;
-        public event Action<bool> OnMovementAvailabilityChanged;
+        public event Action<bool, MovementDisableSource> OnMovementAvailabilityChanged;
         public event Action<Vector2> OnMovementDirectionChanged;
 
         private void Awake()
@@ -129,10 +129,10 @@ namespace EnemyStaff
             _isPatrolling = true;
         }
         
-        public void SetMovementAvailability(bool isAvailable)
+        public void SetMovementAvailability(bool isAvailable, MovementDisableSource source)
         {
             _isAvailableToMove = isAvailable;
-            OnMovementAvailabilityChanged?.Invoke(isAvailable);
+            OnMovementAvailabilityChanged?.Invoke(isAvailable, source);
         
             if (!isAvailable)
             {
