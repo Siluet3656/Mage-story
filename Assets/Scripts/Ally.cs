@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EntityResources;
+using Statuses;
 using UnityEngine.UI;
 using View;
 
@@ -33,6 +34,8 @@ public class Ally : MonoBehaviour
 
             HpView hpView = gameObject.GetComponent<HpView>();
             hpView.SetHealthBarImage(_hpBar.GetComponent<Image>());
+
+            gameObject.AddComponent<StatusController>();
         }
     }
 

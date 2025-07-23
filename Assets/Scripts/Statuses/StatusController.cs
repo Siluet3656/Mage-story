@@ -68,6 +68,7 @@ namespace Statuses
                 case StatusType.RootCore:
                     return new RootCoreStatusEffect(data, gameObject);
                 case StatusType.Root:
+                    if (HasStatus(StatusType.RootCore)) return null;
                     return new RootStatusEffect(data, gameObject);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
@@ -105,6 +106,13 @@ namespace Statuses
         public bool HasStatus(StatusType type)
         {
             return _activeStatusEffects.ContainsKey(type);
+        }
+        
+        public bool HasStatus(StatusType type, out StatusEffect status)
+        {
+            bool isStatusExists = _activeStatusEffects.TryGetValue(type, out IStatusEffect statusEffect);
+            status = statusEffect as StatusEffect;
+            return isStatusExists;
         }
 
         public void RefreshAllStatuses()

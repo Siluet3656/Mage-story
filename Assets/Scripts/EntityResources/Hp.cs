@@ -18,8 +18,6 @@ namespace EntityResources
         private float _additionalHealth;
         private int _shieldStacks;
         private bool _isInvulnerable;
-
-        public bool IsInvulnerable => _isInvulnerable;
         
         private void Awake()
         {
@@ -73,8 +71,13 @@ namespace EntityResources
         public event Action<int> OnShieldStacksChanged;
         public event Action OnDeath;
         public event Action OnCriticalDamageReceived; 
+        public event Action<float> OnAnyDamageReceived; 
 
+        public bool IsInvulnerable => _isInvulnerable;
+        
         public float MaxHealth => _maxHealth;
+
+        public float CurrentHealth => _currentHealth; 
 
         public float FrostAegisAdditionalHealthAmount => _frostAegisAdditionalHealthAmount;
         
@@ -98,6 +101,8 @@ namespace EntityResources
             
             if (isCritical) OnCriticalDamageReceived?.Invoke();
 
+            OnAnyDamageReceived?.Invoke(finalDamage);
+            
             TakeDamage(finalDamage); Debug.Log($"Damage taken by {gameObject}: {finalDamage}");
         }
 
