@@ -36,6 +36,15 @@ namespace Data
         [SerializeField] private SpellConfig _flower;
         [SerializeField] private SpellConfig _natureWraith;
         
+        [Header("No elemental")]
+        [SerializeField] private SpellConfig _zap;
+        [SerializeField] private SpellConfig _magicArrow;
+        [SerializeField] private SpellConfig _residueAbsorption;
+        [SerializeField] private SpellConfig _sharpDisk;
+        [SerializeField] private SpellConfig _silence ;
+        [SerializeField] private SpellConfig _crystal ;
+        [SerializeField] private SpellConfig _quickThinking;
+        
         private Dictionary<SpellName, SpellConfig> _spellValues;
         
         public static SpellData Instance { get; private set; }
@@ -75,7 +84,15 @@ namespace Data
                 { SpellName.DeathZone, _deathZone },
                 { SpellName.Plague, _plague },
                 { SpellName.Flower, _flower },
-                { SpellName.NatureWraith, _natureWraith }
+                { SpellName.NatureWraith, _natureWraith },
+                
+                { SpellName.Zap, _zap },
+                { SpellName.MagicArrow, _magicArrow },
+                { SpellName.ResidueAbsorption, _residueAbsorption },
+                { SpellName.SharpDisk, _sharpDisk },
+                { SpellName.Silence, _silence },
+                { SpellName.Crystal, _crystal },
+                { SpellName.QuickThinking, _quickThinking }
             };
         }
         

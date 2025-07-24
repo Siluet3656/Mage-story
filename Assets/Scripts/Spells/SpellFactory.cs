@@ -7,6 +7,7 @@ using Shard;
 using Spells.Earth;
 using Spells.Fire;
 using Spells.Frost;
+using Spells.NoElemental;
 
 
 namespace Spells
@@ -74,6 +75,12 @@ namespace Spells
             InstantiateSpells(SpellName.Spike, typeof(Spike), _projectileSpell, _defaultAmountOfSpells * 10);
             InstantiateSpells(SpellName.DeathZone, typeof(DeathZone), _deployableSpell, _defaultAmountOfSpells);
             InstantiateSpells(SpellName.Flower, typeof(Flower), _summonSpell, _defaultAmountOfSpells);
+            
+            #endregion
+            
+            #region SpellinitEarth
+            
+            InstantiateSpells(SpellName.Zap, typeof(Zap), _lineSpell, _defaultAmountOfSpells);
             
             #endregion
         }

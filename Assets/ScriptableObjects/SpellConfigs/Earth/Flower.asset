@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cad84b2b8db9234f86192992e3527c2, type: 3}
   m_Name: Flower
   m_EditorClassIdentifier: 
-  _name: 0
+  _name: 22
   _icon: {fileID: 21300000, guid: 72e77d0f2ee636e4daa0d8c25f4b980f, type: 3}
   _requiresTarget: 0
   _spellElementType: 3

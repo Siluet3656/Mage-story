@@ -5003,7 +5003,7 @@ GameObject:
   - component: {fileID: 102588857}
   - component: {fileID: 102588856}
   m_Layer: 0
-  m_Name: Factory
+  m_Name: Spell Factory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61061,6 +61061,13 @@ MonoBehaviour:
   _plague: {fileID: 11400000, guid: 0161667f5a81eb54a8e8227ca9ca534f, type: 2}
   _flower: {fileID: 11400000, guid: 4fa56ece001841647a3a25a573b7616d, type: 2}
   _natureWraith: {fileID: 11400000, guid: d67a41ec42d3af648affe490b2797ee1, type: 2}
+  _zap: {fileID: 11400000, guid: d587be18bd36cfc4693bb66c57751e84, type: 2}
+  _magicArrow: {fileID: 0}
+  _residueAbsorption: {fileID: 0}
+  _sharpDisk: {fileID: 0}
+  _silence: {fileID: 0}
+  _crystal: {fileID: 0}
+  _quickThinking: {fileID: 0}
 --- !u!1 &2077632921
 GameObject:
   m_ObjectHideFlags: 0
@@ -61114,7 +61121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cff9212936409469baf35d29cdc557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: 0
+  _name: 2
 --- !u!114 &2077632924
 MonoBehaviour:
   m_ObjectHideFlags: 0
