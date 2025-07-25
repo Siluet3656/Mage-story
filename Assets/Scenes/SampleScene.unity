@@ -4530,7 +4530,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Title
+  m_Text: Crystal
 --- !u!222 &41170838
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4833,7 +4833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cff9212936409469baf35d29cdc557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: 0
+  _name: 27
 --- !u!114 &84445020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4897,7 +4897,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 73c718453f4d235489e280c8edfad4e2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40339c2abfec4c349abd38674441e127, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -36082,7 +36082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cff9212936409469baf35d29cdc557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: 0
+  _name: 26
 --- !u!114 &216796330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36146,7 +36146,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 73c718453f4d235489e280c8edfad4e2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e69f12f88ae87e4db76bbb1bd16b077, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -36234,7 +36234,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Description
+  m_Text: Applies the Silence effect to the target. Instant.
 --- !u!222 &223387481
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -37736,9 +37736,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Title
-
-'
+  m_Text: Sharp Disk
 --- !u!222 &371651655
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38302,6 +38300,7 @@ GameObject:
   - component: {fileID: 476693625}
   - component: {fileID: 476693624}
   - component: {fileID: 476693623}
+  - component: {fileID: 476693626}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -38393,8 +38392,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 57da0541750125944b78bba6bf7bce16, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -38411,6 +38410,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476693621}
   m_CullTransparentMesh: 0
+--- !u!114 &476693626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476693621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cff9212936409469baf35d29cdc557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: 29
 --- !u!1 &477477693
 GameObject:
   m_ObjectHideFlags: 0
@@ -38616,7 +38628,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Ttitle
+  m_Text: Magic Arrow
 --- !u!222 &491420811
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -42454,7 +42466,7 @@ GameObject:
   - component: {fileID: 952141064}
   - component: {fileID: 952141063}
   m_Layer: 5
-  m_Name: iconspot (1)
+  m_Name: MagicArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42953,7 +42965,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Description
+  m_Text: Summons a crystal that fires a volley of Zap spells at random targets in
+    an area.
 --- !u!222 &984689056
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43730,7 +43743,7 @@ GameObject:
   - component: {fileID: 1078507015}
   - component: {fileID: 1078507014}
   m_Layer: 5
-  m_Name: iconspot (3)
+  m_Name: SharpDisc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44219,7 +44232,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Description
+  m_Text: Applies the Quick Thinking effect to the caster. Instant.
 --- !u!222 &1144293426
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -45362,6 +45375,7 @@ GameObject:
   - component: {fileID: 1242833460}
   - component: {fileID: 1242833459}
   - component: {fileID: 1242833458}
+  - component: {fileID: 1242833461}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -45471,6 +45485,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242833456}
   m_CullTransparentMesh: 0
+--- !u!114 &1242833461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242833456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cff9212936409469baf35d29cdc557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: 30
 --- !u!1 &1254870101
 GameObject:
   m_ObjectHideFlags: 0
@@ -45558,7 +45585,7 @@ GameObject:
   - component: {fileID: 1266098296}
   - component: {fileID: 1266098295}
   m_Layer: 5
-  m_Name: iconspot (4)
+  m_Name: Silence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46135,7 +46162,7 @@ GameObject:
   - component: {fileID: 1334929183}
   - component: {fileID: 1334929182}
   m_Layer: 5
-  m_Name: iconspot (5)
+  m_Name: Crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47463,7 +47490,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Title
+  m_Text: Residue Absorption
 --- !u!222 &1446070052
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -55730,7 +55757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cff9212936409469baf35d29cdc557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: 0
+  _name: 25
 --- !u!114 &1544380191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55794,7 +55821,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 73c718453f4d235489e280c8edfad4e2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ca6519d587d1fbc43be9e1ed3e19e5e0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -56534,7 +56561,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Descripton
+  m_Text: ' Absorbs *n* residue, restoring *m* health and additional health (if present).
+    Instant.'
 --- !u!222 &1576710785
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -56613,7 +56641,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Description
+  m_Text: Fires a projectile at an enemy, inflicting the Wound effect.
 --- !u!222 &1577437960
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -56846,7 +56874,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Title
+  m_Text: Quick Thinking
 --- !u!222 &1618064096
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -57265,7 +57293,7 @@ GameObject:
   - component: {fileID: 1658383535}
   - component: {fileID: 1658383534}
   m_Layer: 5
-  m_Name: iconspot (2)
+  m_Name: ResidueAbsorbation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57399,7 +57427,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Description
+  m_Text: 'Deals damage to a single target, conjuring elemental energy.
+
+'
 --- !u!222 &1675992828
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -57657,7 +57687,7 @@ GameObject:
   - component: {fileID: 1708834303}
   - component: {fileID: 1708834302}
   m_Layer: 5
-  m_Name: iconspot
+  m_Name: Zap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57888,6 +57918,7 @@ GameObject:
   - component: {fileID: 1718754571}
   - component: {fileID: 1718754570}
   - component: {fileID: 1718754569}
+  - component: {fileID: 1718754572}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -57979,8 +58010,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 7f50cca215b28e047968beb37e14301d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -57997,6 +58028,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1718754567}
   m_CullTransparentMesh: 0
+--- !u!114 &1718754572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718754567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cff9212936409469baf35d29cdc557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: 28
 --- !u!1 &1734349116
 GameObject:
   m_ObjectHideFlags: 0
@@ -60097,7 +60141,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Title
+  m_Text: Silence
 --- !u!222 &1964393493
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -60465,7 +60509,7 @@ GameObject:
   - component: {fileID: 1995228303}
   - component: {fileID: 1995228302}
   m_Layer: 5
-  m_Name: iconspot (6)
+  m_Name: QuickThinking
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60511,7 +60555,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 73c718453f4d235489e280c8edfad4e2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 485025d127f359042bc813cb8686eaf2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -61062,12 +61106,12 @@ MonoBehaviour:
   _flower: {fileID: 11400000, guid: 4fa56ece001841647a3a25a573b7616d, type: 2}
   _natureWraith: {fileID: 11400000, guid: d67a41ec42d3af648affe490b2797ee1, type: 2}
   _zap: {fileID: 11400000, guid: d587be18bd36cfc4693bb66c57751e84, type: 2}
-  _magicArrow: {fileID: 0}
-  _residueAbsorption: {fileID: 0}
-  _sharpDisk: {fileID: 0}
-  _silence: {fileID: 0}
-  _crystal: {fileID: 0}
-  _quickThinking: {fileID: 0}
+  _magicArrow: {fileID: 11400000, guid: c41e4ff86a5ebd84d9d5c92c14c22238, type: 2}
+  _residueAbsorption: {fileID: 11400000, guid: 09348fd00c270524bb2eabd59d8cdb0b, type: 2}
+  _sharpDisk: {fileID: 11400000, guid: ad7c75a392d98e04bbe3cfd66834f803, type: 2}
+  _silence: {fileID: 11400000, guid: 4b8febf8f2ba3f345a22c86457c571fa, type: 2}
+  _crystal: {fileID: 11400000, guid: 7c2d409189a2a7940a9b5894d61a4242, type: 2}
+  _quickThinking: {fileID: 11400000, guid: 352a72458f338ff45bdd00f705c93423, type: 2}
 --- !u!1 &2077632921
 GameObject:
   m_ObjectHideFlags: 0

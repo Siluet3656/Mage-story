@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b8740ff5752c14b808974ea764b631, type: 3}
+  m_Name: MagicArrow
+  m_EditorClassIdentifier: 
+  _name: 25
+  _icon: {fileID: 21300000, guid: ca6519d587d1fbc43be9e1ed3e19e5e0, type: 3}
+  _requiresTarget: 1
+  _spellElementType: 4
+  _shardCost: {x: 0, y: 0, z: 0}
+  _reminderCost: 10
+  _projectileSprite: {fileID: 21300000, guid: 693aec379f821cb4c9956783244be542, type: 3}
+  _castTime: 1
+  _cooldown: 0
+  _castBarColor: {r: 0.74304825, g: 0.13007298, b: 0.745283, a: 1}
+  _damage: 50

@@ -2,8 +2,9 @@
 {
     public enum ShieldType
     {
-        Unknown,
-        FrostShield,
-        EarthShield
+        Unknown = 0,
+        FrostShield = 1,
+        EarthShield = 2,
+        Heal = 3
     }
 }

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cad84b2b8db9234f86192992e3527c2, type: 3}
+  m_Name: Crystal
+  m_EditorClassIdentifier: 
+  _name: 29
+  _icon: {fileID: 21300000, guid: 57da0541750125944b78bba6bf7bce16, type: 3}
+  _requiresTarget: 0
+  _spellElementType: 4
+  _shardCost: {x: 0, y: 0, z: 0}
+  _reminderCost: 20
+  _summonSprite: {fileID: 21300000, guid: 2a21f848225c9dc46be0aa4e39fffcaa, type: 3}
+  _attackRadius: 4
+  _existingTime: 1
+  _isNeedHp: 0
+  _isTargetable: 0
+  _summonHp: 0
+  _castTime: 1
+  _cooldown: 0
+  _castBarColor: {r: 0.5781159, g: 0.042052325, b: 0.5943396, a: 1}
+  _damage: 25
