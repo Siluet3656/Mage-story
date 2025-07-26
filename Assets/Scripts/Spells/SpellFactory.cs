@@ -78,9 +78,10 @@ namespace Spells
             
             #endregion
             
-            #region SpellinitEarth
+            #region SpellNoElemental
             
             InstantiateSpells(SpellName.Zap, typeof(Zap), _lineSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.MagicArrow, typeof(MagicArrow), _projectileSpell, _defaultAmountOfSpells);
             
             #endregion
         }

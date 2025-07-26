@@ -19,3 +19,4 @@ MonoBehaviour:
   _shardCost: {x: 0, y: 0, z: 0}
   _reminderCost: 15
   _shieldType: 3
+  _amount: 150

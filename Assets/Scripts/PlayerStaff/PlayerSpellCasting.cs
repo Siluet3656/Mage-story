@@ -261,6 +261,9 @@ namespace PlayerStaff
                 case ShieldType.EarthShield:
                     _playerHp.GetShieldStacks(SpellName.EarthShield);
                     break;
+                case ShieldType.Heal:
+                    _playerHp.Heal(config.Amount);
+                    break;
             }
         }
 
@@ -334,9 +337,11 @@ namespace PlayerStaff
             if (spellConfig is INeedPrefab)
             {
                 _spell = SpellFactory.Instance.PoolSpell(spellName);
+                _spell.SetSpellResources(_resources); 
                 InitializeSpell(spellConfig);
+                
             }
-         
+            
             _spellName = spellName;
             _isCasting = true;
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - 1);

@@ -23,6 +23,9 @@ namespace PlayerStaff
         private float[] _frostShardRefreshTimers;
         private float[] _earthShardRefreshTimers;
 
+        private ShardType _lastSpentShardType;
+        private bool _hasSpentShard = false;
+        
         private const int MaxShards = 3;
 
         private void Awake()
@@ -64,6 +67,9 @@ namespace PlayerStaff
                     break;
             }
 
+            _lastSpentShardType = type;
+            _hasSpentShard = true;
+            
             GainRemainder(20 * amount);
         }
 
@@ -118,7 +124,20 @@ namespace PlayerStaff
             _ui.UpdateShardsUI(ShardType.EarthShard, _earthShardRefreshTimers, _shardRefreshTime);
         }
         
-        
+        private void RestoreShard(ref int shardCount, float[] timers)
+        {
+            if (shardCount >= MaxShards) return;
+            
+            for (int i = 0; i < timers.Length; i++)
+            {
+                if (timers[i] > 0)
+                {
+                    timers[i] = 0;
+                    shardCount = Mathf.Min(MaxShards, shardCount + 1);
+                    return;
+                }
+            }
+        }
         
         public bool HasEnoughResources(Vector3Int shardCost, float remainderCost)
         {
@@ -134,6 +153,24 @@ namespace PlayerStaff
             UseShards(ShardType.FrostShard, shardCost.y);
             UseShards(ShardType.EarthShard, shardCost.z);
             _currentRemainder -= (int)remainderCost;
+        }
+        
+        public void RestoreLastSpentShard()
+        {
+            if (!_hasSpentShard) return;
+
+            switch (_lastSpentShardType)
+            {
+                case ShardType.FireShard:
+                    RestoreShard(ref _fireShardCount, _fireShardRefreshTimers);
+                    break;
+                case ShardType.FrostShard:
+                    RestoreShard(ref _frostShardCount, _frostShardRefreshTimers);
+                    break;
+                case ShardType.EarthShard:
+                    RestoreShard(ref _earthShardCount, _earthShardRefreshTimers);
+                    break;
+            }
         }
     }
 }
