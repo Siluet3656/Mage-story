@@ -3,6 +3,7 @@ using UnityEngine;
 using Data.Enums;
 using Data.StatusConfigs;
 using EntityResources;
+using Spells.NoElemental;
 using Statuses.Buffs;
 using Statuses.Debuffs;
 using View;
@@ -72,6 +73,8 @@ namespace Statuses
                     return new RootStatusEffect(data, gameObject);
                 case StatusType.Bleed:
                     return new BleedStatusEffect(data, _hp);
+                case StatusType.Silence:
+                    return new SilenceStatusEffect(data);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;

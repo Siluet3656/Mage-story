@@ -8,7 +8,7 @@ namespace PlayerStaff
     [RequireComponent(typeof(CircleCollider2D))]
     public class TargetingCircle : MonoBehaviour
     {
-        private readonly List<ITargetble> _nearbyTargets = new List<ITargetble>();
+        private readonly List<ITargetable> _nearbyTargets = new List<ITargetable>();
         private CircleCollider2D _collider;
 
         private void Awake()
@@ -18,7 +18,7 @@ namespace PlayerStaff
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            ITargetble target = other.GetComponent<ITargetble>();
+            ITargetable target = other.GetComponent<ITargetable>();
             if (target != null && _nearbyTargets.Contains(target) == false)
             {
                 _nearbyTargets.Add(target);
@@ -28,7 +28,7 @@ namespace PlayerStaff
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            ITargetble target = other.GetComponent<ITargetble>();
+            ITargetable target = other.GetComponent<ITargetable>();
             if (target != null && _nearbyTargets.Contains(target))
             {
                 _nearbyTargets.Remove(target);
@@ -36,9 +36,9 @@ namespace PlayerStaff
             }
         }
         
-        public List<ITargetble> NearbyTargets => _nearbyTargets;
+        public List<ITargetable> NearbyTargets => _nearbyTargets;
         public CircleCollider2D Collider => _collider;
-        public Action<ITargetble> OnEnemyEnterCircle;
-        public Action<ITargetble> OnEnemyExitCircle;
+        public Action<ITargetable> OnEnemyEnterCircle;
+        public Action<ITargetable> OnEnemyExitCircle;
     }
 }

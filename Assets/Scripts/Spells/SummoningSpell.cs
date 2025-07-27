@@ -32,12 +32,12 @@ namespace Spells
         }
 
         private void Initialize(SummoningSpellConfig config)
-        {
+        { 
             SpellDamage = config.Damage;
             _sprite = config.SummonSprite;
             _existTime = config.ExistingTime;
             _radius = config.AttackRadius;
-            
+
             _ally.Initialize(config.IsTargetable, config.IsNeedHp, config.SummonHp);
         }
         

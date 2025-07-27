@@ -11,10 +11,10 @@ namespace Spells
     {
         private LineRenderer _lineRenderer;
         private float _duration;
-        private ITargetble _target;
+        private ITargetable _target;
         
         protected override SpellName SpellName { get; set; }
-        protected ITargetble Target => _target;
+        protected ITargetable Target => _target;
 
         protected override void Awake()
         {
@@ -57,7 +57,7 @@ namespace Spells
             StartCoroutine(Existing());
         }
         
-        public bool TrySetTarget(ITargetble target)
+        public bool TrySetTarget(ITargetable target)
         {
             if (target == null) return false;
             

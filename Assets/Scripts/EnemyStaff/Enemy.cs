@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace EnemyStaff
 {
     [RequireComponent(typeof(EnemyView))]
-    public class Enemy : MonoBehaviour, ITargetble
+    public class Enemy : MonoBehaviour, ITargetable
     {
         [Header("Movement Settings")]
         [SerializeField] private SpeedType _defaultSpeed;

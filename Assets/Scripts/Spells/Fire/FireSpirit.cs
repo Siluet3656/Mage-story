@@ -52,7 +52,7 @@ namespace Spells.Fire
             _targetingCircle.Collider.radius = DefaultRadius;
         }
 
-        private void TryToStartFollowEnemy(ITargetble target)
+        private void TryToStartFollowEnemy(ITargetable target)
         {
             Enemy enemy = target as Enemy;
             

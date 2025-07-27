@@ -9,12 +9,12 @@ namespace Spells.Frost
 {
     public class AvalancheCore : ProjectileSpell
     {
-        private readonly List<ITargetble> _nearbyTargets = new List<ITargetble>();
+        private readonly List<ITargetable> _nearbyTargets = new List<ITargetable>();
 
-        public List<ITargetble> NearbyTargets => _nearbyTargets;
+        public List<ITargetable> NearbyTargets => _nearbyTargets;
         private void OnTriggerEnter2D(Collider2D other)
         {
-            ITargetble target = other.GetComponent<ITargetble>();
+            ITargetable target = other.GetComponent<ITargetable>();
             if (target != null && _nearbyTargets.Contains(target) == false)
             {
                 _nearbyTargets.Add(target);
@@ -23,13 +23,13 @@ namespace Spells.Frost
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            ITargetble target = other.GetComponent<ITargetble>();
+            ITargetable target = other.GetComponent<ITargetable>();
             if (target != null && _nearbyTargets.Contains(target))
             {
                 _nearbyTargets.Remove(target);
             }
         }
-        protected override void OnReachTarget(ITargetble target)
+        protected override void OnReachTarget(ITargetable target)
         {
             float chunkDamage = SpellDamage / _nearbyTargets.Count;
             SpellConfig spellConfig = SpellData.Instance.GetSpellConfig(SpellName.AvalancheCoreChunk);

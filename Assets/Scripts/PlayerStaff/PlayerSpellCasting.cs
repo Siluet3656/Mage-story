@@ -56,7 +56,7 @@ namespace PlayerStaff
         private Vector3 _mousePosition;
         private GameObject _ghost;
         private bool _isPlacing;
-        private ITargetble _targetCastingTo;
+        private ITargetable _targetCastingTo;
         
         public bool Casting => _isCasting;
         public bool IsPlacing => _isPlacing;

@@ -6,7 +6,7 @@ namespace Spells.Earth
     public class Spike : ProjectileSpell
     {
         protected override SpellName SpellName => SpellName.Spike;
-        protected override void OnReachTarget(ITargetble target)
+        protected override void OnReachTarget(ITargetable target)
         {
             ApplyDebuff(target as Enemy, StatusType.Poison);
             base.OnReachTarget(target);

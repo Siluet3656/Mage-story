@@ -16,7 +16,7 @@ namespace Spells
         private Sprite _sprite;
         private Rigidbody2D _rigidbody;
         private SpriteRenderer _spriteRenderer;
-        private ITargetble _target;
+        private ITargetable _target;
         private Hp _targetsHp;
         private Vector3 _direction;
         private float _angle;
@@ -59,7 +59,7 @@ namespace Spells
             transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
         }
         
-        protected virtual void OnReachTarget(ITargetble target)
+        protected virtual void OnReachTarget(ITargetable target)
         {
             base.ApplyDamage(_targetsHp);
             base.ReturnToPool();
@@ -89,7 +89,7 @@ namespace Spells
             gameObject.SetActive(true);
         }
         
-        public bool TrySetTarget(ITargetble target)
+        public bool TrySetTarget(ITargetable target)
         {
             if (target == null) return false;
             

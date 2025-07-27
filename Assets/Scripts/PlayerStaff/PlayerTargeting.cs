@@ -13,12 +13,12 @@ namespace PlayerStaff
 
         private PlayerSpellCasting _spellCasting;
         
-        private ITargetble _currentTarget;
+        private ITargetable _currentTarget;
         
-        private List<ITargetble> _targetsInRange = new List<ITargetble>();
+        private List<ITargetable> _targetsInRange = new List<ITargetable>();
         
         public bool HasTarget => _currentTarget != null;
-        public ITargetble GetCurrentTarget => _currentTarget;
+        public ITargetable GetCurrentTarget => _currentTarget;
 
         private void Awake()
         {
@@ -41,7 +41,7 @@ namespace PlayerStaff
                 .ToList();
         }
 
-        private void SetTarget(ITargetble target)
+        private void SetTarget(ITargetable target)
         {
             target.OnTargeted();
             target.OnTargetDestroy += ClearTarget;
@@ -72,7 +72,7 @@ namespace PlayerStaff
         
         public void OnFastTarget()
         {
-            ITargetble target;
+            ITargetable target;
             
             OrderEnemiesInRange();
 
@@ -103,7 +103,7 @@ namespace PlayerStaff
         {
             ClearTarget();
 
-            if (hit.collider != null && hit.collider.TryGetComponent<ITargetble>(out var target))
+            if (hit.collider != null && hit.collider.TryGetComponent<ITargetable>(out var target))
             {
                 SetTarget(target);
             }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EnemyStaff
 {
-    public interface ITargetble
+    public interface ITargetable
     {
         bool IsTargetable { get; }
         bool IsTargeted { get; }

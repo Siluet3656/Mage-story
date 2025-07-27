@@ -8,7 +8,7 @@ namespace Spells.Fire
     public class Fireball : ProjectileSpell
     {
         protected override SpellName SpellName => SpellName.Fireball;
-        protected override void OnReachTarget(ITargetble target)
+        protected override void OnReachTarget(ITargetable target)
         {
             SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
             Spell fireballExplosion = SpellFactory.Instance.PoolSpell(SpellName.Explosion);

@@ -11,7 +11,7 @@ namespace Spells.Frost
 {
     public class IcicleBarrage : SummoningSpell
     {
-        private ITargetble _target;
+        private ITargetable _target;
         private readonly int _amountOfIcicles = 20;
         private float _delay;
 
@@ -70,7 +70,7 @@ namespace Spells.Frost
             StartCoroutine(SpawnIcicles());
         }
 
-        public bool TrySetTarget(ITargetble target)
+        public bool TrySetTarget(ITargetable target)
         {
             if (target == null) return false;
             

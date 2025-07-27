@@ -10,7 +10,7 @@ using PlayerStaff;
 namespace Spells.Earth
 {
     [RequireComponent(typeof(Ally))]
-    public class Flower : SummoningSpell, ITargetble
+    public class Flower : SummoningSpell, ITargetable
     {
         private readonly float _size = 5f;
         private readonly float _spikeCooldown = 2f;
@@ -64,7 +64,7 @@ namespace Spells.Earth
         {
             if (_targetingCircle.NearbyTargets.Count == 0) return;
             
-            ITargetble nearestEnemy = _targetingCircle.NearbyTargets
+            ITargetable nearestEnemy = _targetingCircle.NearbyTargets
                 .Where(enemy => enemy is Enemy)
                 .OrderBy(enemy => Vector2.Distance(transform.position, enemy.GameObject.transform.position))
                 .FirstOrDefault();
