@@ -63,6 +63,7 @@ namespace PlayerStaff
         public bool RequireTarget => SpellData.Instance.GetSpellConfig(_spellName).RequiresTarget;
         public float AdjustedFireCriticalMultiply => _adjustedFireCriticalMultiply;
         public float AdjustedFireCriticalChance => _adjustedFireCriticalChance;
+        public float CurrentGlobalCooldown => _globalCooldown;
 
         private void Awake()
         {
@@ -432,6 +433,11 @@ namespace PlayerStaff
         public void EnableCasting()
         {
             _isAbleToCast = true;
+        }
+
+        public void SetGlobalCooldown(float cooldown)
+        {
+            _globalCooldown = cooldown;
         }
     }
 }

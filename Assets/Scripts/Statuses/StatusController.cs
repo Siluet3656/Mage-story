@@ -75,6 +75,8 @@ namespace Statuses
                     return new BleedStatusEffect(data, _hp);
                 case StatusType.Silence:
                     return new SilenceStatusEffect(data);
+                case StatusType.QuickThinking:
+                    return new QuickThinkingStatusEffect(data, gameObject);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;
