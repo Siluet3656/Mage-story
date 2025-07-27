@@ -82,6 +82,7 @@ namespace Spells
             
             InstantiateSpells(SpellName.Zap, typeof(Zap), _lineSpell, _defaultAmountOfSpells);
             InstantiateSpells(SpellName.MagicArrow, typeof(MagicArrow), _projectileSpell, _defaultAmountOfSpells);
+            InstantiateSpells(SpellName.SharpDisk, typeof(SharpDisc), _projectileSpell, _defaultAmountOfSpells);
             
             #endregion
         }

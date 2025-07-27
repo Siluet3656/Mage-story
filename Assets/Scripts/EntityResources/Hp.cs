@@ -106,6 +106,15 @@ namespace EntityResources
             TakeDamage(finalDamage); Debug.Log($"Damage taken by {gameObject}: {finalDamage}");
         }
 
+        public void TryToTakeDamage(float damage, bool isDamageAdditional)
+        {
+            if (_isInvulnerable) return;
+            
+            if (isDamageAdditional == false) OnAnyDamageReceived?.Invoke(damage);
+                
+            TakeDamage(damage); Debug.Log($"Damage taken by {gameObject}: {damage}");
+        }
+
         public void GetAdditionalHp(SpellName source)
         {
             switch (source)

@@ -70,6 +70,8 @@ namespace Statuses
                 case StatusType.Root:
                     if (HasStatus(StatusType.RootCore)) return null;
                     return new RootStatusEffect(data, gameObject);
+                case StatusType.Bleed:
+                    return new BleedStatusEffect(data, _hp);
                 default:
                     Debug.LogWarning($"No implementation for status Type: {data.Type}");
                     return null;

@@ -14,6 +14,7 @@
         Plague = 7,
         RootCore = 8,
         Root = 9,
-        Silence = 10
+        Silence = 10,
+        Bleed = 11
     }
 }
