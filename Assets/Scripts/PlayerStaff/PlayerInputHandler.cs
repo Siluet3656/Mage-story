@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameControl;
+using UnityEngine;
 using View;
 using View.Buttons;
 
@@ -7,7 +8,7 @@ namespace PlayerStaff
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerTargeting))]
     [RequireComponent(typeof(PlayerSpellCasting))]
-    public class PlayerInputHandler : MonoBehaviour
+    public class PlayerInputHandler : PausableBehavior
     {
         [SerializeField] private SpellBarButton[] _spellBarButtons;
 
@@ -22,8 +23,10 @@ namespace PlayerStaff
 
         private SpellDrag _hand;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            
             _spellCasting = GetComponent<PlayerSpellCasting>();
             _movement = GetComponent<PlayerMovement>();
             _targeting = GetComponent<PlayerTargeting>();
@@ -36,7 +39,8 @@ namespace PlayerStaff
             _inputActions.Player.Blink.started += ctx => OnBlinkButton();
 
             _inputActions.Player.FastTarget.started += ctx => OnFastTargetButton();
-            _inputActions.UI.Lbm.started += ctx => OnLeftMouseButtonClicked();
+            
+            _inputActions.UI.LBM.started += ctx => OnLeftMouseButtonClicked();
             
             _inputActions.Player.Castbar1.started += ctx => OnSpellBarButton(0);
             _inputActions.Player.Castbar2.started += ctx => OnSpellBarButton(1);

@@ -429,6 +429,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Close button",
+                    "type": "Button",
+                    "id": "6c61999b-6c76-4384-9117-6874bc2b30ce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -439,17 +447,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "OpenSpellBook",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9037e43a-b377-4c27-9347-57183000c9f4",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard;KeyboardALT",
                     "action": "OpenSpellBook",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -484,6 +481,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "RBM",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bcb29a1e-89c2-48fc-b266-36aa86b366a4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;KeyboardALT",
+                    "action": "Close button",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

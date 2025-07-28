@@ -7,23 +7,7 @@ namespace GameControl
         [SerializeField] private bool _pausable;
 
         private bool _initialized = false;
-
-        protected void Awake()
-        {
-            if (_pausable == false) return;
-            //if ()
-
-            _initialized = true;
-            
-            //enabled
-        }
-
-        private void OnDestroy()
-        {
-            if (_pausable == false) return;
-            if (_initialized == false) return;
-        }
-
+        
         private void OnPause()
         {
             if (_pausable == false) return;
@@ -36,6 +20,28 @@ namespace GameControl
             if (_pausable == false) return;
             enabled = true;
             PostResume();
+        }
+        
+        protected virtual void Awake()
+        {
+            if (_pausable == false) return;
+            if (MenuInputs.Instance == null) return;
+
+            MenuInputs.Instance.OnPause += OnPause;
+            MenuInputs.Instance.OnResume += OnResume;
+
+            _initialized = true;
+
+            enabled = !MenuInputs.Instance.IsPaused;
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (_pausable == false) return;
+            if (_initialized == false) return;
+            
+            MenuInputs.Instance.OnPause -= OnPause;
+            MenuInputs.Instance.OnResume -= OnResume;
         }
         
         protected virtual void PostPause() {}
