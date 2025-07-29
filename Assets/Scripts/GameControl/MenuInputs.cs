@@ -46,18 +46,20 @@ namespace GameControl
         public Action OnPause;
         public Action OnResume;
         
-        private void Pause()
+        public void Pause()
         {
             _isPaused = true;
             OnPause?.Invoke();
-
+            _menu.OpenSceneMenu();
+            
             Time.timeScale = 0f;
         }
         
-        private void Resume()
+        public void Resume()
         {
             _isPaused = false;
             OnResume?.Invoke();
+            _menu.CloseSceneMenu();
             
             Time.timeScale = 1f;
         }

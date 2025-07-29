@@ -5,6 +5,7 @@ namespace GameControl
     public class Menu : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _spellBook;
+        [SerializeField] private GameObject _sceneMenuPanel;
 
         public bool IsBookOpened => _spellBook.alpha > 0;
         
@@ -18,6 +19,16 @@ namespace GameControl
         {
             _spellBook.alpha = 0;
             _spellBook.blocksRaycasts = false;
+        }
+
+        public void CloseSceneMenu()
+        {
+            _sceneMenuPanel.SetActive(false);
+        }
+        
+        public void OpenSceneMenu()
+        {
+            _sceneMenuPanel.SetActive(true);
         }
     }
 }
