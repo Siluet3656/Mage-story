@@ -5,7 +5,7 @@ using Data;
 using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
-using EntityResources;
+using EntityStaff;
 using Shard;
 using Spells;
 using Spells.Frost;

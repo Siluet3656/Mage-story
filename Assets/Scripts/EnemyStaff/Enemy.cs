@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Random = UnityEngine.Random;
 using Data;
 using Data.Enums;
-using UnityEngine;
+using EntityStaff;
+using Pathfinding;
 using View;
-using Random = UnityEngine.Random;
 
 namespace EnemyStaff
 {
@@ -16,58 +19,65 @@ namespace EnemyStaff
         [SerializeField] private float _minWaitingTime;
         [SerializeField] private float _maxWaitingTime;
         [SerializeField] private float _pointMinDist;
+        [SerializeField] private bool _isAvailableToMove;
 
-        [Header("Patrol Points")]
-        [SerializeField] private Transform[] _patrolPoints;
-
+        private List<Node> _pathToMove = new List<Node>();
+        
         private Rigidbody2D _rb;
         private SpeedType _currentSpeed;
         private Vector2 _movementDirection;
         private int _currentPointIndex;
         private float _waitingTime;
         private bool _isTargeted;
-        private bool _isAvailableToMove;
-        private bool _isPatrolling;
 
         public SpeedType CurrentSpeed => _currentSpeed;
         public SpeedType DefaultSpeed => _defaultSpeed;
         public bool IsTargeted => _isTargeted;
-        public bool IsTargetable { get; }
+        public bool IsTargetable { get; private set; }
 
         public event Action<bool> OnTargetStatusChanged;
         public event Action<bool, MovementDisableSource> OnMovementAvailabilityChanged;
-        public event Action<Vector2> OnMovementDirectionChanged;
 
         private void Awake()
         {
+            IsTargetable = true;
+            
             InitializeMovement();
         }
-
-        private void Update()
-        {
-            if (_isAvailableToMove && _isPatrolling)
-            {
-                UpdatePatrolMovement();
-            }
-        }
-
+        
         private void FixedUpdate()
         {
-            if (_isPatrolling)
+            if (_isAvailableToMove)
             {
-                MoveCharacter();
+                if (_pathToMove.Count > 0)
+                {
+                    MoveCharacter(_pathToMove.First());
+                }
+                else
+                {
+                    CreatePath();
+                }
             }
         }
         
         private void InitializeMovement()
         {
             _rb = GetComponent<Rigidbody2D>();
-            _isAvailableToMove = true;
             _currentSpeed = _defaultSpeed;
-        
-            if (_patrolPoints.Length > 0)
+        }
+
+        private void CreatePath()
+        {
+            if (AStar.Instance.NodesOnScene.Count > 0)
             {
-                StartPatrol();
+                Node start = AStar.Instance.NodesOnScene[Random.Range(0, AStar.Instance.NodesOnScene.Count)];
+                Node end = AStar.Instance.NodesOnScene[Random.Range(0, AStar.Instance.NodesOnScene.Count)];
+
+                if (start == end) return;
+                
+                _pathToMove = AStar.Instance.GeneratePath(start, end);
+
+                if (_pathToMove == null) return;
             }
         }
 
@@ -76,6 +86,23 @@ namespace EnemyStaff
             OnTargetDestroy?.Invoke();
         }
 
+        private void MoveCharacter(Node nodeMovingTo)
+        {
+            float speed = SpeedData.GetDataByType(_currentSpeed);
+            _movementDirection = nodeMovingTo.transform.position - transform.position;
+            _movementDirection = _movementDirection.normalized;
+            
+            _rb.MovePosition(_rb.position + _movementDirection * (speed * Time.fixedDeltaTime));
+            
+            if (Vector2.Distance(transform.position, nodeMovingTo.transform.position) < _pointMinDist)
+            {
+                _pathToMove.Remove(_pathToMove.First());
+            }
+        }
+        
+        public GameObject GameObject => gameObject;
+        public event Action OnTargetDestroy;
+        
         public void OnTargeted()
         {
             SetTargetStatus(true);
@@ -85,59 +112,15 @@ namespace EnemyStaff
         {
             SetTargetStatus(false);
         }
-
-        public GameObject GameObject => gameObject;
-        public event Action OnTargetDestroy;
-
-        private void StartPatrol()
-        {
-            _isPatrolling = true;
-            PickNextPatrolPoint();
-        }
-
-        private void UpdatePatrolMovement()
-        {
-            float distance = Vector2.Distance(transform.position, _patrolPoints[_currentPointIndex].position);
-            if (distance < _pointMinDist)
-            {
-                PickNextPatrolPoint();
-            }
-
-            _movementDirection = (_patrolPoints[_currentPointIndex].position - transform.position).normalized;
-            OnMovementDirectionChanged?.Invoke(_movementDirection);
-        }
-
-        private void MoveCharacter()
-        {
-            float speed = SpeedData.GetDataByType(_currentSpeed);
-            
-            _rb.MovePosition(_rb.position + _movementDirection * (speed * Time.fixedDeltaTime));
-        }
-
-        private void PickNextPatrolPoint()
-        {
-            _isPatrolling = false;
-            _waitingTime = Random.Range(_minWaitingTime, _maxWaitingTime);
-            StartCoroutine(WaitAtPoint());
-        }
-
-        private IEnumerator WaitAtPoint()
-        {
-            yield return new WaitForSeconds(_waitingTime);
-        
-            _currentPointIndex = (_currentPointIndex + 1) % _patrolPoints.Length;
-            _isPatrolling = true;
-        }
         
         public void SetMovementAvailability(bool isAvailable, MovementDisableSource source)
         {
             _isAvailableToMove = isAvailable;
             OnMovementAvailabilityChanged?.Invoke(isAvailable, source);
         
-            if (!isAvailable)
+            if (isAvailable == false)
             {
                 _movementDirection = Vector2.zero;
-                OnMovementDirectionChanged?.Invoke(_movementDirection);
             }
         }
 
@@ -150,15 +133,6 @@ namespace EnemyStaff
         public void SetSpeed(SpeedType speed)
         {
             _currentSpeed = speed;
-        }
-
-        public void ShufflePatrolPoints()
-        {
-            for (int i = _patrolPoints.Length - 1; i >= 1; i--)
-            {
-                int j = Random.Range(0, i);
-                (_patrolPoints[j], _patrolPoints[i]) = (_patrolPoints[i], _patrolPoints[j]);
-            }
         }
     }
 }

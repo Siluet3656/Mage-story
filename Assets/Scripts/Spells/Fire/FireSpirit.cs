@@ -3,7 +3,7 @@ using Data;
 using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
-using EntityResources;
+using EntityStaff;
 using PlayerStaff;
 
 namespace Spells.Fire

@@ -1,5 +1,5 @@
 ﻿using Data.StatusConfigs;
-using EntityResources;
+using EntityStaff;
 using UnityEngine;
 
 namespace Statuses.Debuffs

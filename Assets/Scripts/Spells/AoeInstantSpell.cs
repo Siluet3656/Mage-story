@@ -3,7 +3,7 @@ using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
-using EntityResources;
+using EntityStaff;
 
 namespace Spells
 {

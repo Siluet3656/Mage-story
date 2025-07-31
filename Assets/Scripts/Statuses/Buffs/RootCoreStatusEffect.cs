@@ -3,7 +3,7 @@ using Data.Enums;
 using UnityEngine;
 using Data.StatusConfigs;
 using EnemyStaff;
-using EntityResources;
+using EntityStaff;
 using Statuses.Other;
 
 namespace Statuses.Buffs

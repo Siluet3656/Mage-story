@@ -1,4 +1,4 @@
-﻿using EntityResources;
+﻿using EntityStaff;
 using Statuses;
 using UnityEngine;
 using UnityEngine.UI;

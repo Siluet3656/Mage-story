@@ -1,5 +1,6 @@
 ﻿using Data.Enums;
 using EnemyStaff;
+using EntityStaff;
 
 namespace Spells.NoElemental
 {

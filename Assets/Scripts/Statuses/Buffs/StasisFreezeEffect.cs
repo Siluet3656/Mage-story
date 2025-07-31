@@ -3,7 +3,7 @@ using Data;
 using Data.Enums;
 using Data.StatusConfigs;
 using EnemyStaff;
-using EntityResources;
+using EntityStaff;
 using PlayerStaff;
 using View;
 

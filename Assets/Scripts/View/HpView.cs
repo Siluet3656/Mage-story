@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using EntityStaff;
+using UnityEngine;
 using UnityEngine.UI;
-using EntityResources;
 
 namespace View
 {

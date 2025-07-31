@@ -2,7 +2,7 @@
 using UnityEngine;
 using Data.StatusConfigs;
 using EnemyStaff;
-using EntityResources;
+using EntityStaff;
 using Statuses.Buffs;
 
 namespace Statuses.Debuffs

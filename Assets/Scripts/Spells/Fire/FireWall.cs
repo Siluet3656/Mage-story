@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EntityStaff;
 using UnityEngine;
-using EntityResources;
 
 namespace Spells.Fire
 {

@@ -1,4 +1,4 @@
-﻿using EntityResources;
+﻿using EntityStaff;
 
 namespace Spells.Fire
 {

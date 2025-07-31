@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using EntityResources;
+﻿using EntityStaff;
+using UnityEngine;
 
 namespace Spells.Fire
 {

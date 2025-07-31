@@ -4,6 +4,7 @@ using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
+using EntityStaff;
 
 namespace Spells.Frost
 {

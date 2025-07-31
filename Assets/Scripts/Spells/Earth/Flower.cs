@@ -5,6 +5,7 @@ using UnityEngine;
 using Data;
 using Data.Enums;
 using EnemyStaff;
+using EntityStaff;
 using PlayerStaff;
 
 namespace Spells.Earth

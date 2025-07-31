@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Data.StatusConfigs;
-using EntityResources;
+using EntityStaff;
 using Statuses.Other;
 
 namespace Statuses.Debuffs

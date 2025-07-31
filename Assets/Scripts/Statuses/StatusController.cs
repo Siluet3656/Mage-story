@@ -2,7 +2,7 @@
 using UnityEngine;
 using Data.Enums;
 using Data.StatusConfigs;
-using EntityResources;
+using EntityStaff;
 using Spells.NoElemental;
 using Statuses.Buffs;
 using Statuses.Debuffs;
