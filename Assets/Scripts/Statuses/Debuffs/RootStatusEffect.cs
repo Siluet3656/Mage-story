@@ -9,7 +9,7 @@ namespace Statuses.Debuffs
 {
     public class RootStatusEffect : StatusEffect
     {
-        private readonly Enemy _enemy;
+        private readonly EnemyMovement _enemyMovement;
         private readonly Hp _hp;
 
         private RootCoreStatusEffect _rootCoreStatusEffect;
@@ -21,18 +21,18 @@ namespace Statuses.Debuffs
         
         public RootStatusEffect(StatusEffectData data, GameObject enemy) : base(data)
         {
-            _enemy = enemy.GetComponent<Enemy>();
+            _enemyMovement = enemy.GetComponent<EnemyMovement>();
             
-            if (_enemy != null)
-                _enemy.SetMovementAvailability(false, MovementDisableSource.Roots);
+            if (_enemyMovement != null)
+                _enemyMovement.SetMovementAvailability(false, MovementDisableSource.Roots);
             
             _hp = enemy.GetComponent<Hp>();
         }
 
         public override void Remove(GameObject target)
         {
-            if (_enemy != null)
-                _enemy.SetMovementAvailability(true,  MovementDisableSource.Roots);
+            if (_enemyMovement != null)
+                _enemyMovement.SetMovementAvailability(true,  MovementDisableSource.Roots);
             
             _hp.OnAnyDamageReceived -= HealRootCore;
             

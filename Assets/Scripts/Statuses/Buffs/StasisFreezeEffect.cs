@@ -14,7 +14,7 @@ namespace Statuses.Buffs
         private Hp _targetHp;
         private PlayerMovement _playerMovement;
         private PlayerSpellCasting _playerSpellCasting;
-        private Enemy _enemy;
+        private EnemyMovement _enemyMovement;
 
         private IceTomb _tomb;
         
@@ -29,7 +29,7 @@ namespace Statuses.Buffs
             _targetHp = target.GetComponent<Hp>();
             _playerMovement = target.GetComponent<PlayerMovement>();
             _playerSpellCasting = target.GetComponent<PlayerSpellCasting>();
-            _enemy = target.GetComponent<Enemy>();
+            _enemyMovement = target.GetComponent<EnemyMovement>();
             
             if (_targetHp != null && _playerMovement != null && _playerSpellCasting != null)
             {
@@ -37,10 +37,10 @@ namespace Statuses.Buffs
                 _playerMovement.DisableMovement();
                 _playerSpellCasting.DisableCasting();
             }
-            else if (_targetHp != null && _enemy != null /*&& _playerSpellCasting != null*/)
+            else if (_targetHp != null && _enemyMovement != null /*&& _playerSpellCasting != null*/)
             {
                 _targetHp.GetInvulnerable();
-                _enemy.SetMovementAvailability(false, MovementDisableSource.IceTomb);
+                _enemyMovement.SetMovementAvailability(false, MovementDisableSource.IceTomb);
             }
             
             _tomb = target.GetComponentInChildren<IceTomb>(true); 
@@ -55,10 +55,10 @@ namespace Statuses.Buffs
                 _playerMovement.EnableMovement();
                 _playerSpellCasting.EnableCasting();
             }
-            else if (_targetHp != null && _enemy != null /*&& _playerSpellCasting != null*/)
+            else if (_targetHp != null && _enemyMovement != null /*&& _playerSpellCasting != null*/)
             {
                 _targetHp.GetInvulnerable();
-                _enemy.SetMovementAvailability(true, MovementDisableSource.IceTomb);
+                _enemyMovement.SetMovementAvailability(true, MovementDisableSource.IceTomb);
             }
             
             if (_tomb != null)  _tomb.gameObject.SetActive(false);

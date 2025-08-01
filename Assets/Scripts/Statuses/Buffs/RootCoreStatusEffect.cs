@@ -14,7 +14,7 @@ namespace Statuses.Buffs
         private readonly GameObject _objectWithThisStatus;
         private readonly float _size = 2.5f;
         
-        private readonly Enemy _enemy;
+        private readonly EnemyMovement _enemyMovement;
         private readonly Hp _hp;
         //private readonly Ally _ally;
 
@@ -33,12 +33,12 @@ namespace Statuses.Buffs
         {
             _objectWithThisStatus = objectWithThisStatus;
             
-            _enemy = objectWithThisStatus.GetComponent<Enemy>();
+            _enemyMovement = objectWithThisStatus.GetComponent<EnemyMovement>();
             //_ally = objectWithThisStatus.GetComponent<Ally>();
             _hp = objectWithThisStatus.GetComponent<Hp>();
             
-            if (_enemy != null)
-                _enemy.SetMovementAvailability(false, MovementDisableSource.Roots);
+            if (_enemyMovement != null)
+                _enemyMovement.SetMovementAvailability(false, MovementDisableSource.Roots);
             
             //if (_ally != null)
                 //_ally.SetMovementAvailability()???
@@ -57,8 +57,8 @@ namespace Statuses.Buffs
 
         public override void Remove(GameObject target)
         {
-            if (_enemy != null)
-                _enemy.SetMovementAvailability(true,  MovementDisableSource.Roots);
+            if (_enemyMovement != null)
+                _enemyMovement.SetMovementAvailability(true,  MovementDisableSource.Roots);
             
             //if (_ally != null)
             //_ally.SetMovementAvailability()???

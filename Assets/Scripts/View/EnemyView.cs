@@ -11,13 +11,15 @@ namespace View
         [SerializeField] private GameObject _iceTomb;
         [SerializeField] private GameObject _roots;
 
-        private Enemy _enemyModel;
+        private Enemy _enemy;
+        private EnemyMovement _enemyMovement;
         private Color _originalColor;
         private Color _targetedColor;
 
         private void Awake()
         {
-            _enemyModel = GetComponent<Enemy>();
+            _enemyMovement = GetComponent<EnemyMovement>();
+            _enemy = GetComponent<Enemy>();
 
             InitializeColors();
             SubscribeToEvents();
@@ -36,16 +38,16 @@ namespace View
 
         private void SubscribeToEvents()
         {
-            _enemyModel.OnTargetStatusChanged += HandleTargetStatusChanged;
-            _enemyModel.OnMovementAvailabilityChanged += HandleMovementAvailabilityChanged;
+            _enemy.OnTargetStatusChanged += HandleTargetStatusChanged;
+            _enemyMovement.OnMovementAvailabilityChanged += HandleMovementAvailabilityChanged;
         }
 
         private void UnsubscribeFromEvents()
         {
-            if (_enemyModel == null) return;
+            if (_enemyMovement == null) return;
         
-            _enemyModel.OnTargetStatusChanged -= HandleTargetStatusChanged;
-            _enemyModel.OnMovementAvailabilityChanged -= HandleMovementAvailabilityChanged;
+            _enemy.OnTargetStatusChanged -= HandleTargetStatusChanged;
+            _enemyMovement.OnMovementAvailabilityChanged -= HandleMovementAvailabilityChanged;
         }
         
         private void HandleTargetStatusChanged(bool isTargeted)

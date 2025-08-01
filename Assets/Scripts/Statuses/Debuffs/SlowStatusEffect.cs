@@ -19,9 +19,9 @@ namespace Statuses.Debuffs
             {
                 player.SetSpeed(player.GetAdjustedPlayerSpeed() - 1);
             }
-            else if (target.TryGetComponent(out Enemy enemy))
+            else if (target.TryGetComponent(out EnemyMovement enemyMovement))
             {
-                enemy.SetSpeed(enemy.CurrentSpeed - 1);
+                enemyMovement.SetSpeed(enemyMovement.CurrentSpeed - 1);
             }
         }
     
@@ -31,9 +31,9 @@ namespace Statuses.Debuffs
             {
                 movement.SetSpeed(movement.GetAdjustedPlayerSpeed());
             }
-            else if (target.TryGetComponent(out Enemy enemy))
+            else if (target.TryGetComponent(out EnemyMovement enemyMovement))
             {
-                enemy.SetSpeed(enemy.DefaultSpeed);
+                enemyMovement.SetSpeed(enemyMovement.DefaultSpeed);
             }
             base.Remove(target);
         }
