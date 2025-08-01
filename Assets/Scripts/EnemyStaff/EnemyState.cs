@@ -2,12 +2,12 @@
 {
     public class EnemyState
     {
-        protected EnemyMovement Enemy;
+        protected EnemyMovement My;
         protected EnemyStateMachine EnemyStateMachine;
 
-        public EnemyState(EnemyMovement enemy, EnemyStateMachine enemyStateMachine)
+        public EnemyState(EnemyMovement my, EnemyStateMachine enemyStateMachine)
         {
-            Enemy = enemy;
+            My = my;
             EnemyStateMachine = enemyStateMachine;
         }
         

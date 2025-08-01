@@ -3,6 +3,7 @@ using Data;
 using UnityEngine;
 using Data.Enums;
 using EnemyStaff.ConcreteState;
+using PlayerStaff;
 using View;
 
 namespace EnemyStaff
@@ -16,6 +17,10 @@ namespace EnemyStaff
         [SerializeField] private bool _isAvailableToMove;
         
         private  Rigidbody2D _rigidbody;
+        
+        [Header("Player Search Settings")]
+        [SerializeField] private EnemyTargetingCircle _attackCircle;
+        [SerializeField] private EnemyTargetingCircle _engageCircle;
         
         private SpeedType _currentSpeed;
 
@@ -32,7 +37,7 @@ namespace EnemyStaff
 
         private void Start()
         {
-            StateMachine.Initialize(EngageState);
+            StateMachine.Initialize(IdleState);
         }
 
         private void Update()
@@ -49,6 +54,9 @@ namespace EnemyStaff
         
         public SpeedType CurrentSpeed => _currentSpeed;
         public SpeedType DefaultSpeed => _defaultSpeed;
+
+        public EnemyTargetingCircle EngageCircle => _engageCircle;
+        public EnemyTargetingCircle AttackCircle => _attackCircle;
         
         public EnemyStateMachine StateMachine { get; set; }
         public IdleState IdleState { get; set; }

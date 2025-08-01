@@ -91,7 +91,7 @@ namespace Pathfinding
                 openSet.Add(node);
         }
         
-        public readonly float MinNodeDistance = 0.25f;
+        public readonly float MinNodeDistance = 0.15f;
         
         public List<Node> NodesOnScene => _nodesOnScene;
         

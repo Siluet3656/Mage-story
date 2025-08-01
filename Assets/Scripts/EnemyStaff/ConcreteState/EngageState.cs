@@ -21,9 +21,19 @@ namespace EnemyStaff.ConcreteState
 
         private List<Node> _path = new List<Node>();
         
-        public EngageState(EnemyMovement enemyMovement, EnemyStateMachine enemyStateMachine) : base(enemyMovement, enemyStateMachine)
+        private void EndEngage()
         {
-            _myMovement = enemyMovement;
+            _myMovement.StateMachine.ChangeState(_myMovement.IdleState);
+        }
+
+        private void StartAttack(PlayerMovement player)
+        {
+            _myMovement.StateMachine.ChangeState(_myMovement.AttackState);
+        }
+        
+        public EngageState(EnemyMovement myMovement, EnemyStateMachine enemyStateMachine) : base(myMovement, enemyStateMachine)
+        {
+            _myMovement = myMovement;
         }
 
         private void FindPlayer()
@@ -39,7 +49,14 @@ namespace EnemyStaff.ConcreteState
 
         public override void EnterState()
         {
+            _myMovement.AttackCircle.OnPlayerEnterCircle += StartAttack;
+            
             FindPlayer();
+        }
+
+        public override void ExitState()
+        {
+            _myMovement.AttackCircle.OnPlayerEnterCircle -= StartAttack;
         }
 
         public override void FrameUpdate()
@@ -60,7 +77,14 @@ namespace EnemyStaff.ConcreteState
             }
             else
             {
-                FindPlayer();
+                if (_myMovement.EngageCircle.NearbyPlayers.Count > 0)
+                {
+                    FindPlayer();
+                }
+                else
+                {
+                    EndEngage();
+                }
             }
         }
     }
