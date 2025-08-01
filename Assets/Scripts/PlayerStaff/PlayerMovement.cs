@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using Animations;
 using Data;
 using Data.Enums;
+using Pathfinding;
 using View;
 
 namespace PlayerStaff

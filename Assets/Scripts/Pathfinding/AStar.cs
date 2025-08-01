@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Pathfinding
@@ -90,6 +91,8 @@ namespace Pathfinding
                 openSet.Add(node);
         }
         
+        public readonly float MinNodeDistance = 0.25f;
+        
         public List<Node> NodesOnScene => _nodesOnScene;
         
         public void RefreshNodesOnScene()
@@ -114,6 +117,24 @@ namespace Pathfinding
             }
             
             return null;
+        }
+
+        public Node FindNearestNode(Vector2 position)
+        {
+            Node foundNode = _nodesOnScene
+                .OrderBy(node => Vector2.Distance(position, node.gameObject.transform.position))
+                .FirstOrDefault();
+            
+            return foundNode;
+        }
+
+        public Node FindFurthestNode(Vector2 position)
+        {
+            Node foundNode = _nodesOnScene
+                .OrderBy(node => Vector2.Distance(position, node.gameObject.transform.position))
+                .LastOrDefault();
+            
+            return foundNode;
         }
     }
 }

@@ -1,92 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using Random = UnityEngine.Random;
 using Data;
+using UnityEngine;
 using Data.Enums;
-using Pathfinding;
+using EnemyStaff.ConcreteState;
 using View;
 
 namespace EnemyStaff
 {
     [RequireComponent(typeof(EnemyView))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public class EnemyMovement : MonoBehaviour
     {
         [Header("Movement Settings")]
         [SerializeField] private SpeedType _defaultSpeed;
-        [SerializeField] private float _minWaitingTime;
-        [SerializeField] private float _maxWaitingTime;
-        [SerializeField] private float _pointMinDist;
         [SerializeField] private bool _isAvailableToMove;
         
-        private List<Node> _pathToMove = new List<Node>();
+        private  Rigidbody2D _rigidbody;
         
-        private Rigidbody2D _rb;
         private SpeedType _currentSpeed;
-        private Vector2 _movementDirection;
-        private int _currentPointIndex;
-        private float _waitingTime;
-        
+
         private void Awake()
         {
-            InitializeMovement();
+            _rigidbody = GetComponent<Rigidbody2D>();
+
+            StateMachine = new EnemyStateMachine();
+
+            IdleState = new IdleState(this, StateMachine);
+            EngageState = new EngageState(this, StateMachine);
+            AttackState = new AttackState(this, StateMachine);
+        }
+
+        private void Start()
+        {
+            StateMachine.Initialize(EngageState);
+        }
+
+        private void Update()
+        {
+            StateMachine.CurrentEnemyState.FrameUpdate();
         }
 
         private void FixedUpdate()
         {
-            if (_isAvailableToMove)
-            {
-                if (_pathToMove.Count > 0)
-                {
-                    MoveCharacter(_pathToMove.First());
-                }
-                else
-                {
-                    CreatePath();
-                }
-            }
+            StateMachine.CurrentEnemyState.PhysicsUpdate();
         }
-        
-        private void InitializeMovement()
-        {
-            _rb = GetComponent<Rigidbody2D>();
-            _currentSpeed = _defaultSpeed;
-        }
-        
-        private void CreatePath()
-        {
-            if (AStar.Instance.NodesOnScene.Count > 0)
-            {
-                Node start = AStar.Instance.NodesOnScene[Random.Range(0, AStar.Instance.NodesOnScene.Count)];
-                Node end = AStar.Instance.NodesOnScene[Random.Range(0, AStar.Instance.NodesOnScene.Count)];
 
-                if (start == end) return;
-                
-                _pathToMove = AStar.Instance.GeneratePath(start, end);
-
-                if (_pathToMove == null) return;
-            }
-        }
-        
-        private void MoveCharacter(Node nodeMovingTo)
-        {
-            float speed = SpeedData.GetDataByType(_currentSpeed);
-            _movementDirection = nodeMovingTo.transform.position - transform.position;
-            _movementDirection = _movementDirection.normalized;
-            
-            _rb.MovePosition(_rb.position + _movementDirection * (speed * Time.fixedDeltaTime));
-            
-            if (Vector2.Distance(transform.position, nodeMovingTo.transform.position) < _pointMinDist)
-            {
-                _pathToMove.Remove(_pathToMove.First());
-            }
-        }
-        
         public event Action<bool, MovementDisableSource> OnMovementAvailabilityChanged;
         
         public SpeedType CurrentSpeed => _currentSpeed;
         public SpeedType DefaultSpeed => _defaultSpeed;
+        
+        public EnemyStateMachine StateMachine { get; set; }
+        public IdleState IdleState { get; set; }
+        public EngageState EngageState { get; set; }
+        public AttackState AttackState { get; set; }
+
+        public void Move(Vector2 movementDirection)
+        {
+            if (_isAvailableToMove)
+            {
+                _rigidbody.MovePosition(_rigidbody.position + movementDirection * (SpeedData.GetDataByType(_currentSpeed) * Time.fixedDeltaTime));
+            }
+        }
         
         public void SetSpeed(SpeedType speed)
         {
@@ -97,11 +72,6 @@ namespace EnemyStaff
         {
             _isAvailableToMove = isAvailable;
             OnMovementAvailabilityChanged?.Invoke(isAvailable, source);
-        
-            if (isAvailable == false)
-            {
-                _movementDirection = Vector2.zero;
-            }
         }
     }
 }
