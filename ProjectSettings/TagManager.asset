@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Wall
+  - IceTomb
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - 
   - 
   - Walls
-  - 
+  - Targetable
   - 
   - 
   - 

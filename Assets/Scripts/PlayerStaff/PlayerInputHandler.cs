@@ -58,7 +58,7 @@ namespace PlayerStaff
 
             if (_mainCamera == null)
             {
-                Debug.Log("NO CAMERA!!!");
+                Debug.LogError("NO CAMERA!!!");
             }
             
             _hand = FindObjectsOfType<SpellDrag>()[0];
@@ -109,7 +109,7 @@ namespace PlayerStaff
             else
             {
                 Ray ray = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
-                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, LayerMask.GetMask("Targetable"));
                 _targeting.OnMouseTargetSelect(hit);
             }
         }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6732053241057300312}
   - component: {fileID: 7838644376065093592}
   - component: {fileID: 4736281079594949637}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EngageTargetingCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 6746311934899669598}
   - component: {fileID: 6746311934899669599}
   - component: {fileID: 6746311934899669597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: dummy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1005,7 +1005,7 @@ GameObject:
   - component: {fileID: 5773820559702676487}
   - component: {fileID: 1325836096688689541}
   - component: {fileID: 1164711652470444541}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AttackTargetingCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,8 +14,8 @@ namespace View
         private SpellName _draggingSpell;
         private Vector3 _point;
         private bool _isDragging;
-        // Костыль
-        private readonly Vector2 _offset = new Vector2(0.5f,-0.5f);
+        
+        private readonly Vector2 _offset = new Vector2(0.5f,-0.5f); // Костыль
 
         private void Awake()
         {

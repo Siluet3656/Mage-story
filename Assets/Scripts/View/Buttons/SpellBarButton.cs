@@ -8,21 +8,21 @@ namespace View.Buttons
     [RequireComponent(typeof(Image))]
     public class SpellBarButton : MonoBehaviour, IPointerClickHandler
     {
-        private Image _icon;
+        private Image _iconPlace;
         private SpellDrag _hand;
         private SpellName _currentSpell;
 
         private void Awake()
         {
             _hand = FindObjectsOfType<SpellDrag>()[0];
-            _icon = GetComponent<Image>();
+            _iconPlace = GetComponent<Image>();
         }
     
         public void OnPointerClick(PointerEventData eventData)
         {
             if (_hand.GetIsDragging())
             {
-                _hand.PlaceSpell(_icon);
+                _hand.PlaceSpell(_iconPlace);
                 _currentSpell = _hand.GetSpellType();
             }
         }
