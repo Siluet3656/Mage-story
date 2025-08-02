@@ -100,7 +100,10 @@ namespace PlayerStaff
         {
             if (_hand.CheckDraggingStatus())
             {
-                _hand.TryToDropASpell();
+                Ray ray = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, LayerMask.GetMask("SpellButton"));
+                
+                _hand.TryToDropASpell(hit);
             }
             else if (_spellCasting.IsPlacing)
             {

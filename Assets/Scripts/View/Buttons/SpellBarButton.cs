@@ -1,12 +1,11 @@
-﻿using Data.Enums;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using Data.Enums;
 
 namespace View.Buttons
 {
     [RequireComponent(typeof(Image))]
-    public class SpellBarButton : MonoBehaviour, IPointerClickHandler
+    public class SpellBarButton : MonoBehaviour
     {
         private Image _iconPlace;
         private SpellDrag _hand;
@@ -18,7 +17,7 @@ namespace View.Buttons
             _iconPlace = GetComponent<Image>();
         }
     
-        public void OnPointerClick(PointerEventData eventData)
+        public void PlaceSpell()
         {
             if (_hand.GetIsDragging())
             {

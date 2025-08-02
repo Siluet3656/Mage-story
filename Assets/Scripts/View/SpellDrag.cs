@@ -4,6 +4,7 @@ using Data;
 using Data.Enums;
 using Data.SpellConfigs;
 using UnityEngine.UI;
+using View.Buttons;
 
 namespace View
 {
@@ -41,11 +42,11 @@ namespace View
             _isDragging = false;
         }
         
-        private IEnumerator WaitaBit()
+        /*private IEnumerator WaitaBit()
         {
-            yield return new WaitForSeconds(Time.deltaTime * 30); // костыль
+            yield return new WaitForSeconds(1f); // костыль
             DropSpell();
-        }
+        }*/
         
         public void TakeSpell(SpellName spellName)
         {
@@ -66,11 +67,22 @@ namespace View
             _handIcon.sprite = config.Icon;
         }
         
-        public void TryToDropASpell()
+        public void TryToDropASpell(RaycastHit2D hit)
         {
             if (_isDragging)
             {
-                StartCoroutine(WaitaBit());
+                SpellBarButton spellBarButton = null;
+            
+                if (hit.collider == null) { DropSpell(); return; }
+                    
+                spellBarButton = hit.collider.gameObject.GetComponent<SpellBarButton>(); Debug.Log($"spellBarButton: {spellBarButton}");    
+                
+                if (spellBarButton != null)
+                {
+                    spellBarButton.PlaceSpell();
+                }
+                
+                DropSpell();
             }
         }
         
