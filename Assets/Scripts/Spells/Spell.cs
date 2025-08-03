@@ -31,7 +31,7 @@ namespace Spells
             }
         }
 
-        protected virtual void ApplyDebuff(Enemy target, StatusType statusType)
+        protected virtual void ApplyDebuff(EnemyTargeting target, StatusType statusType)
         {
             if (target != null)
             {

@@ -7,7 +7,7 @@ namespace Spells.Frost
     {
         public override void DoSpell()
         {
-            ApplyDebuff(Target as Enemy, StatusType.StasisFreeze);
+            ApplyDebuff(Target as EnemyTargeting, StatusType.StasisFreeze);
             
             base.DoSpell();
         }

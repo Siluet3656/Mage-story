@@ -16,7 +16,7 @@ namespace Spells.Fire
         private const float DefaultRadius = 1f;
         
         private Rigidbody2D _rigidbody;
-        private Enemy _followed;
+        private EnemyTargeting _followed;
         private TargetingCircle _targetingCircle;
         private Vector3 _direction;
 
@@ -54,11 +54,11 @@ namespace Spells.Fire
 
         private void TryToStartFollowEnemy(ITargetable target)
         {
-            Enemy enemy = target as Enemy;
+            EnemyTargeting enemyTargeting = target as EnemyTargeting;
             
-            if (enemy  == null) return;
+            if (enemyTargeting  == null) return;
             
-            SetFollowed(enemy);
+            SetFollowed(enemyTargeting);
         }
         
         private void Move()
@@ -66,16 +66,16 @@ namespace Spells.Fire
             _rigidbody.velocity = _direction.normalized * (Speed * Time.fixedDeltaTime);
         }
 
-        private void SetFollowed(Enemy followed)
+        private void SetFollowed(EnemyTargeting followed)
         {
             _followed = followed;
         }
 
-        protected override void OnExistingEnd(Enemy enemy)
+        protected override void OnExistingEnd(EnemyTargeting enemyTargeting)
         {
-            if (enemy != null)
+            if (enemyTargeting != null)
             {
-                enemy.GetComponent<Hp>().TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
+                enemyTargeting.GetComponent<Hp>().TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
             }
             
             SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
@@ -89,7 +89,7 @@ namespace Spells.Fire
                 fireballExplosion.DoSpell();
             }
             
-            base.OnExistingEnd(enemy);
+            base.OnExistingEnd(enemyTargeting);
         }
     }
 }

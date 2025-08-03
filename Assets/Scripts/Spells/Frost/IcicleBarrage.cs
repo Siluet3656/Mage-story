@@ -46,7 +46,7 @@ namespace Spells.Frost
             }
         }
 
-        protected override void OnExistingEnd(Enemy enemy)
+        protected override void OnExistingEnd(EnemyTargeting enemyTargeting)
         {
             /*foreach (var spell in _subscribedSpells)
             {
@@ -54,7 +54,7 @@ namespace Spells.Frost
             }*/ //Пока не нужно. Мб надо будет делать фабрику врагов и тогда
             _subscribedSpells.Clear();
             
-            base.OnExistingEnd(enemy);
+            base.OnExistingEnd(enemyTargeting);
         }
 
         public override void DoSpell()

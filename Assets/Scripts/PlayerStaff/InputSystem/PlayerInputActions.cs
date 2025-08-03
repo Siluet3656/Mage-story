@@ -509,6 +509,33 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""id"": ""55f721c4-365b-4e98-8b99-2d5a532a7e7a"",
+            ""actions"": [
+                {
+                    ""name"": ""Restart Scene"",
+                    ""type"": ""Button"",
+                    ""id"": ""7aa412ea-6422-412c-8040-9b0b100f9a4c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d170862e-3a82-457b-bf77-84bf86ffc78b"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Restart Scene"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -566,6 +593,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_UI_LBM = m_UI.FindAction("LBM", throwIfNotFound: true);
         m_UI_RBM = m_UI.FindAction("RBM", throwIfNotFound: true);
         m_UI_Closebutton = m_UI.FindAction("Close button", throwIfNotFound: true);
+        // Debug
+        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+        m_Debug_RestartScene = m_Debug.FindAction("Restart Scene", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -789,6 +819,39 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Debug
+    private readonly InputActionMap m_Debug;
+    private IDebugActions m_DebugActionsCallbackInterface;
+    private readonly InputAction m_Debug_RestartScene;
+    public struct DebugActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public DebugActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RestartScene => m_Wrapper.m_Debug_RestartScene;
+        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+        public void SetCallbacks(IDebugActions instance)
+        {
+            if (m_Wrapper.m_DebugActionsCallbackInterface != null)
+            {
+                @RestartScene.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnRestartScene;
+                @RestartScene.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnRestartScene;
+                @RestartScene.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnRestartScene;
+            }
+            m_Wrapper.m_DebugActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @RestartScene.started += instance.OnRestartScene;
+                @RestartScene.performed += instance.OnRestartScene;
+                @RestartScene.canceled += instance.OnRestartScene;
+            }
+        }
+    }
+    public DebugActions @Debug => new DebugActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -828,5 +891,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnLBM(InputAction.CallbackContext context);
         void OnRBM(InputAction.CallbackContext context);
         void OnClosebutton(InputAction.CallbackContext context);
+    }
+    public interface IDebugActions
+    {
+        void OnRestartScene(InputAction.CallbackContext context);
     }
 }

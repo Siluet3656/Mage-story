@@ -48,7 +48,7 @@ namespace Spells
             OnExistingEnd(null);
         }
         
-        protected virtual void OnExistingEnd(Enemy enemy)
+        protected virtual void OnExistingEnd(EnemyTargeting enemyTargeting)
         {
             StopAllCoroutines();
             base.ReturnToPool();

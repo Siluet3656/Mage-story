@@ -13,7 +13,7 @@ namespace Statuses.Other
     public class RootSpread : MonoBehaviour
     {
         private StatusApplier _statusApplier;
-        private readonly List<Enemy> _nearbyEnemies = new List<Enemy>();
+        private readonly List<EnemyTargeting> _nearbyEnemies = new List<EnemyTargeting>();
         private GameObject _currentTarget;
         
         private RootCoreStatusEffect _rootCoreStatusEffect;
@@ -27,11 +27,11 @@ namespace Statuses.Other
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            EnemyTargeting enemyTargeting = other.GetComponent<EnemyTargeting>();
         
-            if (enemy != null && other.gameObject != _currentTarget)
+            if (enemyTargeting != null && other.gameObject != _currentTarget)
             {
-                _nearbyEnemies.Add(enemy);
+                _nearbyEnemies.Add(enemyTargeting);
             }
         }
 

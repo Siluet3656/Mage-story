@@ -23,23 +23,23 @@ namespace EnemyStaff.ConcreteState
         
         private void EndEngage()
         {
-            _myMovement.StateMachine.ChangeState(_myMovement.IdleState);
+            Me.StateMachine.ChangeState(Me.IdleState);
         }
 
         private void StartAttack(PlayerMovement player)
         {
-            _myMovement.StateMachine.ChangeState(_myMovement.AttackState);
+            Me.StateMachine.ChangeState(Me.AttackState);
         }
         
-        public EngageState(EnemyMovement myMovement, EnemyStateMachine enemyStateMachine) : base(myMovement, enemyStateMachine)
+        public EngageState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
         {
-            _myMovement = myMovement;
+            _myMovement = me.GetComponent<EnemyMovement>();
         }
 
         private void FindPlayer()
         {
             _playerPosition = Object.FindObjectOfType<PlayerMovement>().transform.position;
-            _myPosition = _myMovement.transform.position;
+            _myPosition = Me.transform.position;
             
             _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition);
             _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition);
@@ -49,22 +49,22 @@ namespace EnemyStaff.ConcreteState
 
         public override void EnterState()
         {
-            _myMovement.AttackCircle.OnPlayerEnterCircle += StartAttack;
+            Me.AttackCircle.OnPlayerEnterCircle += StartAttack;
             
             FindPlayer();
         }
 
         public override void ExitState()
         {
-            _myMovement.AttackCircle.OnPlayerEnterCircle -= StartAttack;
+            Me.AttackCircle.OnPlayerEnterCircle -= StartAttack;
         }
 
-        public override void FrameUpdate()
+        public override void FrameUpdate(float deltaTime)
         {
             if (_path != null && _path.Count > 0)
             {
-                _moveDirection = (_path.First().transform.position - _myMovement.transform.position).normalized;
-                _distanceToNode = Vector2.Distance(_path.First().transform.position, _myMovement.transform.position);
+                _moveDirection = (_path.First().transform.position - Me.transform.position).normalized;
+                _distanceToNode = Vector2.Distance(_path.First().transform.position, Me.transform.position);
                 
                 if (_distanceToNode > AStar.Instance.MinNodeDistance)
                 {
@@ -77,7 +77,7 @@ namespace EnemyStaff.ConcreteState
             }
             else
             {
-                if (_myMovement.EngageCircle.NearbyPlayers.Count > 0)
+                if (Me.EngageCircle.NearbyPlayers.Count > 0)
                 {
                     FindPlayer();
                 }

@@ -57,7 +57,7 @@ namespace Spells.NoElemental
             if (_targetingCircle.NearbyTargets.Count == 0) return;
              
             ITargetable nearestEnemy = _targetingCircle.NearbyTargets
-                .Where(enemy => enemy is Enemy)
+                .Where(enemy => enemy is EnemyTargeting)
                 .OrderBy(enemy => Random.value)
                 .FirstOrDefault();
 

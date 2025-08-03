@@ -18,7 +18,7 @@ namespace Statuses.Buffs
         private readonly Hp _hp;
         //private readonly Ally _ally;
 
-        private List<Enemy> _enemiesInRoots;
+        private List<EnemyTargeting> _enemiesInRoots;
 
         private readonly float _damageToHeal = 0.5f;
         

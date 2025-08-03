@@ -4,28 +4,26 @@ namespace EnemyStaff.ConcreteState
 {
     public class IdleState : EnemyState
     {
-        private readonly EnemyMovement _myMovement;
         private readonly EnemyStateMachine _enemyStateMachine;
 
         private void StartEngage(PlayerMovement player)
         {
-            _myMovement.StateMachine.ChangeState(_myMovement.EngageState);
+            Me.StateMachine.ChangeState(Me.EngageState);
         }
         
-        public IdleState(EnemyMovement myMovement, EnemyStateMachine enemyStateMachine) : base(myMovement, enemyStateMachine)
+        public IdleState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
         {
-            _myMovement = myMovement;
             _enemyStateMachine = enemyStateMachine;
         }
 
         public override void EnterState()
         {
-            _myMovement.EngageCircle.OnPlayerEnterCircle += StartEngage;
+            Me.EngageCircle.OnPlayerEnterCircle += StartEngage;
         }
 
         public override void ExitState()
         {
-            _myMovement.EngageCircle.OnPlayerEnterCircle -= StartEngage;
+            Me.EngageCircle.OnPlayerEnterCircle -= StartEngage;
         }
     }
 }

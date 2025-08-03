@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameControl
 {
@@ -62,6 +63,12 @@ namespace GameControl
             _menu.CloseSceneMenu();
             
             Time.timeScale = 1f;
+        }
+        
+        public void RestartScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Resume();
         }
     }
 }

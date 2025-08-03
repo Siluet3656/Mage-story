@@ -66,7 +66,7 @@ namespace Spells.Earth
             if (_targetingCircle.NearbyTargets.Count == 0) return;
             
             ITargetable nearestEnemy = _targetingCircle.NearbyTargets
-                .Where(enemy => enemy is Enemy)
+                .Where(enemy => enemy is EnemyTargeting)
                 .OrderBy(enemy => Vector2.Distance(transform.position, enemy.GameObject.transform.position))
                 .FirstOrDefault();
 

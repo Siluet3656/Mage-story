@@ -8,7 +8,7 @@ namespace Spells.Fire
     {
         protected override void OnReachTarget(ITargetable target)
         {
-            ApplyDebuff(target as Enemy, StatusType.FireMark);
+            ApplyDebuff(target as EnemyTargeting, StatusType.FireMark);
             base.OnReachTarget(target);
         }
     }

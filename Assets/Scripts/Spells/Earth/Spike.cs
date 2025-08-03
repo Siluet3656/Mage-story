@@ -9,7 +9,7 @@ namespace Spells.Earth
         protected override SpellName SpellName => SpellName.Spike;
         protected override void OnReachTarget(ITargetable target)
         {
-            ApplyDebuff(target as Enemy, StatusType.Poison);
+            ApplyDebuff(target as EnemyTargeting, StatusType.Poison);
             base.OnReachTarget(target);
         }
     }

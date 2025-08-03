@@ -1,47 +1,46 @@
-﻿using System;
-using UnityEngine;
-using EntityStaff;
-using View;
+﻿using UnityEngine;
+using EnemyStaff.ConcreteState;
 
 namespace EnemyStaff
 {
-    [RequireComponent(typeof(EnemyView))]
-    public class Enemy : MonoBehaviour, ITargetable
+    [RequireComponent(typeof(EnemyMovement))]
+    [RequireComponent(typeof(EnemyTargeting))]
+    [RequireComponent(typeof(EnemyAttack))]
+    public class Enemy : MonoBehaviour
     {
-        private bool _isTargeted;
+        [Header("Player Search Settings")]
+        [SerializeField] private EnemyTargetingCircle _attackCircle;
+        [SerializeField] private EnemyTargetingCircle _engageCircle;
         
-        public bool IsTargeted => _isTargeted;
-        public bool IsTargetable { get; private set; }
-
-        public event Action<bool> OnTargetStatusChanged;
-
         private void Awake()
         {
-            IsTargetable = true;
-        }
+            StateMachine = new EnemyStateMachine();
 
-        private void OnDestroy()
-        {
-            OnTargetDestroy?.Invoke();
+            IdleState = new IdleState(this, StateMachine);
+            EngageState = new EngageState(this, StateMachine);
+            AttackState = new AttackState(this, StateMachine);
         }
         
-        public GameObject GameObject => gameObject;
-        public event Action OnTargetDestroy;
+        private void Start()
+        {
+            StateMachine.Initialize(IdleState);
+        }
+
+        private void Update()
+        {
+            StateMachine.CurrentEnemyState.FrameUpdate(Time.deltaTime);
+        }
+
+        private void FixedUpdate()
+        {
+            StateMachine.CurrentEnemyState.PhysicsUpdate();
+        }
         
-        public void OnTargeted()
-        {
-            SetTargetStatus(true);
-        }
-
-        public void OnUntargeted()
-        {
-            SetTargetStatus(false);
-        }
-
-        public void SetTargetStatus(bool isTargeted)
-        {
-            _isTargeted = isTargeted;
-            OnTargetStatusChanged?.Invoke(isTargeted);
-        }
+        public EnemyTargetingCircle EngageCircle => _engageCircle;
+        public EnemyTargetingCircle AttackCircle => _attackCircle;
+        public EnemyStateMachine StateMachine { get; private set; }
+        public IdleState IdleState { get; private set; }
+        public EngageState EngageState { get; private set; }
+        public AttackState AttackState { get; private set; }
     }
 }

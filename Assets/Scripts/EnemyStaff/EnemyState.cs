@@ -2,18 +2,18 @@
 {
     public class EnemyState
     {
-        protected EnemyMovement My;
+        protected Enemy Me;
         protected EnemyStateMachine EnemyStateMachine;
 
-        public EnemyState(EnemyMovement my, EnemyStateMachine enemyStateMachine)
+        public EnemyState(Enemy enemy, EnemyStateMachine enemyStateMachine)
         {
-            My = my;
+            Me = enemy;
             EnemyStateMachine = enemyStateMachine;
         }
         
         public virtual void EnterState() {}
         public virtual void ExitState() {}
-        public virtual void FrameUpdate() {}
+        public virtual void FrameUpdate(float deltaTime) {}
         public virtual void PhysicsUpdate(){}
         public virtual void AnimationTriggerEvent() {}
     }

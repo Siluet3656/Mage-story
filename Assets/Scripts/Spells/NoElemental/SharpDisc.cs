@@ -8,7 +8,7 @@ namespace Spells.NoElemental
     {
         protected override void OnReachTarget(ITargetable target)
         {
-            if (target is Enemy enemy)
+            if (target is EnemyTargeting enemy)
             {
                 ApplyDebuff(enemy, StatusType.Bleed);
             }

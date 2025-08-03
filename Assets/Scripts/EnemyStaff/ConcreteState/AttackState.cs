@@ -4,26 +4,37 @@ namespace EnemyStaff.ConcreteState
 {
     public class AttackState : EnemyState
     {
-        private readonly EnemyMovement _myMovement;
+        private readonly EnemyAttack _enemyAttack;
+        
+        private readonly float _attackCooldownTime = 5f;
+        private readonly float _attackDamage = 50f;
         
         private void StopAttack(PlayerMovement player)
         {
-            _myMovement.StateMachine.ChangeState(_myMovement.EngageState);
+            Me.StateMachine.ChangeState(Me.EngageState);
         }
         
-        public AttackState(EnemyMovement myMovement, EnemyStateMachine enemyStateMachine) : base(myMovement, enemyStateMachine)
+        public AttackState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
         {
-            _myMovement = myMovement;
+            _enemyAttack = me.GetComponent<EnemyAttack>();
         }
         
         public override void EnterState()
         {
-            _myMovement.AttackCircle.OnPlayerExitCircle += StopAttack;
+            Me.AttackCircle.OnPlayerExitCircle += StopAttack;
         }
 
         public override void ExitState()
         {
-            _myMovement.AttackCircle.OnPlayerExitCircle -= StopAttack;
+            Me.AttackCircle.OnPlayerExitCircle -= StopAttack;
+        }
+
+        public override void FrameUpdate(float deltaTime)
+        {
+            if (_enemyAttack.IsReadyToAttack)
+            {
+                _enemyAttack.PerformAttack(_attackDamage, _attackCooldownTime);
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using Data;
 using Data.Enums;
+using PlayerStaff;
 using UnityEngine;
 using View;
 using Random = UnityEngine.Random;
@@ -22,6 +24,11 @@ namespace EntityStaff
         private void Awake()
         {
             InitializeHealth();
+
+            if (TryGetComponent(typeof(PlayerMovement),out _))
+            {
+                G.PlayersHp = this;
+            }
         }
 
         private void TakeDamage(float damage)

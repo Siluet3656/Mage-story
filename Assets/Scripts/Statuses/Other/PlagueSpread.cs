@@ -11,7 +11,7 @@ namespace Statuses.Other
     public class PlagueSpread : MonoBehaviour
     {
         private StatusApplier _statusApplier;
-        private readonly List<Enemy> _nearbyEnemies = new List<Enemy>();
+        private readonly List<EnemyTargeting> _nearbyEnemies = new List<EnemyTargeting>();
         private GameObject _currentTarget;
         private void Awake()
         {
@@ -21,11 +21,11 @@ namespace Statuses.Other
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            EnemyTargeting enemyTargeting = other.GetComponent<EnemyTargeting>();
         
-            if (enemy != null && other.gameObject != _currentTarget)
+            if (enemyTargeting != null && other.gameObject != _currentTarget)
             {
-                _nearbyEnemies.Add(enemy);
+                _nearbyEnemies.Add(enemyTargeting);
             }
         }
         
@@ -43,7 +43,7 @@ namespace Statuses.Other
             if (_nearbyEnemies.Count > 0)
             {
                 int number = Random.Range(0, _nearbyEnemies.Count);
-                Enemy target = _nearbyEnemies[number];
+                EnemyTargeting target = _nearbyEnemies[number];
             
                 _statusApplier.ApplyStatusToTarget(StatusType.Plague, target.GameObject);
             }

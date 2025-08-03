@@ -496,6 +496,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Debug",
+            "id": "55f721c4-365b-4e98-8b99-2d5a532a7e7a",
+            "actions": [
+                {
+                    "name": "Restart Scene",
+                    "type": "Button",
+                    "id": "7aa412ea-6422-412c-8040-9b0b100f9a4c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d170862e-3a82-457b-bf77-84bf86ffc78b",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Restart Scene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

@@ -18,7 +18,7 @@ namespace Spells.Frost
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent<Enemy>(out _))
+            if (other.TryGetComponent<EnemyTargeting>(out _))
             {
                 if (other.TryGetComponent(typeof(StatusController),out _))
                 {
