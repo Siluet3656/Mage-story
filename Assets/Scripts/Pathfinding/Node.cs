@@ -1,12 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Data;
 
 namespace Pathfinding
 {
     public class Node : MonoBehaviour
     {
         [SerializeField] private List<Node> _connections = new List<Node>();
+
+        private void Awake()
+        {
+            G.NodesOnScene.Add(this);
+        }
         
+       private void OnDestroy()
+        {
+            G.NodesOnScene.Remove(this);
+        }
+
         public List<Node> Connections => _connections;
         public Node _cameFrom;
         public float _gScore;
@@ -18,7 +29,7 @@ namespace Pathfinding
         }
         
         #region Debug
-
+/*
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
@@ -31,7 +42,7 @@ namespace Pathfinding
                 }
             }
         }
-
+*/
         #endregion
     }
 }

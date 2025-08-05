@@ -19,6 +19,7 @@ namespace EnemyStaff
             IdleState = new IdleState(this, StateMachine);
             EngageState = new EngageState(this, StateMachine);
             AttackState = new AttackState(this, StateMachine);
+            RetreatState = new RetreatState(this, StateMachine);
         }
         
         private void Start()
@@ -42,5 +43,6 @@ namespace EnemyStaff
         public IdleState IdleState { get; private set; }
         public EngageState EngageState { get; private set; }
         public AttackState AttackState { get; private set; }
+        public RetreatState RetreatState { get; private set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Data;
 
 namespace Pathfinding
 {
@@ -17,7 +18,7 @@ namespace Pathfinding
 
         #endregion
 
-        private readonly List<Node> _nodesOnScene = new List<Node>();
+        private List<Node> _nodesOnScene;
         
         private void Awake()
         {
@@ -97,8 +98,7 @@ namespace Pathfinding
         
         public void RefreshNodesOnScene()
         {
-            _nodesOnScene.Clear();
-            _nodesOnScene.AddRange(FindObjectsOfType<Node>());
+            _nodesOnScene = G.NodesOnScene;
         }
 
         public List<Node> GeneratePath(Node start, Node end)

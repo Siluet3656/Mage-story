@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _connections: []
+  _cameFrom: {fileID: 0}
+  _gScore: 0
+  _hScore: 0
