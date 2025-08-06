@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Data;
+using UnityEngine;
 using EnemyStaff.ConcreteState;
 
 namespace EnemyStaff
@@ -11,7 +12,7 @@ namespace EnemyStaff
         [Header("Player Search Settings")]
         [SerializeField] private EnemyTargetingCircle _attackCircle;
         [SerializeField] private EnemyTargetingCircle _engageCircle;
-        
+
         private void Awake()
         {
             StateMachine = new EnemyStateMachine();

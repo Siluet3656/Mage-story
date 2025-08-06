@@ -24,7 +24,11 @@ namespace EnemyStaff.ConcreteState
 
         private List<Node> _path = new List<Node>();
 
-        private readonly float _thresholdHpPercent = 0.1f;
+        private readonly float _thresholdHpPercent = 0.15f;
+        private readonly float _sightRange = 15f;
+        private readonly float _offsetY = 0.4f;
+
+        private readonly int _layerMask = LayerMask.GetMask("Player");
         
         private void EndEngage()
         {
@@ -55,18 +59,53 @@ namespace EnemyStaff.ConcreteState
                 _path.Remove(_path.First());
             }
         }
-        
-        private void FindPathToPlayer()
+
+        private void MoveDirectlyToPlayer()
         {
-            _playerPosition = G.PlayersHp.transform.position;
-            _nodeFinderCircle = G.PlayersHp.gameObject.GetComponentInChildren<NodeFinderCircle>();
-            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition, _nodeFinderCircle.NearbyNodes);
+            _moveDirection = (G.PlayersHp.transform.position - Me.transform.position).normalized;
             
-            _myPosition = Me.transform.position;
-            _nodeFinderCircle = Me.GetComponentInChildren<NodeFinderCircle>();
-            _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition, _nodeFinderCircle.NearbyNodes);
+            _myMovement.Move(_moveDirection);
+        }
+
+        private bool CheckLineOfSite()
+        {
+            Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y);
+            Vector2 direction = new Vector2(G.PlayersHp.transform.position.x, G.PlayersHp.transform.position.y- _offsetY) - startPosition;
             
-            _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
+            RaycastHit2D hit = Physics2D.Raycast(Me.transform.position, direction, _sightRange, _layerMask);
+
+            if (hit.collider != null)
+            {
+                Debug.Log("Препятствие на пути: " + hit.collider.name);
+                
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    Debug.Log("Цель в пределах видимости!");
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        private void TryToFindPathToPlayer()
+        {
+            if (Me.EngageCircle.NearbyPlayers.Count > 0)
+            {
+                _playerPosition = G.PlayersHp.transform.position;
+                _nodeFinderCircle = G.PlayersHp.gameObject.GetComponentInChildren<NodeFinderCircle>();
+                _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition, _nodeFinderCircle.NearbyNodes);
+            
+                _myPosition = Me.transform.position;
+                _nodeFinderCircle = Me.GetComponentInChildren<NodeFinderCircle>();
+                _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition, _nodeFinderCircle.NearbyNodes);
+            
+                _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
+            }
+            else
+            {
+                EndEngage();
+            }
         }
         
         public EngageState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
@@ -79,7 +118,7 @@ namespace EnemyStaff.ConcreteState
         {
             Me.AttackCircle.OnPlayerEnterCircle += StartAttack;
             
-            FindPathToPlayer();
+            TryToFindPathToPlayer();
         }
 
         public override void ExitState()
@@ -89,25 +128,22 @@ namespace EnemyStaff.ConcreteState
 
         public override void FrameUpdate(float deltaTime)
         {
-            if (_myHp.CurrentHealth < _myHp.MaxHealth * _thresholdHpPercent)
+            if (_myHp.CurrentHealth < _myHp.MaxHealth * _thresholdHpPercent) StartRetreat();
+
+            if (CheckLineOfSite())
             {
-                StartRetreat();
-            }
-            
-            if (_path != null && _path.Count > 0)
-            {
-                MoveAlongPath();
+                MoveDirectlyToPlayer();
             }
             else
             {
-                if (Me.EngageCircle.NearbyPlayers.Count > 0)
+                /*if (_path != null && _path.Count > 0)
                 {
-                    FindPathToPlayer();
+                    MoveAlongPath();
                 }
                 else
                 {
-                    EndEngage();
-                }
+                    TryToFindPathToPlayer();
+                }*/
             }
         }
     }
