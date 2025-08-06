@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Data;
 using Pathfinding;
-using PlayerStaff;
 
 namespace EnemyStaff.ConcreteState
 {
@@ -14,6 +14,7 @@ namespace EnemyStaff.ConcreteState
         private Vector2 _myPosition;
         private Node _nodePlayerOn;
         private Node _nodeMeOn;
+        private NodeFinderCircle _nodeFinderCircle;
         
         private List<Node> _path = new List<Node>();
         
@@ -22,12 +23,14 @@ namespace EnemyStaff.ConcreteState
 
         private void FindFarthestPointFromPlayer()
         {
-            _playerPosition = Object.FindObjectOfType<PlayerMovement>().transform.position;
-            _myPosition = Me.transform.position;
+            _playerPosition = G.PlayersHp.transform.position;
+            _nodeFinderCircle = G.PlayersHp.gameObject.GetComponentInChildren<NodeFinderCircle>();
+            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition, _nodeFinderCircle.NearbyNodes);
             
-            _nodePlayerOn = AStar.Instance.FindFurthestNode(_playerPosition);
-            _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition);
-
+            _myPosition = Me.transform.position;
+            _nodeFinderCircle = Me.GetComponentInChildren<NodeFinderCircle>();
+            _nodeMeOn = AStar.Instance.FindFurthestNode(_myPosition, _nodeFinderCircle.NearbyNodes);
+            
             _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
         }
         

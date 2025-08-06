@@ -88,8 +88,6 @@ namespace Pathfinding
             {
                 GenerateGrid();
                 BuildConnections();
-            
-                AStar.Instance.RefreshNodesOnScene();
             }
         }
 

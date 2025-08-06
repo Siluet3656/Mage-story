@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Data;
 using UnityEngine;
 using EntityStaff;
 using Pathfinding;
@@ -16,6 +17,7 @@ namespace EnemyStaff.ConcreteState
         private Node _nodePlayerOn;
         private Vector2 _myPosition;
         private Node _nodeMeOn;
+        private NodeFinderCircle _nodeFinderCircle;
 
         private Vector2 _moveDirection;
         private float _distanceToNode;
@@ -54,28 +56,30 @@ namespace EnemyStaff.ConcreteState
             }
         }
         
+        private void FindPathToPlayer()
+        {
+            _playerPosition = G.PlayersHp.transform.position;
+            _nodeFinderCircle = G.PlayersHp.gameObject.GetComponentInChildren<NodeFinderCircle>();
+            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition, _nodeFinderCircle.NearbyNodes);
+            
+            _myPosition = Me.transform.position;
+            _nodeFinderCircle = Me.GetComponentInChildren<NodeFinderCircle>();
+            _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition, _nodeFinderCircle.NearbyNodes);
+            
+            _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
+        }
+        
         public EngageState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
         {
             _myMovement = me.GetComponent<EnemyMovement>();
             _myHp = me.GetComponent<Hp>();
         }
 
-        private void FindPlayer()
-        {
-            _playerPosition = Object.FindObjectOfType<PlayerMovement>().transform.position;
-            _myPosition = Me.transform.position;
-            
-            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition);
-            _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition);
-
-            _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
-        }
-
         public override void EnterState()
         {
             Me.AttackCircle.OnPlayerEnterCircle += StartAttack;
             
-            FindPlayer();
+            FindPathToPlayer();
         }
 
         public override void ExitState()
@@ -98,7 +102,7 @@ namespace EnemyStaff.ConcreteState
             {
                 if (Me.EngageCircle.NearbyPlayers.Count > 0)
                 {
-                    FindPlayer();
+                    FindPathToPlayer();
                 }
                 else
                 {

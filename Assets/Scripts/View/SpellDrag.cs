@@ -75,7 +75,7 @@ namespace View
             
                 if (hit.collider == null) { DropSpell(); return; }
                     
-                spellBarButton = hit.collider.gameObject.GetComponent<SpellBarButton>(); Debug.Log($"spellBarButton: {spellBarButton}");    
+                spellBarButton = hit.collider.gameObject.GetComponent<SpellBarButton>();  
                 
                 if (spellBarButton != null)
                 {
