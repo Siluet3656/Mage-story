@@ -1,5 +1,4 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
 using EnemyStaff.ConcreteState;
 
 namespace EnemyStaff

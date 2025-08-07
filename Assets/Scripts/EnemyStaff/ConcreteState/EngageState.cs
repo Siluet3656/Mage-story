@@ -47,7 +47,7 @@ namespace EnemyStaff.ConcreteState
         private bool CheckLineOfSite()
         {
             Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y);
-            Vector2 direction = new Vector2(_playerTransform .position.x, _playerTransform.position.y- _offsetY) - startPosition;
+            Vector2 direction = new Vector2(_playerTransform .position.x, _playerTransform.position.y - _offsetY) - startPosition;
             
             RaycastHit2D hit = Physics2D.Raycast(Me.transform.position, direction, _sightRange, _layerMask);
             
@@ -79,6 +79,10 @@ namespace EnemyStaff.ConcreteState
             if (CheckLineOfSite())
             {
                 MoveDirectlyToPlayer();
+            }
+            else
+            {
+                EndEngage();
             }
         }
     }
