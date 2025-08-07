@@ -36,7 +36,7 @@ namespace EnemyStaff
         {
             StateMachine.CurrentEnemyState.PhysicsUpdate();
         }
-        
+
         public EnemyTargetingCircle EngageCircle => _engageCircle;
         public EnemyTargetingCircle AttackCircle => _attackCircle;
         public EnemyStateMachine StateMachine { get; private set; }

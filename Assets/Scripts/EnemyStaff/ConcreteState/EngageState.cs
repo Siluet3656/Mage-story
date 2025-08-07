@@ -1,7 +1,7 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
 using EntityStaff;
 using PlayerStaff;
+using Data;
 
 namespace EnemyStaff.ConcreteState
 {
@@ -13,12 +13,12 @@ namespace EnemyStaff.ConcreteState
         private Vector2 _moveDirection;
         
         private readonly Transform _playerTransform;
-        private readonly int _playerLayer;
 
         private readonly float _thresholdHpPercent = 0.15f;
         private readonly float _sightRange = 15f;
-        private readonly float _offsetY = 0.4f;
+        private readonly float _yOffset = 0.5f;
 
+        private readonly int _playerLayer = LayerMask.NameToLayer("Player");
         private readonly int _layerMask = LayerMask.GetMask("Player")
                                         + LayerMask.GetMask("Walls");
         
@@ -46,11 +46,11 @@ namespace EnemyStaff.ConcreteState
 
         private bool CheckLineOfSite()
         {
-            Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y);
-            Vector2 direction = new Vector2(_playerTransform .position.x, _playerTransform.position.y - _offsetY) - startPosition;
+            Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y - _yOffset);
+            Vector2 direction = new Vector2(_playerTransform.position.x, _playerTransform.position.y - _yOffset) - startPosition;
             
-            RaycastHit2D hit = Physics2D.Raycast(Me.transform.position, direction, _sightRange, _layerMask);
-            
+            RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, _sightRange, _layerMask);
+
             return hit.collider && hit.collider.gameObject.layer == _playerLayer;
         }
         
@@ -59,7 +59,6 @@ namespace EnemyStaff.ConcreteState
             _myMovement = me.GetComponent<EnemyMovement>();
             _myHp = me.GetComponent<Hp>();
             _playerTransform = G.PlayersHp.transform;
-            _playerLayer = LayerMask.NameToLayer("Player");
         }
 
         public override void EnterState()

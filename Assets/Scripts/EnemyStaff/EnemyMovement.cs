@@ -17,6 +17,7 @@ namespace EnemyStaff
         private  Rigidbody2D _rigidbody;
         
         private SpeedType _currentSpeed;
+        private Vector2 _movementDirection;
 
         private void Awake()
         {
@@ -32,6 +33,7 @@ namespace EnemyStaff
         {
             if (_isAvailableToMove)
             {
+                _movementDirection = _rigidbody.position + movementDirection;
                 _rigidbody.MovePosition(_rigidbody.position + movementDirection * (SpeedData.GetDataByType(_currentSpeed) * Time.fixedDeltaTime));
             }
         }
@@ -45,6 +47,11 @@ namespace EnemyStaff
         {
             _isAvailableToMove = isAvailable;
             OnMovementAvailabilityChanged?.Invoke(isAvailable, source);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawLine(transform.position, _movementDirection);
         }
     }
 }
