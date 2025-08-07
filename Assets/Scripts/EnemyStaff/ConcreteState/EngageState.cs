@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Data;
+﻿using Data;
 using UnityEngine;
 using EntityStaff;
-using Pathfinding;
 using PlayerStaff;
 
 namespace EnemyStaff.ConcreteState
@@ -12,23 +9,18 @@ namespace EnemyStaff.ConcreteState
     {
         private readonly EnemyMovement _myMovement;
         private readonly Hp _myHp;
-        
-        private Vector2 _playerPosition;
-        private Node _nodePlayerOn;
-        private Vector2 _myPosition;
-        private Node _nodeMeOn;
-        private NodeFinderCircle _nodeFinderCircle;
 
         private Vector2 _moveDirection;
-        private float _distanceToNode;
-
-        private List<Node> _path = new List<Node>();
+        
+        private readonly Transform _playerTransform;
+        private readonly int _playerLayer;
 
         private readonly float _thresholdHpPercent = 0.15f;
         private readonly float _sightRange = 15f;
         private readonly float _offsetY = 0.4f;
 
-        private readonly int _layerMask = LayerMask.GetMask("Player");
+        private readonly int _layerMask = LayerMask.GetMask("Player")
+                                        + LayerMask.GetMask("Walls");
         
         private void EndEngage()
         {
@@ -44,25 +36,10 @@ namespace EnemyStaff.ConcreteState
         {
             Me.StateMachine.ChangeState(Me.AttackState);
         }
-        
-        private void MoveAlongPath()
-        {
-            _moveDirection = (_path.First().transform.position - Me.transform.position).normalized;
-            _distanceToNode = Vector2.Distance(_path.First().transform.position, Me.transform.position);
-                
-            if (_distanceToNode > AStar.Instance.MinNodeDistance)
-            {
-                _myMovement.Move(_moveDirection);
-            }
-            else
-            {
-                _path.Remove(_path.First());
-            }
-        }
 
         private void MoveDirectlyToPlayer()
         {
-            _moveDirection = (G.PlayersHp.transform.position - Me.transform.position).normalized;
+            _moveDirection = (_playerTransform.position - Me.transform.position).normalized;
             
             _myMovement.Move(_moveDirection);
         }
@@ -70,55 +47,24 @@ namespace EnemyStaff.ConcreteState
         private bool CheckLineOfSite()
         {
             Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y);
-            Vector2 direction = new Vector2(G.PlayersHp.transform.position.x, G.PlayersHp.transform.position.y- _offsetY) - startPosition;
+            Vector2 direction = new Vector2(_playerTransform .position.x, _playerTransform.position.y- _offsetY) - startPosition;
             
             RaycastHit2D hit = Physics2D.Raycast(Me.transform.position, direction, _sightRange, _layerMask);
-
-            if (hit.collider != null)
-            {
-                Debug.Log("Препятствие на пути: " + hit.collider.name);
-                
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
-                {
-                    Debug.Log("Цель в пределах видимости!");
-                    return true;
-                }
-            }
             
-            return false;
-        }
-        
-        private void TryToFindPathToPlayer()
-        {
-            if (Me.EngageCircle.NearbyPlayers.Count > 0)
-            {
-                _playerPosition = G.PlayersHp.transform.position;
-                _nodeFinderCircle = G.PlayersHp.gameObject.GetComponentInChildren<NodeFinderCircle>();
-                _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition, _nodeFinderCircle.NearbyNodes);
-            
-                _myPosition = Me.transform.position;
-                _nodeFinderCircle = Me.GetComponentInChildren<NodeFinderCircle>();
-                _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition, _nodeFinderCircle.NearbyNodes);
-            
-                _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
-            }
-            else
-            {
-                EndEngage();
-            }
+            return hit.collider && hit.collider.gameObject.layer == _playerLayer;
         }
         
         public EngageState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
         {
             _myMovement = me.GetComponent<EnemyMovement>();
             _myHp = me.GetComponent<Hp>();
+            _playerTransform = G.PlayersHp.transform;
+            _playerLayer = LayerMask.NameToLayer("Player");
         }
 
         public override void EnterState()
         {
             Me.AttackCircle.OnPlayerEnterCircle += StartAttack;
-            
-            TryToFindPathToPlayer();
         }
 
         public override void ExitState()
@@ -133,17 +79,6 @@ namespace EnemyStaff.ConcreteState
             if (CheckLineOfSite())
             {
                 MoveDirectlyToPlayer();
-            }
-            else
-            {
-                /*if (_path != null && _path.Count > 0)
-                {
-                    MoveAlongPath();
-                }
-                else
-                {
-                    TryToFindPathToPlayer();
-                }*/
             }
         }
     }
