@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using EntityStaff;
-using PlayerStaff;
 using Data;
+using Unity.Mathematics;
 
 namespace EnemyStaff.ConcreteState
 {
@@ -15,24 +15,24 @@ namespace EnemyStaff.ConcreteState
         private readonly Transform _playerTransform;
 
         private readonly float _thresholdHpPercent = 0.15f;
-        private readonly float _sightRange = 15f;
-        private readonly float _yOffset = 0.5f;
-
-        private readonly int _playerLayer = LayerMask.NameToLayer("Player");
-        private readonly int _layerMask = LayerMask.GetMask("Player")
-                                        + LayerMask.GetMask("Walls");
         
-        private void EndEngage()
-        {
-            Me.StateMachine.ChangeState(Me.IdleState);
-        }
+        private readonly float _sightRange = 20f;
+        private readonly float _yOffset = 0.5f;
+        
+        private readonly int _playerMask = LayerMask.GetMask("Player");
+        private readonly int _wallMask = LayerMask.GetMask("Walls");
 
         private void StartRetreat()
         {
             Me.StateMachine.ChangeState(Me.RetreatState);
         }
 
-        private void StartAttack(PlayerMovement player)
+        private void StartWandering()
+        {
+            Me.StateMachine.ChangeState(Me.WanderingState);
+        }
+        
+        private void StartAttack()
         {
             Me.StateMachine.ChangeState(Me.AttackState);
         }
@@ -46,12 +46,21 @@ namespace EnemyStaff.ConcreteState
 
         private bool CheckLineOfSite()
         {
-            Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y - _yOffset);
-            Vector2 direction = new Vector2(_playerTransform.position.x, _playerTransform.position.y - _yOffset) - startPosition;
+            bool toReturn = false;
             
-            RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, _sightRange, _layerMask);
+            for (int i = 1; i <= 2; i++)
+            {
+                float offset = _yOffset * math.pow(-1, i);
+                
+                Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y - _yOffset);
+                Vector2 direction = new Vector2(_playerTransform.position.x, _playerTransform.position.y - _yOffset) - startPosition;
+            
+                RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, _sightRange, _playerMask | _wallMask);
 
-            return hit.collider && hit.collider.gameObject.layer == _playerLayer;
+                toReturn = hit.collider && ((1 << hit.collider.gameObject.layer) & _playerMask) != 0;
+            }
+
+            return toReturn;
         }
         
         public EngageState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
@@ -61,27 +70,19 @@ namespace EnemyStaff.ConcreteState
             _playerTransform = G.PlayersHp.transform;
         }
 
-        public override void EnterState()
-        {
-            Me.AttackCircle.OnPlayerEnterCircle += StartAttack;
-        }
-
-        public override void ExitState()
-        {
-            Me.AttackCircle.OnPlayerEnterCircle -= StartAttack;
-        }
-
         public override void FrameUpdate(float deltaTime)
         {
             if (_myHp.CurrentHealth < _myHp.MaxHealth * _thresholdHpPercent) StartRetreat();
-
+            
+            if (Me.AttackCircle.NearbyPlayers.Count > 0) StartAttack();
+            
             if (CheckLineOfSite())
             {
                 MoveDirectlyToPlayer();
             }
             else
             {
-                EndEngage();
+                StartWandering();
             }
         }
     }

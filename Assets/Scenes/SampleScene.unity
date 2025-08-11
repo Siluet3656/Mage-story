@@ -14331,7 +14331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _footprintPrefab: {fileID: 2099731840072813680, guid: 6ffff03cc56935c4e83800e79997b230, type: 3}
-  _initialPoolSize: 5
+  _initialPoolSize: 10
 --- !u!4 &995973249
 Transform:
   m_ObjectHideFlags: 0
@@ -18166,7 +18166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ba978ea7db33a42be3e5ed4899ff67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _footprintSpawnRate: 0.8
+  _footprintSpawnRate: 0.2
 --- !u!1 &1429814682
 GameObject:
   m_ObjectHideFlags: 0

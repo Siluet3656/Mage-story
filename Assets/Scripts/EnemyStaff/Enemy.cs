@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Debugging;
+using UnityEngine;
 using EnemyStaff.ConcreteState;
 
 namespace EnemyStaff
@@ -12,6 +13,8 @@ namespace EnemyStaff
         [SerializeField] private EnemyTargetingCircle _attackCircle;
         [SerializeField] private EnemyTargetingCircle _engageCircle;
 
+        [Header("Debug")] [SerializeField] private EnemyStatePreview _enemyStatePreview;
+        
         private void Awake()
         {
             StateMachine = new EnemyStateMachine();
@@ -20,6 +23,7 @@ namespace EnemyStaff
             EngageState = new EngageState(this, StateMachine);
             AttackState = new AttackState(this, StateMachine);
             RetreatState = new RetreatState(this, StateMachine);
+            WanderingState = new WanderingState(this, StateMachine);
         }
         
         private void Start()
@@ -30,6 +34,8 @@ namespace EnemyStaff
         private void Update()
         {
             StateMachine.CurrentEnemyState.FrameUpdate(Time.deltaTime);
+            
+            _enemyStatePreview.UpdateState(StateMachine.CurrentEnemyState);
         }
 
         private void FixedUpdate()
@@ -44,5 +50,6 @@ namespace EnemyStaff
         public EngageState EngageState { get; private set; }
         public AttackState AttackState { get; private set; }
         public RetreatState RetreatState { get; private set; }
+        public WanderingState WanderingState { get; private set; }
     }
 }

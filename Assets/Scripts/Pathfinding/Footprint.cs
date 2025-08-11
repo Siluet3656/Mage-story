@@ -4,7 +4,7 @@ using Data;
 namespace Pathfinding
 {
     public class Footprint : MonoBehaviour {
-        [SerializeField] private float _lifetime = 5f;
+        [SerializeField] private float _lifetime;
         private float _currentTime;
 
         private void Awake() {
@@ -18,5 +18,7 @@ namespace Pathfinding
                 _currentTime = 0f;
             }
         }
+
+        public float CurrentLifeTime => _currentTime;
     }
 }

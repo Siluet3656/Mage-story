@@ -8,6 +8,7 @@ namespace EnemyStaff
     public class EnemyAttack : MonoBehaviour
     {
         private Hp _playersHp;
+        
         private void Awake()
         {
             IsReadyToAttack = true;

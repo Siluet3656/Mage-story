@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Data;
 using UnityEngine;
+using Data;
 
 namespace Pathfinding
 {
@@ -31,16 +31,19 @@ namespace Pathfinding
             }
             var footprint = _pool.Dequeue();
             footprint.SetActive(true);
-            G.ActiveFootprints.Add(footprint);
             footprint.transform.SetParent(null);
+            
+            if (G.ActiveFootprints.Contains(footprint) == false) G.ActiveFootprints.Add(footprint);
+            
             return footprint;
         }
 
         public void ReturnFootprint(GameObject footprint) {
             footprint.SetActive(false);
-            G.ActiveFootprints.Remove(footprint);
             _pool.Enqueue(footprint);
             footprint.transform.SetParent(transform);
+            
+            if (G.ActiveFootprints.Contains(footprint)) G.ActiveFootprints.Remove(footprint);
         }
     }
 }

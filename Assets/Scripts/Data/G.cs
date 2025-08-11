@@ -15,7 +15,5 @@ namespace Data
         
         public static Hp PlayersHp;
         public static Player Player;
-        
-        
     }
 }
