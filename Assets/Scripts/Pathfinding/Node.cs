@@ -29,7 +29,7 @@ namespace Pathfinding
         }
         
         #region Debug
-/*
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
@@ -42,7 +42,7 @@ namespace Pathfinding
                 }
             }
         }
-*/
+
         #endregion
     }
 }

@@ -10,7 +10,6 @@ namespace EnemyStaff.ConcreteState
 {
     public class WanderingState : EnemyState
     {
-        private readonly float _footprintFollowThreshold = 0.1f;
         private readonly float _thresholdHpPercent = 0.15f;
         
         private readonly float _sightRange = 20f;
@@ -18,14 +17,20 @@ namespace EnemyStaff.ConcreteState
         
         private readonly int _playerMask = LayerMask.GetMask("Player");
         private readonly int _wallMask = LayerMask.GetMask("Walls");
-        private readonly int _footprintMask = LayerMask.GetMask("FootPrint");
         
         private readonly EnemyMovement _myMovement;
         private readonly Transform _playerTransform;
         private readonly Hp _myHp;
        
+        private List<Node> _path = new List<Node>();
+        
         private Vector2 _moveDirection;
-        private GameObject _footprint;
+        private Vector2 _playerPosition;
+        private Node _nodePlayerOn;
+        private Vector2 _myPosition;
+        private Node _nodeMeOn;
+        private float _distanceToNode;
+        private bool _isNeedPath;
         
         private void StartRetreat()
         {
@@ -47,65 +52,50 @@ namespace EnemyStaff.ConcreteState
             Me.StateMachine.ChangeState(Me.IdleState);
         }
         
-        private void MoveDirectlyToFootprint(GameObject footprint)
+        private bool CheckLineOfSight()
         {
-            _moveDirection = (footprint.transform.position - Me.transform.position).normalized;
-
-            if (_moveDirection.magnitude > _footprintFollowThreshold)
-            {
-                _myMovement.Move(_moveDirection);
-            }
-        }
-        
-        private bool CheckLineOfSite()
-        {
-            bool toReturn = false;
-            
             for (int i = 1; i <= 2; i++)
             {
                 float offset = _yOffset * math.pow(-1, i);
                 
-                Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y - _yOffset);
+                Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y + offset);
                 Vector2 direction = new Vector2(_playerTransform.position.x, _playerTransform.position.y - _yOffset) - startPosition;
             
                 RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, _sightRange, _playerMask | _wallMask);
 
-                toReturn = hit.collider && ((1 << hit.collider.gameObject.layer) & _playerMask) != 0;
+                var isNeedToReturn = hit.collider && ((1 << hit.collider.gameObject.layer) & _playerMask) != 0;
+
+                if (isNeedToReturn) return true;
             }
 
-            return toReturn;
+            return false;
         }
         
-        private bool TryToGetFootprint(out GameObject footprint)
+        private void MoveAlongPath()
         {
-            List<GameObject> nearbyFootprints = new List<GameObject>();
+            _moveDirection = (_path.First().transform.position - Me.transform.position).normalized;
+            _distanceToNode = Vector2.Distance(_path.First().transform.position, Me.transform.position);
 
-            for (int i = 1; i <= 2; i++)
+            if (_distanceToNode > AStar.Instance.MinNodeDistance)
+
             {
-                float offset = _yOffset * math.pow(-1,i);
-                
-                foreach (var activeFootprint in G.ActiveFootprints)
-                {
-                    Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y + offset);
-                    Vector2 direction = new Vector2(activeFootprint.transform.position.x, _playerTransform.position.y) - startPosition;
+                _myMovement.Move(_moveDirection);
+            }
+            else
+            {
+                _path.Remove(_path.First());
+            }
+        }
+        
+        private void FindPathToPlayer()
+        {
+            _playerPosition = G.PlayersHp.transform.position;
+            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition);
+            _myPosition = Me.transform.position;
+            _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition);
+            _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
             
-                    RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, _sightRange, _footprintMask | _wallMask);
-
-                    if (hit.collider && ((1 << hit.collider.gameObject.layer) & _footprintMask) != 0) nearbyFootprints.Add(activeFootprint);
-                }
-            }
-
-            if (nearbyFootprints.Count > 0)
-            {
-                footprint = nearbyFootprints
-                    .OrderBy(nearFootprint => nearFootprint.GetComponent<Footprint>().CurrentLifeTime)
-                    .FirstOrDefault();
-                
-                return true;
-            }
-
-            footprint = null;
-            return false;
+            if (_path != null && _path.Count > 0) _isNeedPath = false;
         }
         
         public WanderingState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
@@ -115,22 +105,27 @@ namespace EnemyStaff.ConcreteState
             _playerTransform = G.PlayersHp.transform;
         }
 
+        public override void EnterState()
+        {
+            _isNeedPath = true;
+        }
+
         public override void FrameUpdate(float deltaTime)
         {
             if (_myHp.CurrentHealth < _myHp.MaxHealth * _thresholdHpPercent) StartRetreat();
-            
-            if (Me.AttackCircle.NearbyPlayers.Count > 0) StartAttack();
 
-            if (CheckLineOfSite()) StartEngage();
+            if (CheckLineOfSight())
+            {
+                if (Me.AttackCircle.NearbyPlayers.Count > 0) StartAttack();
+                
+                StartEngage();
+            }
+
+            if (_isNeedPath) FindPathToPlayer();
             
-            if (TryToGetFootprint(out _footprint))
-            {
-                MoveDirectlyToFootprint(_footprint);
-            }
-            else
-            {
-                GiveUp();
-            }
+            if (_isNeedPath == false) MoveAlongPath();
+            
+            if (_path.Count == 0) GiveUp();
         }
     }
 }

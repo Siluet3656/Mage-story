@@ -1,18 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
+using UnityEngine;
 using Data;
 using EntityStaff;
+using View;
 
 namespace EnemyStaff
 {
     public class EnemyAttack : MonoBehaviour
     {
         private Hp _playersHp;
+        private EnemyView _enemyView;
         
         private void Awake()
         {
             IsReadyToAttack = true;
             _playersHp = G.PlayersHp;
+            _enemyView = GetComponent<EnemyView>();
+        }
+
+        private void Update()
+        {
+            //_enemyView.UpdateAttackSwingBar();
         }
 
         private IEnumerator AttackCooldown(float cooldown)

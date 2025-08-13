@@ -44,23 +44,23 @@ namespace EnemyStaff.ConcreteState
             _myMovement.Move(_moveDirection);
         }
 
-        private bool CheckLineOfSite()
+        private bool CheckLineOfSight()
         {
-            bool toReturn = false;
-            
             for (int i = 1; i <= 2; i++)
             {
                 float offset = _yOffset * math.pow(-1, i);
                 
-                Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y - _yOffset);
+                Vector2 startPosition = new Vector2(Me.transform.position.x, Me.transform.position.y + offset);
                 Vector2 direction = new Vector2(_playerTransform.position.x, _playerTransform.position.y - _yOffset) - startPosition;
             
                 RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, _sightRange, _playerMask | _wallMask);
 
-                toReturn = hit.collider && ((1 << hit.collider.gameObject.layer) & _playerMask) != 0;
+                var isNeedToReturn = hit.collider && ((1 << hit.collider.gameObject.layer) & _playerMask) != 0;
+
+                if (isNeedToReturn) return true;
             }
 
-            return toReturn;
+            return false;
         }
         
         public EngageState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
@@ -74,10 +74,10 @@ namespace EnemyStaff.ConcreteState
         {
             if (_myHp.CurrentHealth < _myHp.MaxHealth * _thresholdHpPercent) StartRetreat();
             
-            if (Me.AttackCircle.NearbyPlayers.Count > 0) StartAttack();
-            
-            if (CheckLineOfSite())
+            if (CheckLineOfSight())
             {
+                if (Me.AttackCircle.NearbyPlayers.Count > 0) StartAttack();
+                
                 MoveDirectlyToPlayer();
             }
             else

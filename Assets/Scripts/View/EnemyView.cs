@@ -1,6 +1,7 @@
-﻿using Data.Enums;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using Data.Enums;
 using EnemyStaff;
-using UnityEngine;
 
 namespace View
 {
@@ -10,6 +11,7 @@ namespace View
         [SerializeField] private SpriteRenderer _targetedMark;
         [SerializeField] private GameObject _iceTomb;
         [SerializeField] private GameObject _roots;
+        [SerializeField] private Image _attackSwingBar;
 
         private EnemyTargeting _enemyTargeting;
         private EnemyMovement _enemyMovement;
@@ -66,6 +68,11 @@ namespace View
                     _roots.SetActive(!isAvailable);
                     break;
             }
+        }
+        
+        public void UpdateAttackSwingBar(float swingProgress)
+        {
+            _attackSwingBar.fillAmount = swingProgress;
         }
     }
 }

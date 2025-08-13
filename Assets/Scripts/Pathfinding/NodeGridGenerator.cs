@@ -10,11 +10,10 @@ namespace Pathfinding
 {
     public class NodeGridGenerator : MonoBehaviour
     {
-        [Header("Grid Settings")] [SerializeField]
-        private int _width = 10;
-
-        [SerializeField] private int _height = 10;
-        [SerializeField] private float _nodeSize = 1f;
+        [Header("Grid Settings")] 
+        [SerializeField, Min(1)] private int _width = 10;
+        [SerializeField, Min(1)] private int _height = 10;
+        [SerializeField, Min(0.01f)] private float _nodeSize = 1f;
         [SerializeField] private Node _nodePrefab;
         [SerializeField] private LayerMask _unwalkableMask;
 
@@ -25,7 +24,7 @@ namespace Pathfinding
 
         [Header("Editor Generation")] 
         [SerializeField] private bool _generateInEditMode = true;
-        [SerializeField] private bool _generateInPlayMode = true;
+        [SerializeField] private bool _generateInPlayMode = false;
 
         [SerializeField] private bool _clearBeforeGenerate = true;
 

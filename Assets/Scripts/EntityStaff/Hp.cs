@@ -1,10 +1,11 @@
 ﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 using Data;
 using Data.Enums;
 using PlayerStaff;
-using UnityEngine;
 using View;
-using Random = UnityEngine.Random;
+
 
 namespace EntityStaff
 {

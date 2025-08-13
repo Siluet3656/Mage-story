@@ -15,6 +15,8 @@ namespace Pathfinding
         }
         #endregion
 
+        [SerializeField, Min(0.1f)] private float _minNodeDistance = 0.15f;
+        
         private void InitializeNodes(Node start, Node end)
         {
             foreach (Node node in G.NodesOnScene)
@@ -72,8 +74,8 @@ namespace Pathfinding
             if (!openSet.Contains(node))
                 openSet.Enqueue(node);
         }
-
-        public readonly float MinNodeDistance = 0.15f;
+        
+        public float MinNodeDistance => _minNodeDistance;
 
         public List<Node> GeneratePath(Node start, Node end)
         {
@@ -95,12 +97,12 @@ namespace Pathfinding
             return null;
         }
 
-        public Node FindNearestNode(Vector2 position, List<Node> nearbyNodes)
+        public Node FindNearestNode(Vector2 position)
         {
             Node nearestNode = null;
             float minDistanceSquared = float.MaxValue;
 
-            foreach (Node node in nearbyNodes)
+            foreach (Node node in G.NodesOnScene)
             {
                 Vector2 nodePosition = node.gameObject.transform.position;
                 float distanceSquared = (nodePosition - position).sqrMagnitude;
@@ -114,12 +116,12 @@ namespace Pathfinding
             return nearestNode;
         }
 
-        public Node FindFurthestNode(Vector2 position, List<Node> nearbyNodes)
+        public Node FindFurthestNode(Vector2 position)
         {
             Node furthestNode = null;
             float maxDistanceSquared = float.MinValue;
 
-            foreach (Node node in nearbyNodes)
+            foreach (Node node in G.NodesOnScene)
             {
                 Vector2 nodePosition = node.gameObject.transform.position;
                 float distanceSquared = (nodePosition - position).sqrMagnitude;

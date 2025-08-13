@@ -25,11 +25,11 @@ namespace EnemyStaff.ConcreteState
         {
             _playerPosition = G.PlayersHp.transform.position;
             _nodeFinderCircle = G.PlayersHp.gameObject.GetComponentInChildren<NodeFinderCircle>();
-            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition, _nodeFinderCircle.NearbyNodes);
+            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition);
             
             _myPosition = Me.transform.position;
             _nodeFinderCircle = Me.GetComponentInChildren<NodeFinderCircle>();
-            _nodeMeOn = AStar.Instance.FindFurthestNode(_myPosition, _nodeFinderCircle.NearbyNodes);
+            _nodeMeOn = AStar.Instance.FindFurthestNode(_myPosition);
             
             _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
         }
