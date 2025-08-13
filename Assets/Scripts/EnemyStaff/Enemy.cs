@@ -1,6 +1,7 @@
-﻿using Debugging;
-using UnityEngine;
+﻿using UnityEngine;
 using EnemyStaff.ConcreteState;
+using EnemyStaff.StateSO;
+using Debugging;
 
 namespace EnemyStaff
 {
@@ -12,11 +13,23 @@ namespace EnemyStaff
         [Header("Player Search Settings")]
         [SerializeField] private EnemyTargetingCircle _attackCircle;
         [SerializeField] private EnemyTargetingCircle _engageCircle;
-
-        [Header("Debug")] [SerializeField] private EnemyStatePreview _enemyStatePreview;
         
+        [Header("States")] 
+        [SerializeField] private EnemyIdleSoBase _enemyIdleInstance;
+        [SerializeField] private EnemyEngageSoBase _enemyEngageInstance;
+        [SerializeField] private EnemyAttackSoBase _enemyAttackInstance;
+        [SerializeField] private EnemyWanderingSoBase _enemyWanderingInstance;
+        
+        [Header("Debug")] 
+        [SerializeField] private EnemyStatePreview _enemyStatePreview;
+         
         private void Awake()
         {
+            EnemyIdleInstance = Instantiate(_enemyIdleInstance);
+            EnemyEngageInstance = Instantiate(_enemyEngageInstance);
+            EnemyAttackInstance = Instantiate(_enemyAttackInstance);
+            EnemyWanderingInstance = Instantiate(_enemyWanderingInstance);
+            
             StateMachine = new EnemyStateMachine();
 
             IdleState = new IdleState(this, StateMachine);
@@ -28,6 +41,11 @@ namespace EnemyStaff
         
         private void Start()
         {
+            EnemyIdleInstance.Initialize(gameObject,this);
+            EnemyEngageInstance.Initialize(gameObject,this);
+            EnemyAttackInstance.Initialize(gameObject,this);
+            EnemyWanderingInstance.Initialize(gameObject,this);
+            
             StateMachine.Initialize(IdleState);
         }
 
@@ -51,5 +69,9 @@ namespace EnemyStaff
         public AttackState AttackState { get; private set; }
         public RetreatState RetreatState { get; private set; }
         public WanderingState WanderingState { get; private set; }
+        public EnemyIdleSoBase EnemyIdleInstance { get; private set; }
+        public EnemyEngageSoBase EnemyEngageInstance { get; private set; }
+        public EnemyAttackSoBase EnemyAttackInstance { get; private set; }
+        public EnemyWanderingSoBase EnemyWanderingInstance { get; private set; }
     }
 }

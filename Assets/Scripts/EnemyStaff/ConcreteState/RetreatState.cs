@@ -49,9 +49,9 @@ namespace EnemyStaff.ConcreteState
             }
         }
         
-        public RetreatState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+        public RetreatState(Enemy me, EnemyStateMachine enemyStateMachine) : base(me, enemyStateMachine)
         {
-            _myMovement = enemy.GetComponent<EnemyMovement>();
+            _myMovement = me.GetComponent<EnemyMovement>();
         }
 
         public override void FrameUpdate(float deltaTime)
