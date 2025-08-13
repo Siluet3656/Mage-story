@@ -740,6 +740,7 @@ MonoBehaviour:
   _targetedMark: {fileID: 6746311936119279055}
   _iceTomb: {fileID: 2243542452867873685}
   _roots: {fileID: 3761767945902660573}
+  _attackSwingBar: {fileID: 3770817957549209135}
 --- !u!212 &6746311934899669598
 SpriteRenderer:
   m_ObjectHideFlags: 0

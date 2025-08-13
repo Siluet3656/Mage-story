@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using Data;
 using EntityStaff;
@@ -12,6 +11,8 @@ namespace EnemyStaff
         private Hp _playersHp;
         private EnemyView _enemyView;
         
+        private float _currentSwipeProgress;
+        
         private void Awake()
         {
             IsReadyToAttack = true;
@@ -19,16 +20,23 @@ namespace EnemyStaff
             _enemyView = GetComponent<EnemyView>();
         }
 
-        private void Update()
-        {
-            //_enemyView.UpdateAttackSwingBar();
-        }
-
         private IEnumerator AttackCooldown(float cooldown)
         {
             IsReadyToAttack = false;
-            yield return new WaitForSeconds(cooldown);
+            float elapsedTime = 0f;
+            _currentSwipeProgress = 0f;
+
+            while (elapsedTime < cooldown)
+            {
+                elapsedTime += Time.deltaTime;
+                _currentSwipeProgress = Mathf.Clamp01(elapsedTime / cooldown);
+                _enemyView.UpdateAttackSwingBar(_currentSwipeProgress);
+                yield return null;
+            }
+
             IsReadyToAttack = true;
+            _currentSwipeProgress = 1f;
+            _enemyView.UpdateAttackSwingBar(_currentSwipeProgress);
         }
         
         public bool IsReadyToAttack { get; private set; }
