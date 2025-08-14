@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Data.Enums;
-using UnityEngine.Serialization;
 
 namespace Data.SpellConfigs
 {
@@ -12,7 +11,7 @@ namespace Data.SpellConfigs
         [SerializeField] private SpellName _name;
         [SerializeField] private Sprite _icon;
         [SerializeField] private bool _requiresTarget;
-        [FormerlySerializedAs("_damageType")] [SerializeField] private SpellElementType _spellElementType;
+        [SerializeField] private SpellElementType _spellElementType;
         
         [Header("Resources")]
         [SerializeField, Min(0)] private Vector3Int _shardCost;
