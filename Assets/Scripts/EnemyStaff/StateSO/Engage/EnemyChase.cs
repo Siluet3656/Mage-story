@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EnemyStaff.StateSO.Engage
 {
-    [CreateAssetMenu(fileName = "EnemyChase", menuName = "Enemy logic/Engage/EnemyChase", order = 10)]
+    [CreateAssetMenu(fileName = "EnemyChase", menuName = "Enemy logic/Engage/EnemyChase", order = 30)]
     public class EnemyChase : EnemyEngageSoBase
     {
         [Header("Retreat settings")]

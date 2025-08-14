@@ -3,11 +3,12 @@ using Data;
 
 namespace EnemyStaff.StateSO
 {
-    public class EnemyIdleSoBase : ScriptableObject
+    public class EnemyRetreatSoBase : ScriptableObject
     {
         protected Enemy Me;
         protected Transform MyTransform;
         protected GameObject MyGameObject;
+        protected EnemyMovement MyMovement;
 
         protected Transform PlayerTransform;
         
@@ -19,6 +20,7 @@ namespace EnemyStaff.StateSO
             MyGameObject = gameObject;
             MyTransform = gameObject.transform;
             Me = enemy;
+            MyMovement = gameObject.GetComponent<EnemyMovement>();
 
             PlayerTransform = G.Player.transform;
             

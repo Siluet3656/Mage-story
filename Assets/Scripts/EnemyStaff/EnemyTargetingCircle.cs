@@ -35,6 +35,13 @@ namespace EnemyStaff
                 OnPlayerExitCircle?.Invoke(target);
             }
         }
+
+        public void SetCircleRadius(float radius)
+        {
+            if (radius <= 0f) return;
+            
+            _collider.radius = radius;
+        }
         
         public List<PlayerMovement> NearbyPlayers => _nearbyPlayers;
         public CircleCollider2D Collider => _collider;

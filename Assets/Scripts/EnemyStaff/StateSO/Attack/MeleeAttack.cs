@@ -1,10 +1,10 @@
-using PlayerStaff;
-using Unity.Mathematics;
 using UnityEngine;
+using Unity.Mathematics;
+using PlayerStaff;
 
 namespace EnemyStaff.StateSO.Attack
 {
-    [CreateAssetMenu(fileName = "MeleeAttack", menuName = "Enemy logic/Attack/MeleeAttack", order = 10)]
+    [CreateAssetMenu(fileName = "MeleeAttack", menuName = "Enemy logic/Attack/MeleeAttack", order = 30)]
     public class MeleeAttack : EnemyAttackSoBase
     {
         [Header("Retreat settings")]
@@ -12,7 +12,8 @@ namespace EnemyStaff.StateSO.Attack
         
         [Header("Attack settings")]
         [SerializeField, Min(0.1f)] private float _attackCooldownTime = 5f;
-        [SerializeField, Min(5f)]private float _attackDamage = 50f;
+        [SerializeField, Min(5f)] private float _attackDamage = 50f;
+        [SerializeField, Range(1f,2f)] private float _attackRadiusExtentFactor = 1.2f;
         
         [Header("Sight settings")]
         [SerializeField, Min(1f)]private float _sightRange = 20f;
@@ -31,6 +32,16 @@ namespace EnemyStaff.StateSO.Attack
         private void StartWandering()
         {
             Me.StateMachine.ChangeState(Me.WanderingState);
+        }
+
+        private void SetDefaultAttackRadius()
+        {
+            AttackCircle.SetCircleRadius(DefaultRadius);
+        }
+
+        private void ExtendAttackRadius()
+        {
+            AttackCircle.SetCircleRadius(DefaultRadius * _attackRadiusExtentFactor);
         }
         
         private bool CheckLineOfSight()
@@ -55,11 +66,15 @@ namespace EnemyStaff.StateSO.Attack
         public override void DoEnterLogic()
         {
             Me.AttackCircle.OnPlayerExitCircle += StopAttack;
+
+            ExtendAttackRadius();
         }
 
         public override void DoExitLogic()
         {
             Me.AttackCircle.OnPlayerExitCircle -= StopAttack;
+
+            SetDefaultAttackRadius();
         }
 
         public override void DoFrameUpdateLogic()

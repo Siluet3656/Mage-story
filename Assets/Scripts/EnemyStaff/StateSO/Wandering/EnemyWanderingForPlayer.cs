@@ -7,7 +7,7 @@ using Pathfinding;
 
 namespace EnemyStaff.StateSO.Wandering
 {
-    [CreateAssetMenu(fileName = "EnemyWanderingForPlayer", menuName = "Enemy logic/Wandering/EnemyWanderingForPlayer", order = 10)]
+    [CreateAssetMenu(fileName = "EnemyWanderingForPlayer", menuName = "Enemy logic/Wandering/EnemyWanderingForPlayer", order = 30)]
     public class EnemyWanderingForPlayer : EnemyWanderingSoBase
     {
         [Header("Retreat settings")]

@@ -634,6 +634,7 @@ MonoBehaviour:
   _enemyEngageInstance: {fileID: 11400000, guid: f47f7e936f6567b4e93a47ca87b2a876, type: 2}
   _enemyAttackInstance: {fileID: 11400000, guid: edb4a2666fae0c84c9da26ee2ae1f0d6, type: 2}
   _enemyWanderingInstance: {fileID: 11400000, guid: e686e9f8b6c8413489600de94a1a81bf, type: 2}
+  _enemyRetreatInstance: {fileID: 11400000, guid: e97058c39a219d1438437b766da7194d, type: 2}
   _enemyStatePreview: {fileID: 5417550731240387869}
 --- !u!114 &2917276155359522141
 MonoBehaviour:

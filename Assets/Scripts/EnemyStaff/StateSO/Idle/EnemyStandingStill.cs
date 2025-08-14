@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EnemyStaff.StateSO.Idle
 {
-    [CreateAssetMenu(fileName = "EnemyStandingStill", menuName = "Enemy logic/Idle/EnemyStandingStill", order = 40)]
+    [CreateAssetMenu(fileName = "EnemyStandingStill", menuName = "Enemy logic/Idle/EnemyStandingStill", order = 30)]
     public class EnemyStandingStill : EnemyIdleSoBase
     {
         [SerializeField, Min(1f)] private float _sightRange = 20f;

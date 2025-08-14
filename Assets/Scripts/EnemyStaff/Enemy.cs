@@ -19,6 +19,7 @@ namespace EnemyStaff
         [SerializeField] private EnemyEngageSoBase _enemyEngageInstance;
         [SerializeField] private EnemyAttackSoBase _enemyAttackInstance;
         [SerializeField] private EnemyWanderingSoBase _enemyWanderingInstance;
+        [SerializeField] private EnemyRetreatSoBase _enemyRetreatInstance;
         
         [Header("Debug")] 
         [SerializeField] private EnemyStatePreview _enemyStatePreview;
@@ -29,6 +30,7 @@ namespace EnemyStaff
             EnemyEngageInstance = Instantiate(_enemyEngageInstance);
             EnemyAttackInstance = Instantiate(_enemyAttackInstance);
             EnemyWanderingInstance = Instantiate(_enemyWanderingInstance);
+            EnemyRetreatInstance = Instantiate(_enemyRetreatInstance);
             
             StateMachine = new EnemyStateMachine();
 
@@ -45,6 +47,7 @@ namespace EnemyStaff
             EnemyEngageInstance.Initialize(gameObject,this);
             EnemyAttackInstance.Initialize(gameObject,this);
             EnemyWanderingInstance.Initialize(gameObject,this);
+            EnemyRetreatInstance.Initialize(gameObject,this);
             
             StateMachine.Initialize(IdleState);
         }
@@ -73,5 +76,6 @@ namespace EnemyStaff
         public EnemyEngageSoBase EnemyEngageInstance { get; private set; }
         public EnemyAttackSoBase EnemyAttackInstance { get; private set; }
         public EnemyWanderingSoBase EnemyWanderingInstance { get; private set; }
+        public EnemyRetreatSoBase EnemyRetreatInstance { get; private set; }
     }
 }
