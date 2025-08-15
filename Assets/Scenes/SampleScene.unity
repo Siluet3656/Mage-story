@@ -5838,7 +5838,6 @@ GameObject:
   m_Component:
   - component: {fileID: 102588858}
   - component: {fileID: 102588857}
-  - component: {fileID: 102588856}
   - component: {fileID: 102588859}
   m_Layer: 0
   m_Name: Spell Factory
@@ -5847,18 +5846,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &102588856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102588855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba643f49043e804a8c6fb94cfa9d0c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &102588857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31918,7 +31905,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102588856}
+      - m_Target: {fileID: 2089574236}
         m_TargetAssemblyTypeName: EnemyStaff.EnemySpawnButton, Assembly-CSharp
         m_MethodName: SpawnAnEnemy
         m_Mode: 2
@@ -32543,6 +32530,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2089574234}
   - component: {fileID: 2089574233}
+  - component: {fileID: 2089574235}
+  - component: {fileID: 2089574236}
   m_Layer: 0
   m_Name: Enemy Factory
   m_TagString: Untagged
@@ -32579,6 +32568,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2089574235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089574232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2107e51d721f46846acec732645154c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultAmountOfEnemies: 10
+  _enemyMelee: {fileID: 6746311934899669595, guid: 5c83a811bdcf65a49ada25b998c2738f, type: 3}
+  _enemyRanged: {fileID: 0}
+  _enemyCaster: {fileID: 0}
+--- !u!114 &2089574236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089574232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba643f49043e804a8c6fb94cfa9d0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2094981969
 GameObject:
   m_ObjectHideFlags: 0
