@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Data;
+using Data.Enums;
+using UnityEngine;
 using EnemyStaff.ConcreteState;
 using EnemyStaff.StateSO;
 using Debugging;
@@ -14,23 +16,16 @@ namespace EnemyStaff
         [SerializeField] private EnemyTargetingCircle _attackCircle;
         [SerializeField] private EnemyTargetingCircle _engageCircle;
         
-        [Header("States")] 
-        [SerializeField] private EnemyIdleSoBase _enemyIdleInstance;
-        [SerializeField] private EnemyEngageSoBase _enemyEngageInstance;
-        [SerializeField] private EnemyAttackSoBase _enemyAttackInstance;
-        [SerializeField] private EnemyWanderingSoBase _enemyWanderingInstance;
-        [SerializeField] private EnemyRetreatSoBase _enemyRetreatInstance;
-        
         [Header("Debug")] 
         [SerializeField] private EnemyStatePreview _enemyStatePreview;
          
         private void Awake()
         {
-            EnemyIdleInstance = Instantiate(_enemyIdleInstance);
-            EnemyEngageInstance = Instantiate(_enemyEngageInstance);
-            EnemyAttackInstance = Instantiate(_enemyAttackInstance);
-            EnemyWanderingInstance = Instantiate(_enemyWanderingInstance);
-            EnemyRetreatInstance = Instantiate(_enemyRetreatInstance);
+            EnemyIdleInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyIdle);
+            EnemyEngageInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyEngage);
+            EnemyAttackInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyAttack);
+            EnemyWanderingInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyWandering);
+            EnemyRetreatInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyRetreat);
             
             StateMachine = new EnemyStateMachine();
 
