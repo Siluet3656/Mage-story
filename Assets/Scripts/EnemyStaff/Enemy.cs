@@ -1,8 +1,9 @@
-﻿using Data;
+﻿using UnityEngine;
+using Data;
 using Data.Enums;
-using UnityEngine;
 using EnemyStaff.ConcreteState;
 using EnemyStaff.StateSO;
+using EntityStaff;
 using Debugging;
 
 namespace EnemyStaff
@@ -10,6 +11,7 @@ namespace EnemyStaff
     [RequireComponent(typeof(EnemyMovement))]
     [RequireComponent(typeof(EnemyTargeting))]
     [RequireComponent(typeof(EnemyAttack))]
+    [RequireComponent(typeof(Hp))]
     public class Enemy : MonoBehaviour
     {
         [Header("Player Search Settings")]
@@ -18,7 +20,9 @@ namespace EnemyStaff
         
         [Header("Debug")] 
         [SerializeField] private EnemyStatePreview _enemyStatePreview;
-         
+
+        private Hp _hp;
+
         private void Awake()
         {
             EnemyIdleInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyIdle);
@@ -34,6 +38,9 @@ namespace EnemyStaff
             AttackState = new AttackState(this, StateMachine);
             RetreatState = new RetreatState(this, StateMachine);
             WanderingState = new WanderingState(this, StateMachine);
+
+            _hp = GetComponent<Hp>();
+            _hp.OnDeath += () => EnemyFactory.Instance.ReturnEnemy(MyName,this);
         }
         
         private void Start()
@@ -59,6 +66,7 @@ namespace EnemyStaff
             StateMachine.CurrentEnemyState.PhysicsUpdate();
         }
 
+        public EnemyName MyName { get; set; }
         public EnemyTargetingCircle EngageCircle => _engageCircle;
         public EnemyTargetingCircle AttackCircle => _attackCircle;
         public EnemyStateMachine StateMachine { get; private set; }

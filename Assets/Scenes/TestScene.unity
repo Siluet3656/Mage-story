@@ -12820,7 +12820,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656127799}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40.19236, y: 2.971104, z: -31.452496}
+  m_LocalPosition: {x: -40.3, y: 2.971104, z: -31.452496}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1967170816}
@@ -32552,8 +32552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prisoner: {fileID: 11400000, guid: 0341bf6bdca67b743a12451691c4ce67, type: 2}
-  _hunter: {fileID: 0}
-  _paladin: {fileID: 0}
 --- !u!4 &2089574234
 Transform:
   m_ObjectHideFlags: 0
@@ -32582,8 +32580,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultAmountOfEnemies: 10
   _enemyMelee: {fileID: 6746311934899669595, guid: 5c83a811bdcf65a49ada25b998c2738f, type: 3}
-  _enemyRanged: {fileID: 0}
-  _enemyCaster: {fileID: 0}
 --- !u!114 &2089574236
 MonoBehaviour:
   m_ObjectHideFlags: 0

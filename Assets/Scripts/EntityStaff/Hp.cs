@@ -71,7 +71,6 @@ namespace EntityStaff
         private void Die()
         {
             OnDeath?.Invoke();
-            Destroy(gameObject); //Фабрика
         }
         
         public event Action<float> OnHealthChanged;

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Data;
-using Data.EnemyConfigs;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Data;
 using Data.EnemyConfigs.Melee;
 using Data.Enums;
 
@@ -45,44 +43,44 @@ namespace EnemyStaff
         {
             _enemyPools.Add(EnemyName.None, new Queue<Enemy>());
             
-            InstantiateEnemies(EnemyName.Prisoner, typeof(Prisoner), _enemyMelee, _defaultAmountOfEnemies);
+            InstantiateEnemies(EnemyName.Prisoner, _enemyMelee, _defaultAmountOfEnemies);
         }
         
-        private void InstantiateEnemies(EnemyName enemyName, Type enemyType, GameObject prefab, int amountOfEnemies)
+        private void InstantiateEnemies(EnemyName enemyName, GameObject prefab, int amountOfEnemies)
         {
             _enemyPools.Add(enemyName, new Queue<Enemy>());
             
             for (int i = 0; i < amountOfEnemies; i++)
             {
-                InstantiateEnemy(enemyName, enemyType, prefab);
+                InstantiateEnemy(enemyName, prefab);
             }
         }
 
-        private void InstantiateEnemy(EnemyName enemyName, Type enemyType, GameObject prefab)
+        private void InstantiateEnemy(EnemyName enemyName, GameObject prefab)
         {
-            GameObject enemy = Instantiate(prefab, transform);
-            var enemyComponent = (Enemy)enemy.gameObject.AddComponent(enemyType);
-            _enemyPools[enemyName].Enqueue(enemyComponent);
-            enemy.gameObject.SetActive(false);
+            GameObject enemyGameObject = Instantiate(prefab, transform);
+            Enemy enemy = enemyGameObject.GetComponent<Enemy>();
+            _enemyPools[enemyName].Enqueue(enemy);
+            enemyGameObject.SetActive(false);
         }
         
-        private T GetEnemy<T>(EnemyName enemyName, GameObject prefab) where T : class
+        private Enemy GetEnemy(EnemyName enemyName, GameObject prefab)
         {
             if (_enemyPools == null) return null;
 
-            T enemy;
+            Enemy enemy;
 
             if (_enemyPools.TryGetValue(enemyName, out var enemyQueue) && enemyQueue.Count > 0)
             {
                 if (enemyQueue.Count > 1)
                 {
-                    enemy = enemyQueue.Dequeue() as T;
+                    enemy = enemyQueue.Dequeue();
                 }
                 else
                 {
                     var dequeuedEnemy = enemyQueue.Dequeue();
-                    InstantiateEnemy(enemyName, dequeuedEnemy.GetType(), prefab);
-                    enemy = dequeuedEnemy as T;
+                    InstantiateEnemy(enemyName, prefab);
+                    enemy = dequeuedEnemy;
                 }
             }
             else
@@ -102,13 +100,14 @@ namespace EnemyStaff
             switch (type)
             {
                 case EnemyType.Melee:
-                    enemy = GetEnemy<Enemy>(enemyName, _enemyMelee);
+                    enemy = GetEnemy(enemyName, _enemyMelee);
                     break;
                 default:
                     return null;
             }
             
             enemy.transform.SetParent(null);
+            enemy.gameObject.SetActive(true);
             return enemy;
         }
         
