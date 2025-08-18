@@ -1,13 +1,12 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Data;
 using Data.EnemyConfigs;
 using Data.Enums;
 using EnemyStaff.ConcreteState;
 using EnemyStaff.StateSO;
 using EntityStaff;
-using Debugging;
 using View;
+using Debugging;
 
 namespace EnemyStaff
 {
@@ -67,10 +66,7 @@ namespace EnemyStaff
             _enemyView.SetSprite(_enemyConfig.Sprite);
             _enemyView.SetTitle(_enemyConfig.Title);
 
-            if (_enemyConfig is IMelee meleeConfig)
-            {
-                _enemyAttack.SetMeleeAttackStats(meleeConfig.AttackDamage, meleeConfig.AttackRate);
-            }
+            if (_enemyConfig is IMelee meleeConfig) _enemyAttack.SetMeleeAttackStats(meleeConfig.AttackDamage, meleeConfig.AttackRate);
         }
 
         private void OnDisable()

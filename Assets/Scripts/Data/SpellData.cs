@@ -7,6 +7,22 @@ namespace Data
 {
     public class SpellData : MonoBehaviour
     {
+        #region Singleton
+
+        SpellData()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+        }
+        
+        public static SpellData Instance { get; private set; }
+
+        #endregion
+        
         [Header("Fire")]
         [SerializeField] private SpellConfig _fireball;
         [SerializeField] private SpellConfig _boom;
@@ -47,17 +63,13 @@ namespace Data
         
         private Dictionary<SpellName, SpellConfig> _spellValues;
         
-        public static SpellData Instance { get; private set; }
-
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-            Instance = this;
+            UpdateData();
+        }
 
+        public void UpdateData()
+        {
             _spellValues = new Dictionary<SpellName, SpellConfig>
             {
                 { SpellName.Fireball, _fireball },
@@ -96,8 +108,6 @@ namespace Data
             };
         }
         
-       
-
         public SpellConfig GetSpellConfig(SpellName spellName)
         {
             if (_spellValues.TryGetValue(spellName, out SpellConfig config))

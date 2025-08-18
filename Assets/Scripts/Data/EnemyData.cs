@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Data.EnemyConfigs;
 using UnityEngine;
+using Data.EnemyConfigs;
 using Data.Enums;
 
 namespace Data
@@ -32,6 +32,11 @@ namespace Data
         
         private void Awake()
         {
+            UpdateData();
+        }
+
+        public void UpdateData()
+        {
             _enemyValues = new Dictionary<EnemyName, EnemyConfig>
             {
                 { EnemyName.Prisoner, _prisoner }//,
@@ -39,7 +44,7 @@ namespace Data
                 //{ EnemyName.Paladin, _paladin }
             };
         }
-        
+
         public EnemyConfig GetEnemyConfig(EnemyName enemyName)
         {
             if (_enemyValues.TryGetValue(enemyName, out EnemyConfig config))
