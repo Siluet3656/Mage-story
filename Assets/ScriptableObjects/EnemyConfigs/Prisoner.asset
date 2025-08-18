@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a98f0755645a05419308e361a0ff069, type: 3}
   m_Name: Prisoner
   m_EditorClassIdentifier: 
-  _name: Prisoner
+  _name: 1
+  _title: "\u0427\u0443\u0448\u043A\u0430"
   _sprite: {fileID: 21300000, guid: 8d88c475b2c938e45ba9f66beeabe54b, type: 3}
   _maxHp: 250
   _enemyIdle: {fileID: 11400000, guid: 45fc3cfb28ece9a4887051c636b1cbde, type: 2}
@@ -20,5 +21,5 @@ MonoBehaviour:
   _enemyAttack: {fileID: 11400000, guid: edb4a2666fae0c84c9da26ee2ae1f0d6, type: 2}
   _enemyWandering: {fileID: 11400000, guid: e686e9f8b6c8413489600de94a1a81bf, type: 2}
   _enemyRetreat: {fileID: 11400000, guid: e97058c39a219d1438437b766da7194d, type: 2}
-  _attackRate: 1
-  _attackDamage: 10
+  _attackRate: 10
+  _attackDamage: 500

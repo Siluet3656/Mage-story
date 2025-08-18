@@ -5,6 +5,9 @@ using EnemyStaff;
 
 namespace View
 {
+    [RequireComponent(typeof(EnemyMovement))]
+    [RequireComponent(typeof(EnemyTargeting))]
+    [RequireComponent(typeof(SpriteRenderer))]
     public class EnemyView : MonoBehaviour
     {
         [Header("Visual References")]
@@ -12,9 +15,12 @@ namespace View
         [SerializeField] private GameObject _iceTomb;
         [SerializeField] private GameObject _roots;
         [SerializeField] private Image _attackSwingBar;
-
+        [SerializeField] private Text _enemyTitle;
+        [SerializeField] private SpriteRenderer _enemySpriteRenderer;
+        
         private EnemyTargeting _enemyTargeting;
         private EnemyMovement _enemyMovement;
+        
         private Color _originalColor;
         private Color _targetedColor;
 
@@ -73,6 +79,16 @@ namespace View
         public void UpdateAttackSwingBar(float swingProgress)
         {
             _attackSwingBar.fillAmount = swingProgress;
+        }
+
+        public void SetSprite(Sprite sprite)
+        {
+            _enemySpriteRenderer.sprite = sprite;
+        }
+
+        public void SetTitle(string title)
+        {
+            _enemyTitle.text = title;
         }
     }
 }

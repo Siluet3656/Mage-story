@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Data;
 using EntityStaff;
@@ -13,11 +14,22 @@ namespace EnemyStaff
         
         private float _currentSwipeProgress;
         
+        private float _attackCooldownTime = 5f;
+        private float _attackDamage = 50f;
+        
         private void Awake()
         {
             IsReadyToAttack = true;
             _playersHp = G.PlayersHp;
             _enemyView = GetComponent<EnemyView>();
+        }
+
+        private void OnDisable()
+        {
+            _currentSwipeProgress = 0f;
+            _enemyView.UpdateAttackSwingBar(_currentSwipeProgress);
+            
+            StopAllCoroutines();
         }
 
         private IEnumerator AttackCooldown(float cooldown)
@@ -41,10 +53,16 @@ namespace EnemyStaff
         
         public bool IsReadyToAttack { get; private set; }
 
-        public void PerformAttack(float damage, float cooldown)
+        public void PerformAttack()
         {
-            _playersHp.TryToTakeDamage(damage, false);
-            StartCoroutine(AttackCooldown(cooldown));
+            _playersHp.TryToTakeDamage(_attackDamage, false);
+            StartCoroutine(AttackCooldown(_attackCooldownTime));
+        }
+
+        public void SetMeleeAttackStats(float damage, float rate)
+        {
+            _attackDamage = damage;
+            _attackCooldownTime = rate;
         }
     }
 }

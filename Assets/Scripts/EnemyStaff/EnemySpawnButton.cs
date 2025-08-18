@@ -13,6 +13,7 @@ namespace EnemyStaff
         {
             _pos = new Vector3(Random.Range(-10f,10f),Random.Range(-10f,10f),0f);
             _enemy = EnemyFactory.Instance.PoolEnemy(EnemyName.Prisoner);
+            _enemy.transform.position = _pos;
             _enemyMovement = _enemy.GetComponent<EnemyMovement>();
             _enemyMovement.SetSpeed((SpeedType)Random.Range(1,2));
             _enemyMovement.SetMovementAvailability(true, MovementDisableSource.None);

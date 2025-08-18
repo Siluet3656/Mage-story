@@ -9,11 +9,9 @@ namespace EnemyStaff.StateSO.Attack
     {
         [Header("Retreat settings")]
         [SerializeField, Min(0f)]private  float _thresholdHpPercent = 0.1f;
-        
+
         [Header("Attack settings")]
-        [SerializeField, Min(0.1f)] private float _attackCooldownTime = 5f;
-        [SerializeField, Min(5f)] private float _attackDamage = 50f;
-        [SerializeField, Range(1f,2f)] private float _attackRadiusExtentFactor = 1.2f;
+        [SerializeField, Range(1f,2f)] private float _attackRadiusExtendFactor = 1.2f;
         
         [Header("Sight settings")]
         [SerializeField, Min(1f)]private float _sightRange = 20f;
@@ -41,7 +39,7 @@ namespace EnemyStaff.StateSO.Attack
 
         private void ExtendAttackRadius()
         {
-            AttackCircle.SetCircleRadius(DefaultRadius * _attackRadiusExtentFactor);
+            AttackCircle.SetCircleRadius(DefaultRadius * _attackRadiusExtendFactor);
         }
         
         private bool CheckLineOfSight()
@@ -83,7 +81,7 @@ namespace EnemyStaff.StateSO.Attack
 
             if (CheckLineOfSight() == false) StartWandering();
             
-            if (MyAttack.IsReadyToAttack) MyAttack.PerformAttack(_attackDamage, _attackCooldownTime);
+            if (MyAttack.IsReadyToAttack) MyAttack.PerformAttack();
         }
     }
 }

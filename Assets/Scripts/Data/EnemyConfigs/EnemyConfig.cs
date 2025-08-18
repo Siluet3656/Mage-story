@@ -10,11 +10,12 @@ namespace Data.EnemyConfigs
         public abstract EnemyType GetEnemyType();
         
         [Header("Basic")]
-        [SerializeField] private String _name;
+        [SerializeField] private EnemyName _name;
+        [SerializeField] private String _title;
         [SerializeField] private Sprite _sprite;
         
         [Header("Resources")]
-        [SerializeField, Min(1)] private float _maxHp;
+        [SerializeField, Min(1)] private int _maxHp;
         
         [Header("Behavior")]
         [SerializeField] private EnemyIdleSoBase _enemyIdle;
@@ -23,9 +24,10 @@ namespace Data.EnemyConfigs
         [SerializeField] private EnemyWanderingSoBase _enemyWandering;
         [SerializeField] private EnemyRetreatSoBase _enemyRetreat;
         
-        public String Name => _name;
+        public EnemyName Name => _name;
+        public String Title => _title;
         public Sprite Sprite => _sprite;
-        public float MaxHp => _maxHp;
+        public int MaxHp => _maxHp;
         public EnemyIdleSoBase EnemyIdle => _enemyIdle;
         public EnemyEngageSoBase EnemyEngage =>_enemyEngage;
         public EnemyAttackSoBase EnemyAttack => _enemyAttack;

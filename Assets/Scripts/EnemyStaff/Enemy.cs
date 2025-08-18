@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Data;
+using Data.EnemyConfigs;
 using Data.Enums;
 using EnemyStaff.ConcreteState;
 using EnemyStaff.StateSO;
 using EntityStaff;
 using Debugging;
+using View;
 
 namespace EnemyStaff
 {
     [RequireComponent(typeof(EnemyMovement))]
     [RequireComponent(typeof(EnemyTargeting))]
     [RequireComponent(typeof(EnemyAttack))]
+    [RequireComponent(typeof(EnemyView))]
     [RequireComponent(typeof(Hp))]
     public class Enemy : MonoBehaviour
     {
@@ -21,15 +25,23 @@ namespace EnemyStaff
         [Header("Debug")] 
         [SerializeField] private EnemyStatePreview _enemyStatePreview;
 
+        private EnemyConfig _enemyConfig;
+        
         private Hp _hp;
+        private EnemyView _enemyView;
+        private EnemyAttack _enemyAttack;
+
+        private EnemyName _name;
 
         private void Awake()
         {
-            EnemyIdleInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyIdle);
-            EnemyEngageInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyEngage);
-            EnemyAttackInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyAttack);
-            EnemyWanderingInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyWandering);
-            EnemyRetreatInstance = Instantiate(EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner).EnemyRetreat);
+            _enemyConfig = EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner);
+            
+            EnemyIdleInstance = Instantiate(_enemyConfig.EnemyIdle);
+            EnemyEngageInstance = Instantiate(_enemyConfig.EnemyEngage);
+            EnemyAttackInstance = Instantiate(_enemyConfig.EnemyAttack);
+            EnemyWanderingInstance = Instantiate(_enemyConfig.EnemyWandering);
+            EnemyRetreatInstance = Instantiate(_enemyConfig.EnemyRetreat);
             
             StateMachine = new EnemyStateMachine();
 
@@ -40,9 +52,32 @@ namespace EnemyStaff
             WanderingState = new WanderingState(this, StateMachine);
 
             _hp = GetComponent<Hp>();
-            _hp.OnDeath += () => EnemyFactory.Instance.ReturnEnemy(MyName,this);
+            _enemyView = GetComponent<EnemyView>();
+            _enemyAttack = GetComponent<EnemyAttack>();
         }
-        
+
+        private void OnEnable()
+        {
+            _hp.OnDeath += ReturnToPool;
+            _hp.SetMaxHealth(_enemyConfig.MaxHp);
+            _hp.InitializeHealth();
+            
+            _name = _enemyConfig.Name;
+            
+            _enemyView.SetSprite(_enemyConfig.Sprite);
+            _enemyView.SetTitle(_enemyConfig.Title);
+
+            if (_enemyConfig is IMelee meleeConfig)
+            {
+                _enemyAttack.SetMeleeAttackStats(meleeConfig.AttackDamage, meleeConfig.AttackRate);
+            }
+        }
+
+        private void OnDisable()
+        {
+            _hp.OnDeath -= ReturnToPool;
+        }
+
         private void Start()
         {
             EnemyIdleInstance.Initialize(gameObject,this);
@@ -66,7 +101,11 @@ namespace EnemyStaff
             StateMachine.CurrentEnemyState.PhysicsUpdate();
         }
 
-        public EnemyName MyName { get; set; }
+        private void ReturnToPool()
+        {
+            EnemyFactory.Instance.ReturnEnemy(_name, this);
+        }
+        
         public EnemyTargetingCircle EngageCircle => _engageCircle;
         public EnemyTargetingCircle AttackCircle => _attackCircle;
         public EnemyStateMachine StateMachine { get; private set; }
