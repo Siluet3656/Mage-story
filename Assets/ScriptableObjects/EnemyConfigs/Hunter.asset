@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1091bd9a93d5cc249b65b77e00bca185, type: 3}
+  m_Name: Hunter
+  m_EditorClassIdentifier: 
+  _name: 2
+  _title: "\u041B\u0435\u0441\u043D\u043E\u0439 \u0431\u043E\u043B\u0432\u0430\u043D"
+  _sprite: {fileID: 21300000, guid: 3842d17f267bb314494a60f779ed9486, type: 3}
+  _maxHp: 100
+  _enemyIdle: {fileID: 11400000, guid: 45fc3cfb28ece9a4887051c636b1cbde, type: 2}
+  _enemyEngage: {fileID: 11400000, guid: f47f7e936f6567b4e93a47ca87b2a876, type: 2}
+  _enemyAttack: {fileID: 11400000, guid: edb4a2666fae0c84c9da26ee2ae1f0d6, type: 2}
+  _enemyWandering: {fileID: 11400000, guid: e686e9f8b6c8413489600de94a1a81bf, type: 2}
+  _enemyRetreat: {fileID: 11400000, guid: e97058c39a219d1438437b766da7194d, type: 2}
+  _attackRate: 1
+  _attackDamage: 100

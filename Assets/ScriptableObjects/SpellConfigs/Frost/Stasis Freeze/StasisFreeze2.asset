@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74185e4e45601bb4887606122a5315e3, type: 3}
-  m_Name: StasisFreeze
+  m_Name: StasisFreeze2
   m_EditorClassIdentifier: 
   _name: 12
   _icon: {fileID: 21300000, guid: a901df9eab049d54c84ff120537a75df, type: 3}
   _requiresTarget: 0
   _spellElementType: 2
-  _shardCost: {x: 0, y: 1, z: 0}
+  _shardCost: {x: 0, y: 2, z: 0}
   _reminderCost: 0
   _buffName: 1

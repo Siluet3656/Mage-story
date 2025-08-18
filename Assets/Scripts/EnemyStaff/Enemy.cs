@@ -32,16 +32,14 @@ namespace EnemyStaff
 
         private EnemyName _name;
 
+        private bool _isPooled;
+
         private void Awake()
-        {
-            _enemyConfig = EnemyData.Instance.GetEnemyConfig(EnemyName.Prisoner);
-            
-            EnemyIdleInstance = Instantiate(_enemyConfig.EnemyIdle);
-            EnemyEngageInstance = Instantiate(_enemyConfig.EnemyEngage);
-            EnemyAttackInstance = Instantiate(_enemyConfig.EnemyAttack);
-            EnemyWanderingInstance = Instantiate(_enemyConfig.EnemyWandering);
-            EnemyRetreatInstance = Instantiate(_enemyConfig.EnemyRetreat);
-            
+        { 
+            _hp = GetComponent<Hp>();
+            _enemyView = GetComponent<EnemyView>();
+            _enemyAttack = GetComponent<EnemyAttack>();
+
             StateMachine = new EnemyStateMachine();
 
             IdleState = new IdleState(this, StateMachine);
@@ -49,33 +47,27 @@ namespace EnemyStaff
             AttackState = new AttackState(this, StateMachine);
             RetreatState = new RetreatState(this, StateMachine);
             WanderingState = new WanderingState(this, StateMachine);
-
-            _hp = GetComponent<Hp>();
-            _enemyView = GetComponent<EnemyView>();
-            _enemyAttack = GetComponent<EnemyAttack>();
         }
-
-        private void OnEnable()
+        
+        private void Initialize(EnemyName enemyName)
         {
-            _hp.OnDeath += ReturnToPool;
-            _hp.SetMaxHealth(_enemyConfig.MaxHp);
-            _hp.InitializeHealth();
-            
-            _name = _enemyConfig.Name;
+            _name = enemyName;
+            _enemyConfig = EnemyData.Instance.GetEnemyConfig(_name);
             
             _enemyView.SetSprite(_enemyConfig.Sprite);
             _enemyView.SetTitle(_enemyConfig.Title);
 
             if (_enemyConfig is IMelee meleeConfig) _enemyAttack.SetMeleeAttackStats(meleeConfig.AttackDamage, meleeConfig.AttackRate);
-        }
-
-        private void OnDisable()
-        {
-            _hp.OnDeath -= ReturnToPool;
-        }
-
-        private void Start()
-        {
+            
+            _hp.SetMaxHealth(_enemyConfig.MaxHp);
+            _hp.InitializeHealth();
+            
+            EnemyIdleInstance = Instantiate(_enemyConfig.EnemyIdle);
+            EnemyEngageInstance = Instantiate(_enemyConfig.EnemyEngage);
+            EnemyAttackInstance = Instantiate(_enemyConfig.EnemyAttack);
+            EnemyWanderingInstance = Instantiate(_enemyConfig.EnemyWandering);
+            EnemyRetreatInstance = Instantiate(_enemyConfig.EnemyRetreat);
+            
             EnemyIdleInstance.Initialize(gameObject,this);
             EnemyEngageInstance.Initialize(gameObject,this);
             EnemyAttackInstance.Initialize(gameObject,this);
@@ -83,6 +75,18 @@ namespace EnemyStaff
             EnemyRetreatInstance.Initialize(gameObject,this);
             
             StateMachine.Initialize(IdleState);
+        }
+
+        private void OnEnable()
+        {
+            _hp.OnDeath += ReturnToPool;
+
+            if (_isPooled) Initialize(_name);
+        }
+
+        private void OnDisable()
+        {
+            _hp.OnDeath -= ReturnToPool;
         }
 
         private void Update()
@@ -100,6 +104,12 @@ namespace EnemyStaff
         private void ReturnToPool()
         {
             EnemyFactory.Instance.ReturnEnemy(_name, this);
+        }
+
+        public void Pool(EnemyName enemyName)
+        {
+            Initialize(enemyName);
+            _isPooled = true;
         }
         
         public EnemyTargetingCircle EngageCircle => _engageCircle;

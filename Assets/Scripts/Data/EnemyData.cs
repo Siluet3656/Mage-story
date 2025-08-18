@@ -25,7 +25,7 @@ namespace Data
         
         [Header("Prison")]
         [SerializeField] private EnemyConfig _prisoner;
-        //[SerializeField] private EnemyConfig _hunter;
+        [SerializeField] private EnemyConfig _hunter;
         //[SerializeField] private EnemyConfig _paladin;
         
         private Dictionary<EnemyName, EnemyConfig> _enemyValues;
@@ -39,8 +39,8 @@ namespace Data
         {
             _enemyValues = new Dictionary<EnemyName, EnemyConfig>
             {
-                { EnemyName.Prisoner, _prisoner }//,
-                //{ EnemyName.Hunter, _hunter },
+                { EnemyName.Prisoner, _prisoner },
+                { EnemyName.Hunter, _hunter }//,
                 //{ EnemyName.Paladin, _paladin }
             };
         }
