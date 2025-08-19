@@ -2,7 +2,11 @@
 using System.Collections;
 using UnityEngine;
 using Data;
+using Data.Enums;
+using Data.SpellConfigs;
 using EntityStaff;
+using PlayerStaff;
+using Spells;
 using View;
 
 namespace EnemyStaff
@@ -11,6 +15,7 @@ namespace EnemyStaff
     {
         private Hp _playersHp;
         private EnemyView _enemyView;
+        private Player _player;
         
         private float _currentSwipeProgress;
         
@@ -21,6 +26,7 @@ namespace EnemyStaff
         {
             IsReadyToAttack = true;
             _playersHp = G.PlayersHp;
+            _player = G.Player;
             _enemyView = GetComponent<EnemyView>();
         }
 
@@ -63,6 +69,14 @@ namespace EnemyStaff
         {
             _attackDamage = damage;
             _attackCooldownTime = rate;
+        }
+
+        public void ShootPlayer()
+        {
+            Projectile projectile = EnemyProjectilesFactory.Instance.PoolProjectile(EnemyProjectileName.Arrow);
+            projectile.transform.position = transform.position;
+            projectile.SetDamage(_attackDamage);
+            StartCoroutine(AttackCooldown(_attackCooldownTime));
         }
     }
 }

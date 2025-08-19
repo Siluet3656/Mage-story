@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Data;
-using Data.EnemyConfigs.Melee;
 using Data.Enums;
 
 namespace EnemyStaff

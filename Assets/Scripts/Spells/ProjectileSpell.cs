@@ -1,7 +1,6 @@
 ﻿using Data.Enums;
 using UnityEngine;
 using Data.SpellConfigs;
-using EnemyStaff;
 using EntityStaff;
 
 namespace Spells
