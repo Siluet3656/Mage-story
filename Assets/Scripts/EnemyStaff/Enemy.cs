@@ -7,6 +7,7 @@ using EnemyStaff.StateSO;
 using EntityStaff;
 using View;
 using Debugging;
+using PlayerStaff;
 
 namespace EnemyStaff
 {
@@ -20,6 +21,7 @@ namespace EnemyStaff
         [Header("Player Search Settings")]
         [SerializeField] private EnemyTargetingCircle _attackCircle;
         [SerializeField] private EnemyTargetingCircle _engageCircle;
+        [SerializeField] private TargetingCircle _healCastingCircle;
         
         [Header("Debug")] 
         [SerializeField] private EnemyStatePreview _enemyStatePreview;
@@ -57,7 +59,9 @@ namespace EnemyStaff
             _enemyView.SetSprite(_enemyConfig.Sprite);
             _enemyView.SetTitle(_enemyConfig.Title);
 
-            if (_enemyConfig is IMelee meleeConfig) _enemyAttack.SetMeleeAttackStats(meleeConfig.AttackDamage, meleeConfig.AttackRate);
+            if (_enemyConfig is IMelee meleeConfig) _enemyAttack.SetAttackStats(meleeConfig.AttackDamage, meleeConfig.AttackRate);
+            if (_enemyConfig is IRange rangeConfig) _enemyAttack.SetAttackStats(rangeConfig.AttackDamage, rangeConfig.AttackRate);
+            if (_enemyConfig is ICaster casterConfig) _enemyAttack.SetAttackStats(casterConfig.CastValue, casterConfig.CastRate);
             
             _hp.SetMaxHealth(_enemyConfig.MaxHp);
             _hp.InitializeHealth();
@@ -114,6 +118,7 @@ namespace EnemyStaff
         
         public EnemyTargetingCircle EngageCircle => _engageCircle;
         public EnemyTargetingCircle AttackCircle => _attackCircle;
+        public TargetingCircle HealCastingCircle => _healCastingCircle;
         public EnemyStateMachine StateMachine { get; private set; }
         public IdleState IdleState { get; private set; }
         public EngageState EngageState { get; private set; }

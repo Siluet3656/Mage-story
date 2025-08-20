@@ -80,8 +80,12 @@ namespace EnemyStaff.StateSO.Attack
             if (MyHp.CurrentHealth < MyHp.MaxHealth * _thresholdHpPercent) StartRetreat();
 
             if (CheckLineOfSight() == false) StartWandering();
-            
-            if (MyAttack.IsReadyToAttack) MyAttack.PerformAttack();
+
+            if (MyAttack.IsReadyToAttack)
+            {
+                MyAttack.PerformAttack();
+                MyAttack.StartAttackCooldown();
+            }
         }
     }
 }

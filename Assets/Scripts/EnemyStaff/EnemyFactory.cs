@@ -29,7 +29,7 @@ namespace EnemyStaff
         [Header("Prefabs")]
         [SerializeField] private GameObject _enemyMelee;
         [SerializeField] private GameObject _enemyRanged;
-        //[SerializeField] private GameObject _enemyCaster;
+        [SerializeField] private GameObject _enemyCaster;
         
         private readonly Dictionary<EnemyName, Queue<Enemy>> _enemyPools = new Dictionary<EnemyName, Queue<Enemy>>();
         
@@ -44,6 +44,7 @@ namespace EnemyStaff
             
             InstantiateEnemies(EnemyName.Prisoner, _enemyMelee, _defaultAmountOfEnemies);
             InstantiateEnemies(EnemyName.Hunter, _enemyRanged, _defaultAmountOfEnemies);
+            InstantiateEnemies(EnemyName.Paladin, _enemyCaster, _defaultAmountOfEnemies);
         }
         
         private void InstantiateEnemies(EnemyName enemyName, GameObject prefab, int amountOfEnemies)
@@ -105,6 +106,9 @@ namespace EnemyStaff
                     break;
                 case EnemyType.Range:
                     enemy = GetEnemy(enemyName, _enemyRanged);
+                    break;
+                case EnemyType.Caster:
+                    enemy = GetEnemy(enemyName, _enemyCaster);
                     break;
                 default:
                     return null;

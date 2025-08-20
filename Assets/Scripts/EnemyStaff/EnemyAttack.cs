@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Data;
 using Data.Enums;
-using Data.SpellConfigs;
 using EntityStaff;
 using PlayerStaff;
-using Spells;
 using View;
 
 namespace EnemyStaff
@@ -16,11 +14,16 @@ namespace EnemyStaff
         private Hp _playersHp;
         private EnemyView _enemyView;
         private Player _player;
+        private Hp _enemyHp;
+        private Enemy _me;
         
         private float _currentSwipeProgress;
         
         private float _attackCooldownTime = 5f;
         private float _attackDamage = 50f;
+        
+        private float _castCooldownTime = 5f;
+        private float _castValue = 50f;
         
         private void Awake()
         {
@@ -28,6 +31,8 @@ namespace EnemyStaff
             _playersHp = G.PlayersHp;
             _player = G.Player;
             _enemyView = GetComponent<EnemyView>();
+            _enemyHp = GetComponent<Hp>();
+            _me = GetComponent<Enemy>();
         }
 
         private void OnDisable()
@@ -38,7 +43,7 @@ namespace EnemyStaff
             StopAllCoroutines();
         }
 
-        private IEnumerator AttackCooldown(float cooldown)
+        private IEnumerator Cooldown(float cooldown)
         {
             IsReadyToAttack = false;
             float elapsedTime = 0f;
@@ -58,25 +63,56 @@ namespace EnemyStaff
         }
         
         public bool IsReadyToAttack { get; private set; }
-
-        public void PerformAttack()
-        {
-            _playersHp.TryToTakeDamage(_attackDamage, false);
-            StartCoroutine(AttackCooldown(_attackCooldownTime));
-        }
-
-        public void SetMeleeAttackStats(float damage, float rate)
+        
+        public void SetAttackStats(float damage, float rate)
         {
             _attackDamage = damage;
             _attackCooldownTime = rate;
         }
+        
+        public void SetCastStats(float value, float rate)
+        {
+            _castValue = value;
+            _castCooldownTime = rate;
+        }
 
+        public void StartAttackCooldown()
+        {
+            StartCoroutine(Cooldown(_attackCooldownTime));
+        }
+
+        public void StartCastCooldown()
+        {
+            StartCoroutine(Cooldown(_castCooldownTime));
+        }
+        
+        public void PerformAttack()
+        {
+            _playersHp.TryToTakeDamage(_attackDamage, false);
+            
+        }
+        
         public void ShootPlayer()
         {
             Projectile projectile = EnemyProjectilesFactory.Instance.PoolProjectile(EnemyProjectileName.Arrow);
             projectile.transform.position = transform.position;
             projectile.SetDamage(_attackDamage);
-            StartCoroutine(AttackCooldown(_attackCooldownTime));
+        }
+
+        public void HealMyself()
+        {
+            _enemyHp.Heal(_castValue);
+        }
+        
+        public void HealNearbyEnemy()
+        {
+            ITargetable targetToHeal = _me.HealCastingCircle.NearbyTargets.OrderBy(x => GetComponent<Hp>().CurrentHealth).FirstOrDefault();
+
+            if (targetToHeal != null)
+            {
+                Hp targetHp = targetToHeal.GameObject.GetComponent<Hp>();
+                targetHp.Heal(_castValue);
+            }
         }
     }
 }

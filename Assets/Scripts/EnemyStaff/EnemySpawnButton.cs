@@ -28,5 +28,10 @@ namespace EnemyStaff
         {
             SpawnEnemy(EnemyName.Hunter);
         }
+        
+        public void SpawnPaladin()
+        {
+            SpawnEnemy(EnemyName.Paladin);
+        }
     }
 }

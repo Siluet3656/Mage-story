@@ -1,21 +1,21 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Unity.Mathematics;
 using PlayerStaff;
 
 namespace EnemyStaff.StateSO.Attack
 {
-    [CreateAssetMenu(fileName = "RangeAttack", menuName = "Enemy logic/Attack/RangeAttack", order = 30)]
-    public class RangeAttack : EnemyAttackSoBase
+    [CreateAssetMenu(fileName = "HealEnemyAndMyself", menuName = "Enemy logic/Attack/HealEnemyAndMyself", order = 30)]
+    public class HealEnemyAndMyself : EnemyAttackSoBase
     {
-        [Header("Retreat settings")]
-        [SerializeField, Min(0f)]private  float _thresholdHpPercent = 0.1f;
+        [Header("Retreat settings")] 
+        [SerializeField, Min(0f)] private float _thresholdHpPercent = 0.1f;
 
-        [Header("Attack settings")]
-        [SerializeField, Range(1f,2f)] private float _attackRadiusExtendFactor = 1.2f;
-        
-        [Header("Sight settings")]
-        [SerializeField, Min(1f)]private float _sightRange = 20f;
-        [SerializeField, Min(0.1f)]private float _yOffset = 0.5f;
+        [Header("Attack settings")] 
+        [SerializeField, Range(1f, 2f)] private float _attackRadiusExtendFactor = 1.2f;
+
+        [Header("Sight settings")] 
+        [SerializeField, Min(1f)] private float _sightRange = 20f;
+        [SerializeField, Min(0.1f)] private float _yOffset = 0.5f;
         
         private void StopAttack(PlayerMovement player)
         {
@@ -83,8 +83,9 @@ namespace EnemyStaff.StateSO.Attack
 
             if (MyAttack.IsReadyToAttack)
             {
-                MyAttack.ShootPlayer();
-                MyAttack.StartAttackCooldown();
+                MyAttack.HealMyself();
+                MyAttack.HealNearbyEnemy();
+                MyAttack.StartCastCooldown();
             }
         }
     }
