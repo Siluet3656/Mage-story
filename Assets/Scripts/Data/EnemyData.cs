@@ -9,16 +9,6 @@ namespace Data
     {
         #region Singleton
 
-        public EnemyData()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-            Instance = this;
-        }
-
         public static EnemyData Instance { get; private set; }
 
         #endregion
@@ -32,6 +22,13 @@ namespace Data
         
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+            
             UpdateData();
         }
 

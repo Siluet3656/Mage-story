@@ -10,16 +10,6 @@ namespace EnemyStaff
 
         public static EnemyProjectilesFactory Instance { get; private set; }
 
-        EnemyProjectilesFactory()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-            Instance = this;
-        }
-
         #endregion
         
         [Header("Base")] 
@@ -32,6 +22,13 @@ namespace EnemyStaff
         
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+            
             InitializeProjectilePools();
         }
 

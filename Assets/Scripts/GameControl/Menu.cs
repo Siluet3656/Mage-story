@@ -6,6 +6,7 @@ namespace GameControl
     {
         [SerializeField] private CanvasGroup _spellBook;
         [SerializeField] private GameObject _sceneMenuPanel;
+        [SerializeField] private GameObject _enemySpawnPanel;
 
         public bool IsBookOpened => _spellBook.alpha > 0;
         
@@ -29,6 +30,11 @@ namespace GameControl
         public void OpenSceneMenu()
         {
             _sceneMenuPanel.SetActive(true);
+        }
+
+        public void ToggleEnemySpawnPanel()
+        {
+            _enemySpawnPanel.SetActive(!_enemySpawnPanel.activeSelf);
         }
     }
 }

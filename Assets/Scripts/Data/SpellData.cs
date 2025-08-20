@@ -8,16 +8,6 @@ namespace Data
     public class SpellData : MonoBehaviour
     {
         #region Singleton
-
-        SpellData()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-            Instance = this;
-        }
         
         public static SpellData Instance { get; private set; }
 
@@ -65,6 +55,13 @@ namespace Data
         
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+            
             UpdateData();
         }
 
