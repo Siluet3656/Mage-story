@@ -1,17 +1,14 @@
-﻿using System;
+﻿using System.Collections;
 using UnityEngine;
-using System.Collections;
 using Animations;
 using Data;
 using Data.Enums;
-using Pathfinding;
 using View;
 
 namespace PlayerStaff
 { 
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(PlayerUI))]
-    [RequireComponent(typeof(PlayerAnimations))]
     public class PlayerMovement : MonoBehaviour
     {
         [Header("Movement")] 
@@ -38,7 +35,7 @@ namespace PlayerStaff
         {
             _ui = GetComponent<PlayerUI>();
             _rb = GetComponent<Rigidbody2D>();
-            _playerAnimations = GetComponent<PlayerAnimations>();
+            _playerAnimations = GetComponentInChildren<PlayerAnimations>();
             
             _currentSpeed = _playerDefaultSpeed;
             _adjustedSpeed = _currentSpeed;
