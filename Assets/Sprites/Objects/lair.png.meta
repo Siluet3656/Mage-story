@@ -1,13 +1,7 @@
 fileFormatVersion: 2
-guid: 7134d19ec6813f74aad3fd6817bc0452
+guid: b1b515c44bc3bbc4dba65fe20cae802c
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -1418488409169817208
-    second: torchBIG_0
-  - first:
-      213: 2947861144861427592
-    second: torchBIG_1
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -47,14 +41,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 9
-  spritePivot: {x: 0.5, y: 0.22049539}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 84, z: 0, w: 204}
-  spriteGenerateFallbackPhysicsShape: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 300
+  spriteBorder: {x: 0, y: 253, z: 0, w: 246}
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -117,49 +111,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: torchBIG_0
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 85
-        width: 92
-        height: 411
-      alignment: 9
-      pivot: {x: 0.5, y: 0.1}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8819c6dae44805ce0800000000000000
-      internalID: -1418488409169817208
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: torchBIG_1
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 496
-        width: 92
-        height: 122
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 88744a2c718e8e820800000000000000
-      internalID: 2947861144861427592
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
