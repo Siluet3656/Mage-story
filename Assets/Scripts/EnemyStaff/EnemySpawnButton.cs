@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Data;
+using UnityEngine;
 using Random = UnityEngine.Random;
 using Data.Enums;
 
@@ -11,7 +12,7 @@ namespace EnemyStaff
         private EnemyMovement _enemyMovement;
         private void SpawnEnemy(EnemyName enemyName)
         {
-            _pos = new Vector3(Random.Range(-10f,10f),Random.Range(-10f,10f),0f);
+            _pos = new Vector3(G.Player.transform.position.x + Random.Range(-5f,5f),G.Player.transform.position.y + Random.Range(-5f,5f),0f);
             _enemy = EnemyFactory.Instance.PoolEnemy(enemyName);
             _enemy.transform.position = _pos;
             _enemyMovement = _enemy.GetComponent<EnemyMovement>();

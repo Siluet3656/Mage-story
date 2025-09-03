@@ -93,6 +93,8 @@ namespace EnemyStaff
         
         public Enemy PoolEnemy(EnemyName enemyName)
         {
+            if (enemyName == EnemyName.None) return null;
+            
             Enemy enemy;
             EnemyType type = EnemyData.Instance.GetEnemyConfig(enemyName).GetEnemyType();
 
