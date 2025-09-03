@@ -37,10 +37,12 @@ namespace EntityStaff
             if (_shieldStacks > 0)
             {
                 RemoveShieldStack();
+                DamagePopup.Instance.AddText(0, transform.position);
                 return;
             }
 
             ApplyDamageToHealth(damage);
+            DamagePopup.Instance.AddText((int)damage, transform.position);
         }
 
         private void ApplyDamageToHealth(float damage)
