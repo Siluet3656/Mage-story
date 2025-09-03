@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: TestStats
   m_EditorClassIdentifier: 
   _globalCooldown: 1
-  _fireCriticalMultiplier: 1
-  _fireCriticalChance: 0
-  _frostCriticalMultiplier: 1
-  _frostCriticalChance: 0
-  _earthCriticalMultiplier: 1
-  _earthCriticalChance: 0
-  _noElementCriticalMultiplier: 1
-  _noElementCriticalChance: 0
+  _fireCriticalMultiplier: 1.2
+  _fireCriticalChance: 0.367
+  _frostCriticalMultiplier: 1.2
+  _frostCriticalChance: 0.173
+  _earthCriticalMultiplier: 1.2
+  _earthCriticalChance: 0.165
+  _noElementCriticalMultiplier: 1.2
+  _noElementCriticalChance: 0.266
