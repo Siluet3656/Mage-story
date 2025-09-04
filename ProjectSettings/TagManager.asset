@@ -9,6 +9,9 @@ TagManager:
   - IceTomb
   - FireballEffects
   - FrostWhirlwindEffects
+  - SpikeWhirlwindEffects
+  - DefaultEffects
+  - FireMarkEffects
   layers:
   - Default
   - TransparentFX
