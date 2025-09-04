@@ -8,6 +8,7 @@ using EntityStaff;
 using View;
 using Debugging;
 using PlayerStaff;
+using Statuses;
 
 namespace EnemyStaff
 {
@@ -31,6 +32,7 @@ namespace EnemyStaff
         private Hp _hp;
         private EnemyView _enemyView;
         private EnemyAttack _enemyAttack;
+        private StatusController _enemyStatusController;
 
         private EnemyName _name;
 
@@ -41,6 +43,7 @@ namespace EnemyStaff
             _hp = GetComponent<Hp>();
             _enemyView = GetComponent<EnemyView>();
             _enemyAttack = GetComponent<EnemyAttack>();
+            _enemyStatusController = GetComponent<StatusController>();
 
             StateMachine = new EnemyStateMachine();
 
@@ -110,7 +113,7 @@ namespace EnemyStaff
             EnemyFactory.Instance.ReturnEnemy(_name, this);
         }
 
-        public void Pool(EnemyName enemyName)
+        public void AddToPool(EnemyName enemyName)
         {
             Initialize(enemyName);
             _isPooled = true;
@@ -119,6 +122,7 @@ namespace EnemyStaff
         public EnemyTargetingCircle EngageCircle => _engageCircle;
         public EnemyTargetingCircle AttackCircle => _attackCircle;
         public TargetingCircle HealCastingCircle => _healCastingCircle;
+        public StatusController EnemyStatusController => _enemyStatusController;
         public EnemyStateMachine StateMachine { get; private set; }
         public IdleState IdleState { get; private set; }
         public EngageState EngageState { get; private set; }

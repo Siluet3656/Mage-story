@@ -722,6 +722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackCircle: {fileID: 1164711652470444541}
   _engageCircle: {fileID: 4736281079594949637}
+  _healCastingCircle: {fileID: 0}
   _enemyStatePreview: {fileID: 5417550731240387869}
 --- !u!114 &2917276155359522141
 MonoBehaviour:
@@ -1409,7 +1410,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 15
+  m_Radius: 10
 --- !u!114 &1164711652470444541
 MonoBehaviour:
   m_ObjectHideFlags: 0

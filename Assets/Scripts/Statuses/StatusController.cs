@@ -91,7 +91,6 @@ namespace Statuses
                 _statusView?.RemoveStatusEffect(type, gameObject);
             }
         }
-
     
         public void ApplyStatus(StatusEffectData data)
         {
@@ -127,6 +126,14 @@ namespace Statuses
             foreach (var statusEffect in _activeStatusEffects)
             {
                 statusEffect.Value.RefreshDuration();
+            }
+        }
+
+        public void RemoveAllStatuses()
+        {
+            foreach (var pair in _activeStatusEffects)
+            {
+                pair.Value.Remove(gameObject);
             }
         }
     }

@@ -1,5 +1,5 @@
-﻿using Data.Enums;
-using UnityEngine;
+﻿using UnityEngine;
+using Data.Enums;
 
 namespace EnemyStaff
 {

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Data;
 using Data.Enums;
+using Statuses;
 
 namespace EnemyStaff
 {
@@ -58,7 +59,7 @@ namespace EnemyStaff
         {
             GameObject enemyGameObject = Instantiate(prefab, transform);
             Enemy enemy = enemyGameObject.GetComponent<Enemy>();
-            enemy.Pool(enemyName);
+            enemy.AddToPool(enemyName);
             _enemyPools[enemyName].Enqueue(enemy);
             enemyGameObject.SetActive(false);
         }
@@ -120,9 +121,10 @@ namespace EnemyStaff
         
         public void ReturnEnemy(EnemyName enemyName, Enemy enemy)
         {
-            enemy.gameObject.SetActive(false);
             enemy.transform.SetParent(transform);
-
+            enemy.EnemyStatusController.RemoveAllStatuses();
+            enemy.gameObject.SetActive(false);
+            
             if (_enemyPools != null)
             {
                 _enemyPools[enemyName].Enqueue(enemy);

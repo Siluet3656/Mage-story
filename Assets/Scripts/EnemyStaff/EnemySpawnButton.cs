@@ -1,6 +1,6 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
+using Data;
 using Data.Enums;
 
 namespace EnemyStaff

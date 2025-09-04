@@ -17,14 +17,10 @@ namespace View
         private void Awake()
         {
             _hp = GetComponent<Hp>();
-        }
-
-        private void OnEnable()
-        {
             SubscribeToEvents();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             UnsubscribeFromEvents();
         }
