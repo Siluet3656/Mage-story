@@ -12,6 +12,8 @@ TagManager:
   - SpikeWhirlwindEffects
   - DefaultEffects
   - FireMarkEffects
+  - MagicArrowEffects
+  - SharpDiscEffects
   layers:
   - Default
   - TransparentFX
