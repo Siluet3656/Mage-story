@@ -1,7 +1,7 @@
-﻿using Data;
+﻿using UnityEngine;
+using Data;
 using Data.Enums;
 using Data.SpellConfigs;
-using EnemyStaff;
 using EntityStaff;
 
 namespace Spells.Fire
@@ -9,6 +9,24 @@ namespace Spells.Fire
     public class Fireball : ProjectileSpell
     {
         protected override SpellName SpellName => SpellName.Fireball;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            Transform[] allChildren = GetComponentsInChildren<Transform>(includeInactive: true);
+
+            foreach (Transform child in allChildren)
+            {
+                if (child == transform) continue;
+                
+                if (child.CompareTag("FireballEffects"))
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+
         protected override void OnReachTarget(ITargetable target)
         {
             SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
