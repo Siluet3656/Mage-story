@@ -1,5 +1,5 @@
-﻿using EntityStaff;
-using UnityEngine;
+﻿using UnityEngine;
+using EntityStaff;
 
 namespace Spells.Fire
 {
@@ -13,6 +13,46 @@ namespace Spells.Fire
             {
                 otherHp.TryToTakeCriticalDamage(SpellDamage, CriticalMultiply, CriticalChance);
             }
+        }
+
+        private void OnEnable()
+        {
+            AnimationEventCatcher.OnAnimationEnd += OnAnimationEnd;
+        }
+
+        private void OnDisable()
+        {
+            AnimationEventCatcher.OnAnimationEnd -= OnAnimationEnd;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+                    
+            Transform[] allChildren = GetComponentsInChildren<Transform>(includeInactive: true);
+        
+            foreach (Transform child in allChildren)
+            {
+                if (child == transform) continue;
+                        
+                if (child.CompareTag("ExplosionEffects"))
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        protected override void OnAnimationEnd()
+        {
+            Animator.SetBool("isExplododing", false);
+            
+            base.OnAnimationEnd();
+        }
+
+        public override void DoSpell()
+        {
+            base.DoSpell();
+            Animator.SetBool("isExplododing", true);
         }
     }
 }

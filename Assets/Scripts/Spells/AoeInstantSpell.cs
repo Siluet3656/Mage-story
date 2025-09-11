@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using Animations;
 using Data.Enums;
 using Data.SpellConfigs;
-using EnemyStaff;
 using EntityStaff;
 
 namespace Spells
@@ -10,24 +9,19 @@ namespace Spells
     [RequireComponent(typeof(SpriteRenderer))]
     public class AoeInstantSpell : Spell
     {
-        private Sprite _sprite;
-        private SpriteRenderer _spriteRenderer;
+        private Animator _animator;
+        private AnimationEventCatcher _animationEventCatcher;
         private ITargetable _target;
         private Hp _targetsHp;
-        private float _exitsTime;
 
         protected override SpellName SpellName { get; set; }
-
-        private IEnumerator Existing()
-        {
-            yield return new WaitForSeconds(_exitsTime);
-            
-            base.ReturnToPool();
-        }
+        protected Animator Animator => _animator;
+        protected AnimationEventCatcher AnimationEventCatcher => _animationEventCatcher;
 
         protected override void Awake()
         {
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _animator = GetComponent<Animator>();
+            _animationEventCatcher = GetComponent<AnimationEventCatcher>();
             
             base.Awake();
         }
@@ -35,26 +29,24 @@ namespace Spells
         private void Initialize(AoeInstantSpellConfig config)
         {
             SpellDamage = config.Damage;
-            _sprite = config.CastSprite;
-            _exitsTime = config.ExistTime;
         }
         
         public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
         {
-            if (config is AoeInstantSpellConfig instantSpellConfig)
-            {
-                Initialize(instantSpellConfig);
-            }
+            if (config is AoeInstantSpellConfig instantSpellConfig) Initialize(instantSpellConfig);
             
             base.Initialize(config, adjustedCriticalMultiply, adjustedCriticalChance);
         }
 
         public override void DoSpell()
         {
-            _spriteRenderer.sprite = _sprite;
             gameObject.SetActive(true);
-
-            StartCoroutine(Existing());
         }
+        
+        protected virtual void OnAnimationEnd()
+        {
+            base.ReturnToPool();
+        }
+
     }
 }
