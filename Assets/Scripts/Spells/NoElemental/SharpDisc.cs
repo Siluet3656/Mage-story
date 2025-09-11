@@ -7,6 +7,8 @@ namespace Spells.NoElemental
 {
     public class SharpDisc : ProjectileSpell
     {
+        private static readonly int IsSharpDisc = Animator.StringToHash("isSharpDisc");
+
         protected override void Awake()
         {
             base.Awake();
@@ -21,20 +23,23 @@ namespace Spells.NoElemental
                     child.gameObject.SetActive(true);
                 }
             }
-                
-            Animator animator = GetComponent<Animator>();
-            if (animator != null && !animator.enabled)
-            {
-                animator.enabled = true;
-            }
         }
-        
+
+        public override void DoSpell()
+        {
+            Animator.SetBool(IsSharpDisc, true);
+            
+            base.DoSpell();
+        }
+
         protected override void OnReachTarget(ITargetable target)
         {
             if (target is EnemyTargeting enemy)
             {
                 ApplyDebuff(enemy, StatusType.Bleed);
             }
+            
+            Animator.SetBool(IsSharpDisc, false);
             
             base.OnReachTarget(target);
         }

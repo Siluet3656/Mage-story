@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: isExplododing
+    m_ConditionEvent: isExploding
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4494122294908012454}
@@ -61,7 +61,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isExplododing
+    m_ConditionEvent: isExploding
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5618451810461242234}
@@ -83,10 +83,10 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Explosion
+  m_Name: AOEinstant
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isExplododing
+  - m_Name: isExploding
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0

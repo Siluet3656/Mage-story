@@ -6,6 +6,8 @@ namespace Spells.Fire
     [RequireComponent(typeof(CircleCollider2D))]
     public class Explosion : AoeInstantSpell
     {
+        private static readonly int IsExplododing = Animator.StringToHash("isExploding");
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             Hp otherHp = other.GetComponent<Hp>();
@@ -44,7 +46,7 @@ namespace Spells.Fire
 
         protected override void OnAnimationEnd()
         {
-            Animator.SetBool("isExplododing", false);
+            Animator.SetBool(IsExplododing, false);
             
             base.OnAnimationEnd();
         }
@@ -52,7 +54,7 @@ namespace Spells.Fire
         public override void DoSpell()
         {
             base.DoSpell();
-            Animator.SetBool("isExplododing", true);
+            Animator.SetBool(IsExplododing, true);
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Data.Enums;
-using UnityEngine;
+﻿using UnityEngine;
+using Data.Enums;
 using Data.SpellConfigs;
 using EntityStaff;
 
@@ -11,23 +11,23 @@ namespace Spells
     {
         private const float Speed = 800f;
         private const float MinimumDistance = 0.3f;
-
-        private Sprite _sprite;
+        
         private Rigidbody2D _rigidbody;
-        private SpriteRenderer _spriteRenderer;
+        private Animator _animator;
         private ITargetable _target;
         private Hp _targetsHp;
         private Vector3 _direction;
         private float _angle;
 
         protected override SpellName SpellName { get; set; }
+        protected Animator Animator => _animator;
 
         private ProjectileSpellConfig _config;
 
         protected override void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _animator = GetComponent<Animator>();
             
             base.Awake();
         }
@@ -35,7 +35,6 @@ namespace Spells
         private void Initialize(ProjectileSpellConfig config)
         {
             SpellDamage = config.Damage;
-            _sprite = config.ProjectileSprite;
         }
 
         private void FixedUpdate()
@@ -53,8 +52,9 @@ namespace Spells
 
         private void Move()
         {
-            _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             _rigidbody.velocity = _direction.normalized * (Speed * Time.fixedDeltaTime);
+
+            _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
         }
         
@@ -76,6 +76,9 @@ namespace Spells
         
         public void OnTargetDeath()
         {
+            _rigidbody.velocity = Vector2.zero;
+            transform.rotation = Quaternion.identity;
+            
             ReturnToPool();
         }
 
@@ -84,7 +87,6 @@ namespace Spells
             if (_target == null) return;
 
             _targetsHp = _target.GameObject.GetComponent<Hp>();
-            _spriteRenderer.sprite = _sprite;
             gameObject.SetActive(true);
         }
         
