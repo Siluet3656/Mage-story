@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using Data;
+using UnityEngine;
 using Data.Enums;
+using Data.SpellConfigs;
 using EnemyStaff;
 using EntityStaff;
 
@@ -7,12 +9,15 @@ namespace Spells.NoElemental
 {
     public class SharpDisc : ProjectileSpell
     {
-        private static readonly int IsSharpDisc = Animator.StringToHash("isSharpDisc");
+
+        private SpellConfig _config;
+        
+        protected override SpellName SpellName => SpellName.SharpDisk;
 
         protected override void Awake()
         {
             base.Awake();
-
+            
             Transform[] allChildren = GetComponentsInChildren<Transform>(includeInactive: true);
             foreach (Transform child in allChildren)
             {
@@ -27,9 +32,18 @@ namespace Spells.NoElemental
 
         public override void DoSpell()
         {
-            Animator.SetBool(IsSharpDisc, true);
+            MyAnimator.enabled = true;
+            
+            _config = SpellData.Instance.GetSpellConfig(SpellName);
+
+            if (_config is ProjectileSpellConfig config)
+            {
+                MyRenderer.sprite = config.ProjectileSprite;
+            }
             
             base.DoSpell();
+            
+            MyAnimator.Play("SharpDiscRotation", 0, 0f); 
         }
 
         protected override void OnReachTarget(ITargetable target)
@@ -38,8 +52,6 @@ namespace Spells.NoElemental
             {
                 ApplyDebuff(enemy, StatusType.Bleed);
             }
-            
-            Animator.SetBool(IsSharpDisc, false);
             
             base.OnReachTarget(target);
         }

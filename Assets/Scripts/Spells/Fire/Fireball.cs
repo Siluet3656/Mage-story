@@ -8,12 +8,15 @@ namespace Spells.Fire
 {
     public class Fireball : ProjectileSpell
     {
-        private static readonly int IsFireball = Animator.StringToHash("isFireball");
+        private SpellConfig _config;
+        
         protected override SpellName SpellName => SpellName.Fireball;
 
         protected override void Awake()
         {
             base.Awake();
+            
+            
             
             Transform[] allChildren = GetComponentsInChildren<Transform>(includeInactive: true);
 
@@ -30,24 +33,28 @@ namespace Spells.Fire
 
         public override void DoSpell()
         {
-            Animator.SetBool(IsFireball, true);
+            _config = SpellData.Instance.GetSpellConfig(SpellName);
+            if (_config is ProjectileSpellConfig config)
+            {
+                MyRenderer.sprite = config.ProjectileSprite;
+            }
+            
             base.DoSpell();
         }
 
         protected override void OnReachTarget(ITargetable target)
         {
-            SpellConfig config = SpellData.Instance.GetSpellConfig(SpellName.Explosion);
+            
             Spell fireballExplosion = SpellFactory.Instance.PoolSpell(SpellName.Explosion);
 
             if (fireballExplosion != null)
             {
                 fireballExplosion.transform.position = transform.position;
-                fireballExplosion.Initialize(config, CriticalMultiply, CriticalChance);
+                fireballExplosion.Initialize(_config, CriticalMultiply, CriticalChance);
                 fireballExplosion.gameObject.SetActive(true);
                 fireballExplosion.DoSpell();
             }
-            
-            Animator.SetBool(IsFireball, false);
+
             base.OnReachTarget(target);
         }
     }

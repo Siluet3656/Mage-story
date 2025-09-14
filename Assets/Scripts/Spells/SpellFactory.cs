@@ -160,6 +160,8 @@ namespace Spells
                     return null;
             }
             
+            if (spell == null) return null;
+
             spell.transform.SetParent(null);
             return spell;
         }

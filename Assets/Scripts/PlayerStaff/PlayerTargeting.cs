@@ -44,7 +44,7 @@ namespace PlayerStaff
         private void SetTarget(ITargetable target)
         {
             target.OnTargeted();
-            target.OnTargetDestroy += ClearTarget;
+            target.OnTargetDie += ClearTarget;
             _currentTarget = target;
         }
         
@@ -53,7 +53,7 @@ namespace PlayerStaff
             if (HasTarget)
             {
                 _currentTarget.OnUntargeted();
-                _currentTarget.OnTargetDestroy -= ClearTarget;
+                _currentTarget.OnTargetDie -= ClearTarget;
                 _currentTarget = null;
             }
         }

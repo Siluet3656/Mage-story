@@ -337,9 +337,11 @@ namespace PlayerStaff
             if (spellConfig is INeedPrefab)
             {
                 _spell = SpellFactory.Instance.PoolSpell(spellName);
+                
+                if (_spell == null) return;
+                
                 _spell.SetSpellResources(_resources); 
                 InitializeSpell(spellConfig);
-                
             }
             
             _spellName = spellName;

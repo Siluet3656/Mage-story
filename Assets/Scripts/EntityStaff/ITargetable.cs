@@ -13,6 +13,6 @@ namespace EntityStaff
         
         GameObject GameObject { get; }
 
-        event Action OnTargetDestroy;
+        event Action OnTargetDie;
     }
 }

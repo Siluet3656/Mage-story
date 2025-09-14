@@ -13,21 +13,24 @@ namespace Spells
         private const float MinimumDistance = 0.3f;
         
         private Rigidbody2D _rigidbody;
-        private Animator _animator;
+        private Animator _myAnimator;
+        private SpriteRenderer _myRenderer;
         private ITargetable _target;
         private Hp _targetsHp;
         private Vector3 _direction;
         private float _angle;
 
         protected override SpellName SpellName { get; set; }
-        protected Animator Animator => _animator;
+        protected Animator MyAnimator => _myAnimator;
+        protected SpriteRenderer MyRenderer => _myRenderer;
 
         private ProjectileSpellConfig _config;
 
         protected override void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
-            _animator = GetComponent<Animator>();
+            _myRenderer = GetComponent<SpriteRenderer>();
+            _myAnimator = GetComponent<Animator>();
             
             base.Awake();
         }

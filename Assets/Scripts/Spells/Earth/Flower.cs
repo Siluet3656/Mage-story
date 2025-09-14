@@ -84,7 +84,7 @@ namespace Spells.Earth
 
         private void OnDestroy()
         {
-            OnTargetDestroy?.Invoke();
+            OnTargetDie?.Invoke();
         }
 
         public bool IsTargetable => true;
@@ -102,6 +102,6 @@ namespace Spells.Earth
         }
 
         public GameObject GameObject => gameObject;
-        public event Action OnTargetDestroy;
+        public event Action OnTargetDie;
     }
 }

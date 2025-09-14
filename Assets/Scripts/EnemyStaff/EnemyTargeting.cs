@@ -20,13 +20,13 @@ namespace EnemyStaff
             IsTargetable = true;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            OnTargetDestroy?.Invoke();
+            OnTargetDie?.Invoke();
         }
         
         public GameObject GameObject => gameObject;
-        public event Action OnTargetDestroy;
+        public event Action OnTargetDie;
         
         public void OnTargeted()
         {

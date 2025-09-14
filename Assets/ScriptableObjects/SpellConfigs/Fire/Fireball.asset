@@ -18,7 +18,7 @@ MonoBehaviour:
   _spellElementType: 1
   _shardCost: {x: 1, y: 0, z: 0}
   _reminderCost: 0
-  _projectileSprite: {fileID: 0}
+  _projectileSprite: {fileID: 7347055580440852257, guid: 9633db824be713347816ac704f1a2c33, type: 3}
   _castTime: 1
   _cooldown: 0
   _castBarColor: {r: 0.8867924, g: 0.17150229, b: 0.19922571, a: 1}
