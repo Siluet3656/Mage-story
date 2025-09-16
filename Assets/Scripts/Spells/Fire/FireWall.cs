@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Spells.Fire
 {
+    [RequireComponent(typeof(BoxCollider2D))]
     public class FireWall : DeployableSpell
     {
         private readonly Dictionary<Hp, IEnumerator> _damageRoutines = new Dictionary<Hp, IEnumerator>();
@@ -14,10 +15,6 @@ namespace Spells.Fire
         protected override void Awake()
         {
             _defaultScale = transform.localScale;
-            
-            BoxCollider2D collider2d = gameObject.AddComponent<BoxCollider2D>();
-            collider2d.isTrigger = true;
-            collider2d.size = new Vector2(1.6f, 1.2f);
             
             base.Awake();
         }

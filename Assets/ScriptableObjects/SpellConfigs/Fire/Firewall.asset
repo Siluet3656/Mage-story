@@ -18,9 +18,9 @@ MonoBehaviour:
   _spellElementType: 1
   _shardCost: {x: 1, y: 0, z: 0}
   _reminderCost: 0
-  _ghostColor: {r: 0.8867924, g: 0.8683468, b: 0.14640439, a: 1}
-  _deployedSprite: {fileID: 21300000, guid: 3cc9aabc3e3249142bf4b32f8fb87d2f, type: 3}
-  _duration: 3
+  _ghostColor: {r: 0.11979143, g: 0.7924528, b: 0.048593827, a: 1}
+  _deployedSprite: {fileID: 21300000, guid: 59ed7144b1714da4cb5985893c081e4b, type: 3}
+  _duration: 8
   _castTime: 1
   _cooldown: 0
   _castBarColor: {r: 0.8867924, g: 0.23174985, b: 0.12967247, a: 1}

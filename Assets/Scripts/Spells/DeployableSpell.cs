@@ -10,7 +10,6 @@ namespace Spells
     {
         protected override SpellName SpellName { get; set; }
         private SpriteRenderer _spriteRenderer;
-        private Sprite _sprite;
         private float _duration;
 
         protected override void Awake()
@@ -23,7 +22,6 @@ namespace Spells
         private void Initialize(DeployableSpellConfig config)
         {
             SpellDamage = config.Damage;
-            _sprite = config.DeployedSprite;
             _duration = config.Duration;
         }
 
@@ -46,7 +44,6 @@ namespace Spells
         
         public override void DoSpell()
         {
-            _spriteRenderer.sprite = _sprite;
             gameObject.SetActive(true);
 
             StartCoroutine(Existing());

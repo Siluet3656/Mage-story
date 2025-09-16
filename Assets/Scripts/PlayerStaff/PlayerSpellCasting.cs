@@ -183,6 +183,8 @@ namespace PlayerStaff
 
                 _ghost = new GameObject("ghost");
                 
+                _ghost.transform.localScale = new Vector3(5,5,1);
+                
                 SpriteRenderer ghostSpriteRenderer = _ghost.AddComponent<SpriteRenderer>();
                 ghostSpriteRenderer.sprite = ghostSprite;
                 ghostSpriteRenderer.color = ghostColor;
