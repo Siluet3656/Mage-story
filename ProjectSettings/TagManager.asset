@@ -17,6 +17,7 @@ TagManager:
   - ExplosionEffects
   - FlashFreezeEffects
   - FirewallEffects
+  - FireSpirtEffects
   layers:
   - Default
   - TransparentFX

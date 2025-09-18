@@ -91,7 +91,7 @@ Material:
     - _SpecularHighlights: 1
     - _Speed: 8
     - _SrcBlend: 1
-    - _TimeValue: 0
+    - _TimeValue: 20.381891
     - _UVSec: 0
     - _WaveFrequency: 2
     - _WaveStrength: 0.15
