@@ -16,8 +16,9 @@ namespace Data.SpellConfigs
         [SerializeField, Min(0)] private float _cooldown;
         [SerializeField] private Color _castBarColor;
         
-        [Header("Damaging")]
+        [Header("Spell")]
         [SerializeField, Min(0)] private float _damage;
+        [SerializeField, Min(1)] private float _scaleFactor;
         
         public override SpellType GetSPellType() => SpellType.PlacedSpell;
         public Color GetGhostColor() => _ghostColor;
@@ -26,6 +27,7 @@ namespace Data.SpellConfigs
         public float GetCooldown() => _cooldown;
         public Color GetCastBarColor() => _castBarColor;
         public float Damage => _damage;
+        public float ScaleFactor => _scaleFactor;
         public float Duration => _duration;
     }
 }

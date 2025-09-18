@@ -1,20 +1,21 @@
-﻿Shader "Custom/Fire2D_BuiltIn"
+﻿Shader "Custom/Fire2D_Waves"
 {
     Properties
     {
-        _MainTex ("Main Texture", 2D) = "white" {}
+        _MainTex ("Main Texture (Gradient)", 2D) = "white" {}
         _NoiseTex ("Noise Texture", 2D) = "white" {}
         _Color1 ("Bottom Color", Color) = (1,1,0,1)
-        _Color2 ("Mid Color", Color)    = (1,0.5,0,1)
-        _Color3 ("Top Color", Color)    = (1,0,0,0)
+        _Color2 ("Top Color", Color) = (1,0,0,0)
         _Speed ("Flame Speed", Float) = 2
         _Distortion ("Distortion Strength", Float) = 0.1
+        _WaveStrength ("Wave Strength", Float) = 0.05
+        _WaveFrequency ("Wave Frequency", Float) = 10.0
         _TimeValue ("Time Value", Float) = 0
     }
 
     SubShader
     {
-        Tags
+        Tags 
         { 
             "Queue"="Transparent"
             "IgnoreProjector"="True"
@@ -35,20 +36,20 @@
             sampler2D _MainTex;
             sampler2D _NoiseTex;
             float4 _MainTex_ST;
-            fixed4 _Color1, _Color2, _Color3;
-            float _Speed, _Distortion;
-            float _TimeValue;
+            fixed4 _Color1, _Color2;
+            float _Speed, _Distortion, _TimeValue;
+            float _WaveStrength, _WaveFrequency;
 
             struct appdata
             {
                 float4 vertex : POSITION;
-                float2 uv     : TEXCOORD0;
+                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                float2 uv  : TEXCOORD0;
+                float2 uv : TEXCOORD0;
             };
 
             v2f vert(appdata v)
@@ -63,21 +64,24 @@
             {
                 float t = _TimeValue * _Speed;
 
-                // Шум для движения
-                float2 noiseUV = i.uv + float2(0, frac(t * 0.2));
-                float n = tex2D(_NoiseTex, noiseUV).r;
+                // Прокрутка шума вверх
+                float2 noiseUV = i.uv + float2(0, t * 0.2);
+                float noise = tex2D(_NoiseTex, frac(noiseUV)).r;
 
-                // Искажение UV
-                float2 distortedUV = frac(i.uv + float2(n * _Distortion, -t * 0.2));
+                // === Лёгкие волны ===
+                float wave = sin(i.uv.y * _WaveFrequency + t * 2.0) * _WaveStrength;
 
-                // Основная текстура (градиент)
+                // Итоговые UV
+                float2 distortedUV = frac(i.uv + float2(noise * _Distortion + wave, -t * 0.1));
+
+                // Базовый градиент
                 fixed4 col = tex2D(_MainTex, distortedUV);
 
-                // Цветовой градиент
-                float gradient = saturate(i.uv.y * 2.0);
+                // Вертикальный градиент для цвета
+                float gradient = saturate(i.uv.y);
                 fixed4 fireColor = lerp(_Color1, _Color2, gradient);
-                fireColor = lerp(fireColor, _Color3, pow(gradient, 2.0));
 
+                // Цвет + альфа
                 col.rgb *= fireColor.rgb;
                 col.a *= fireColor.a;
 

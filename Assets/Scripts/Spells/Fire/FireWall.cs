@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using EntityStaff;
 using UnityEngine;
+using Data.SpellConfigs;
+using EntityStaff;
 
 namespace Spells.Fire
 {
@@ -9,15 +10,8 @@ namespace Spells.Fire
     public class FireWall : DeployableSpell
     {
         private readonly Dictionary<Hp, IEnumerator> _damageRoutines = new Dictionary<Hp, IEnumerator>();
-        private readonly float _size = 5f;
         private Vector3 _defaultScale;
-
-        protected override void Awake()
-        {
-            _defaultScale = transform.localScale;
-            
-            base.Awake();
-        }
+        private DeployableSpellConfig _config;
 
         private IEnumerator DealDamageEachSecond(Hp hp)
         {
@@ -68,10 +62,27 @@ namespace Spells.Fire
             _damageRoutines.Clear();
             transform.localScale = _defaultScale;
         }
+        
+        protected override void Awake()
+        {
+            _defaultScale = transform.localScale;
+            
+            base.Awake();
+        }
+
+        public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
+        {
+            base.Initialize(config, adjustedCriticalMultiply, adjustedCriticalChance);
+
+            if (config is DeployableSpellConfig deployableSpellConfig)
+            {
+                _config = deployableSpellConfig;
+            }
+        }
 
         public override void DoSpell()
         {
-            transform.localScale *= _size;
+            transform.localScale *= _config.ScaleFactor;
             _damageRoutines.Clear();
             base.DoSpell();
         }
