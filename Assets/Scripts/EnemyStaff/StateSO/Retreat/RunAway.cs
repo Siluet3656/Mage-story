@@ -10,8 +10,8 @@ namespace EnemyStaff.StateSO.Retreat
     {
         private Vector2 _playerPosition;
         private Vector2 _myPosition;
-        private Node _nodePlayerOn;
         private Node _nodeMeOn;
+        private Node _nodeToRetreat;
         
         private List<Node> _path = new List<Node>();
         
@@ -20,13 +20,13 @@ namespace EnemyStaff.StateSO.Retreat
         
         private void FindFarthestPointFromPlayer()
         {
-            _playerPosition = PlayerTransform.position;
-            _nodePlayerOn = AStar.Instance.FindNearestNode(_playerPosition);
-            
             _myPosition = Me.transform.position;
-            _nodeMeOn = AStar.Instance.FindFurthestNode(_myPosition);
+            _nodeMeOn = AStar.Instance.FindNearestNode(_myPosition);
             
-            _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodePlayerOn);
+            _playerPosition = PlayerTransform.position;
+            _nodeToRetreat = AStar.Instance.FindFurthestNode(_playerPosition);
+            
+            _path = AStar.Instance.GeneratePath(_nodeMeOn, _nodeToRetreat);
         }
         
         private void MoveAlongPath()
