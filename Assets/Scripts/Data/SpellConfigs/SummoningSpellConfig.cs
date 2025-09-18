@@ -12,7 +12,8 @@ namespace Data.SpellConfigs
         [SerializeField, Min(1)] private float _existingTime;
         [SerializeField] private bool _isNeedHp;
         [SerializeField] private bool _isTargetable;
-        [SerializeField] private int _summonHp;
+        [SerializeField, Min(1)] private int _summonHp;
+        [SerializeField, Min(0)] private float _summonSpeed;
         
         [Header("Casting")]
         [SerializeField, Min(0.1f)] private float _castTime;
@@ -32,6 +33,7 @@ namespace Data.SpellConfigs
         public bool IsNeedHp => _isNeedHp;
         public bool IsTargetable => _isTargetable;
         public int SummonHp => _summonHp;
+        public float SummonSpeed => _summonSpeed;
         
         public float GetCastTime()
         {

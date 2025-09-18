@@ -6,7 +6,7 @@ using View;
 
 namespace AllyStaff
 {
-    [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(ViewCatcher))]
     public class Ally : MonoBehaviour
     {
         [SerializeField] private GameObject _hpBarBg;
@@ -14,13 +14,13 @@ namespace AllyStaff
         [SerializeField] private GameObject _targetMark;
         [SerializeField] private Color _targetedColor;
 
-        private SpriteRenderer _spriteRenderer;
+        private ViewCatcher _viewCatcher;
         private Color _defaultColor;
 
         private void Awake()
         {
-            _spriteRenderer = _targetMark.GetComponent<SpriteRenderer>();
-            _defaultColor = _spriteRenderer.color;
+            _viewCatcher = GetComponent<ViewCatcher>();
+            _defaultColor = _viewCatcher.SpriteRenderer.color;
         }
 
         public void Initialize(bool isTargetable, bool isNeedHp, int summonHp)
@@ -43,12 +43,12 @@ namespace AllyStaff
 
         public void OnTargeted()
         {
-            _spriteRenderer.color = _targetedColor;
+            _viewCatcher.SpriteRenderer.color = _targetedColor;
         }
     
         public void OnUntargeted()
         {
-            _spriteRenderer.color = _defaultColor;
+            _viewCatcher.SpriteRenderer.color = _defaultColor;
         }
     }
 }

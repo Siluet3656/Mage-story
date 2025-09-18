@@ -16,8 +16,6 @@ namespace Spells.Fire
         {
             base.Awake();
             
-            
-            
             Transform[] allChildren = GetComponentsInChildren<Transform>(includeInactive: true);
 
             foreach (Transform child in allChildren)

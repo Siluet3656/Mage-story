@@ -11,7 +11,6 @@ namespace Spells.Fire
     [RequireComponent(typeof(Rigidbody2D))]
     public class FireSpirit : SummoningSpell
     {
-        private const float Speed = 80f;
         private const float MinimumDistance = 0.3f;
         private const float DefaultRadius = 1f;
         
@@ -20,15 +19,6 @@ namespace Spells.Fire
         private TargetingCircle _targetingCircle;
         private Vector3 _direction;
 
-        protected override void Awake()
-        {
-            _rigidbody = GetComponent<Rigidbody2D>();
-            _targetingCircle = GetComponentInChildren<TargetingCircle>();
-            _targetingCircle.OnEnemyEnterCircle += TryToStartFollowEnemy;
-            
-            base.Awake();
-        }
-        
         private void FixedUpdate()
         {
             if (_followed == null) return;
@@ -45,6 +35,10 @@ namespace Spells.Fire
         private void OnEnable()
         {
             _targetingCircle.Collider.radius = DefaultRadius * Radius;
+            
+            SummonAnimator.Play("FireSpiritIdle");
+            SummonAnimator.SetFloat("FireSpiritSpeed", 0f);
+            //SummonAnimator.SetBool("isFireSpirit", true);
         }
 
         private void OnDisable()
@@ -64,6 +58,16 @@ namespace Spells.Fire
         private void Move()
         {
             _rigidbody.velocity = _direction.normalized * (Speed * Time.fixedDeltaTime);
+            SummonAnimator.SetFloat("FireSpiritSpeed", _rigidbody.velocity.magnitude);
+
+            if (_rigidbody.velocity.x < 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
         }
 
         private void SetFollowed(EnemyTargeting followed)
@@ -90,6 +94,27 @@ namespace Spells.Fire
             }
             
             base.OnExistingEnd(enemyTargeting);
+        }
+        
+        protected override void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _targetingCircle = GetComponentInChildren<TargetingCircle>();
+            _targetingCircle.OnEnemyEnterCircle += TryToStartFollowEnemy;
+            
+            Transform[] allChildren = GetComponentsInChildren<Transform>(includeInactive: true);
+
+            foreach (Transform child in allChildren)
+            {
+                if (child == transform) continue;
+                
+                if (child.CompareTag("FireSpiritEffects"))
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+            
+            base.Awake();
         }
     }
 }

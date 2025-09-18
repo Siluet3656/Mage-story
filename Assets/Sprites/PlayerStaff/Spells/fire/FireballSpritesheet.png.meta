@@ -194,9 +194,9 @@ TextureImporter:
       name: FireballSpritesheet_3
       rect:
         serializedVersion: 2
-        x: 60
-        y: 340
-        width: 400
+        x: 64
+        y: 331
+        width: 342
         height: 200
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
