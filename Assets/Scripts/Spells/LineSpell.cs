@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
-using EnemyStaff;
 using EntityStaff;
 
 namespace Spells
@@ -10,7 +10,7 @@ namespace Spells
     [RequireComponent(typeof(LineRenderer))]
     public abstract class LineSpell : Spell
     {
-        private LineRenderer _lineRenderer;
+        private List<LineRenderer>  _renderers;
         private float _duration;
         private ITargetable _target;
         
@@ -21,14 +21,25 @@ namespace Spells
         {
             base.Awake();
 
-            _lineRenderer = GetComponent<LineRenderer>();
+            _renderers = new List<LineRenderer>();
+
+            LineRenderer[] lineRenderersInChildren = GetComponentsInChildren<LineRenderer>();
+
+            foreach (var lineRenderer in lineRenderersInChildren)
+            {
+                _renderers.Add(lineRenderer);
+            }
         }
 
         private void Initialize(LaserSpellConfig config)
         {
             SpellDamage = config.Damage;
             _duration = config.Duration;
-            _lineRenderer.colorGradient = config.Color;
+
+            /*foreach (var lineRenderer in _renderers)
+            {
+                lineRenderer.colorGradient = config.Color;
+            }*/
         }
 
         private IEnumerator Existing()
@@ -50,8 +61,11 @@ namespace Spells
         
         public override void DoSpell()
         {
-            _lineRenderer.SetPosition(0, transform.position);
-            _lineRenderer.SetPosition(1, _target.GameObject.transform.position);
+            foreach (var lineRenderer in _renderers)
+            {
+                lineRenderer.SetPosition(0, transform.position);
+                lineRenderer.SetPosition(1, _target.GameObject.transform.position);
+            }
             
             gameObject.SetActive(true);
 
