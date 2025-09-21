@@ -19,6 +19,7 @@ TagManager:
   - FirewallEffects
   - FireSpiritEffects
   - FireLaserEffects
+  - FireAuraEffects
   layers:
   - Default
   - TransparentFX

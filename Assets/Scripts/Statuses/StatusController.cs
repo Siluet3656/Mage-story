@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Data.Enums;
 using Data.StatusConfigs;
@@ -54,6 +55,7 @@ namespace Statuses
                 case StatusType.Slow:
                     return new SlowStatusEffect(data);
                 case StatusType.FireAura:
+                    OnBuffGained?.Invoke(StatusType.FireAura);
                     return new FireAuraStatusEffect(data);
                 case StatusType.FireMark:
                     return new FireMarkStatusEffect(data);
@@ -85,12 +87,17 @@ namespace Statuses
         
         private void RemoveStatus(StatusType type)
         {
+            OnBuffLost?.Invoke(type);
+            
             if (_activeStatusEffects.ContainsKey(type))
             {
                 _activeStatusEffects.Remove(type);
                 _statusView?.RemoveStatusEffect(type, gameObject);
             }
         }
+        
+        public Action<StatusType> OnBuffGained;
+        public Action<StatusType> OnBuffLost;
     
         public void ApplyStatus(StatusEffectData data)
         {

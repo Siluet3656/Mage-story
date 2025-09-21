@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using AllyStaff;
 using Data;
@@ -398,7 +399,7 @@ namespace PlayerStaff
             Destroy(_ghost);
             _isPlacing = false;
             
-            SpellFactory.Instance.ReturnSpell(_spellName ,_spell);
+            SpellFactory.Instance.ReturnSpell(_spellName, _spell);
         }
 
         public void AdjustCriticalDamage(SpellElementType spellElementType,float multiply, float chance)
