@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Data;
 using PlayerStaff;
 
 namespace Shard
@@ -13,6 +14,8 @@ namespace Shard
 
         private void Awake()
         {
+            G.PlayersShard = this;
+            
             _targetTransform = FindObjectOfType<PlayerMovement>().GetComponent<Transform>();
             
             if (_targetTransform == null)

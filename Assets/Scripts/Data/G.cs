@@ -3,6 +3,7 @@ using UnityEngine;
 using EntityStaff;
 using Pathfinding;
 using PlayerStaff;
+using Shard;
 
 namespace Data
 {
@@ -14,5 +15,6 @@ namespace Data
         
         public static Hp PlayersHp;
         public static Player Player;
+        public static PlayersShard PlayersShard;
     }
 }

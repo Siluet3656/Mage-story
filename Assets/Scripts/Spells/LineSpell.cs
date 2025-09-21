@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
 using EntityStaff;
+using Shard;
 
 namespace Spells
 {
@@ -13,6 +15,7 @@ namespace Spells
         private List<LineRenderer>  _renderers;
         private float _duration;
         private ITargetable _target;
+        private PlayersShard _shard;
         
         protected override SpellName SpellName { get; set; }
         protected ITargetable Target => _target;
@@ -29,6 +32,11 @@ namespace Spells
             {
                 _renderers.Add(lineRenderer);
             }
+        }
+        
+        private void Update()
+        {
+            UpdateLinePosition(_shard.transform.position, _target.GameObject.transform.position);
         }
 
         private void Initialize(LaserSpellConfig config)
@@ -48,7 +56,16 @@ namespace Spells
             
             base.ReturnToPool();
         }
-        
+
+        private void UpdateLinePosition(Vector3 startPosition, Vector3 endPositions)
+        {
+            foreach (var lineRenderer in _renderers)
+            {
+                lineRenderer.SetPosition(0, startPosition);
+                lineRenderer.SetPosition(1, endPositions);
+            }
+        }
+
         public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
         {
             if (config is LaserSpellConfig deployableSpellConfig)
@@ -56,16 +73,15 @@ namespace Spells
                 Initialize(deployableSpellConfig);
             }
             
+            _shard = G.PlayersShard;
+            
             base.Initialize(config, adjustedCriticalMultiply, adjustedCriticalChance);
         }
         
         public override void DoSpell()
         {
-            foreach (var lineRenderer in _renderers)
-            {
-                lineRenderer.SetPosition(0, transform.position);
-                lineRenderer.SetPosition(1, _target.GameObject.transform.position);
-            }
+            
+            UpdateLinePosition(_shard.transform.position, _target.GameObject.transform.position);
             
             gameObject.SetActive(true);
 
