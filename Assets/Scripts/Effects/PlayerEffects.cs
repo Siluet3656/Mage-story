@@ -25,9 +25,6 @@ namespace Effects
                     _fireAuraEffects = child;
                 }
             }
-            
-            //Debug.Log(_playerStatusController);
-            //Debug.Log(_fireAuraEffects);
         }
 
         private void OnEnable()
