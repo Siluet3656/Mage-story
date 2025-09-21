@@ -9,13 +9,12 @@ namespace Effects
     public class Lair : MonoBehaviour
     {
         [SerializeField] private float _waitTime;
+        [SerializeField] private ParticleSystem _particleSystem;
         
-        private ParticleSystem _particleSystem;
         private Animator _animator;
 
         private void Awake()
         {
-            _particleSystem = GetComponentInChildren<ParticleSystem>();
             _animator = GetComponent<Animator>();
         }
 
