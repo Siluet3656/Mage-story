@@ -2,24 +2,28 @@
 using UnityEngine.UI;
 using Data.Enums;
 using EnemyStaff;
+using Statuses;
 
 namespace View
 {
     [RequireComponent(typeof(EnemyMovement))]
     [RequireComponent(typeof(EnemyTargeting))]
     [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(StatusController))]
     public class EnemyView : MonoBehaviour
     {
         [Header("Visual References")]
         [SerializeField] private SpriteRenderer _targetedMark;
         [SerializeField] private GameObject _iceTomb;
         [SerializeField] private GameObject _roots;
+        [SerializeField] private GameObject _fireMark;
         [SerializeField] private Image _attackSwingBar;
         [SerializeField] private Text _enemyTitle;
         [SerializeField] private SpriteRenderer _enemySpriteRenderer;
         
         private EnemyTargeting _enemyTargeting;
         private EnemyMovement _enemyMovement;
+        private StatusController _statusController;
         
         private Color _originalColor;
         private Color _targetedColor;
@@ -28,12 +32,17 @@ namespace View
         {
             _enemyMovement = GetComponent<EnemyMovement>();
             _enemyTargeting = GetComponent<EnemyTargeting>();
+            _statusController = GetComponent<StatusController>();
 
             InitializeColors();
+        }
+
+        private void OnEnable()
+        {
             SubscribeToEvents();
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             UnsubscribeFromEvents();
         }
@@ -48,14 +57,16 @@ namespace View
         {
             _enemyTargeting.OnTargetStatusChanged += HandleTargetStatusChanged;
             _enemyMovement.OnMovementAvailabilityChanged += HandleMovementAvailabilityChanged;
+            _statusController.OnStatusGained += ShowEffect;
+            _statusController.OnStatusLost += HideEffect;
         }
 
         private void UnsubscribeFromEvents()
         {
-            if (_enemyMovement == null) return;
-        
             _enemyTargeting.OnTargetStatusChanged -= HandleTargetStatusChanged;
             _enemyMovement.OnMovementAvailabilityChanged -= HandleMovementAvailabilityChanged;
+            _statusController.OnStatusGained -= ShowEffect;
+            _statusController.OnStatusLost -= HideEffect;
         }
         
         private void HandleTargetStatusChanged(bool isTargeted)
@@ -72,6 +83,26 @@ namespace View
                     break;
                 case MovementDisableSource.Roots:
                     _roots.SetActive(!isAvailable);
+                    break;
+            }
+        }
+
+        private void ShowEffect(StatusType effect)
+        {
+            switch (effect)
+            {
+                case StatusType.FireMark:
+                    _fireMark.SetActive(true);
+                    break;
+            }
+        }
+
+        private void HideEffect(StatusType effect)
+        {
+            switch (effect)
+            {
+                case StatusType.FireMark:
+                    _fireMark.SetActive(false);
                     break;
             }
         }

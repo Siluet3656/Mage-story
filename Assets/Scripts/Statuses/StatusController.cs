@@ -50,12 +50,13 @@ namespace Statuses
         
         private IStatusEffect CreateStatusEffect(StatusEffectData data)
         {
+            OnStatusGained?.Invoke(data.Type);
+            
             switch (data.Type)
             {
                 case StatusType.Slow:
                     return new SlowStatusEffect(data);
                 case StatusType.FireAura:
-                    OnBuffGained?.Invoke(StatusType.FireAura);
                     return new FireAuraStatusEffect(data);
                 case StatusType.FireMark:
                     return new FireMarkStatusEffect(data);
@@ -87,7 +88,7 @@ namespace Statuses
         
         private void RemoveStatus(StatusType type)
         {
-            OnBuffLost?.Invoke(type);
+            OnStatusLost?.Invoke(type);
             
             if (_activeStatusEffects.ContainsKey(type))
             {
@@ -96,8 +97,8 @@ namespace Statuses
             }
         }
         
-        public Action<StatusType> OnBuffGained;
-        public Action<StatusType> OnBuffLost;
+        public Action<StatusType> OnStatusGained;
+        public Action<StatusType> OnStatusLost;
     
         public void ApplyStatus(StatusEffectData data)
         {

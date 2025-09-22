@@ -29,14 +29,14 @@ namespace Effects
 
         private void OnEnable()
         {
-            _playerStatusController.OnBuffGained += ShowEffect;
-            _playerStatusController.OnBuffLost += HideEffect;
+            _playerStatusController.OnStatusGained += ShowEffect;
+            _playerStatusController.OnStatusLost += HideEffect;
         }
 
         private void OnDisable()
         {
-            _playerStatusController.OnBuffGained -= ShowEffect;
-            _playerStatusController.OnBuffLost -= HideEffect;
+            _playerStatusController.OnStatusGained -= ShowEffect;
+            _playerStatusController.OnStatusLost -= HideEffect;
         }
 
         private void ShowEffect(StatusType type)
