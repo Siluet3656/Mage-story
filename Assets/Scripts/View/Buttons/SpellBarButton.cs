@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,10 +17,14 @@ namespace View.Buttons
         
         private PlayerSpellCasting _playerSpellCasting;
 
+        private bool _isManualCastBlocked;
+
         private void Awake()
         {
             _hand = FindObjectsOfType<SpellDrag>()[0];
             _iconPlace = GetComponent<Image>();
+
+            _isManualCastBlocked = true;
         }
 
         private void Start()
@@ -33,7 +38,15 @@ namespace View.Buttons
             {
                 _hand.PlaceSpell(_iconPlace);
                 _currentSpell = _hand.GetSpellType();
+                StartCoroutine(Wait());
             }
+        }
+
+        private IEnumerator Wait()
+        {
+            _isManualCastBlocked = true;
+            yield return new WaitForSeconds(0.2f);
+            _isManualCastBlocked = false;
         }
 
         public SpellName GetSpellType()
@@ -43,6 +56,8 @@ namespace View.Buttons
 
         public void ManualCast()
         {
+            if (_isManualCastBlocked) return;
+            
             _playerSpellCasting.StartCast(_currentSpell);
         }
     }
