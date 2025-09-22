@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using Data;
 using Data.Enums;
 using Data.SpellConfigs;
@@ -20,6 +19,8 @@ namespace View
 
         private void Awake()
         {
+            G.SpellDragger = this;
+            
             _corner = transform.GetChild(0).gameObject;
             _handIcon = GetComponent<Image>();
             
@@ -41,12 +42,6 @@ namespace View
             _corner.SetActive(false);
             _isDragging = false;
         }
-        
-        /*private IEnumerator WaitaBit()
-        {
-            yield return new WaitForSeconds(1f); // костыль
-            DropSpell();
-        }*/
         
         public void TakeSpell(SpellName spellName)
         {
