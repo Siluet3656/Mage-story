@@ -98,22 +98,28 @@ namespace PlayerStaff
 
         private void OnLeftMouseButtonClicked()
         {
-            if (_hand.CheckDraggingStatus())
-            {
-                Ray ray = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
-                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, LayerMask.GetMask("SpellButton"));
-                
-                _hand.TryToDropASpell(hit);
-            }
-            else if (_spellCasting.IsPlacing)
+            if (_spellCasting.IsPlacing)
             {
                 _spellCasting.Place();
+                
             }
             else
             {
-                Ray ray = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
-                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, LayerMask.GetMask("Targetable"));
-                _targeting.OnMouseTargetSelect(hit);
+                Ray raySpellButton = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
+                RaycastHit2D hitSpellButton = Physics2D.Raycast(raySpellButton.origin, raySpellButton.direction, Mathf.Infinity, LayerMask.GetMask("SpellButton"));
+                
+                Ray rayTargetable = _mainCamera.ScreenPointToRay(_inputActions.UI.MousePosition.ReadValue<Vector2>());
+                RaycastHit2D hitTargetable = Physics2D.Raycast(rayTargetable.origin, rayTargetable.direction, Mathf.Infinity, LayerMask.GetMask("Targetable"));
+
+                if (_hand.CheckDraggingStatus())
+                {
+                    _hand.TryToDropASpell(hitSpellButton);
+                }
+
+                if (hitSpellButton.collider == null)
+                {
+                    _targeting.OnMouseTargetSelect(hitTargetable);
+                }
             }
         }
         

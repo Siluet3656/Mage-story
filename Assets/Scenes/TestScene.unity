@@ -17011,7 +17011,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 207801188}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 207801186}
+        m_TargetAssemblyTypeName: View.Buttons.SpellBarButton, Assembly-CSharp
+        m_MethodName: ManualCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &207801188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17983,7 +17995,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 253092342}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 253092340}
+        m_TargetAssemblyTypeName: View.Buttons.SpellBarButton, Assembly-CSharp
+        m_MethodName: ManualCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &253092342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24836,7 +24860,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 624272170}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 624272168}
+        m_TargetAssemblyTypeName: View.Buttons.SpellBarButton, Assembly-CSharp
+        m_MethodName: ManualCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &624272170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35212,7 +35248,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1275314397}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1275314395}
+        m_TargetAssemblyTypeName: View.Buttons.SpellBarButton, Assembly-CSharp
+        m_MethodName: ManualCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1275314397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77899,7 +77947,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1514813265}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1514813263}
+        m_TargetAssemblyTypeName: View.Buttons.SpellBarButton, Assembly-CSharp
+        m_MethodName: ManualCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1514813265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84172,7 +84232,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1561984070}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1561984068}
+        m_TargetAssemblyTypeName: View.Buttons.SpellBarButton, Assembly-CSharp
+        m_MethodName: ManualCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1561984070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88023,10 +88095,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
+    m_PressedColor: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
+    m_SelectedColor: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.3882353}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -88044,7 +88116,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1765868865}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1765868863}
+        m_TargetAssemblyTypeName: View.Buttons.SpellBarButton, Assembly-CSharp
+        m_MethodName: ManualCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1765868865
 MonoBehaviour:
   m_ObjectHideFlags: 0
