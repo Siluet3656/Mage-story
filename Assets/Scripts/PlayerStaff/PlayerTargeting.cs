@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using EntityStaff;
 
 namespace PlayerStaff
@@ -10,7 +10,7 @@ namespace PlayerStaff
     {
         [SerializeField] private TargetingCircle _targetingCircle;
         [SerializeField] private float _interactionRange = 10f;
-
+        
         private PlayerSpellCasting _spellCasting;
         
         private ITargetable _currentTarget;

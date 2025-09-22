@@ -25,7 +25,8 @@ namespace Debugging
 
          public void UpdateState(EnemyState stateMachineCurrentEnemyState)
         {
-            _text.text = GetSubstringAfterLastDot(stateMachineCurrentEnemyState.ToString());
+            if (_text != null)
+                _text.text = GetSubstringAfterLastDot(stateMachineCurrentEnemyState.ToString());
         }
     }
 }

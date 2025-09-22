@@ -100,7 +100,8 @@ namespace EnemyStaff
         {
             StateMachine.CurrentEnemyState.FrameUpdate(Time.deltaTime);
             
-            _enemyStatePreview.UpdateState(StateMachine.CurrentEnemyState);
+            if (_enemyStatePreview != null)
+                _enemyStatePreview.UpdateState(StateMachine.CurrentEnemyState);
         }
 
         private void FixedUpdate()

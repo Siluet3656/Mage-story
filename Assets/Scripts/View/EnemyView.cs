@@ -13,21 +13,23 @@ namespace View
     public class EnemyView : MonoBehaviour
     {
         [Header("Visual References")]
-        [SerializeField] private SpriteRenderer _targetedMark;
+        [SerializeField] private SpriteRenderer[] _targetedMarks;
+        [SerializeField] private Color _targetedColor;
         [SerializeField] private GameObject _iceTomb;
         [SerializeField] private GameObject _roots;
         [SerializeField] private GameObject _fireMark;
         [SerializeField] private Image _attackSwingBar;
         [SerializeField] private Text _enemyTitle;
         [SerializeField] private SpriteRenderer _enemySpriteRenderer;
+        [SerializeField] private Material _outlineMaterial;
+        [SerializeField] private Material _originalMaterial;
         
         private EnemyTargeting _enemyTargeting;
         private EnemyMovement _enemyMovement;
         private StatusController _statusController;
         
         private Color _originalColor;
-        private Color _targetedColor;
-
+        
         private void Awake()
         {
             _enemyMovement = GetComponent<EnemyMovement>();
@@ -49,8 +51,7 @@ namespace View
         
         private void InitializeColors()
         {
-            _originalColor = _targetedMark.color;
-            _targetedColor = new Color(1, 0, 0, _originalColor.a);
+            _originalColor = Color.white;
         }
 
         private void SubscribeToEvents()
@@ -71,7 +72,12 @@ namespace View
         
         private void HandleTargetStatusChanged(bool isTargeted)
         {
-            _targetedMark.color = isTargeted ? _targetedColor : _originalColor;
+            foreach (var mark in _targetedMarks)
+            {
+                mark.color = isTargeted ? _targetedColor : _originalColor;
+            }
+
+            _enemySpriteRenderer.material = isTargeted?  _outlineMaterial: _originalMaterial;
         }
 
         private void HandleMovementAvailabilityChanged(bool isAvailable, MovementDisableSource source)
