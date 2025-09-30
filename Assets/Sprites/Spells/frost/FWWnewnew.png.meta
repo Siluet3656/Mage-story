@@ -1,19 +1,7 @@
 fileFormatVersion: 2
-guid: 7dcc95f0d20767549a8d383dd338eb88
+guid: 538c773aceb9f734aa9c47e4510f9b51
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -6518314605762213086
-    second: FWWSpritesheet_0
-  - first:
-      213: 8536930001142979727
-    second: FWWSpritesheet_1
-  - first:
-      213: 7598153097551993327
-    second: FWWSpritesheet_2
-  - first:
-      213: 3023342213449296976
-    second: FWWSpritesheet_3
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -53,7 +41,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -123,91 +111,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: FWWSpritesheet_0
-      rect:
-        serializedVersion: 2
-        x: 230
-        y: 664
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 22b8d4dc66b4a85a0800000000000000
-      internalID: -6518314605762213086
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FWWSpritesheet_1
-      rect:
-        serializedVersion: 2
-        x: 936
-        y: 663
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f8c908efa94497670800000000000000
-      internalID: 8536930001142979727
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FWWSpritesheet_2
-      rect:
-        serializedVersion: 2
-        x: 238
-        y: 163
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fe9de984cff027960800000000000000
-      internalID: 7598153097551993327
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FWWSpritesheet_3
-      rect:
-        serializedVersion: 2
-        x: 938
-        y: 164
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 05ca61b89b115f920800000000000000
-      internalID: 3023342213449296976
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []

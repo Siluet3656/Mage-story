@@ -1,5 +1,5 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
+using Data;
 using Data.Enums;
 using Data.SpellConfigs;
 using EnemyStaff;
@@ -32,8 +32,6 @@ namespace Spells.Frost
         
         public override void DoSpell()
         {
-            MyAnimator.enabled = true;
-            
             _config = SpellData.Instance.GetSpellConfig(SpellName);
 
             if (_config is ProjectileSpellConfig config)
@@ -42,8 +40,6 @@ namespace Spells.Frost
             }
             
             base.DoSpell();
-            
-            MyAnimator.Play("FWW", 0, 0f); 
         }
 
         protected override void OnReachTarget(ITargetable target)
