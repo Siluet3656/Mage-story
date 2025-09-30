@@ -20360,6 +20360,7 @@ GameObject:
   - component: {fileID: 4888018219519930604}
   - component: {fileID: 5174457874312117543}
   - component: {fileID: 2584175199164546794}
+  - component: {fileID: 5367644665890972148}
   - component: {fileID: 6746311934899669598}
   - component: {fileID: 6746311934899669599}
   - component: {fileID: 2429299700582645823}
@@ -20528,6 +20529,23 @@ MonoBehaviour:
   _enemySpriteRenderer: {fileID: 6746311934899669598}
   _outlineMaterial: {fileID: 2100000, guid: 29b895cffc2aca446b00740c25e165d5, type: 2}
   _originalMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!114 &5367644665890972148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6746311934899669595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96858ae61f3f4764ea96019ee528e516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spellImpacts: {fileID: 6963913186167994756}
+  _fireSpellImpact: {fileID: 1426264611469197887}
+  _frostSpellImpact: {fileID: 3027930325445376814}
+  _earthSpellImpact: {fileID: 6230902620143565464}
+  _noElementSpellImpact: {fileID: 4112515548747470479}
 --- !u!212 &6746311934899669598
 SpriteRenderer:
   m_ObjectHideFlags: 0

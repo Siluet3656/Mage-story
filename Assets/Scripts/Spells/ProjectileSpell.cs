@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using Data.Enums;
 using Data.SpellConfigs;
+using Effects;
+using EnemyStaff;
 using EntityStaff;
 
 namespace Spells
@@ -37,6 +39,8 @@ namespace Spells
 
         private void Initialize(ProjectileSpellConfig config)
         {
+            _config = config;
+            
             SpellDamage = config.Damage;
         }
 
@@ -63,6 +67,16 @@ namespace Spells
         
         protected virtual void OnReachTarget(ITargetable target)
         {
+            if (target is EnemyTargeting enemy)
+            {
+                SpellImpactHolder spellImpactHolder = enemy.GameObject.GetComponent<SpellImpactHolder>();
+
+                if (spellImpactHolder != null)
+                {
+                    spellImpactHolder.Impact(_config.SpellElementType);
+                }
+            }
+            
             base.ApplyDamage(_targetsHp);
             base.ReturnToPool();
         }

@@ -32914,7 +32914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isRandom: 1
-  _enemyName: 0
+  _enemyName: 2
 --- !u!1 &1138342637
 GameObject:
   m_ObjectHideFlags: 0
@@ -33513,7 +33513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isRandom: 1
-  _enemyName: 0
+  _enemyName: 1
 --- !u!1 &1176088512
 GameObject:
   m_ObjectHideFlags: 0
