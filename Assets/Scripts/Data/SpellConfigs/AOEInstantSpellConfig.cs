@@ -16,6 +16,7 @@ namespace Data.SpellConfigs
         
         public Sprite CastSprite => _castSprite;
         public float ExistTime => _existTime;
+        public RangeType Range => _range;
         public float Damage => _damage;
         
         public override SpellType GetSPellType()

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Animations;
+using Data;
 using Data.Enums;
 using Data.SpellConfigs;
 using EntityStaff;
@@ -29,6 +30,8 @@ namespace Spells
         private void Initialize(AoeInstantSpellConfig config)
         {
             SpellDamage = config.Damage;
+
+            gameObject.transform.localScale = new Vector3(RangeData.GetDataByType(config.Range), RangeData.GetDataByType(config.Range), 1f);
         }
         
         public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)
