@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Data;
 using Data.Enums;
@@ -6,6 +7,7 @@ using Data.SpellConfigs;
 using EnemyStaff;
 using EntityStaff;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Spells.Frost
 {
@@ -46,12 +48,53 @@ namespace Spells.Frost
             }
         }
 
+        private void OnEnable()
+        {
+            if (_target != null)
+                _target.GameObject.GetComponent<Hp>().OnDeath += OnExistingInterrupt;
+        }
+
+        private void OnDisable()
+        {
+            if (_target != null)
+                _target.GameObject.GetComponent<Hp>().OnDeath -= OnExistingInterrupt;
+        }
+
+        private void OnExistingInterrupt()
+        {
+            OnExistingEnd(null);
+        }
+        
+        private void Update()
+        {
+            Vector3 direction = _target.GameObject.transform.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            Transform[] allChildren = GetComponentsInChildren<Transform>(includeInactive: true);
+        
+            foreach (Transform child in allChildren)
+            {
+                if (child == transform) continue;
+                        
+                if (child.CompareTag("IcecleBarrageEffects"))
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+
         protected override void OnExistingEnd(EnemyTargeting enemyTargeting)
         {
-            /*foreach (var spell in _subscribedSpells)
+            foreach (var spell in _subscribedSpells)
             {
                 if (_target != null) _target.GameObject.GetComponent<Hp>().OnDeath -= spell.OnTargetDeath;
-            }*/ //Пока не нужно. Мб надо будет делать фабрику врагов и тогда
+            } //Пока не нужно. Мб надо будет делать фабрику врагов и тогда
             _subscribedSpells.Clear();
             
             base.OnExistingEnd(enemyTargeting);

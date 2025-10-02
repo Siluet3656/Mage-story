@@ -40,6 +40,7 @@ namespace Spells
         private void Initialize(ProjectileSpellConfig config)
         {
             _config = config;
+            _myRenderer.sprite = _config.ProjectileSprite;
             
             SpellDamage = config.Damage;
         }
