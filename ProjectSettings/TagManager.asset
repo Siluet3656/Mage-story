@@ -21,6 +21,7 @@ TagManager:
   - FireLaserEffects
   - FireAuraEffects
   - IcecleBarrageEffects
+  - CryoLeachEffects
   layers:
   - Default
   - TransparentFX
