@@ -23,6 +23,24 @@ namespace Pathfinding
         public float _gScore;
         public float _hScore;
         
+        internal Node CameFrom
+        {
+            get => _cameFrom;
+            set => _cameFrom = value;
+        }
+        
+        internal float GScore
+        {
+            get => _gScore;
+            set => _gScore = value;
+        }
+        
+        internal float HScore
+        {
+            get => _hScore;
+            set => _hScore = value;
+        }
+        
         public float FScore()
         {
             return _gScore + _hScore;

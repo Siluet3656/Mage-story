@@ -79,7 +79,7 @@ namespace EnemyStaff
             else
             {
                 projectile = null;
-                Debug.LogError("NO PROJECTILES IN POOL WTF");
+                Debug.LogError($"No projectiles available in pool for {projectileName}. Consider increasing pool size.");
             }
 
             return projectile;

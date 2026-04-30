@@ -128,7 +128,7 @@ namespace Spells
             else
             {
                 spell = null;
-                Debug.LogError("NO SPELLS IN POOL WTF");
+                Debug.LogError($"No spells available in pool for {spellName}. Consider increasing pool size.");
             }
 
             return spell;
