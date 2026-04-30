@@ -1,38 +1,112 @@
 ```
-# Build artifacts
-*.dll
-*.exe
-*.pdb
-*.unity3d
-*.asset
-*.prefab
-*.meta
-
-# Unity specific
+# Unity-specific ignores
 Library/
 Temp/
 Obj/
 Build/
-Logs/
-MemoryCaptures/
+*.unityproj
+*.user
+*.sln
+*.csproj
+*.pidb
+*.suo
+*.userprefs
+*.usermeta
+*.log
+*.tmp
+*~
+.vs/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Build outputs
+build/
+dist/
 
 # Dependencies
-Packages/
 node_modules/
+Packages/
+*.mp4
+*.mov
+*.avi
+*.wmv
+*.flv
+*.mkv
 
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
 
-# Editors
-.vscode/
-.idea/
-*.sln
-*.csproj
-*.user
-*.userprefs
+# Python (if applicable)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Compiled and binary files
+*.exe
+*.dll
+*.so
+*.a
+*.o
+*.obj
+*.out
+*.class
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 
 # Logs
 *.log
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage*
+
+# Testing
+.pytest_cache/
+.mypy_cache/
 ```
