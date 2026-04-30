@@ -1,52 +1,38 @@
 ```
-# Unity specific ignores
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+*.unity3d
+*.asset
+*.prefab
+*.meta
+
+# Unity specific
 Library/
 Temp/
 Obj/
 Build/
 Logs/
-*.unityproj
+MemoryCaptures/
+
+# Dependencies
+Packages/
+node_modules/
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
 *.sln
 *.csproj
-*.userprefs
-*.pidb
-*.pdb
-*.meta
-*.cache
-*.ilk
-*.suo
 *.user
-*.aps
-*.pch
-*.vspscc
-*.vssscc
-*_builderrors.log
-*_temp.cs
-*.prefab
-*.asset
-*.mat
-*.anim
-*.controller
-*.unity
-*.prefab.meta
-*.asset.meta
-*.mat.meta
-*.anim.meta
-*.controller.meta
-*.unity.meta
-*.meta.meta
-*.asmdef
-*.asmref
-*.rsp
-*.asmref.meta
-*.rsp.meta
+*.userprefs
+
+# Logs
 *.log
-*.tmp
-*.swp
-*.swo
-*.lock
-*.pid
-*.sock
-*.DS_Store
-Thumbs.db
 ```

@@ -15,10 +15,6 @@ namespace GameControl
                 if (_instance == null)
                 {
                     _instance = FindObjectOfType<MenuInputs>();
-                    if (_instance == null)
-                    {
-                        Debug.LogError("MenuInputs instance not found in scene!");
-                    }
                 }
                 return _instance;
             }
