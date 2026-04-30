@@ -25,14 +25,16 @@ namespace GameControl
         protected virtual void Awake()
         {
             if (_pausable == false) return;
-            if (MenuInputs.Instance == null) return;
+            
+            var menuInputs = MenuInputs.Instance;
+            if (menuInputs == null) return;
 
-            MenuInputs.Instance.OnPause += OnPause;
-            MenuInputs.Instance.OnResume += OnResume;
+            menuInputs.OnPause += OnPause;
+            menuInputs.OnResume += OnResume;
 
             _initialized = true;
 
-            enabled = !MenuInputs.Instance.IsPaused;
+            enabled = !menuInputs.IsPaused;
         }
 
         protected virtual void OnDestroy()
@@ -40,8 +42,11 @@ namespace GameControl
             if (_pausable == false) return;
             if (_initialized == false) return;
             
-            MenuInputs.Instance.OnPause -= OnPause;
-            MenuInputs.Instance.OnResume -= OnResume;
+            var menuInputs = MenuInputs._instance;
+            if (menuInputs == null) return;
+            
+            menuInputs.OnPause -= OnPause;
+            menuInputs.OnResume -= OnResume;
         }
         
         protected virtual void PostPause() {}

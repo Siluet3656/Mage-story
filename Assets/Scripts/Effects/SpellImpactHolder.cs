@@ -38,6 +38,8 @@ namespace Effects
         
         private void FireImpact()
         {
+            if (!gameObject.activeInHierarchy) return;
+            
             _spellImpacts.SetActive(true);
             _fireSpellImpact.SetActive(true);
 
@@ -46,6 +48,8 @@ namespace Effects
         
         private void FrostImpact()
         {
+            if (!gameObject.activeInHierarchy) return;
+            
             _spellImpacts.SetActive(true);
             _frostSpellImpact.SetActive(true);
 
@@ -54,6 +58,8 @@ namespace Effects
         
         private void EarthImpact()
         {
+            if (!gameObject.activeInHierarchy) return;
+            
             _spellImpacts.SetActive(true);
             _earthSpellImpact.SetActive(true);
 
@@ -62,6 +68,8 @@ namespace Effects
         
         private void NoElementImpact()
         {
+            if (!gameObject.activeInHierarchy) return;
+            
             _spellImpacts.SetActive(true);
             _noElementSpellImpact.SetActive(true);
 
