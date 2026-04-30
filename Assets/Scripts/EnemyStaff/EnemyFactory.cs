@@ -86,7 +86,7 @@ namespace EnemyStaff
             else
             {
                 enemy = null;
-                Debug.LogError("NO ENEMIES IN POOL WTF");
+                Debug.LogError($"No enemies available in pool for {enemyName}. Consider increasing pool size.");
             }
 
             return enemy;

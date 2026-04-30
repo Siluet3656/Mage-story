@@ -15,7 +15,7 @@ namespace Data
         [SerializeField, Min(1)] private float _frostCriticalMultiplier;
         [SerializeField, Range(0f, 1f)] private float _frostCriticalChance;
         
-        [Header("Frost spells")]
+        [Header("Earth spells")]
         [SerializeField, Min(1)] private float _earthCriticalMultiplier;
         [SerializeField, Range(0f, 1f)] private float _earthCriticalChance;
         
