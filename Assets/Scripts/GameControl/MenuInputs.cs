@@ -6,7 +6,7 @@ namespace GameControl
 {
     public class MenuInputs : MonoBehaviour
     {
-        private static MenuInputs _instance;
+        public static MenuInputs _instance;
         
         public static MenuInputs Instance
         {
