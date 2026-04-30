@@ -116,5 +116,26 @@ namespace Spells.Fire
             
             base.Awake();
         }
+
+        protected override void ResetSummonState()
+        {
+            base.ResetSummonState();
+            
+            // Reset fire spirit specific state
+            _followed = null;
+            _direction = Vector3.zero;
+            
+            if (_rigidbody != null)
+            {
+                _rigidbody.velocity = Vector2.zero;
+            }
+            
+            // Unsubscribe and resubscribe to prevent duplicate subscriptions
+            if (_targetingCircle != null)
+            {
+                _targetingCircle.OnEnemyEnterCircle -= TryToStartFollowEnemy;
+                _targetingCircle.OnEnemyEnterCircle += TryToStartFollowEnemy;
+            }
+        }
     }
 }

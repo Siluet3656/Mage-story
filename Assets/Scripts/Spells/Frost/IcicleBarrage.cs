@@ -91,13 +91,42 @@ namespace Spells.Frost
 
         protected override void OnExistingEnd(EnemyTargeting enemyTargeting)
         {
+            // Unsubscribe from all spell death events
             foreach (var spell in _subscribedSpells)
             {
-                if (_target != null) _target.GameObject.GetComponent<Hp>().OnDeath -= spell.OnTargetDeath;
-            } //Пока не нужно. Мб надо будет делать фабрику врагов и тогда
+                if (_target != null && _target.GameObject != null) 
+                {
+                    var targetHp = _target.GameObject.GetComponent<Hp>();
+                    if (targetHp != null)
+                    {
+                        targetHp.OnDeath -= spell.OnTargetDeath;
+                    }
+                }
+            }
             _subscribedSpells.Clear();
             
+            // Unsubscribe from target death event
+            if (_target != null && _target.GameObject != null)
+            {
+                var targetHp = _target.GameObject.GetComponent<Hp>();
+                if (targetHp != null)
+                {
+                    targetHp.OnDeath -= () => _target = null;
+                }
+            }
+            
             base.OnExistingEnd(enemyTargeting);
+        }
+
+        protected override void ResetSummonState()
+        {
+            base.ResetSummonState();
+            
+            // Clear target reference
+            _target = null;
+            
+            // Ensure all subscriptions are cleared
+            _subscribedSpells.Clear();
         }
 
         public override void DoSpell()

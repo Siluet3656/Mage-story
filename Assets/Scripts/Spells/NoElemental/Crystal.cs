@@ -80,5 +80,20 @@ namespace Spells.NoElemental
             _targetingCircle = GetComponentInChildren<TargetingCircle>();
             _targetingCircle.gameObject.transform.localScale = new Vector3(Radius,Radius,1f);
         }
+
+        protected override void ResetSummonState()
+        {
+            base.ResetSummonState();
+            
+            // Reset crystal specific state
+            _isReadyToShoot = true;
+            _time = 0f;
+            
+            // Clear nearby targets to prevent stale references
+            if (_targetingCircle != null)
+            {
+                _targetingCircle.NearbyTargets.Clear();
+            }
+        }
     }
 }
