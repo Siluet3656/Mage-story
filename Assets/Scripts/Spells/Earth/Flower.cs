@@ -13,7 +13,6 @@ namespace Spells.Earth
     [RequireComponent(typeof(Ally))]
     public class Flower : SummoningSpell, ITargetable
     {
-        private readonly float _size = 5f;
         private readonly float _spikeCooldown = 2f;
         private readonly float _spikeCriticalChance = 0.2f;
         private readonly float _spikeCriticalMultiply = 1.2f;
@@ -25,17 +24,30 @@ namespace Spells.Earth
 
         private bool _isTargeted;
         private Ally _ally;
+        private SpriteRenderer _spriteRenderer;
+        private Color _originalColor;
+        private Color _targetedColor;
         
         protected override void Awake()
         {
-            transform.localScale *= _size;
-            _time = 0f;
-            _isReadyToShoot = true;
-            _isTargeted = false;
             _ally = GetComponent<Ally>();
             _targetingCircle = GetComponentInChildren<TargetingCircle>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _originalColor = _spriteRenderer.color;
+            _targetedColor = Color.red; // Highlight color when targeted
             
             base.Awake();
+        }
+
+        private void OnEnable()
+        {
+            // Set the targeting circle radius based on the spell's attack radius
+            if (_targetingCircle != null && _targetingCircle.Collider != null)
+            {
+                _targetingCircle.Collider.radius = Radius;
+            }
+            
+            _spriteRenderer.color = _originalColor;
         }
 
         private void Update()
@@ -85,23 +97,49 @@ namespace Spells.Earth
         private void OnDestroy()
         {
             OnTargetDie?.Invoke();
+            OnTargetDie = null; // Clear event subscriptions to prevent memory leaks
         }
 
         public bool IsTargetable => true;
         public bool IsTargeted => _isTargeted;
+        
         public void OnTargeted()
         {
             _isTargeted = true;
-            _ally.OnTargeted();
+            _spriteRenderer.color = _targetedColor;
         }
 
         public void OnUntargeted()
         {
             _isTargeted = false;
-            _ally.OnUntargeted();
+            _spriteRenderer.color = _originalColor;
         }
 
         public GameObject GameObject => gameObject;
         public event Action OnTargetDie;
+        
+        /// <summary>
+        /// Called when the flower is returned to pool to reset its state
+        /// </summary>
+        protected override void ResetSummonState()
+        {
+            base.ResetSummonState();
+            
+            _isReadyToShoot = true;
+            _time = 0f;
+            _isTargeted = false;
+            
+            // Reset color to original
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.color = _originalColor;
+            }
+            
+            // Clear any existing target subscriptions
+            if (_targetingCircle != null && _targetingCircle.NearbyTargets != null)
+            {
+                _targetingCircle.NearbyTargets.Clear();
+            }
+        }
     }
 }

@@ -6,12 +6,22 @@ namespace GameControl
 {
     public class MenuInputs : MonoBehaviour
     {
-        public static MenuInputs Instance;
-        MenuInputs()
+        private static MenuInputs _instance;
+        
+        public static MenuInputs Instance
         {
-            if (Instance != null) return;
-
-            Instance = this;
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<MenuInputs>();
+                    if (_instance == null)
+                    {
+                        Debug.LogError("MenuInputs instance not found in scene!");
+                    }
+                }
+                return _instance;
+            }
         }
         
         private PlayerInputActions _inputActions;

@@ -86,7 +86,7 @@ namespace EnemyStaff
             else
             {
                 enemy = null;
-                Debug.LogError("NO ENEMIES IN POOL WTF");
+                Debug.LogError($"No enemies available in pool for {enemyName}. Consider increasing pool size.");
             }
 
             return enemy;
@@ -119,8 +119,11 @@ namespace EnemyStaff
             return enemy;
         }
         
-        public void ReturnEnemy(EnemyName enemyName, Enemy enemy)
+        private void ReturnEnemy(EnemyName enemyName, Enemy enemy)
         {
+            // Reset HP to full before returning to pool to ensure health bar binds correctly
+            enemy.ResetToInitialState();
+            
             enemy.transform.SetParent(transform);
             enemy.EnemyStatusController.RemoveAllStatuses();
             enemy.gameObject.SetActive(false);

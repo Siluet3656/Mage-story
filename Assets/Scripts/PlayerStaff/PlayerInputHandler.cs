@@ -58,7 +58,8 @@ namespace PlayerStaff
 
             if (_mainCamera == null)
             {
-                Debug.LogError("NO CAMERA!!!");
+                Debug.LogError("Main camera not found. Ensure a camera is tagged with 'MainCamera'.");
+                return;
             }
             
             _hand = FindObjectsOfType<SpellDrag>()[0];

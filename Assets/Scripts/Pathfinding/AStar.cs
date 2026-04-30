@@ -6,14 +6,24 @@ namespace Pathfinding
 {
     public class AStar : MonoBehaviour
     {
-        #region Singleton
-        public static AStar Instance;
-        AStar()
+        private static AStar _instance;
+        private static readonly object _lock = new object();
+        
+        public static AStar Instance
         {
-            if (Instance != null) return;
-            Instance = this;
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<AStar>();
+                    if (_instance == null)
+                    {
+                        Debug.LogError("AStar instance not found in scene!");
+                    }
+                }
+                return _instance;
+            }
         }
-        #endregion
 
         [SerializeField, Min(0.1f)] private float _minNodeDistance = 0.15f;
         
@@ -21,10 +31,10 @@ namespace Pathfinding
         {
             foreach (Node node in G.NodesOnScene)
             {
-                node._gScore = float.MaxValue;
+                node.GScore = float.MaxValue;
             }
-            start._gScore = 0;
-            start._hScore = Vector2.Distance(start.transform.position, end.transform.position);
+            start.GScore = 0;
+            start.HScore = Vector2.Distance(start.transform.position, end.transform.position);
         }
 
         private Node PopLowestFScoreNode(PriorityQueue<Node> openSet)
@@ -40,7 +50,7 @@ namespace Pathfinding
             while (current != start)
             {
                 path.Add(current);
-                current = current._cameFrom;
+                current = current.CameFrom;
             }
             path.Add(start);
             path.Reverse();
@@ -52,10 +62,10 @@ namespace Pathfinding
         {
             foreach (Node neighbor in currentNode.Connections)
             {
-                float tentativeGScore = currentNode._gScore +
+                float tentativeGScore = currentNode.GScore +
                     Vector2.Distance(currentNode.transform.position, neighbor.transform.position);
 
-                if (tentativeGScore >= neighbor._gScore)
+                if (tentativeGScore >= neighbor.GScore)
                     continue;
                 UpdateNeighbor(neighbor, currentNode, end, tentativeGScore);
                 AddToOpenSet(neighbor, openSet);
@@ -64,9 +74,9 @@ namespace Pathfinding
 
         private void UpdateNeighbor(Node neighbor, Node currentNode, Node end, float gScore)
         {
-            neighbor._cameFrom = currentNode;
-            neighbor._gScore = gScore;
-            neighbor._hScore = Vector2.Distance(neighbor.transform.position, end.transform.position);
+            neighbor.CameFrom = currentNode;
+            neighbor.GScore = gScore;
+            neighbor.HScore = Vector2.Distance(neighbor.transform.position, end.transform.position);
         }
 
         private void AddToOpenSet(Node node, PriorityQueue<Node> openSet)

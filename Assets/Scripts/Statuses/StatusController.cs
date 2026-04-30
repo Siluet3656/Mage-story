@@ -139,10 +139,20 @@ namespace Statuses
 
         public void RemoveAllStatuses()
         {
-            foreach (var pair in _activeStatusEffects)
+            // Create a list of keys to avoid modification during iteration
+            var statusTypes = new List<StatusType>(_activeStatusEffects.Keys);
+            
+            foreach (var type in statusTypes)
             {
-                pair.Value.Remove(gameObject);
+                if (_activeStatusEffects.ContainsKey(type))
+                {
+                    _activeStatusEffects[type].Remove(gameObject);
+                    RemoveStatus(type);
+                }
             }
+            
+            // Clear the dictionary to ensure it's completely empty
+            _activeStatusEffects.Clear();
         }
     }
 }

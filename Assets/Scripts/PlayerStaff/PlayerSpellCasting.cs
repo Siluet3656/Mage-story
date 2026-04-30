@@ -25,6 +25,8 @@ namespace PlayerStaff
     {
         [SerializeField] private PlayerStats _stats;
         
+        private const float CASTING_MOVEMENT_PENALTY = 1f;
+        
         private SpellResources _resources;
         private PlayerTargeting _targeting;
         private PlayerMovement _movement;
@@ -91,7 +93,8 @@ namespace PlayerStaff
             _shard = FindObjectOfType<PlayersShard>();
             if (_shard == null)
             {
-                Debug.LogError("NO SHARD!!!");
+                Debug.LogError("PlayersShard not found in scene. Ensure it exists and is properly set up.");
+                return;
             }
             
             _isPlacing = false;
@@ -183,6 +186,7 @@ namespace PlayerStaff
                 Sprite ghostSprite = deployableSpellConfig.DeployedSprite;
 
                 _ghost = new GameObject("ghost");
+                _ghost.transform.SetParent(transform);
                 
                 _ghost.transform.localScale = new Vector3(deployableSpellConfig.ScaleFactor,deployableSpellConfig.ScaleFactor,1);
                 
@@ -242,14 +246,27 @@ namespace PlayerStaff
 
         private void HealTarget(HealingSpellConfig config)
         {
-            Hp allyHp = _targetCastingTo.GameObject.GetComponent<Hp>();
-            Ally ally = _targetCastingTo.GameObject.GetComponent<Ally>();
-            if (ally != null && allyHp != null)
+            // If no target or target is not valid, heal the caster (player)
+            if (_targetCastingTo == null || _targetCastingTo.GameObject == null)
             {
-                allyHp.Heal(config.HealAmount);
+                _playerHp.Heal(config.HealAmount);
+                return;
+            }
+
+            GameObject targetGameObject = _targetCastingTo.GameObject;
+            Hp targetHp = targetGameObject.GetComponent<Hp>();
+            
+            // Check if target is an ally (has Ally component) or is the player
+            Ally ally = targetGameObject.GetComponent<Ally>();
+            bool isPlayer = targetGameObject == gameObject;
+            
+            if (targetHp != null && (ally != null || isPlayer))
+            {
+                targetHp.Heal(config.HealAmount);
             }
             else
             {
+                // If target is not allied, heal the caster instead
                 _playerHp.Heal(config.HealAmount);
             }
         }
@@ -349,7 +366,7 @@ namespace PlayerStaff
             
             _spellName = spellName;
             _isCasting = true;
-            _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - 1);
+            _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - CASTING_MOVEMENT_PENALTY);
             _globalCooldownRoutine = GlobalCooldown();
             StartCoroutine(_globalCooldownRoutine);
 

@@ -112,7 +112,7 @@ namespace EntityStaff
 
             OnAnyDamageReceived?.Invoke(finalDamage);
             
-            TakeDamage(finalDamage); Debug.Log($"Damage taken by {gameObject}: {finalDamage}");
+            TakeDamage(finalDamage);
         }
 
         public void TryToTakeDamage(float damage, bool isDamageAdditional)
@@ -121,7 +121,7 @@ namespace EntityStaff
             
             if (isDamageAdditional == false) OnAnyDamageReceived?.Invoke(damage);
                 
-            TakeDamage(damage); Debug.Log($"Damage taken by {gameObject}: {damage}");
+            TakeDamage(damage);
         }
 
         public void GetAdditionalHp(SpellName source)
@@ -160,7 +160,7 @@ namespace EntityStaff
         {
             if (healAmount <= 0) return;
             
-            float resultHeal = Mathf.Min(_currentHealth + healAmount, _maxHealth); Debug.Log($"Heal taken by {gameObject}: {resultHeal - _currentHealth}");
+            float resultHeal = Mathf.Min(_currentHealth + healAmount, _maxHealth);
             _currentHealth = resultHeal;
             OnHealthChanged?.Invoke(_currentHealth);
         }
