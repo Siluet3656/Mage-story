@@ -57,7 +57,20 @@ namespace Spells
         protected virtual void OnExistingEnd(EnemyTargeting enemyTargeting)
         {
             StopAllCoroutines();
+            
+            // Reset summon to initial state before returning to pool
+            ResetSummonState();
+            
             base.ReturnToPool();
+        }
+        
+        /// <summary>
+        /// Resets the summon's state when returning to the pool.
+        /// Override this method in derived classes to add custom reset logic.
+        /// </summary>
+        protected virtual void ResetSummonState()
+        {
+            // Base implementation - can be extended by derived classes
         }
         
         public override void Initialize(SpellConfig config, float adjustedCriticalMultiply, float adjustedCriticalChance)

@@ -119,8 +119,11 @@ namespace EnemyStaff
             return enemy;
         }
         
-        public void ReturnEnemy(EnemyName enemyName, Enemy enemy)
+        private void ReturnEnemy(EnemyName enemyName, Enemy enemy)
         {
+            // Reset HP to full before returning to pool to ensure health bar binds correctly
+            enemy.ResetToInitialState();
+            
             enemy.transform.SetParent(transform);
             enemy.EnemyStatusController.RemoveAllStatuses();
             enemy.gameObject.SetActive(false);

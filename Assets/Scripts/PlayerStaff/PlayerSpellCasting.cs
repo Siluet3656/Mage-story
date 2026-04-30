@@ -246,14 +246,27 @@ namespace PlayerStaff
 
         private void HealTarget(HealingSpellConfig config)
         {
-            Hp allyHp = _targetCastingTo.GameObject.GetComponent<Hp>();
-            Ally ally = _targetCastingTo.GameObject.GetComponent<Ally>();
-            if (ally != null && allyHp != null)
+            // If no target or target is not valid, heal the caster (player)
+            if (_targetCastingTo == null || _targetCastingTo.GameObject == null)
             {
-                allyHp.Heal(config.HealAmount);
+                _playerHp.Heal(config.HealAmount);
+                return;
+            }
+
+            GameObject targetGameObject = _targetCastingTo.GameObject;
+            Hp targetHp = targetGameObject.GetComponent<Hp>();
+            
+            // Check if target is an ally (has Ally component) or is the player
+            Ally ally = targetGameObject.GetComponent<Ally>();
+            bool isPlayer = targetGameObject == gameObject;
+            
+            if (targetHp != null && (ally != null || isPlayer))
+            {
+                targetHp.Heal(config.HealAmount);
             }
             else
             {
+                // If target is not allied, heal the caster instead
                 _playerHp.Heal(config.HealAmount);
             }
         }

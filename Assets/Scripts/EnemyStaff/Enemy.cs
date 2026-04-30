@@ -119,6 +119,23 @@ namespace EnemyStaff
             Initialize(enemyName);
             _isPooled = true;
         }
+
+        /// <summary>
+        /// Resets the enemy to its initial state when returning to the pool.
+        /// This ensures health bars and other bindings are properly reset.
+        /// </summary>
+        public void ResetToInitialState()
+        {
+            // Reset HP to full and trigger the event to update health bar
+            _hp.SetMaxHealth(_enemyConfig.MaxHp);
+            _hp.InitializeHealth();
+            
+            // Remove all status effects
+            _enemyStatusController?.RemoveAllStatuses();
+            
+            // Reset state machine to idle
+            StateMachine?.Initialize(IdleState);
+        }
         
         public EnemyTargetingCircle EngageCircle => _engageCircle;
         public EnemyTargetingCircle AttackCircle => _attackCircle;
