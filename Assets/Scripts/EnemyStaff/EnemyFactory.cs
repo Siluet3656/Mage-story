@@ -119,7 +119,7 @@ namespace EnemyStaff
             return enemy;
         }
         
-        private void ReturnEnemy(EnemyName enemyName, Enemy enemy)
+        public void ReturnEnemy(EnemyName enemyName, Enemy enemy)
         {
             // Reset HP to full before returning to pool to ensure health bar binds correctly
             enemy.ResetToInitialState();
