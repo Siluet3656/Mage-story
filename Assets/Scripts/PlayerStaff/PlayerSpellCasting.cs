@@ -24,9 +24,9 @@ namespace PlayerStaff
     public class PlayerSpellCasting : MonoBehaviour
     {
         [SerializeField] private PlayerStats _stats;
-        
-        private const float CASTING_MOVEMENT_PENALTY = 1f;
-        
+
+        private const int CASTING_MOVEMENT_PENALTY = 1;
+
         private SpellResources _resources;
         private PlayerTargeting _targeting;
         private PlayerMovement _movement;
@@ -34,7 +34,7 @@ namespace PlayerStaff
         private PlayersShard _shard;
         private StatusApplier _statusApplier;
         private Hp _playerHp;
-            
+
         private IEnumerator _spellCastRoutine;
         private IEnumerator _globalCooldownRoutine;
         private bool _isCasting;
@@ -42,7 +42,7 @@ namespace PlayerStaff
         private float _currentCastTime;
         private float _globalCooldown;
         private float _globalCooldownTimer;
-        
+
         private float _adjustedFireCriticalMultiply;
         private float _adjustedFireCriticalChance;
         private float _adjustedFrostCriticalMultiply;
@@ -59,7 +59,7 @@ namespace PlayerStaff
         private GameObject _ghost;
         private bool _isPlacing;
         private ITargetable _targetCastingTo;
-        
+
         public bool Casting => _isCasting;
         public bool IsPlacing => _isPlacing;
         public bool RequireTarget => SpellData.Instance.GetSpellConfig(_spellName).RequiresTarget;
@@ -75,28 +75,28 @@ namespace PlayerStaff
             _movement = GetComponent<PlayerMovement>();
             _statusApplier = GetComponent<StatusApplier>();
             _playerHp = GetComponent<Hp>();
-            
+
             _globalCooldown = _stats.GlobalCooldown;
-            
+
             _adjustedFireCriticalMultiply = _stats.FireCriticalMultiplier;
             _adjustedFireCriticalChance = _stats.FireCriticalChance;
-            
+
             _adjustedFrostCriticalMultiply = _stats.FrostCriticalMultiplier;
             _adjustedFrostCriticalChance = _stats.FrostCriticalChance;
-            
+
             _adjustedEarthCriticalMultiply = _stats.EarthCriticalMultiplier;
             _adjustedEarthCriticalChance = _stats.EarthCriticalChance;
-            
+
             _adjustedNoElementalCriticalMultiply = _stats.NoElementCriticalMultiplier;
             _adjustedNoElementalCriticalChance = _stats.NoElementCriticalChance;
-            
+
             _shard = FindObjectOfType<PlayersShard>();
             if (_shard == null)
             {
                 Debug.LogError("PlayersShard not found in scene. Ensure it exists and is properly set up.");
                 return;
             }
-            
+
             _isPlacing = false;
             _isAbleToCast = true;
         }
@@ -110,7 +110,7 @@ namespace PlayerStaff
         {
             _ui.SetCastBarColor(castConfig.GetCastBarColor());
             _currentCastTime = castConfig.GetCastTime();
- 
+
             float castTimer = 0;
             while (castTimer < _currentCastTime)
             {
@@ -119,7 +119,7 @@ namespace PlayerStaff
                     castTimer += Time.deltaTime;
                     _ui.UpdateCastBar(castTimer / _currentCastTime);
                 }
-                
+
                 yield return null;
             }
 
@@ -129,7 +129,6 @@ namespace PlayerStaff
                 _resources.ConsumeResources(config.ShardCost, config.ReminderCost);
                 _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed());
                 _isCasting = false;
-                
             }
             else
             {
@@ -160,20 +159,36 @@ namespace PlayerStaff
 
         private void LineSpellCast()
         {
-            if (_targeting.HasTarget == false) {StopCast(); return;}
-            
-            if ((_spell as LineSpell)?.TrySetTarget(_targetCastingTo) == false) {StopCast(); return;}
-            
+            if (_targeting.HasTarget == false)
+            {
+                StopCast();
+                return;
+            }
+
+            if ((_spell as LineSpell)?.TrySetTarget(_targetCastingTo) == false)
+            {
+                StopCast();
+                return;
+            }
+
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
         }
 
         private void DoProjectileSpell()
         {
-            if (_targeting.HasTarget == false) {StopCast(); return;}
+            if (_targeting.HasTarget == false)
+            {
+                StopCast();
+                return;
+            }
 
-            if ((_spell as ProjectileSpell)?.TrySetTarget(_targetCastingTo) == false) {StopCast(); return;}
-            
+            if ((_spell as ProjectileSpell)?.TrySetTarget(_targetCastingTo) == false)
+            {
+                StopCast();
+                return;
+            }
+
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
         }
@@ -187,9 +202,10 @@ namespace PlayerStaff
 
                 _ghost = new GameObject("ghost");
                 _ghost.transform.SetParent(transform);
-                
-                _ghost.transform.localScale = new Vector3(deployableSpellConfig.ScaleFactor,deployableSpellConfig.ScaleFactor,1);
-                
+
+                _ghost.transform.localScale =
+                    new Vector3(deployableSpellConfig.ScaleFactor, deployableSpellConfig.ScaleFactor, 1);
+
                 SpriteRenderer ghostSpriteRenderer = _ghost.AddComponent<SpriteRenderer>();
                 ghostSpriteRenderer.sprite = ghostSprite;
                 ghostSpriteRenderer.color = ghostColor;
@@ -203,7 +219,7 @@ namespace PlayerStaff
             _spell.transform.position = _shard.transform.position;
 
             if (_spell is IcicleBarrage barrage) barrage.TrySetTarget(_targetCastingTo);
-            
+
             _spell.DoSpell();
         }
 
@@ -212,8 +228,8 @@ namespace PlayerStaff
             _spell.transform.position = _shard.transform.position;
             _spell.DoSpell();
         }
-        
-        private void CastSpellInstantly (SpellConfig config)
+
+        private void CastSpellInstantly(SpellConfig config)
         {
             switch (config.GetSPellType())
             {
@@ -272,7 +288,7 @@ namespace PlayerStaff
         }
 
         private void DoShield(ShieldSpellConfig config)
-        { 
+        {
             switch (config.ShieldType)
             {
                 case ShieldType.FrostShield:
@@ -295,7 +311,7 @@ namespace PlayerStaff
         private IEnumerator GlobalCooldown()
         {
             _globalCooldownTimer = _globalCooldown;
-            
+
             while (_globalCooldownTimer > 0f)
             {
                 if (_globalCooldownTimer >= 0f)
@@ -303,9 +319,10 @@ namespace PlayerStaff
                     _globalCooldownTimer -= Time.deltaTime;
                     _ui.UpdateGcdBars(_globalCooldownTimer / _globalCooldown);
                 }
-                
+
                 yield return null;
             }
+
             _ui.UpdateGcdBars(0f);
         }
 
@@ -314,7 +331,7 @@ namespace PlayerStaff
             if (_isAbleToCast == false) return false;
             if (spellName == SpellName.NoSpell) return false;
             if (_isCasting || _globalCooldownTimer > 0f) return false;
-            
+
             return true;
         }
 
@@ -324,46 +341,47 @@ namespace PlayerStaff
             if (spellConfig.RequiresTarget && _targeting.HasTarget == false) return false;
             return true;
         }
-        
+
         private void InitializeSpell(SpellConfig spellConfig)
         {
-            if (_spell == null) return; 
-            
+            if (_spell == null) return;
+
             switch (spellConfig.SpellElementType)
             {
                 case SpellElementType.Fire:
-                    _spell.Initialize(spellConfig, _adjustedFireCriticalMultiply, _adjustedFireCriticalChance);    
+                    _spell.Initialize(spellConfig, _adjustedFireCriticalMultiply, _adjustedFireCriticalChance);
                     break;
                 case SpellElementType.Frost:
-                    _spell.Initialize(spellConfig, _adjustedFrostCriticalMultiply, _adjustedFrostCriticalChance);  
+                    _spell.Initialize(spellConfig, _adjustedFrostCriticalMultiply, _adjustedFrostCriticalChance);
                     break;
                 case SpellElementType.Earth:
-                    _spell.Initialize(spellConfig, _adjustedEarthCriticalMultiply, _adjustedEarthCriticalChance);  
+                    _spell.Initialize(spellConfig, _adjustedEarthCriticalMultiply, _adjustedEarthCriticalChance);
                     break;
                 case SpellElementType.NoElemental:
-                    _spell.Initialize(spellConfig, _adjustedNoElementalCriticalMultiply, _adjustedNoElementalCriticalChance);  
+                    _spell.Initialize(spellConfig, _adjustedNoElementalCriticalMultiply,
+                        _adjustedNoElementalCriticalChance);
                     break;
             }
         }
-        
+
         public void StartCast(SpellName spellName)
         {
             if (IsCastAvailable(spellName) == false) return;
-            
+
             SpellConfig spellConfig = SpellData.Instance.GetSpellConfig(spellName);
-            
+
             if (IsSpellRequirementsMet(spellConfig) == false) return;
 
             if (spellConfig is INeedPrefab)
             {
                 _spell = SpellFactory.Instance.PoolSpell(spellName);
-                
+
                 if (_spell == null) return;
-                
-                _spell.SetSpellResources(_resources); 
+
+                _spell.SetSpellResources(_resources);
                 InitializeSpell(spellConfig);
             }
-            
+
             _spellName = spellName;
             _isCasting = true;
             _movement.SetSpeed(_movement.GetAdjustedPlayerSpeed() - CASTING_MOVEMENT_PENALTY);
@@ -371,9 +389,9 @@ namespace PlayerStaff
             StartCoroutine(_globalCooldownRoutine);
 
             _targetCastingTo = _targeting.GetCurrentTarget;
-            
+
             if (spellConfig is ICast castSpellConfig)
-            { 
+            {
                 _spellCastRoutine = CastSpellWithCastTime(spellConfig, castSpellConfig);
                 StartCoroutine(_spellCastRoutine);
             }
@@ -382,13 +400,13 @@ namespace PlayerStaff
                 CastSpellInstantly(spellConfig);
             }
         }
-        
+
         public void StopCast()
         {
             if (_isCasting == false) return;
-            
+
             SpellFactory.Instance.ReturnSpell(_spellName, _spell);
-            
+
             StopCoroutine(_spellCastRoutine);
             StopCoroutine(_globalCooldownRoutine);
             _spellCastRoutine = null;
@@ -406,20 +424,19 @@ namespace PlayerStaff
             _spell.transform.position = _ghost.transform.position;
             _spell.DoSpell();
             Destroy(_ghost);
-            
+
             _isPlacing = false;
         }
 
         public void CancelPlacing()
         {
-            
             Destroy(_ghost);
             _isPlacing = false;
-            
+
             SpellFactory.Instance.ReturnSpell(_spellName, _spell);
         }
 
-        public void AdjustCriticalDamage(SpellElementType spellElementType,float multiply, float chance)
+        public void AdjustCriticalDamage(SpellElementType spellElementType, float multiply, float chance)
         {
             if (multiply < 1f) return;
             if (chance < 0f || chance > 1f) return;
@@ -442,7 +459,6 @@ namespace PlayerStaff
                     _adjustedNoElementalCriticalMultiply = multiply;
                     _adjustedNoElementalCriticalChance = chance;
                     break;
-                    
             }
         }
 
@@ -450,7 +466,7 @@ namespace PlayerStaff
         {
             _isAbleToCast = false;
         }
-        
+
         public void EnableCasting()
         {
             _isAbleToCast = true;
